@@ -14,7 +14,7 @@ namespace ParrotsAPI2.Models
         public int UserId { get; set; }
         public User User { get; set; }
         public List<VehicleImage>? VehicleImages { get; set; }
-        public List<Voyage> Voyages { get; set; }
+        public List<Voyage>? Voyages { get; set; }
     }
 }
 

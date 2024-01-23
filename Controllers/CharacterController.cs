@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ParrotsAPI2.Services;
+﻿
+using Microsoft.AspNetCore.Mvc;
 
 namespace ParrotsAPI2.Controllers
 {

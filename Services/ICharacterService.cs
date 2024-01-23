@@ -1,5 +1,4 @@
-﻿
-namespace ParrotsAPI2.Services
+﻿namespace ParrotsAPI2.Services
 {
     public interface ICharacterService
     {
