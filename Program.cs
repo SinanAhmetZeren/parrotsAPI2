@@ -5,7 +5,8 @@ global using ParrotsAPI2.Dtos.User;
 global using AutoMapper;
 global using ParrotsAPI2.Data;
 global using Microsoft.EntityFrameworkCore;
-using ParrotsAPI2.Services.User;
+global using ParrotsAPI2.Services.User;
+global using Microsoft.AspNetCore.JsonPatch;
 
 
 
@@ -14,7 +15,7 @@ using ParrotsAPI2.Services.User;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

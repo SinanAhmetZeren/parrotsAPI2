@@ -137,3 +137,7 @@ C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\refint\ParrotsAP
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\ParrotsAPI2.pdb
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\ParrotsAPI2.genruntimeconfig.cache
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\ref\ParrotsAPI2.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

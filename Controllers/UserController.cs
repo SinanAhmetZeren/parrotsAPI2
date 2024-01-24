@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Services.User;
 
 namespace ParrotsAPI2.Controllers
@@ -57,6 +56,26 @@ namespace ParrotsAPI2.Controllers
             }
             return Ok(response);
         }
+
+
+
+        [HttpPatch("{userId}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUser(
+            int userId, JsonPatchDocument<UpdateUserDto> patchDoc)
+        {
+            var response = await _userService.PatchUser(userId, patchDoc, ModelState);
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+
+
+
 
 
         [HttpDelete("{id}")]

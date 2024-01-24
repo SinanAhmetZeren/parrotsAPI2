@@ -1,4 +1,7 @@
-﻿using ParrotsAPI2.Dtos.User;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ParrotsAPI2.Dtos.User;
 
 namespace ParrotsAPI2.Services.User
 {
@@ -105,6 +108,42 @@ namespace ParrotsAPI2.Services.User
                 }
 
                 return serviceResponse;
+        }
+      
+        public async Task<ServiceResponse<GetUserDto>> PatchUser(int userId,[FromBody]JsonPatchDocument<UpdateUserDto> patchDoc,ModelStateDictionary modelState)
+        {
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            try
+            {
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null)
+                {
+                    throw new Exception($"User with ID `{userId}` not found");
+                }
+
+                var userDto = _mapper.Map<UpdateUserDto>(user);
+                patchDoc.ApplyTo(userDto, modelState);
+
+                if (!modelState.IsValid)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid model state after patch operations";
+                    return serviceResponse;
+                }
+                _mapper.Map(userDto, user);
+                _context.Users.Attach(user);
+                _context.Entry(user).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _mapper.Map<GetUserDto>(user);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
         }
     }
 }

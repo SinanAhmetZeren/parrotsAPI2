@@ -6,8 +6,11 @@
         {
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
+            
             CreateMap<User, GetUserDto>();
             CreateMap<AddUserDto, User>();
+            CreateMap<User, UpdateUserDto>();
+            CreateMap<UpdateUserDto, User>();
         }
     }
 }

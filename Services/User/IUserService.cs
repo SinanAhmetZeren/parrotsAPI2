@@ -1,4 +1,6 @@
-﻿using ParrotsAPI2.Dtos.User;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ParrotsAPI2.Dtos.User;
 
 namespace ParrotsAPI2.Services.User
 {
@@ -9,6 +11,7 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser);
         Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser);
         Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id);
+        Task<ServiceResponse<GetUserDto>> PatchUser(int userId, JsonPatchDocument<UpdateUserDto> patchDoc, ModelStateDictionary modelState);
     }
 }
 
