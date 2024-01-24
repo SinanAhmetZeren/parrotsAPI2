@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Uploads\VoyageImages\" />
     <Folder Include="Uploads\VehicleImages\" />
     <Folder Include="Uploads\UserImages\" />
   </ItemGroup>

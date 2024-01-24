@@ -1,5 +1,6 @@
 ﻿using ParrotsAPI2.Dtos.VehicleDtos;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
+using ParrotsAPI2.Dtos.VoyageDtos;
 
 namespace ParrotsAPI2
 {
@@ -27,6 +28,12 @@ namespace ParrotsAPI2
 
             CreateMap<VehicleImage, VehicleImageDto>();
             CreateMap<VehicleImageDto, VehicleImage>();
+
+            CreateMap<Voyage, GetVoyageDto>();
+            CreateMap<Voyage, VoyageDto>();
+            CreateMap<AddVoyageDto, Voyage>();
+            CreateMap<Voyage, UpdateVoyageDto>();
+            CreateMap<UpdateVoyageDto, Voyage>();
 
         }
     }

@@ -117,9 +117,14 @@ namespace ParrotsAPI2.Services.Vehicle
 
             var userDto = _mapper.Map<UserDto>(vehicle?.User);
             var vehicleImageDtos = _mapper.Map<List<VehicleImageDto>>(vehicle?.VehicleImages);
+            var voyageDtos = _mapper.Map<List<VoyageDto>>(vehicle?.Voyages);
+
             var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
+
             vehicleDto.User = userDto;
             vehicleDto.VehicleImages = vehicleImageDtos;
+            vehicleDto.Voyages = voyageDtos;
+
             serviceResponse.Data = vehicleDto;
 
             if (vehicle == null)

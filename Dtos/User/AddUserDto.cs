@@ -11,7 +11,6 @@
         public string PhoneNumber { get; set; }
         public string ProfileImageUrl { get; set; }
         public IFormFile ImageFile { get; set; }
-
         public bool UnseenMessages { get; set; }
         public List<Vehicle>? Vehicles { get; set; }
         public List<Voyage>? Voyages { get; set; }

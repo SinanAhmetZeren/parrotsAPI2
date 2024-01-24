@@ -156,27 +156,6 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> AddUser2(AddUserDto newUser)
-        {
-            var serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
-            {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newUser.ImageFile.FileName);
-                var filePath = Path.Combine("Uploads/UserImages/", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await newUser.ImageFile.CopyToAsync(stream);
-                }
-                newUser.ProfileImageUrl = "/Uploads/UserImages/" + fileName;
-            }
-            var user = _mapper.Map<Models.User>(newUser);
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            var updatedUsers = await _context.Users.ToListAsync();
-            serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
-            return serviceResponse;
-        }
-
         public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(int userId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
@@ -215,20 +194,3 @@ namespace ParrotsAPI2.Services.User
 
 
 }
-
-
-
-
-/*
-public async Task<ServiceResponse<List<GetUserDto>>> AddUser2(AddUserDto newUser)
-{
-    var serviceResponse = new ServiceResponse<List<GetUserDto>>();
-    var user = _mapper.Map<Models.User>(newUser);
-    _context.Users.Add(user);
-    await _context.SaveChangesAsync();
-    var updatedUsers = await _context.Users.ToListAsync();
-    serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
-
-    return serviceResponse;
-}
-*/
