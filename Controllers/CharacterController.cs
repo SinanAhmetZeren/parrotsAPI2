@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ParrotsAPI2.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [ApiController]
     [Route("api/[controller]")]
     public class CharacterController : ControllerBase

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.User;
 
 namespace ParrotsAPI2.Services.User
@@ -21,9 +22,24 @@ namespace ParrotsAPI2.Services.User
         public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
+
+            if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newUser.ImageFile.FileName);
+                //var filePath = Path.Combine("wwwroot/images/", fileName);
+                var filePath = Path.Combine("Uploads/UserImages/", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await newUser.ImageFile.CopyToAsync(stream);
+                }
+                //newUser.ProfileImageUrl = "/images/" + fileName;
+                newUser.ProfileImageUrl = "/Uploads/UserImages/" + fileName; 
+            }
+
             var user = _mapper.Map<Models.User>(newUser);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
             var updatedUsers = await _context.Users.ToListAsync();
             serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
 
@@ -44,8 +60,8 @@ namespace ParrotsAPI2.Services.User
 
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
-                var updatedUsers = await _context.Users.ToListAsync();
-                serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
+                var users = await _context.Users.ToListAsync();
+                serviceResponse.Data = users.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
             }
             catch (Exception ex)
             {
@@ -91,12 +107,6 @@ namespace ParrotsAPI2.Services.User
                 user.Facebook = updatedUser.Facebook;
                 user.PhoneNumber = updatedUser.PhoneNumber;
                 user.ProfileImageUrl = updatedUser.ProfileImageUrl;
-                //user.UnseenMessages = updatedUser.UnseenMessages;
-                //user.Vehicles = updatedUser.Vehicles;
-                //user.Voyages = updatedUser.Voyages;
-                //user.Bids = updatedUser.Bids;
-                //user.SentMessages = updatedUser.SentMessages;
-                //user.ReceivedMessages = updatedUser.ReceivedMessages;
 
             await _context.SaveChangesAsync();
                     serviceResponse.Data = _mapper.Map<GetUserDto>(user);
@@ -109,7 +119,7 @@ namespace ParrotsAPI2.Services.User
 
                 return serviceResponse;
         }
-      
+
         public async Task<ServiceResponse<GetUserDto>> PatchUser(int userId,[FromBody]JsonPatchDocument<UpdateUserDto> patchDoc,ModelStateDictionary modelState)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
@@ -145,5 +155,80 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<GetUserDto>>> AddUser2(AddUserDto newUser)
+        {
+            var serviceResponse = new ServiceResponse<List<GetUserDto>>();
+            if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newUser.ImageFile.FileName);
+                var filePath = Path.Combine("Uploads/UserImages/", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await newUser.ImageFile.CopyToAsync(stream);
+                }
+                newUser.ProfileImageUrl = "/Uploads/UserImages/" + fileName;
+            }
+            var user = _mapper.Map<Models.User>(newUser);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            var updatedUsers = await _context.Users.ToListAsync();
+            serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(int userId, IFormFile imageFile)
+        {
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "User not found";
+                return serviceResponse;
+            }
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var filePath = Path.Combine("Uploads/UserImages/", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+                user.ProfileImageUrl = "/Uploads/UserImages/" + fileName;
+                await _context.SaveChangesAsync();
+                var userDto = _mapper.Map<GetUserDto>(user);
+
+                serviceResponse.Success = true;
+                serviceResponse.Data = userDto;
+            }
+            else
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No image provided";
+            }
+
+            return serviceResponse;
+        }
     }
+
+
 }
+
+
+
+
+/*
+public async Task<ServiceResponse<List<GetUserDto>>> AddUser2(AddUserDto newUser)
+{
+    var serviceResponse = new ServiceResponse<List<GetUserDto>>();
+    var user = _mapper.Map<Models.User>(newUser);
+    _context.Users.Add(user);
+    await _context.SaveChangesAsync();
+    var updatedUsers = await _context.Users.ToListAsync();
+    serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
+
+    return serviceResponse;
+}
+*/

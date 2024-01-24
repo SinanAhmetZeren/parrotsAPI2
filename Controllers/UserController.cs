@@ -8,13 +8,6 @@ namespace ParrotsAPI2.Controllers
     public class UserController : ControllerBase
     {
 
-        private static List<User> characters = new List<User>
-        {
-            new User(),
-            new User { Id=1 , Name = "Sam"}
-
-        };
-
         private readonly IUserService _userService;
 
         public UserController(IUserService userService)
@@ -76,8 +69,6 @@ namespace ParrotsAPI2.Controllers
 
 
 
-
-
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(int id)
         {
@@ -89,5 +80,26 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
 
         }
+
+
+        [Consumes("multipart/form-data")]
+        [HttpPost("{userId}/updateProfileImage")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateProfileImage(int userId, IFormFile imageFile)
+        {
+            var serviceResponse = await _userService.UpdateUserProfileImage(userId, imageFile);
+
+            if (serviceResponse.Success)
+            {
+                return Ok(new { imagePath = serviceResponse.Data });
+            }
+            else
+            {
+                return BadRequest(new { message = serviceResponse.Message });
+            }
+        }
+
     }
 }
+
+
+

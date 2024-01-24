@@ -1,9 +1,8 @@
-﻿using ParrotsAPI2.Models;
-using static System.Net.Mime.MediaTypeNames;
+﻿using ParrotsAPI2.Dtos.VehicleImageDtos;
 
-namespace ParrotsAPI2.Models
+namespace ParrotsAPI2.Dtos.VehicleDtos
 {
-    public class Vehicle
+    public class GetVehicleDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -12,9 +11,11 @@ namespace ParrotsAPI2.Models
         public int Capacity { get; set; }
         public string Description { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
-        public List<VehicleImage>? VehicleImages { get; set; }
+        //public Models.User User { get; set; }
+        public UserDto User { get; set; }
+
+        //public List<VehicleImage>? VehicleImages { get; set; }
+        public List<VehicleImageDto>? VehicleImages { get; set; }
         public List<Voyage>? Voyages { get; set; }
     }
 }
-

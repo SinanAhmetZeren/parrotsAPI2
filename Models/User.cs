@@ -19,9 +19,8 @@ namespace ParrotsAPI2.Models
         public List<Vehicle>? Vehicles { get; set; }
         public List<Voyage>? Voyages { get; set; }
         public List<Bid>? Bids { get; set; }
-        public List<Message> SentMessages { get; set; }
-        public List<Message> ReceivedMessages { get; set; }
-
+        public List<Message>? SentMessages { get; set; }
+        public List<Message>? ReceivedMessages { get; set; }
 
     }
 }
