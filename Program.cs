@@ -11,6 +11,7 @@ global using Microsoft.AspNetCore.JsonPatch;
 global using ParrotsAPI2.Services.User;
 global using ParrotsAPI2.Services.Vehicle;
 global using ParrotsAPI2.Services.Voyage;
+global using ParrotsAPI2.Services.Waypoint;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IVoyageService, VoyageService>();
+builder.Services.AddScoped<IWaypointService, WaypointService>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

@@ -1,57 +1,331 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
+using ParrotsAPI2.Controllers;
+using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Dtos.VehicleImageDtos;
+using ParrotsAPI2.Dtos.VoyageImageDtos;
+using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Voyage
 {
     public class VoyageService : IVoyageService
     {
-        public Task<ServiceResponse<List<GetVoyageDto>>> AddVoyage(AddVoyageDto newVoyage)
+
+        private readonly IMapper _mapper;
+        private readonly DataContext _context;
+
+        public VoyageService(IMapper mapper, DataContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _mapper = mapper;
+        }
+        public async Task<ServiceResponse<List<GetVoyageDto>>> AddVoyage(AddVoyageDto newVoyage)
+        {
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            if (newVoyage.ImageFile != null && newVoyage.ImageFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newVoyage.ImageFile.FileName);
+                var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await newVoyage.ImageFile.CopyToAsync(stream);
+                }
+                newVoyage.ProfileImage = "/Uploads/VoyageImages/" + fileName;
+            }
+            var voyage = _mapper.Map<Models.Voyage>(newVoyage);
+            _context.Voyages.Add(voyage);
+            await _context.SaveChangesAsync();
+            var updatedVoyages = await _context.Voyages.ToListAsync();
+            serviceResponse.Data = updatedVoyages.Select(c => _mapper.Map<GetVoyageDto>(c)).ToList();
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<GetVoyageDto>> AddVoyageImage(int vehicleId, IFormFile imageFile)
+        public async Task<ServiceResponse<GetVoyageDto>> AddVoyageImage(int voyageId, IFormFile imageFile)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            var existingVoyage = await _context.Voyages
+                .Include(v => v.VoyageImages)
+                .FirstOrDefaultAsync(v => v.Id == voyageId);
+            if (existingVoyage == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Voyage not found";
+                return serviceResponse;
+            }
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+            var newVoyageImage = new VoyageImage
+            {
+                VoyageImagePath = "/Uploads/VoyageImages/" + fileName
+            };
+            existingVoyage.VoyageImages ??= new List<VoyageImage>();
+            existingVoyage.VoyageImages.Add(newVoyageImage);
+            await _context.SaveChangesAsync();
+            serviceResponse.Data = _mapper.Map<GetVoyageDto>(existingVoyage);
+
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<GetVoyageDto>>> DeleteVoyage(int id)
+        public async Task<ServiceResponse<List<GetVoyageDto>>> DeleteVoyage(int id)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            try
+            {
+                var voyage = await _context.Voyages.FindAsync(id);
+                if (voyage == null)
+                {
+                    throw new Exception($"Voyage with ID `{id}` not found");
+                }
+                _context.Voyages.Remove(voyage);
+                await _context.SaveChangesAsync();
+                var voyages = await _context.Voyages.ToListAsync();
+                serviceResponse.Data = voyages.Select(c => _mapper.Map<GetVoyageDto>(c)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<GetVoyageDto>>> GetAllVoyages()
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetAllVoyages()
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            var dbVoyages = await _context.Voyages.ToListAsync();
+            serviceResponse.Data = dbVoyages.Select(c => _mapper.Map<GetVoyageDto>(c)).ToList();
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<GetVoyageDto>> GetVoyageById(int id)
+        public async Task<ServiceResponse<GetVoyageDto>> GetVoyageById(int id)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+
+            var voyage = await _context.Voyages
+                .Include(v => v.User)
+                .Include(v => v.VoyageImages)
+                .Include(v => v.Vehicle)
+                .Include(v => v.Bids)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            var userDto = _mapper.Map<UserDto>(voyage?.User);
+            var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
+            var vehicleDtos = _mapper.Map<VehicleDto>(voyage?.Vehicle);
+            var bidDtos = _mapper.Map <List<BidDto>>(voyage?.Bids);    
+
+            var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+
+            voyageDto.User = userDto;
+            voyageDto.VoyageImages = voyageImageDtos;
+            voyageDto.Vehicle = vehicleDtos;
+            voyageDto.Bids = bidDtos;
+
+            serviceResponse.Data = voyageDto;
+
+            if (voyage == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Voyage not found";
+                return serviceResponse;
+            }
+            serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(int userId)
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(int userId)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            var voyages = await _context.Voyages
+                .Include(v => v.User)
+                .Include(v => v.VoyageImages)
+                .Include(v => v.Vehicle)
+                .Include(v => v.Bids)
+                .Where(v => v.UserId == userId)
+                .ToListAsync();
+
+            if (voyages == null || voyages.Count == 0)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No voyages found for the given user ID";
+                return serviceResponse;
+            }
+
+            var voyageDtos = voyages.Select(voyage =>
+            {
+                var userDto = _mapper.Map<UserDto>(voyage.User);
+                var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
+                var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
+                var bidDtos = _mapper.Map<List<BidDto>>(voyage.Bids);
+
+                var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+                voyageDto.User = userDto;
+                voyageDto.VoyageImages = voyageImageDtos;
+                voyageDto.Vehicle = vehicleDto;
+                voyageDto.Bids = bidDtos;
+
+                return voyageDto;
+            }).ToList();
+
+            serviceResponse.Data = voyageDtos;
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByVehicleId(int vehicleId)
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByVehicleId(int vehicleId)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+
+            var voyages = await _context.Voyages
+                .Include(v => v.User)
+                .Include(v => v.VoyageImages)
+                .Include(v => v.Vehicle)
+                .Include(v => v.Bids)
+                .Where(v => v.VehicleId == vehicleId)
+                .ToListAsync();
+
+            if (voyages == null || voyages.Count == 0)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No voyages found for the given vehicle ID";
+                return serviceResponse;
+            }
+
+            var voyageDtos = voyages.Select(voyage =>
+            {
+                var userDto = _mapper.Map<UserDto>(voyage.User);
+                var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
+                var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
+                var bidDtos = _mapper.Map<List<BidDto>>(voyage.Bids);
+
+                var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+                voyageDto.User = userDto;
+                voyageDto.VoyageImages = voyageImageDtos;
+                voyageDto.Vehicle = vehicleDto;
+                voyageDto.Bids = bidDtos;
+
+                return voyageDto;
+            }).ToList();
+
+            serviceResponse.Data = voyageDtos;
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int vehicleId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState)
+        public async Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            try
+            {
+                var voyage = await _context.Voyages.FindAsync(voyageId);
+                if (voyage == null)
+                {
+                    throw new Exception($"Voyage with ID `{voyageId}` not found");
+                }
+
+                var voyageDto = _mapper.Map<UpdateVoyageDto>(voyage);
+                patchDoc.ApplyTo(voyageDto, modelState);
+
+                if (!modelState.IsValid)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid model state after patch operations";
+                    return serviceResponse;
+                }
+
+                _mapper.Map(voyageDto, voyage);
+                _context.Voyages.Attach(voyage);
+                _context.Entry(voyage).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
+        public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            try
+            {
+                var voyage = await _context.Voyages.FindAsync(updatedVoyage.Id);
+                if (voyage == null)
+                {
+                    throw new Exception($"Vehicle with ID `{updatedVoyage.Id}` not found");
+                }
+                voyage.Name = updatedVoyage.Name;
+                voyage.Brief = updatedVoyage.Brief;
+                voyage.Description = updatedVoyage.Description;
+                voyage.Vacancy = updatedVoyage.Vacancy;
+                voyage.StartDate = updatedVoyage.StartDate;
+                voyage.EndDate = updatedVoyage.EndDate;
+                voyage.LastBidDate = updatedVoyage.LastBidDate;
+                voyage.MinPrice = updatedVoyage.MinPrice;
+                voyage.MaxPrice = updatedVoyage.MaxPrice;
+                voyage.FixedPrice = updatedVoyage.FixedPrice;
+                voyage.Auction = updatedVoyage.Auction;
+                voyage.ProfileImage = updatedVoyage.ProfileImage;
+
+
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int vehicleId, IFormFile imageFile)
+        public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            try
+            {
+                var voyage = await _context.Voyages.FindAsync(voyageId);
+                if (voyage == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Voyage not found";
+                    return serviceResponse;
+                }
+
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                    var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+                    voyage.ProfileImage = "/Uploads/VoyageImages/" + fileName;
+                    await _context.SaveChangesAsync();
+                    var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+                    serviceResponse.Success = true;
+                    serviceResponse.Data = voyageDto;
+                }
+                else
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No image provided";
+                }
+
+                return serviceResponse;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                return serviceResponse;
+            }
         }
     }
 }

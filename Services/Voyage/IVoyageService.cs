@@ -11,9 +11,9 @@ namespace ParrotsAPI2.Services.Voyage
         Task<ServiceResponse<List<GetVoyageDto>>> AddVoyage(AddVoyageDto newVoyage);
         Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage);
         Task<ServiceResponse<List<GetVoyageDto>>> DeleteVoyage(int id);
-        Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int vehicleId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState);
-        Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int vehicleId, IFormFile imageFile);
-        Task<ServiceResponse<GetVoyageDto>> AddVoyageImage(int vehicleId, IFormFile imageFile);
+        Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState);
+        Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile);
+        Task<ServiceResponse<GetVoyageDto>> AddVoyageImage(int voyageId, IFormFile imageFile);
 
     }
 }

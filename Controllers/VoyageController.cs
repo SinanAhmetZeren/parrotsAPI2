@@ -27,6 +27,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _voyageService.GetVoyageById(id));
         }
 
+
         [HttpGet("userId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByUserId(int userId)
         {
@@ -37,7 +38,7 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("vehicleId/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByVehicleId(int vehicleId)
         {
-            return Ok(await _voyageService.GetVoyagesByUserId(vehicleId));
+            return Ok(await _voyageService.GetVoyagesByVehicleId(vehicleId));
         }
 
 
@@ -48,7 +49,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _voyageService.AddVoyage(newVoyage));
         }
 
-        [HttpPut]
+        [HttpPut("UpdateVoyage")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
         {
             var response = await _voyageService.UpdateVoyage(updatedVoyage);

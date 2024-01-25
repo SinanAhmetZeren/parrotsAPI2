@@ -1,4 +1,8 @@
-﻿namespace ParrotsAPI2.Dtos.VoyageDtos
+﻿using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Dtos.VoyageImageDtos;
+using ParrotsAPI2.Dtos.WaypointDtos;
+
+namespace ParrotsAPI2.Dtos.VoyageDtos
 {
     public class GetVoyageDto
     {
@@ -15,12 +19,13 @@
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
         public string ProfileImage { get; set; }
-        public List<Waypoint> Waypoints { get; set; }
-        public List<VoyageImage>? VoyageImages { get; set; }
+
+        public List<WaypointDto> Waypoints { get; set; }
+        public List<VoyageImageDto>? VoyageImages { get; set; }
         public int UserId { get; set; }
         public UserDto? User { get; set; }
         public int? VehicleId { get; set; }
         public VehicleDto? Vehicle { get; set; }
-        public List<Bid>? Bids { get; set; }
+        public List<BidDto>? Bids { get; set; }
     }
 }

@@ -1,6 +1,9 @@
-﻿using ParrotsAPI2.Dtos.VehicleDtos;
+﻿using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Dtos.VehicleDtos;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Dtos.VoyageDtos;
+using ParrotsAPI2.Dtos.VoyageImageDtos;
+using ParrotsAPI2.Dtos.WaypointDtos;
 
 namespace ParrotsAPI2
 {
@@ -17,7 +20,7 @@ namespace ParrotsAPI2
             CreateMap<UpdateUserDto, User>();
 
             CreateMap<Vehicle, GetVehicleDto>()
-            .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
             CreateMap<User, UserDto>();
 
 
@@ -25,15 +28,33 @@ namespace ParrotsAPI2
             CreateMap<AddVehicleDto, Vehicle>();
             CreateMap<Vehicle, UpdateVehicleDto>();
             CreateMap<UpdateVehicleDto, Vehicle>();
+            CreateMap<Vehicle, VehicleDto>();
+            CreateMap<VehicleDto, Vehicle>();
 
             CreateMap<VehicleImage, VehicleImageDto>();
             CreateMap<VehicleImageDto, VehicleImage>();
+
+            CreateMap<VoyageImage, VoyageImageDto>();
+            CreateMap<VoyageImageDto, VoyageImage>();
 
             CreateMap<Voyage, GetVoyageDto>();
             CreateMap<Voyage, VoyageDto>();
             CreateMap<AddVoyageDto, Voyage>();
             CreateMap<Voyage, UpdateVoyageDto>();
             CreateMap<UpdateVoyageDto, Voyage>();
+
+            CreateMap<Voyage, GetVoyageDto>()
+                .ForMember(dest => dest.VoyageImages, opt => opt.MapFrom(src => src.VoyageImages));
+
+            CreateMap<Bid, BidDto>();
+            CreateMap<BidDto, Bid>();
+
+            CreateMap<Waypoint, GetWaypointDto>();
+            CreateMap<AddWaypointDto, Waypoint>();
+            CreateMap<Waypoint, WaypointDto>();
+            CreateMap<WaypointDto, Waypoint>();
+
+
 
         }
     }

@@ -1,8 +1,6 @@
-﻿using ParrotsAPI2.Models;
-
-namespace ParrotsAPI2.Models
+﻿namespace ParrotsAPI2.Dtos.WaypointDtos
 {
-    public class Waypoint
+    public class GetWaypointDto
     {
         public int Id { get; set; }
         public double Latitude { get; set; }
@@ -12,6 +10,5 @@ namespace ParrotsAPI2.Models
         public string ProfileImage { get; set; }
         public int Order { get; set; }
         public int VoyageId { get; set; }
-        public Voyage Voyage { get; set; }
     }
 }
