@@ -327,5 +327,41 @@ namespace ParrotsAPI2.Services.Voyage
                 return serviceResponse;
             }
         }
+
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByCoordinates(double lat1, double lat2, double lon1, double lon2)
+        {
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+
+            try
+            {
+                var voyages = await _context.Voyages
+                    .Where(v =>
+                        v.Waypoints.Any(w =>
+                            w.Order == 1 &&
+                            w.Latitude >= lat1 &&
+                            w.Latitude <= lat2 &&
+                            w.Longitude >= lon1 &&
+                            w.Longitude <= lon2))
+                    .ToListAsync();
+
+                if (voyages == null || voyages.Count == 0)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No voyages found with waypoints matching the specified conditions.";
+                    return serviceResponse;
+                }
+
+                var voyageDtos = _mapper.Map<List<GetVoyageDto>>(voyages);
+                serviceResponse.Data = voyageDtos;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error retrieving voyages: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+
     }
 }
