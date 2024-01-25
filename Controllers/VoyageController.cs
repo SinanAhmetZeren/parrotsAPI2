@@ -119,10 +119,16 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [HttpGet("GetVoyageByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
+        [HttpGet("GetVoyagesByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByCoordinates(double lat1, double lat2, double lon1, double lon2)
         {
             return Ok(await _voyageService.GetVoyagesByCoordinates(lat1, lat2, lon1, lon2));
+        }
+
+        [HttpGet("GetVoyageIdsByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
+        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyageIdsByCoordinates(double lat1, double lat2, double lon1, double lon2)
+        {
+            return Ok(await _voyageService.GetVoyageIdsByCoordinates(lat1, lat2, lon1, lon2));
         }
 
     }
