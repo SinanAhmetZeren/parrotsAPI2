@@ -24,41 +24,42 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("getsingleMessage/{id}")]
         public async Task<ActionResult<ServiceResponse<GetMessageDto>>> GetSingle(int id)
         {
             return Ok(await _messageService.GetMessageById(id));
         }
 
 
-        [HttpGet("userId/{userId}")]
+        [HttpGet("getMessageByuserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesByUserId(int userId)
         {
             return Ok(await _messageService.GetMessagesByUserId(userId));
         }
 
 
-        [HttpGet("senderId/{senderId}")]
+        [HttpGet("getMessageBysenderId/{senderId}")]
         public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesBySenderId(int senderId)
         {
             return Ok(await _messageService.GetMessagesBySenderId(senderId));
         }
 
 
-        [HttpGet("receiverId/{receiverId}")]
+        [HttpGet("getMessageByreceiverId/{receiverId}")]
         public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesByReceiverId(int receiverId)
         {
             return Ok(await _messageService.GetMessagesByReceiverId(receiverId));
         }
 
-        [HttpPost]
+
+        [HttpPost("addMessage")]
         public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> AddMessage(AddMessageDto newMessage)
         {
 
             return Ok(await _messageService.AddMessage(newMessage));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteMessage/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteMessage(int id)
         {
             var response = await _messageService.DeleteMessage(id);
@@ -70,7 +71,7 @@ namespace ParrotsAPI2.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("updateMessage")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> UpdateMessage(UpdateMessageDto updatedMessage)
         {
             var response = await _messageService.UpdateMessage(updatedMessage);

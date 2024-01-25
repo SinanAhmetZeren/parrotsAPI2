@@ -14,35 +14,35 @@ namespace ParrotsAPI2.Controllers
             _voyageService = voyageService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAllVoyages")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> Get()
         {
             return Ok(await _voyageService.GetAllVoyages());
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("GetVoyageById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingle(int id)
         {
             return Ok(await _voyageService.GetVoyageById(id));
         }
 
 
-        [HttpGet("userId/{userId}")]
+        [HttpGet("GetVoyageByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByUserId(int userId)
         {
             return Ok(await _voyageService.GetVoyagesByUserId(userId));
         }
 
 
-        [HttpGet("vehicleId/{vehicleId}")]
+        [HttpGet("GetVoyageByVehicleId/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByVehicleId(int vehicleId)
         {
             return Ok(await _voyageService.GetVoyagesByVehicleId(vehicleId));
         }
 
 
-        [HttpPost]
+        [HttpPost("AddVehicle")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> AddVoyage(AddVoyageDto newVoyage)
         {
 
@@ -60,8 +60,8 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpPatch("{voyageId}")]
-        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> UpdateVoyage(
+        [HttpPatch("PatchVoyage/{voyageId}")]
+        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> PatchVoyage(
             int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc)
         {
             var response = await _voyageService.PatchVoyage(voyageId, patchDoc, ModelState);
@@ -74,7 +74,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteVoyage/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteVoyage(int id)
         {
             var response = await _voyageService.DeleteVoyage(id);

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Data;
 
-namespace ParrotsAPI2.Services
+namespace ParrotsAPI2.Services.Character
 {
     public class CharacterService : ICharacterService
     {
@@ -27,7 +27,7 @@ namespace ParrotsAPI2.Services
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            var character = _mapper.Map<Character>(newCharacter);
+            var character = _mapper.Map<Models.Character>(newCharacter);
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
             var updatedCharacters = await _context.Characters.ToListAsync();

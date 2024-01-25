@@ -15,33 +15,33 @@ namespace ParrotsAPI2.Controllers
             _vehicleService = vehicleService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAllVehicles")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> Get()
         {
             return Ok(await _vehicleService.GetAllVehicles());
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("GetVehicleById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingle(int id)
         {
             return Ok(await _vehicleService.GetVehicleById(id));
         }
 
-        [HttpGet("userId/{userId}")]
+        [HttpGet("GetVehiclesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> GetVehiclesByUserId(int userId)
         {
             return Ok(await _vehicleService.GetVehiclesByUserId(userId));
         }
 
-        [HttpPost]
+        [HttpPost("addVehicle")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> AddVehicle(AddVehicleDto newVehicle)
         {
 
             return Ok(await _vehicleService.AddVehicle(newVehicle));
         }
 
-        [HttpPut]
+        [HttpPut("UpdateVehicle")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> UpdateVehicle(UpdateVehicleDto updatedVehicle)
         {
             var response = await _vehicleService.UpdateVehicle(updatedVehicle);
@@ -52,8 +52,8 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpPatch("{vehicleId}")]
-        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> UpdateVehicle(
+        [HttpPatch("PatchVehicle/{vehicleId}")]
+        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> PatchVehicle(
             int vehicleId, JsonPatchDocument<UpdateVehicleDto> patchDoc)
         {
             var response = await _vehicleService.PatchVehicle(vehicleId, patchDoc, ModelState);
@@ -66,7 +66,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteVehicle/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> DeleteVehicle(int id)
         {
             var response = await _vehicleService.DeleteVehicle(id);

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using ParrotsAPI2.Services.Character;
 
 namespace ParrotsAPI2.Controllers
 {
@@ -41,7 +42,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto newCharacter) 
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto newCharacter)
         {
 
             return Ok(await _characterService.AddCharacter(newCharacter));

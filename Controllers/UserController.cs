@@ -15,7 +15,7 @@ namespace ParrotsAPI2.Controllers
             _userService = userService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAllUsers")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> Get()
         {
             return Ok(await _userService.GetAllUsers());
@@ -23,7 +23,7 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [HttpGet("{id}")]
+        [HttpGet("getUserById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(int id)
         {
             return Ok(await _userService.GetUserById(id));
@@ -31,7 +31,7 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("AddUser")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> AddUser(AddUserDto newUser)
         {
 
@@ -39,7 +39,7 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("UpdateUser")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUser(UpdateUserDto updatedUser)
         {
             var response = await _userService.UpdateUser(updatedUser);
@@ -64,7 +64,7 @@ namespace ParrotsAPI2.Controllers
         
 
 
-        [HttpPatch("{userId}")]
+        [HttpPatch("PatchUser/{userId}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUser(
             int userId, JsonPatchDocument<UpdateUserDto> patchDoc)
         {
@@ -81,7 +81,7 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteUser/{id}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(int id)
         {
             var response = await _userService.DeleteUser(id);

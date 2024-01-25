@@ -122,5 +122,36 @@ namespace ParrotsAPI2.Services.Waypoint
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<GetWaypointDto>>> GetWaypointsByCoords(double lat1, double lon1, double lat2, double lon2)
+        {
+            var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();
+            try
+            {
+                var waypoints = await _context.Waypoints
+                    .Where(w =>
+                        w.Latitude >= lat1 &&
+                        w.Latitude <= lat2 &&
+                        w.Longitude >= lon1 &&
+                        w.Longitude <= lon2 &&
+                        w.Order == 1)
+                    .ToListAsync();
+                if (waypoints == null || waypoints.Count == 0)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No waypoints found with the specified conditions.";
+                    return serviceResponse;
+                }
+                var waypointDtos = _mapper.Map<List<GetWaypointDto>>(waypoints);
+                serviceResponse.Data = waypointDtos;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error retrieving waypoints: {ex.Message}";
+            }
+            return serviceResponse;
+        }
+
     }
 }

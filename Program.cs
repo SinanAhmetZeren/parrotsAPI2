@@ -13,6 +13,7 @@ global using ParrotsAPI2.Services.Vehicle;
 global using ParrotsAPI2.Services.Voyage;
 global using ParrotsAPI2.Services.Waypoint;
 global using ParrotsAPI2.Services.Message;
+using ParrotsAPI2.Services.Character;
 
 var builder = WebApplication.CreateBuilder(args);
 
