@@ -1,4 +1,5 @@
 ﻿using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Dtos.MessageDtos;
 using ParrotsAPI2.Dtos.VehicleDtos;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Dtos.VoyageDtos;
@@ -54,8 +55,12 @@ namespace ParrotsAPI2
             CreateMap<Waypoint, WaypointDto>();
             CreateMap<WaypointDto, Waypoint>();
 
-
-
+            CreateMap<Message, GetMessageDto>();
+            CreateMap<GetMessageDto, Message>();
+            CreateMap<Message, AddMessageDto>();
+            CreateMap<AddMessageDto, Message>();
+            CreateMap<Message, UpdateMessageDto>();
+            CreateMap<UpdateMessageDto, Message>();
         }
     }
 }

@@ -50,6 +50,18 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
+        [HttpPut("updateUnseen")]
+        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
+        {
+            var response = await _userService.UpdateUserUnseenMessage(updatedUser);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+
+        
 
 
         [HttpPatch("{userId}")]

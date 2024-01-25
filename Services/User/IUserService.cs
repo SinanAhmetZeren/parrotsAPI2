@@ -10,6 +10,7 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<GetUserDto>> GetUserById(int id);
         Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser);
         Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser);
+        Task<ServiceResponse<GetUserDto>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser);
         Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id);
         Task<ServiceResponse<GetUserDto>> PatchUser(int userId, JsonPatchDocument<UpdateUserDto> patchDoc, ModelStateDictionary modelState);
         Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(int userId, IFormFile imageFile);

@@ -12,6 +12,7 @@ global using ParrotsAPI2.Services.User;
 global using ParrotsAPI2.Services.Vehicle;
 global using ParrotsAPI2.Services.Voyage;
 global using ParrotsAPI2.Services.Waypoint;
+global using ParrotsAPI2.Services.Message;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IVoyageService, VoyageService>();
 builder.Services.AddScoped<IWaypointService, WaypointService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

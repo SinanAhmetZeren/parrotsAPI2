@@ -190,6 +190,31 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<GetUserDto>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
+        {
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            try
+            {
+                var user = await _context.Users.FindAsync(updatedUser.Id);
+                if (user == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "User not found";
+                    return serviceResponse;
+                }
+                user.UnseenMessages = updatedUser.UnseenMessages;
+                await _context.SaveChangesAsync();
+                var updatedUserDto = _mapper.Map<GetUserDto>(user);
+                serviceResponse.Data = updatedUserDto;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error updating user unseen messages: {ex.Message}";
+            }
+            return serviceResponse;
+        }
     }
 
 
