@@ -1,3 +1,25 @@
+/*
+Install - Package Pomelo.EntityFrameworkCore.MySql
+
+program.cs:
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
+services.AddDbContext<DataContext>(options =>
+    options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), 
+        new MySqlServerVersion(new Version(8, 0, 23)),
+        mySqlOptions => mySqlOptions
+            .CharSetBehavior(CharSetBehavior.NeverAppend)));
+
+appsettings:
+"DefaultConnection": "Server=localhost;Database=YourDatabaseName;User=YourUsername;Password=YourPassword;"
+
+csproj:
+<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.4" />
+*/
+
+
+
 global using ParrotsAPI2.Models;
 global using ParrotsAPI2.Services;
 global using ParrotsAPI2.Dtos.Character;
