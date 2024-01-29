@@ -141,3 +141,12 @@ C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNet
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.Extensions.Features.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.Extensions.Options.dll

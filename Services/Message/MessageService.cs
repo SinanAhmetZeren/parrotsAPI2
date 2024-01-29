@@ -39,9 +39,7 @@ namespace ParrotsAPI2.Services.Message
                     Rendered = false,
                     ReadByReceiver = false,
                     SenderId = sender.Id,
-                    Sender = sender,
                     ReceiverId = receiver.Id,
-                    Receiver = receiver
                 };
 
                 _context.Messages.Add(message);

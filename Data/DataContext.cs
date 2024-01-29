@@ -33,6 +33,7 @@ namespace ParrotsAPI2.Data
                 .WithOne(b => b.User)
                 .HasForeignKey(b => b.UserId);
 
+            /*
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SentMessages)
                 .WithOne(m => m.Sender)
@@ -42,6 +43,21 @@ namespace ParrotsAPI2.Data
             modelBuilder.Entity<User>()
                 .HasMany(u => u.ReceivedMessages)
                 .WithOne(m => m.Receiver)
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+            */
+
+            // after removing Receiver and Sender 
+            // properties from Message Class
+            modelBuilder.Entity<Message>()
+                .HasOne<User>()
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasOne<User>()
+                .WithMany(u => u.ReceivedMessages)
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 

@@ -10,11 +10,8 @@ namespace ParrotsAPI2.Models
         public DateTime DateTime { get; set; }
         public bool Rendered { get; set; }
         public bool ReadByReceiver { get; set; }
-
         public int SenderId { get; set; }
-        public User Sender { get; set; }
-
         public int ReceiverId { get; set; }
-        public User Receiver { get; set; }
+
     }
 }
