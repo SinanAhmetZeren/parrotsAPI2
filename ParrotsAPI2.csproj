@@ -7,14 +7,6 @@
     <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="Properties\launchSettings - Copy.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_WebToolingArtifacts Remove="Properties\launchSettings - Copy.json" />
-  </ItemGroup>
-
  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.1" />
@@ -36,14 +28,6 @@
     <Folder Include="Uploads\VoyageImages\" />
     <Folder Include="Uploads\VehicleImages\" />
     <Folder Include="Uploads\UserImages\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Properties\launchSettings - Copy.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
