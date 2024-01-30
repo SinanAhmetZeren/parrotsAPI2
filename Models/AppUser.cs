@@ -1,12 +1,12 @@
 ﻿
 
+using Microsoft.AspNetCore.Identity;
 using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Models
 {
-    public class User
-    {
-        public int Id { get; set; }
+    public class AppUser : IdentityUser
+    {   
         public string Name { get; set; }
         public string Title { get; set; }
         public string Bio { get; set; }

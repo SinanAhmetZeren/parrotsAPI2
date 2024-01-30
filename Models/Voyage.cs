@@ -20,8 +20,8 @@ namespace ParrotsAPI2.Models
         public string ProfileImage { get; set; }
         public List<Waypoint> Waypoints { get; set; }
         public List<VoyageImage>? VoyageImages { get; set; }
-        public int UserId { get; set; }
-        public User? User { get; set; }
+        public string UserId { get; set; }
+        public AppUser? User { get; set; }
         public int? VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
         public List<Bid>? Bids { get; set; }

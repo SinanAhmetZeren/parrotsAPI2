@@ -45,8 +45,8 @@ namespace ParrotsAPI2.Hubs
                     DateTime = DateTime.UtcNow,
                     Rendered = false,
                     ReadByReceiver = false,
-                    SenderId = 0,
-                    ReceiverId = 0
+                    SenderId = "",
+                    ReceiverId = ""
                 };
 
                 Console.WriteLine(chatMessage);

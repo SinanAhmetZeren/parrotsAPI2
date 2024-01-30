@@ -24,7 +24,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpGet("getUserById/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(int id)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string id)
         {
             return Ok(await _userService.GetUserById(id));
         }
@@ -66,7 +66,7 @@ namespace ParrotsAPI2.Controllers
 
         [HttpPatch("PatchUser/{userId}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUser(
-            int userId, JsonPatchDocument<UpdateUserDto> patchDoc)
+            string userId, JsonPatchDocument<UpdateUserDto> patchDoc)
         {
             var response = await _userService.PatchUser(userId, patchDoc, ModelState);
 
@@ -82,7 +82,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpDelete("DeleteUser/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(int id)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(string id)
         {
             var response = await _userService.DeleteUser(id);
             if (response.Data == null)
@@ -96,7 +96,7 @@ namespace ParrotsAPI2.Controllers
 
         [Consumes("multipart/form-data")]
         [HttpPost("{userId}/updateProfileImage")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateProfileImage(int userId, IFormFile imageFile)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateProfileImage(string userId, IFormFile imageFile)
         {
             var serviceResponse = await _userService.UpdateUserProfileImage(userId, imageFile);
 

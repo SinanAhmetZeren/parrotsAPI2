@@ -37,6 +37,7 @@ global using ParrotsAPI2.Services.Waypoint;
 global using ParrotsAPI2.Services.Message;
 using ParrotsAPI2.Services.Character;
 using ParrotsAPI2.Hubs;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +61,19 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddSignalR();
 builder.Logging.AddConsole();
 builder.Services.AddScoped<ChatHub>();
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -75,6 +89,8 @@ app.UseCors(builder =>
     builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("ws://localhost");
     builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost");
 });
+app.UseCors("AllowSpecificOrigin");
+
 app.MapControllers();
 app.UseRouting();
 app.UseAuthorization();

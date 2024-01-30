@@ -15,14 +15,14 @@ namespace ParrotsAPI2
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
             
-            CreateMap<User, GetUserDto>();
-            CreateMap<AddUserDto, User>();
-            CreateMap<User, UpdateUserDto>();
-            CreateMap<UpdateUserDto, User>();
+            CreateMap<AppUser, GetUserDto>();
+            CreateMap<AddUserDto, AppUser>();
+            CreateMap<AppUser, UpdateUserDto>();
+            CreateMap<UpdateUserDto, AppUser>();
 
             CreateMap<Vehicle, GetVehicleDto>()
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
-            CreateMap<User, UserDto>();
+            CreateMap<AppUser, UserDto>();
 
 
             CreateMap<Vehicle, GetVehicleDto>();

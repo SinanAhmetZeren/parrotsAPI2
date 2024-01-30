@@ -29,7 +29,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpGet("GetVoyageByUserId/{userId}")]
-        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByUserId(int userId)
+        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByUserId(string userId)
         {
             return Ok(await _voyageService.GetVoyagesByUserId(userId));
         }

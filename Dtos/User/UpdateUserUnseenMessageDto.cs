@@ -2,7 +2,7 @@
 {
     public class UpdateUserUnseenMessageDto
     {
-        public int Id { get; set; }
+        public string UserId { get; set; }
         public bool UnseenMessages { get; set; }
 
     }

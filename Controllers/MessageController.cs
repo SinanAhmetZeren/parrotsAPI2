@@ -32,21 +32,21 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpGet("getMessageByuserId/{userId}")]
-        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesByUserId(int userId)
+        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesByUserId(string userId)
         {
             return Ok(await _messageService.GetMessagesByUserId(userId));
         }
 
 
         [HttpGet("getMessageBysenderId/{senderId}")]
-        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesBySenderId(int senderId)
+        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesBySenderId(string senderId)
         {
             return Ok(await _messageService.GetMessagesBySenderId(senderId));
         }
 
 
         [HttpGet("getMessageByreceiverId/{receiverId}")]
-        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesByReceiverId(int receiverId)
+        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesByReceiverId(string receiverId)
         {
             return Ok(await _messageService.GetMessagesByReceiverId(receiverId));
         }

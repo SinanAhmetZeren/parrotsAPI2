@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ParrotsAPI2.Data
 {
-    public class DataContext  : DbContext
+    public class DataContext : IdentityDbContext<AppUser>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-        
         public DbSet<Character> Characters => Set<Character>();
-        public DbSet<User> Users => Set<User>();
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
@@ -18,45 +17,41 @@ namespace ParrotsAPI2.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<AppUser>()
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<Vehicle>()
+                .HasOne(v => v.User)
+                .WithMany(u => u.Vehicles)
+                .HasForeignKey(v => v.UserId)
+                .HasPrincipalKey(u => u.Id) 
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Vehicles)
                 .WithOne(v => v.User)
                 .HasForeignKey(v => v.UserId);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Voyages)
                 .WithOne(v => v.User)
                 .HasForeignKey(v => v.UserId);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Bids)
                 .WithOne(b => b.User)
                 .HasForeignKey(b => b.UserId);
 
-            /*
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.SentMessages)
-                .WithOne(m => m.Sender)
-                .HasForeignKey(m => m.SenderId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.ReceivedMessages)
-                .WithOne(m => m.Receiver)
-                .HasForeignKey(m => m.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
-            */
-
-            // after removing Receiver and Sender 
-            // properties from Message Class
             modelBuilder.Entity<Message>()
-                .HasOne<User>()
+                .HasOne<AppUser>()
                 .WithMany(u => u.SentMessages)
                 .HasForeignKey(m => m.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Message>()
-                .HasOne<User>()
+                .HasOne<AppUser>()
                 .WithMany(u => u.ReceivedMessages)
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -98,6 +93,37 @@ namespace ParrotsAPI2.Data
                 .WithMany(v => v.Bids)
                 .HasForeignKey(b => b.VoyageId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            //
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.Vehicles)
+                .WithOne(v => v.User)
+                .HasForeignKey(v => v.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.Voyages)
+                .WithOne(v => v.User)
+                .HasForeignKey(v => v.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.Bids)
+                .WithOne(b => b.User)
+                .HasForeignKey(b => b.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<Message>()
+                .HasOne<AppUser>()
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasOne<AppUser>()
+                .WithMany(u => u.ReceivedMessages)
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
         }

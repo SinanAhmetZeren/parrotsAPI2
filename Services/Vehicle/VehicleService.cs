@@ -138,7 +138,7 @@ namespace ParrotsAPI2.Services.Vehicle
 
         }
 
-        public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(int userId)
+        public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
         {
             var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
             var vehicles = await _context.Vehicles

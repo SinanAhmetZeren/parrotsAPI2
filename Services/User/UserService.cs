@@ -36,7 +36,7 @@ namespace ParrotsAPI2.Services.User
                 newUser.ProfileImageUrl = "/Uploads/UserImages/" + fileName; 
             }
 
-            var user = _mapper.Map<Models.User>(newUser);
+            var user = _mapper.Map<Models.AppUser>(newUser);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -46,7 +46,7 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id)
+        public async Task<ServiceResponse<List<GetUserDto>>> DeleteUser(string id)
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
             try
@@ -80,7 +80,7 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> GetUserById(int id)
+        public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
             var dbUsers = await _context.Users.ToListAsync();
@@ -120,7 +120,7 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> PatchUser(int userId,[FromBody]JsonPatchDocument<UpdateUserDto> patchDoc,ModelStateDictionary modelState)
+        public async Task<ServiceResponse<GetUserDto>> PatchUser(string userId,[FromBody]JsonPatchDocument<UpdateUserDto> patchDoc,ModelStateDictionary modelState)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
             try
@@ -156,7 +156,7 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(int userId, IFormFile imageFile)
+        public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
             var user = await _context.Users.FindAsync(userId);

@@ -6,7 +6,7 @@
         public DateTime DateTime { get; set; }
         public bool Rendered { get; set; }
         public bool ReadByReceiver { get; set; }
-        public int SenderId { get; set; }
-        public int ReceiverId { get; set; }
+        public string SenderId { get; set; }
+        public string ReceiverId { get; set; }
     }
 }

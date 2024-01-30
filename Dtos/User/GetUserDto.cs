@@ -2,7 +2,8 @@
 {
     public class GetUserDto
     {
-        public int Id { get; set; }
+
+        public string UserId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
         public string Bio { get; set; }
@@ -12,7 +13,6 @@
         public string PhoneNumber { get; set; }
         public string ProfileImageUrl { get; set; }
         public IFormFile ImageFile { get; set; }
-
         public bool UnseenMessages { get; set; }
         public List<Vehicle>? Vehicles { get; set; }
         public List<Voyage>? Voyages { get; set; }

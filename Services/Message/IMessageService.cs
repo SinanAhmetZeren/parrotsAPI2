@@ -7,9 +7,9 @@ namespace ParrotsAPI2.Services.Message
     {
         Task<ServiceResponse<List<GetMessageDto>>> GetAllMessages();
         Task<ServiceResponse<GetMessageDto>> GetMessageById(int id);
-        Task<ServiceResponse<List<GetMessageDto>>> GetMessagesBySenderId(int senderId);
-        Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByReceiverId(int receiverId);
-        Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByUserId(int userId);
+        Task<ServiceResponse<List<GetMessageDto>>> GetMessagesBySenderId(string senderId);
+        Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByReceiverId(string receiverId);
+        Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByUserId(string userId);
         Task<ServiceResponse<GetMessageDto>> AddMessage(AddMessageDto newMessage);
         Task<ServiceResponse<GetMessageDto>> UpdateMessage(UpdateMessageDto updatedMessage);
         Task<ServiceResponse<GetMessageDto>> DeleteMessage(int id);

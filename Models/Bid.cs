@@ -18,8 +18,8 @@ namespace ParrotsAPI2.Models
         public Voyage Voyage { get; set; }
 
 
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public string UserId { get; set; }
+        public AppUser User { get; set; }
 
     }
 }

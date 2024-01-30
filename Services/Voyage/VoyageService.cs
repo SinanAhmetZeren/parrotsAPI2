@@ -137,7 +137,7 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(int userId)
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(string userId)
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
             var voyages = await _context.Voyages

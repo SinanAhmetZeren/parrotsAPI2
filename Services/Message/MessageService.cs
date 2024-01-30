@@ -130,7 +130,7 @@ namespace ParrotsAPI2.Services.Message
 
             return serviceResponse;
         }
-        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByReceiverId(int receiverId)
+        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByReceiverId(string receiverId)
         {
             var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
 
@@ -158,7 +158,7 @@ namespace ParrotsAPI2.Services.Message
 
             return serviceResponse;
         }
-        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesBySenderId(int senderId)
+        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesBySenderId(string senderId)
         {
             var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
 
@@ -186,7 +186,7 @@ namespace ParrotsAPI2.Services.Message
 
             return serviceResponse;
         }
-        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByUserId(int userId)
+        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByUserId(string userId)
         {
             var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
 
