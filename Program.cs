@@ -35,9 +35,12 @@ global using ParrotsAPI2.Services.Vehicle;
 global using ParrotsAPI2.Services.Voyage;
 global using ParrotsAPI2.Services.Waypoint;
 global using ParrotsAPI2.Services.Message;
-using ParrotsAPI2.Services.Character;
-using ParrotsAPI2.Hubs;
-using Microsoft.AspNetCore.Identity;
+global using ParrotsAPI2.Services.Character;
+global using ParrotsAPI2.Hubs;
+global using Microsoft.AspNetCore.Identity;
+using ParrotsAPI2.Services.Token;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +54,32 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        BearerFormat = "JWT",
+        Description = "Enter 'Bearer' [space] and your token",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+    };
+    c.AddSecurityDefinition("Bearer", securityScheme);
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        { securityScheme, new[] { "Bearer" } },
+    };
+    c.AddSecurityRequirement(securityRequirement);
+});
+
+
+
+builder.Services.AddSignalR();
+builder.Logging.AddConsole();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -58,12 +87,22 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IVoyageService, VoyageService>();
 builder.Services.AddScoped<IWaypointService, WaypointService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddSignalR();
-builder.Logging.AddConsole();
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ChatHub>();
-builder.Services.AddIdentity<AppUser, IdentityRole>()
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = 3;
+        options.Password.RequiredUniqueChars = 1;
+    })
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
+
+
+
 
 builder.Services.AddCors(options =>
 {
@@ -79,7 +118,22 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+        c.DocExpansion(DocExpansion.List);
+        c.EnableDeepLinking();
+        c.DisplayOperationId();
+        c.EnableFilter();
+        c.ShowExtensions();
+        c.EnableValidator();
+        c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Head, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Patch, SubmitMethod.Delete);
+    });
+
+
+
+
+
 }
 app.UseHttpsRedirection();
 app.MapHub<ChatHub>("/chathub/11");
@@ -90,7 +144,7 @@ app.UseCors(builder =>
     builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost");
 });
 app.UseCors("AllowSpecificOrigin");
-
+app.UseAuthentication();
 app.MapControllers();
 app.UseRouting();
 app.UseAuthorization();

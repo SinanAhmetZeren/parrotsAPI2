@@ -24,11 +24,14 @@ namespace ParrotsAPI2.Hubs
             _logger = logger;
             _dbContext = dbContext; 
             _userManager = userManager;
-            _logger.LogInformation("ChatHub initialized");
+            _logger.LogInformation($"--> ChatHub initialized at {DateTime.UtcNow}");
         }
 
         public override async Task OnConnectedAsync()
         {
+            _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}");
+            //await Clients.All.SendAsync("ReceiveHelloMessage", $"hi there {Context.ConnectionId}");
+
             var user = await _userManager.GetUserAsync(Context.User);
             if (user != null)
             {

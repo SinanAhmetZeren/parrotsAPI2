@@ -99,7 +99,7 @@ namespace ParrotsAPI2.Services.User
                 {
                     throw new Exception($"Character with ID `{updatedUser.Id}` not found");
                 }
-                user.Name = updatedUser.Name;
+                user.UserName = updatedUser.UserName;
                 user.Title = updatedUser.Title;
                 user.Bio = updatedUser.Bio;
                 user.Email = updatedUser.Email;
