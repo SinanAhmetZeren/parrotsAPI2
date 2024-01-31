@@ -16,6 +16,7 @@ namespace ParrotsAPI2.Models
         public string PhoneNumber { get; set; }
         public string ProfileImageUrl { get; set; }
         public bool UnseenMessages { get; set; }
+        public string ConnectionId { get; set; }
         public List<Vehicle>? Vehicles { get; set; }
         public List<Voyage>? Voyages { get; set; }
         public List<Bid>? Bids { get; set; }
