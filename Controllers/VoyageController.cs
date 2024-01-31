@@ -42,7 +42,7 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [HttpPost("AddVehicle")]
+        [HttpPost("AddVoyage")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> AddVoyage(AddVoyageDto newVoyage)
         {
 

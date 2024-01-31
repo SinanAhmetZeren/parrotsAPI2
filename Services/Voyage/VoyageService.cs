@@ -33,7 +33,9 @@ namespace ParrotsAPI2.Services.Voyage
                 }
                 newVoyage.ProfileImage = "/Uploads/VoyageImages/" + fileName;
             }
+            var vehicle = await _context.Vehicles.FirstOrDefaultAsync(c => c.Id == newVoyage.VehicleId);
             var voyage = _mapper.Map<Models.Voyage>(newVoyage);
+            voyage.VehicleImage = vehicle.ProfileImageUrl;
             _context.Voyages.Add(voyage);
             await _context.SaveChangesAsync();
             var updatedVoyages = await _context.Voyages.ToListAsync();

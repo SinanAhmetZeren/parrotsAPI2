@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.User;
+using ParrotsAPI2.Dtos.VehicleImageDtos;
+using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.User
 {
@@ -26,23 +29,19 @@ namespace ParrotsAPI2.Services.User
             if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newUser.ImageFile.FileName);
-                //var filePath = Path.Combine("wwwroot/images/", fileName);
                 var filePath = Path.Combine("Uploads/UserImages/", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await newUser.ImageFile.CopyToAsync(stream);
                 }
-                //newUser.ProfileImageUrl = "/images/" + fileName;
                 newUser.ProfileImageUrl = "/Uploads/UserImages/" + fileName; 
             }
 
-            var user = _mapper.Map<Models.AppUser>(newUser);
+            var user = _mapper.Map<AppUser>(newUser);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
             var updatedUsers = await _context.Users.ToListAsync();
             serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
-
             return serviceResponse;
         }
 
@@ -57,7 +56,6 @@ namespace ParrotsAPI2.Services.User
                 {
                     throw new Exception($"User with ID `{id}` not found");
                 }
-
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
                 var users = await _context.Users.ToListAsync();
@@ -68,26 +66,71 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
             }
-
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            var dbUsers = await _context.Users.ToListAsync();
+            var dbUsers = await _context.Users
+                .Include(u => u.SentMessages)
+                .Include(u => u.ReceivedMessages)
+                .ToListAsync();
             serviceResponse.Data = dbUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
             return serviceResponse;
+
         }
+
 
         public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
-            var dbUsers = await _context.Users.ToListAsync();
-            var user = dbUsers.FirstOrDefault(c => c.Id == id);
-            serviceResponse.Data = _mapper.Map<GetUserDto>(user);
+            var user = await _context.Users
+                .AsNoTracking()
+                .Include(u => u.SentMessages)
+                .Include(u => u.ReceivedMessages)
+                .Include(u => u.Vehicles)
+                .Include(u => u.Voyages)
+                .Include(u => u.Bids)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+
+            var usersVehicles = user.Vehicles;
+            List<GetUsersVehiclesDto> vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(usersVehicles);
+
+            var usersVoyages = user.Voyages;
+            List<GetUsersVoyagesDto> voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(usersVoyages);
+
+
+            if (user != null)
+            {
+                var userDto = new GetUserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Title = user.Title,
+                    Bio = user.Bio,
+                    Email = user.Email,
+                    Instagram = user.Instagram,
+                    Facebook = user.Facebook,
+                    PhoneNumber = user.PhoneNumber,
+                    ProfileImageUrl = user.ProfileImageUrl,
+                    ImageFile = null,
+                    UnseenMessages = user.UnseenMessages,
+                    UsersVehicles = vehicleDtos,
+                    UsersVoyages = voyageDtos
+                };
+
+                serviceResponse.Data = userDto;
+            }
+            else
+            {
+                serviceResponse.Message = "User not found";
+            }
+
             return serviceResponse;
         }
+
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
         {

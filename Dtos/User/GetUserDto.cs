@@ -14,10 +14,11 @@
         public string ProfileImageUrl { get; set; }
         public IFormFile ImageFile { get; set; }
         public bool UnseenMessages { get; set; }
-        public List<Vehicle>? Vehicles { get; set; }
-        public List<Voyage>? Voyages { get; set; }
+        public List<GetUsersVehiclesDto>? UsersVehicles { get; set; }
+        public List<GetUsersVoyagesDto>? UsersVoyages { get; set; }
         public List<Bid>? Bids { get; set; }
         public List<Message>? SentMessages { get; set; }
         public List<Message>? ReceivedMessages { get; set; }
+
     }
 }

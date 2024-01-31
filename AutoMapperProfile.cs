@@ -31,7 +31,9 @@ namespace ParrotsAPI2
             CreateMap<UpdateVehicleDto, Vehicle>();
             CreateMap<Vehicle, VehicleDto>();
             CreateMap<VehicleDto, Vehicle>();
-
+            CreateMap<GetUsersVehiclesDto, Vehicle>();
+            CreateMap<Vehicle, GetUsersVehiclesDto>();
+            
             CreateMap<VehicleImage, VehicleImageDto>();
             CreateMap<VehicleImageDto, VehicleImage>();
 
@@ -43,6 +45,8 @@ namespace ParrotsAPI2
             CreateMap<AddVoyageDto, Voyage>();
             CreateMap<Voyage, UpdateVoyageDto>();
             CreateMap<UpdateVoyageDto, Voyage>();
+            CreateMap<GetUsersVoyagesDto, Voyage>();
+            CreateMap<Voyage, GetUsersVoyagesDto>();
 
             CreateMap<Voyage, GetVoyageDto>()
                 .ForMember(dest => dest.VoyageImages, opt => opt.MapFrom(src => src.VoyageImages));
