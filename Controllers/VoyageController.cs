@@ -118,6 +118,20 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
+        [HttpDelete("{voyageImageId}/deleteVoyageImage")]
+        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteVoyageImage(int voyageImageId)
+        {
+            var serviceResponse = await _voyageService.DeleteVoyageImage(voyageImageId);
+            if (serviceResponse.Success)
+            {
+                return Ok(new { message = "Voyage image deleted successfully", 
+                    voyageDetails = serviceResponse.Data });
+            }
+            else
+            {
+                return BadRequest(new { message = serviceResponse.Message });
+            }
+        }
 
         [HttpGet("GetVoyagesByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByCoordinates(double lat1, double lat2, double lon1, double lon2)

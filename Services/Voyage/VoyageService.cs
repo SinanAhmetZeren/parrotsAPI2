@@ -77,6 +77,7 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+
         public async Task<ServiceResponse<List<GetVoyageDto>>> DeleteVoyage(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
@@ -95,7 +96,14 @@ namespace ParrotsAPI2.Services.Voyage
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
+                //serviceResponse.Message = ex.Message;
+                serviceResponse.Message = $"Error deleting voyage image: {ex.Message}";
+                if (ex.InnerException != null)
+                {
+                    serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
+                }
+
+
             }
             return serviceResponse;
         }
@@ -116,20 +124,17 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.User)
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
-                .Include(v => v.Bids)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             var userDto = _mapper.Map<UserDto>(voyage?.User);
             var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
             var vehicleDtos = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-            var bidDtos = _mapper.Map <List<BidDto>>(voyage?.Bids);    
 
             var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
 
             voyageDto.User = userDto;
             voyageDto.VoyageImages = voyageImageDtos;
             voyageDto.Vehicle = vehicleDtos;
-            voyageDto.Bids = bidDtos;
 
             serviceResponse.Data = voyageDto;
 
@@ -150,7 +155,6 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.User)
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
-                .Include(v => v.Bids)
                 .Where(v => v.UserId == userId)
                 .ToListAsync();
 
@@ -166,13 +170,11 @@ namespace ParrotsAPI2.Services.Voyage
                 var userDto = _mapper.Map<UserDto>(voyage.User);
                 var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
                 var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
-                var bidDtos = _mapper.Map<List<BidDto>>(voyage.Bids);
 
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
-                voyageDto.Bids = bidDtos;
 
                 return voyageDto;
             }).ToList();
@@ -189,7 +191,6 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.User)
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
-                .Include(v => v.Bids)
                 .Where(v => v.VehicleId == vehicleId)
                 .ToListAsync();
 
@@ -205,13 +206,11 @@ namespace ParrotsAPI2.Services.Voyage
                 var userDto = _mapper.Map<UserDto>(voyage.User);
                 var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
                 var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
-                var bidDtos = _mapper.Map<List<BidDto>>(voyage.Bids);
 
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
-                voyageDto.Bids = bidDtos;
 
                 return voyageDto;
             }).ToList();
@@ -369,7 +368,6 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<List<int>>> GetVoyageIdsByCoordinates(double lat1, double lat2, double lon1, double lon2)
         {
             var serviceResponse = new ServiceResponse<List<int>>();
@@ -400,6 +398,33 @@ namespace ParrotsAPI2.Services.Voyage
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving voyage IDs: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetVoyageDto>> DeleteVoyageImage(int voyageImageId)
+        {
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            try
+            {
+                var voyageImage = await _context.VoyageImages.FirstOrDefaultAsync(v => v.Id == voyageImageId);
+
+                if (voyageImage == null)
+                {
+                    serviceResponse.Message = "Voyage image not found";
+                    return serviceResponse;
+                }
+                _context.VoyageImages.Remove(voyageImage);
+                await _context.SaveChangesAsync();
+                var updatedVoyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == voyageImage.VoyageId);
+                serviceResponse.Data = _mapper.Map<GetVoyageDto>(updatedVoyage);
+                serviceResponse.Success = true;
+                serviceResponse.Message = "Voyage image deleted successfully";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Message = $"Error deleting voyage image: {ex.Message}";
             }
 
             return serviceResponse;

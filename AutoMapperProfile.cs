@@ -53,6 +53,8 @@ namespace ParrotsAPI2
 
             CreateMap<Bid, BidDto>();
             CreateMap<BidDto, Bid>();
+            CreateMap<Bid, GetBidDto>();
+            CreateMap<GetBidDto, Bid>();
 
             CreateMap<Waypoint, GetWaypointDto>();
             CreateMap<AddWaypointDto, Waypoint>();

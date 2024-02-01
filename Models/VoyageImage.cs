@@ -8,7 +8,6 @@ namespace ParrotsAPI2.Models
     {
         public int Id { get; set; }
         public string VoyageImagePath { get; set; }
-
         public int VoyageId { get; set; }
         public Voyage Voyage { get; set; }
     }

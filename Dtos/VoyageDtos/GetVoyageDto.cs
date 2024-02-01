@@ -26,6 +26,5 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public UserDto? User { get; set; }
         public int? VehicleId { get; set; }
         public VehicleDto? Vehicle { get; set; }
-        public List<BidDto>? Bids { get; set; }
     }
 }

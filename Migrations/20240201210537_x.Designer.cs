@@ -12,8 +12,8 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240131224428_vehicleImageTOvoyage")]
-    partial class vehicleImageTOvoyage
+    [Migration("20240201210537_x")]
+    partial class x
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -597,7 +597,7 @@ namespace ParrotsAPI2.Migrations
                     b.HasOne("ParrotsAPI2.Models.AppUser", "User")
                         .WithMany("Bids")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ParrotsAPI2.Models.Voyage", "Voyage")
@@ -631,7 +631,7 @@ namespace ParrotsAPI2.Migrations
                     b.HasOne("ParrotsAPI2.Models.AppUser", "User")
                         .WithMany("Vehicles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

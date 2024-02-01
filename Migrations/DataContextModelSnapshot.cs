@@ -594,13 +594,13 @@ namespace ParrotsAPI2.Migrations
                     b.HasOne("ParrotsAPI2.Models.AppUser", "User")
                         .WithMany("Bids")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ParrotsAPI2.Models.Voyage", "Voyage")
-                        .WithMany("Bids")
+                        .WithMany()
                         .HasForeignKey("VoyageId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -628,7 +628,7 @@ namespace ParrotsAPI2.Migrations
                     b.HasOne("ParrotsAPI2.Models.AppUser", "User")
                         .WithMany("Vehicles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -707,8 +707,6 @@ namespace ParrotsAPI2.Migrations
 
             modelBuilder.Entity("ParrotsAPI2.Models.Voyage", b =>
                 {
-                    b.Navigation("Bids");
-
                     b.Navigation("VoyageImages");
 
                     b.Navigation("Waypoints");

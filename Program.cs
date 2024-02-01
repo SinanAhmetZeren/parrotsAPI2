@@ -41,6 +41,7 @@ global using Microsoft.AspNetCore.Identity;
 using ParrotsAPI2.Services.Token;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using ParrotsAPI2.Services.Bid;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -87,6 +88,7 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IVoyageService, VoyageService>();
 builder.Services.AddScoped<IWaypointService, WaypointService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IBidService, BidService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ChatHub>();
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>

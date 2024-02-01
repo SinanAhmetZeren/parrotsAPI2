@@ -10,7 +10,7 @@ namespace ParrotsAPI2.Dtos.VehicleDtos
         public string Type { get; set; }
         public int Capacity { get; set; }
         public string Description { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
     }
 }
