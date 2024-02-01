@@ -20,9 +20,9 @@ namespace ParrotsAPI2.Services.Voyage
             _context = context;
             _mapper = mapper;
         }
-        public async Task<ServiceResponse<List<GetVoyageDto>>> AddVoyage(AddVoyageDto newVoyage)
+        public async Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage)
         {
-            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
             if (newVoyage.ImageFile != null && newVoyage.ImageFile.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newVoyage.ImageFile.FileName);
@@ -33,14 +33,18 @@ namespace ParrotsAPI2.Services.Voyage
                 }
                 newVoyage.ProfileImage = "/Uploads/VoyageImages/" + fileName;
             }
+            var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVoyage.UserId);
             var vehicle = await _context.Vehicles.FirstOrDefaultAsync(c => c.Id == newVoyage.VehicleId);
             var voyage = _mapper.Map<Models.Voyage>(newVoyage);
             voyage.VehicleImage = vehicle.ProfileImageUrl;
             _context.Voyages.Add(voyage);
             await _context.SaveChangesAsync();
             var updatedVoyages = await _context.Voyages.ToListAsync();
-            serviceResponse.Data = updatedVoyages.Select(c => _mapper.Map<GetVoyageDto>(c)).ToList();
+            serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
             return serviceResponse;
+
+
+
         }
 
         public async Task<ServiceResponse<GetVoyageDto>> AddVoyageImage(int voyageId, IFormFile imageFile)

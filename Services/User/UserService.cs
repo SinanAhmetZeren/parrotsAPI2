@@ -101,7 +101,6 @@ namespace ParrotsAPI2.Services.User
             var usersVoyages = user.Voyages;
             List<GetUsersVoyagesDto> voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(usersVoyages);
 
-
             if (user != null)
             {
                 var userDto = new GetUserDto
@@ -118,7 +117,7 @@ namespace ParrotsAPI2.Services.User
                     ImageFile = null,
                     UnseenMessages = user.UnseenMessages,
                     UsersVehicles = vehicleDtos,
-                    UsersVoyages = voyageDtos
+                    UsersVoyages = voyageDtos,
                 };
 
                 serviceResponse.Data = userDto;
@@ -130,7 +129,6 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
         {
