@@ -175,5 +175,29 @@ namespace ParrotsAPI2.Services.Bid
             }
             return response;
         }
+
+        public async Task<ServiceResponse<string>> DeleteBid(int bidId)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+            try
+            {
+                var bid = await _context.Bids.FindAsync(bidId);
+                if (bid == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Bid with ID `{bidId}` not found";
+                    return serviceResponse;
+                }
+                _context.Bids.Remove(bid);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = "Bid successfully deleted";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error deleting bid: {ex.Message}";
+            }
+            return serviceResponse;
+        }
     }
 }

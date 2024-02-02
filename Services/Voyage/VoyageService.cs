@@ -23,6 +23,7 @@ namespace ParrotsAPI2.Services.Voyage
         public async Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            string voyageProfileImage = "";
             if (newVoyage.ImageFile != null && newVoyage.ImageFile.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newVoyage.ImageFile.FileName);
@@ -31,12 +32,18 @@ namespace ParrotsAPI2.Services.Voyage
                 {
                     await newVoyage.ImageFile.CopyToAsync(stream);
                 }
-                newVoyage.ProfileImage = "/Uploads/VoyageImages/" + fileName;
+                voyageProfileImage = "/Uploads/VoyageImages/" + fileName;
             }
             var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVoyage.UserId);
             var vehicle = await _context.Vehicles.FirstOrDefaultAsync(c => c.Id == newVoyage.VehicleId);
             var voyage = _mapper.Map<Models.Voyage>(newVoyage);
+            
+            voyage.User = user; 
+            voyage.Vehicle = vehicle;
             voyage.VehicleImage = vehicle.ProfileImageUrl;
+            voyage.ProfileImage = voyageProfileImage;
+
+            
             _context.Voyages.Add(voyage);
             await _context.SaveChangesAsync();
             var updatedVoyages = await _context.Voyages.ToListAsync();
@@ -355,7 +362,10 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2))
+                    .Include(v => v.User)
+                    .Include(v => v.Vehicle)
                     .ToListAsync();
+
 
                 if (voyages == null || voyages.Count == 0)
                 {
@@ -392,6 +402,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Longitude <= lon2))
                     .Select(v => v.Id)
                     .ToListAsync();
+
 
                 if (voyageIds == null || voyageIds.Count == 0)
                 {
@@ -439,12 +450,15 @@ namespace ParrotsAPI2.Services.Voyage
         }
 
 
-        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType)
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType, DateTime? startDate, DateTime? endDate)
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
             try
             {
-                var query = _context.Voyages.AsQueryable();
+                var query = _context.Voyages
+                    .Include(v => v.User)        
+                    .Include(v => v.Vehicle)
+                    .AsQueryable();
 
                 if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue)
                 {
@@ -461,6 +475,14 @@ namespace ParrotsAPI2.Services.Voyage
                 if (vacancy.HasValue)
                 {
                     query = query.Where(v => v.Vacancy >= vacancy.Value);
+                }
+                if (startDate.HasValue)
+                {
+                    query = query.Where(v => v.StartDate <= startDate.Value);
+                }
+                if (endDate.HasValue)
+                {
+                    query = query.Where(v => v.EndDate >= endDate.Value);
                 }
                 if (vehicleType.HasValue)
                 {
@@ -479,5 +501,6 @@ namespace ParrotsAPI2.Services.Voyage
             }
             return serviceResponse;
         }
+
     }
 }

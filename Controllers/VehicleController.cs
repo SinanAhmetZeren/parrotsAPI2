@@ -67,7 +67,7 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpDelete("DeleteVehicle/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> DeleteVehicle(int id)
+        public async Task<ActionResult<ServiceResponse<string>>> DeleteVehicle(int id)
         {
             var response = await _vehicleService.DeleteVehicle(id);
             if (response.Data == null)
@@ -110,6 +110,17 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
-        
+        [HttpDelete("DeleteVehicleImage/{imageId}")]
+        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> DeleteVehicleImage(int imageId)
+        {
+            var response = await _vehicleService.DeleteVehicleImage(imageId);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+
+        }
+
     }
 }

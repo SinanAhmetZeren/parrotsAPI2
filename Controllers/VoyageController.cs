@@ -152,11 +152,13 @@ namespace ParrotsAPI2.Controllers
             [FromQuery] double? lon1,
             [FromQuery] double? lon2,
             [FromQuery] int? vacancy,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
             [FromQuery] VehicleType? vehicleType)
         {
             try
             {
-                var result = await _voyageService.GetFilteredVoyages(lat1, lat2, lon1, lon2, vacancy, vehicleType);
+                var result = await _voyageService.GetFilteredVoyages(lat1, lat2, lon1, lon2, vacancy, vehicleType, startDate, endDate);
                 return Ok(result);
             }
             catch (Exception ex)

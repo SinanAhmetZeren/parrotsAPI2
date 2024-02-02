@@ -13,11 +13,8 @@
         public decimal MaxPrice { get; set; }
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
-        public string ProfileImage { get; set; }
         public IFormFile ImageFile { get; set; }
         public string UserId { get; set; }
         public int? VehicleId { get; set; }
-        public VehicleType VehicleType { get; set; }
-
     }
 }

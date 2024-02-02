@@ -83,5 +83,20 @@ namespace ParrotsAPI2.Controllers
 
             return NotFound(serviceResponse);
         }
+
+        [HttpDelete]
+        public async Task<ActionResult<ServiceResponse<string>>> DeleteBid(int bidId)
+        {
+            var serviceResponse = await _bidService.DeleteBid(bidId);
+
+            if (serviceResponse.Success)
+            {
+                return Ok(serviceResponse);
+            }
+
+            return NotFound(serviceResponse);
+        }
+
+
     }
 }
