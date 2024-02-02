@@ -19,6 +19,7 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
         public string ProfileImage { get; set; }
+        public VehicleType VehicleType { get; set; }
 
         public List<WaypointDto> Waypoints { get; set; }
         public List<VoyageImageDto>? VoyageImages { get; set; }

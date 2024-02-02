@@ -22,21 +22,16 @@ namespace ParrotsAPI2.Services.Waypoint
         {
             {
                 var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();
-
-                if (newWaypoint.ProfileImage != null && newWaypoint.ProfileImage.Length > 0)
-                {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newWaypoint.ImageFile.FileName);
                     var filePath = Path.Combine("Uploads/WaypointImages/", fileName);
-
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await newWaypoint.ImageFile.CopyToAsync(stream);
                     }
-
-                    newWaypoint.ProfileImage = "/Uploads/WaypointImages/" + fileName;
-                }
+                    // newWaypoint.ProfileImage = "/Uploads/WaypointImages/" + fileName;
 
                 var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
+                waypoint.ProfileImage = "/Uploads/WaypointImages/" + fileName;
                 _context.Waypoints.Add(waypoint);
                 await _context.SaveChangesAsync();
 

@@ -77,7 +77,6 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<List<GetVoyageDto>>> DeleteVoyage(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
@@ -88,6 +87,18 @@ namespace ParrotsAPI2.Services.Voyage
                 {
                     throw new Exception($"Voyage with ID `{id}` not found");
                 }
+                var bidsToDelete = await _context.Bids
+                    .Where(b => b.VoyageId == id)
+                    .ToListAsync();
+                var voyageImagesToDelete = await _context.VoyageImages
+                    .Where(b => b.VoyageId == id)
+                    .ToListAsync();
+                var waypointsToDelete = await _context.Waypoints
+                    .Where(b => b.VoyageId == id)
+                    .ToListAsync();
+                _context.VoyageImages.RemoveRange(voyageImagesToDelete);
+                _context.Waypoints.RemoveRange(waypointsToDelete);
+                _context.Bids.RemoveRange(bidsToDelete);
                 _context.Voyages.Remove(voyage);
                 await _context.SaveChangesAsync();
                 var voyages = await _context.Voyages.ToListAsync();
@@ -96,14 +107,11 @@ namespace ParrotsAPI2.Services.Voyage
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                //serviceResponse.Message = ex.Message;
                 serviceResponse.Message = $"Error deleting voyage image: {ex.Message}";
                 if (ex.InnerException != null)
                 {
                     serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
                 }
-
-
             }
             return serviceResponse;
         }
@@ -430,5 +438,46 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType)
+        {
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            try
+            {
+                var query = _context.Voyages.AsQueryable();
+
+                if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue)
+                {
+                    query = query.Where(v =>
+                        v.Waypoints.Any(wp =>
+                            wp.Order == 1 &&
+                            wp.Latitude >= lat1.Value &&
+                            wp.Latitude <= lat2.Value &&
+                            wp.Longitude >= lon1.Value &&
+                            wp.Longitude <= lon2.Value
+                        )
+                    );
+                }
+                if (vacancy.HasValue)
+                {
+                    query = query.Where(v => v.Vacancy >= vacancy.Value);
+                }
+                if (vehicleType.HasValue)
+                {
+                    query = query.Where(v => v.Vehicle.Type == vehicleType);
+                }
+
+                var queryResult = await query.ToListAsync();
+                var filteredVoyages = _mapper.Map<List<GetVoyageDto>>(queryResult);
+                serviceResponse.Data = filteredVoyages;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error retrieving voyages: {ex.Message}";
+
+            }
+            return serviceResponse;
+        }
     }
 }

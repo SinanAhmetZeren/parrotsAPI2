@@ -145,5 +145,25 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _voyageService.GetVoyageIdsByCoordinates(lat1, lat2, lon1, lon2));
         }
 
+        [HttpGet("GetFilteredVoyages")]
+        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetFilteredVoyages(
+            [FromQuery] double? lat1,
+            [FromQuery] double? lat2,
+            [FromQuery] double? lon1,
+            [FromQuery] double? lon2,
+            [FromQuery] int? vacancy,
+            [FromQuery] VehicleType? vehicleType)
+        {
+            try
+            {
+                var result = await _voyageService.GetFilteredVoyages(lat1, lat2, lon1, lon2, vacancy, vehicleType);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
     }
 }

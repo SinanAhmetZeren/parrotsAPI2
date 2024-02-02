@@ -15,5 +15,7 @@
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
         public string ProfileImage { get; set; }
+        public VehicleType VehicleType { get; set; }
+
     }
 }

@@ -6,7 +6,7 @@
         public double Longitude { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string ProfileImage { get; set; }
+        //public string ProfileImage { get; set; }
         public IFormFile ImageFile { get; set; }
 
         public int Order { get; set; }

@@ -24,7 +24,8 @@ namespace ParrotsAPI2.Models
         public AppUser? User { get; set; }
         public int? VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
-        public string? VehicleImage { get; set; }
+        public string? VehicleImage { get; set; }         
+        public VehicleType VehicleType { get; set; }
     }
 
 
