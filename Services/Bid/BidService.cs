@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Bid
 {
@@ -81,12 +82,17 @@ namespace ParrotsAPI2.Services.Bid
             return response;
         }
 
+
         public async Task<ServiceResponse<GetBidDto>> GetBidById(int bidId)
         {
             var response = new ServiceResponse<GetBidDto>();
             try
             {
-                var bidEntity = await _context.Bids.FirstOrDefaultAsync(c => c.Id == bidId);
+                var bidEntity = await _context.Bids
+                    .Include(b => b.Voyage)
+                    .Include(b => b.User)
+                    .FirstOrDefaultAsync(c => c.Id == bidId);
+
                 if (bidEntity != null)
                 {
                     var bidDto = new GetBidDto
@@ -98,8 +104,13 @@ namespace ParrotsAPI2.Services.Bid
                         Currency = bidEntity.Currency,
                         DateTime = bidEntity.DateTime,
                         VoyageId = bidEntity.VoyageId,
-                        UserId = bidEntity.UserId
+                        UserId = bidEntity.UserId,
+                        VoyageImageUrl = bidEntity.Voyage?.ProfileImage,
+                        UserImageUrl = bidEntity.User?.ProfileImageUrl,
+                        UserName = bidEntity.User?.UserName,
+                        VoyageName = bidEntity.Voyage?.Name
                     };
+
                     response.Data = bidDto;
                     response.Message = "Bid found successfully";
                 }
@@ -124,18 +135,39 @@ namespace ParrotsAPI2.Services.Bid
             {
                 var bids = await _context.Bids
                     .Where(b => b.UserId == userId)
-                    .Select(b => new GetBidDto
+                    .Join(
+                        _context.Voyages,
+                        bid => bid.VoyageId,
+                        voyage => voyage.Id,
+                        (bid, voyage) => new { Bid = bid, Voyage = voyage }
+                    )
+                    .Join(
+                        _context.Users,
+                        combined => combined.Bid.UserId,
+                        user => user.Id,
+                        (combined, user) => new { Bid = combined.Bid, Voyage = combined.Voyage, User = user }
+                    )
+                    .Select(combined => new GetBidDto
                     {
-                        Id= b.Id,
-                        PersonCount = b.PersonCount,
-                        Message = b.Message,
-                        OfferPrice = b.OfferPrice,
-                        Currency = b.Currency,
-                        DateTime = b.DateTime,
-                        VoyageId = b.VoyageId,
-                        UserId = b.UserId
+                        Id = combined.Bid.Id,
+                        PersonCount = combined.Bid.PersonCount,
+                        Message = combined.Bid.Message,
+                        OfferPrice = combined.Bid.OfferPrice,
+                        Currency = combined.Bid.Currency,
+                        DateTime = combined.Bid.DateTime,
+                        VoyageId = combined.Bid.VoyageId,
+                        UserId = combined.Bid.UserId,
+                        VoyageImageUrl = combined.Voyage.ProfileImage,
+                        UserImageUrl = combined.User.ProfileImageUrl,
+                        UserName = combined.User.UserName,
+                        VoyageName = combined.Voyage.Name
                     })
                     .ToListAsync();
+
+
+
+
+
                 response.Data = bids;
                 response.Message = "Bids retrieved successfully";
             }
@@ -152,7 +184,7 @@ namespace ParrotsAPI2.Services.Bid
             var response = new ServiceResponse<List<GetBidDto>>();
             try
             {
-                var bids = await _context.Bids
+                var bids2 = await _context.Bids
                     .Where(b => b.VoyageId == voyageId)
                     .Select(b => new GetBidDto
                     {   Id = b.Id,
@@ -165,6 +197,40 @@ namespace ParrotsAPI2.Services.Bid
                         UserId = b.UserId
                     })
                     .ToListAsync();
+
+
+                var bids = await _context.Bids
+                    .Where(b => b.VoyageId == voyageId)
+                    .Join(
+                        _context.Voyages,
+                        bid => bid.VoyageId,
+                        voyage => voyage.Id,
+                        (bid, voyage) => new { Bid = bid, Voyage = voyage }
+                    )
+                    .Join(
+                        _context.Users,
+                        combined => combined.Bid.UserId,
+                        user => user.Id,
+                        (combined, user) => new { Bid = combined.Bid, Voyage = combined.Voyage, User = user }
+                    )
+                    .Select(combined => new GetBidDto
+                    {
+                        Id = combined.Bid.Id,
+                        PersonCount = combined.Bid.PersonCount,
+                        Message = combined.Bid.Message,
+                        OfferPrice = combined.Bid.OfferPrice,
+                        Currency = combined.Bid.Currency,
+                        DateTime = combined.Bid.DateTime,
+                        VoyageId = combined.Bid.VoyageId,
+                        UserId = combined.Bid.UserId,
+                        VoyageImageUrl = combined.Voyage.ProfileImage,
+                        UserImageUrl = combined.User.ProfileImageUrl,
+                        UserName = combined.User.UserName,
+                        VoyageName = combined.Voyage.Name
+                    })
+                    .ToListAsync();
+
+
                 response.Data = bids;
                 response.Message = "Bids retrieved successfully";
             }
@@ -201,3 +267,12 @@ namespace ParrotsAPI2.Services.Bid
         }
     }
 }
+
+/*
+public int VoyageId { get; set; }
+public string VoyageName { get; set; }
+public string VoyageImageUrl { get; set; }
+public string UserId { get; set; }
+public string UserName { get; set; }
+public string UserImageUrl { get; set; }
+*/

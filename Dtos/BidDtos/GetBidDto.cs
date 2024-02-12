@@ -9,6 +9,10 @@
         public string Currency { get; set; }
         public DateTime DateTime { get; set; }
         public int VoyageId { get; set; }
+        public string VoyageName { get; set; } = string.Empty;
+        public string VoyageImageUrl { get; set; } = string.Empty;
         public string UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string UserImageUrl { get; set; } = string.Empty;
     }
 }

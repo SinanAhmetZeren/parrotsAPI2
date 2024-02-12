@@ -5,7 +5,9 @@ using ParrotsAPI2.Controllers;
 using ParrotsAPI2.Dtos.BidDtos;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Dtos.VoyageImageDtos;
+using ParrotsAPI2.Dtos.WaypointDtos;
 using ParrotsAPI2.Models;
+using System.Globalization;
 
 namespace ParrotsAPI2.Services.Voyage
 {
@@ -143,13 +145,16 @@ namespace ParrotsAPI2.Services.Voyage
 
             var userDto = _mapper.Map<UserDto>(voyage?.User);
             var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
-            var vehicleDtos = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-
+            var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
+            var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == id).ToList());
             var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+            var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == id).ToList());
 
             voyageDto.User = userDto;
             voyageDto.VoyageImages = voyageImageDtos;
-            voyageDto.Vehicle = vehicleDtos;
+            voyageDto.Vehicle = vehicleDto;
+            voyageDto.Bids = bidDtos;
+            voyageDto.Waypoints = waypointDtos;
 
             serviceResponse.Data = voyageDto;
 
@@ -159,7 +164,6 @@ namespace ParrotsAPI2.Services.Voyage
                 serviceResponse.Message = "Voyage not found";
                 return serviceResponse;
             }
-            serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
             return serviceResponse;
         }
 
@@ -182,15 +186,17 @@ namespace ParrotsAPI2.Services.Voyage
 
             var voyageDtos = voyages.Select(voyage =>
             {
-                var userDto = _mapper.Map<UserDto>(voyage.User);
-                var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
-                var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
-
+                var userDto = _mapper.Map<UserDto>(voyage?.User);
+                var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
+                var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
+                var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+                var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
-
+                voyageDto.Bids = bidDtos;
+                voyageDto.Waypoints = waypointDtos;
                 return voyageDto;
             }).ToList();
 
@@ -216,17 +222,25 @@ namespace ParrotsAPI2.Services.Voyage
                 return serviceResponse;
             }
 
-            var voyageDtos = voyages.Select(voyage =>
+        var voyageDtos = voyages
+                .Where(voyage => voyage?.VehicleId == vehicleId) 
+                .Select(voyage =>
             {
-                var userDto = _mapper.Map<UserDto>(voyage.User);
-                var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
-                var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
-
+                if (voyage == null)
+                {
+                    return new GetVoyageDto();
+                }
+                var userDto = _mapper.Map<UserDto>(voyage?.User);
+                var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
+                var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
+                var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+                var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
-
+                voyageDto.Bids = bidDtos;
+                voyageDto.Waypoints = waypointDtos;
                 return voyageDto;
             }).ToList();
 
@@ -452,11 +466,20 @@ namespace ParrotsAPI2.Services.Voyage
 
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType, DateTime? startDate, DateTime? endDate)
         {
+        //sample request format
+        // https:// localhost:7151/api/Voyage/GetFilteredVoyages?lat1=50
+        // &lat2=60&lon1=50&lon2=60
+        // &vacancy=5
+        // &startDate=2027-01-26T12%3A30%3A00.0000000
+        // &endDate=2045-01-17T12%3A30%3A00.0000000
+        // &vehicleType=Run
+
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
             try
             {
                 var query = _context.Voyages
-                    .Include(v => v.User)        
+                    .Include(v => v.User)
+                    .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
                     .AsQueryable();
 
@@ -478,19 +501,37 @@ namespace ParrotsAPI2.Services.Voyage
                 }
                 if (startDate.HasValue)
                 {
-                    query = query.Where(v => v.StartDate <= startDate.Value);
+                
+                    query = query.Where(v => v.StartDate >= startDate.Value);
                 }
                 if (endDate.HasValue)
                 {
-                    query = query.Where(v => v.EndDate >= endDate.Value);
+                    query = query.Where(v => v.EndDate <= endDate.Value);
                 }
                 if (vehicleType.HasValue)
                 {
-                    query = query.Where(v => v.Vehicle.Type == vehicleType);
+                    query = query.Where(v => v.Vehicle.Type == vehicleType.Value);
                 }
 
+
                 var queryResult = await query.ToListAsync();
-                var filteredVoyages = _mapper.Map<List<GetVoyageDto>>(queryResult);
+                //var filteredVoyages = _mapper.Map<List<GetVoyageDto>>(queryResult);
+                var filteredVoyages = queryResult.Select(voyage =>
+                {
+                    var userDto = _mapper.Map<UserDto>(voyage?.User);
+                    var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
+                    var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
+                    var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
+                    var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+                    var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
+                    voyageDto.User = userDto;
+                    voyageDto.VoyageImages = voyageImageDtos;
+                    voyageDto.Vehicle = vehicleDto;
+                    voyageDto.Bids = bidDtos;
+                    voyageDto.Waypoints = waypointDtos;
+                    return voyageDto;
+                }).ToList();
+
                 serviceResponse.Data = filteredVoyages;
             }
             catch (Exception ex)

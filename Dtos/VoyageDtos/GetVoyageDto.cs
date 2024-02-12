@@ -20,12 +20,12 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public bool Auction { get; set; }
         public string ProfileImage { get; set; }
         public VehicleType VehicleType { get; set; }
-
-        public List<WaypointDto> Waypoints { get; set; }
+        public List<GetWaypointDto> Waypoints { get; set; }
         public List<VoyageImageDto>? VoyageImages { get; set; }
         public string UserId { get; set; }
         public UserDto? User { get; set; }
         public int? VehicleId { get; set; }
         public VehicleDto? Vehicle { get; set; }
+        public List<BidDto> Bids { get; set; } = new List<BidDto>();
     }
 }
