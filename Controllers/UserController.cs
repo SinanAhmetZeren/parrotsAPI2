@@ -38,7 +38,6 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _userService.AddUser(newUser));
         }
 
-
         [HttpPut("UpdateUser")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUser(UpdateUserDto updatedUser)
         {

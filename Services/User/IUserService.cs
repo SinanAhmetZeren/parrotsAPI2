@@ -14,6 +14,7 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<List<GetUserDto>>> DeleteUser(string id);
         Task<ServiceResponse<GetUserDto>> PatchUser(string userId, JsonPatchDocument<UpdateUserDto> patchDoc, ModelStateDictionary modelState);
         Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile);
+        Task<ServiceResponse<GetUserDto>> UpdateUserBackgroundImage(string userId, IFormFile imageFile);
 
 
     }

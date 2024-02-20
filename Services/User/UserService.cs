@@ -113,7 +113,9 @@ namespace ParrotsAPI2.Services.User
                     Instagram = user.Instagram,
                     Facebook = user.Facebook,
                     PhoneNumber = user.PhoneNumber,
+                    Youtube = user.Youtube,
                     ProfileImageUrl = user.ProfileImageUrl,
+                    BackgroundImageUrl = user.BackgroundImageUrl,
                     ImageFile = null,
                     UnseenMessages = user.UnseenMessages,
                     UsersVehicles = vehicleDtos,
@@ -147,7 +149,9 @@ namespace ParrotsAPI2.Services.User
                 user.Instagram = updatedUser.Instagram;
                 user.Facebook = updatedUser.Facebook;
                 user.PhoneNumber = updatedUser.PhoneNumber;
+                user.Youtube = updatedUser.Youtube;
                 user.ProfileImageUrl = updatedUser.ProfileImageUrl;
+                user.BackgroundImageUrl = updatedUser.BackgroundImageUrl;
 
             await _context.SaveChangesAsync();
                     serviceResponse.Data = _mapper.Map<GetUserDto>(user);
@@ -217,6 +221,41 @@ namespace ParrotsAPI2.Services.User
                     await imageFile.CopyToAsync(stream);
                 }
                 user.ProfileImageUrl = "/Uploads/UserImages/" + fileName;
+                await _context.SaveChangesAsync();
+                var userDto = _mapper.Map<GetUserDto>(user);
+
+                serviceResponse.Success = true;
+                serviceResponse.Data = userDto;
+            }
+            else
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No image provided";
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetUserDto>> UpdateUserBackgroundImage(string userId, IFormFile imageFile)
+        {
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "User not found";
+                return serviceResponse;
+            }
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var filePath = Path.Combine("Uploads/UserImages/", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+                user.BackgroundImageUrl = "/Uploads/UserImages/" + fileName;
                 await _context.SaveChangesAsync();
                 var userDto = _mapper.Map<GetUserDto>(user);
 

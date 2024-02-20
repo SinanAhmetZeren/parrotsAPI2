@@ -30,7 +30,6 @@
     <Folder Include="Uploads\WaypointImages\" />
     <Folder Include="Uploads\VoyageImages\" />
     <Folder Include="Uploads\VehicleImages\" />
-    <Folder Include="Uploads\UserImages\" />
   </ItemGroup>
 
 </Project>

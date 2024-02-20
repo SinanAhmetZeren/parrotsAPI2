@@ -42,6 +42,7 @@ using ParrotsAPI2.Services.Token;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using ParrotsAPI2.Services.Bid;
+using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -105,16 +106,27 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 
 
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", builder =>
-    {
-        builder.WithOrigins("http://localhost")
-               .AllowAnyHeader()
-               .AllowAnyMethod();
-    });
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
+
+
+// builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowSpecificOrigin", builder =>
+//    {
+//        builder.WithOrigins("http://localhost")
+//               .AllowAnyHeader()
+//               .AllowAnyMethod();
+//    });
+//});
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -139,17 +151,29 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.MapHub<ChatHub>("/chathub/11");
+/*
 app.UseCors(builder =>
 {
     builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost");
     builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("ws://localhost");
     builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost");
 });
+*/
+app.UseCors("AllowAll");
 app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.MapControllers();
 app.UseRouting();
 app.UseAuthorization();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+    RequestPath = "/Uploads"
+});
+
+
 app.Run();
 
 

@@ -11,7 +11,10 @@
         public string Instagram { get; set; }
         public string Facebook { get; set; }
         public string PhoneNumber { get; set; }
+        public string Youtube { get; set; }
+
         public string ProfileImageUrl { get; set; }
+        public string BackgroundImageUrl { get; set; }
         public IFormFile ImageFile { get; set; }
         public bool UnseenMessages { get; set; }
         public List<GetUsersVehiclesDto>? UsersVehicles { get; set; }
