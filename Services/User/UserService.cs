@@ -81,7 +81,6 @@ namespace ParrotsAPI2.Services.User
 
         }
 
-
         public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
@@ -220,7 +219,7 @@ namespace ParrotsAPI2.Services.User
                 {
                     await imageFile.CopyToAsync(stream);
                 }
-                user.ProfileImageUrl = "/Uploads/UserImages/" + fileName;
+                user.ProfileImageUrl = fileName;
                 await _context.SaveChangesAsync();
                 var userDto = _mapper.Map<GetUserDto>(user);
 
@@ -255,13 +254,14 @@ namespace ParrotsAPI2.Services.User
                 {
                     await imageFile.CopyToAsync(stream);
                 }
-                user.BackgroundImageUrl = "/Uploads/UserImages/" + fileName;
+                user.BackgroundImageUrl =  fileName;
                 await _context.SaveChangesAsync();
                 var userDto = _mapper.Map<GetUserDto>(user);
 
                 serviceResponse.Success = true;
                 serviceResponse.Data = userDto;
             }
+
             else
             {
                 serviceResponse.Success = false;

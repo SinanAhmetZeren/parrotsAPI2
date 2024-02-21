@@ -109,6 +109,24 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
+
+        [Consumes("multipart/form-data")]
+        [HttpPost("{userId}/updateBackgroundImage")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateBackgroundImage(string userId, IFormFile imageFile)
+        {
+            var serviceResponse = await _userService.UpdateUserBackgroundImage(userId, imageFile);
+
+            if (serviceResponse.Success)
+            {
+                return Ok(new { imagePath = serviceResponse.Data });
+            }
+            else
+            {
+                return BadRequest(new { message = serviceResponse.Message });
+            }
+        }
+
+
     }
 }
 
