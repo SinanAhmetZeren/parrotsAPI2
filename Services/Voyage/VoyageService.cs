@@ -146,7 +146,31 @@ namespace ParrotsAPI2.Services.Voyage
             var userDto = _mapper.Map<UserDto>(voyage?.User);
             var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
             var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-            var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == id).ToList());
+            //var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == id).ToList());
+
+            var bidDtos = _context.Bids
+                .Where(bid => bid.VoyageId == id)
+                .Select(bid => new BidDto
+                {
+                        Message = bid.Message,
+                        OfferPrice = bid.OfferPrice,
+                        Currency = bid.Currency,
+                        DateTime =bid.DateTime,
+                        VoyageId =bid.VoyageId,  
+                        UserId= bid.UserId,
+                        UserName = _context.Users
+                            .Where(u => u.Id == bid.UserId)
+                            .Select(u => u.UserName)
+                            .FirstOrDefault(),
+                        UserProfileImage = _context.Users
+                            .Where(u => u.Id == bid.UserId)
+                            .Select(u => u.ProfileImageUrl)
+                            .FirstOrDefault()
+                })
+                .ToList();
+
+
+
             var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
             var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == id).ToList());
 

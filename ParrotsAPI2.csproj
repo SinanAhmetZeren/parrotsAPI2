@@ -28,8 +28,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Uploads\WaypointImages\" />
-    <Folder Include="Uploads\VoyageImages\" />
-    <Folder Include="Uploads\VehicleImages\" />
   </ItemGroup>
 
 </Project>

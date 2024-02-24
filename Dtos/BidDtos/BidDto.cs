@@ -9,5 +9,8 @@
         public DateTime DateTime { get; set; }
         public int VoyageId { get; set; }
         public string UserId { get; set; }
+        public string? UserProfileImage { get; set; } = null;
+        public string? UserName { get; set; } = null;
+
     }
 }
