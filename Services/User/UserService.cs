@@ -84,6 +84,13 @@ namespace ParrotsAPI2.Services.User
         public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
+
+            if (id == "null") {
+                serviceResponse.Data = null;
+                serviceResponse.Message = "Id is null";
+                return serviceResponse; 
+                };
+
             var user = await _context.Users
                 .AsNoTracking()
                 .Include(u => u.SentMessages)

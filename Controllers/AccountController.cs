@@ -45,16 +45,27 @@ namespace API.Controllers
                 ModelState.AddModelError("email", "Email taken");
                 return ValidationProblem();
             }
+
+            /////
+            string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+            Random random = new Random();
+            int randomIndex = random.Next(0, images.Length);
+            string selectedImage = images[randomIndex];
+            /////
+
             var user = new AppUser
             {
                 Email = registerDto.Email,
                 UserName = registerDto.UserName,
+                ProfileImageUrl = selectedImage
             };
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (result.Succeeded)
             {
                 return CreateUserObject(user);
             }
+
+
             return BadRequest(result.Errors);
         }
 
@@ -80,7 +91,8 @@ namespace API.Controllers
             {
                 Token = _tokenService.CreateToken(user),
                 UserName = user.UserName,
-                Email = user.Email
+                Email = user.Email,
+                UserId = user.Id
             };
         }
     }

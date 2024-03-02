@@ -34,7 +34,7 @@ namespace ParrotsAPI2.Services.Voyage
                 {
                     await newVoyage.ImageFile.CopyToAsync(stream);
                 }
-                voyageProfileImage = "/Uploads/VoyageImages/" + fileName;
+                voyageProfileImage =  fileName;
             }
             var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVoyage.UserId);
             var vehicle = await _context.Vehicles.FirstOrDefaultAsync(c => c.Id == newVoyage.VehicleId);
