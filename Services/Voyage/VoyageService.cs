@@ -76,7 +76,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             var newVoyageImage = new VoyageImage
             {
-                VoyageImagePath = "/Uploads/VoyageImages/" + fileName
+                VoyageImagePath = fileName
             };
             existingVoyage.VoyageImages ??= new List<VoyageImage>();
             existingVoyage.VoyageImages.Add(newVoyageImage);

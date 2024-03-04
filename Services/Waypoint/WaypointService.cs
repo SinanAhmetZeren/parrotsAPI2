@@ -65,6 +65,10 @@ namespace ParrotsAPI2.Services.Waypoint
             return serviceResponse;
         }
 
+
+
+
+
         public async Task<ServiceResponse<List<GetWaypointDto>>> GetAllWaypoints()
         {
             var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();
