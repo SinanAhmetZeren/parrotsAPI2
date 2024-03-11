@@ -104,7 +104,7 @@ namespace ParrotsAPI2.Controllers
 
         [Consumes("multipart/form-data")]
         [HttpPost("{voyageId}/addVoyageImage")]
-        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> AddVoyageImage(int voyageId, IFormFile imageFile)
+        public async Task<ActionResult<ServiceResponse<string>>> AddVoyageImage(int voyageId, IFormFile imageFile)
         {
             var serviceResponse = await _voyageService.AddVoyageImage(voyageId, imageFile);
 
@@ -119,7 +119,7 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpDelete("{voyageImageId}/deleteVoyageImage")]
-        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteVoyageImage(int voyageImageId)
+        public async Task<ActionResult<ServiceResponse<string>>> DeleteVoyageImage(int voyageImageId)
         {
             var serviceResponse = await _voyageService.DeleteVoyageImage(voyageImageId);
             if (serviceResponse.Success)
