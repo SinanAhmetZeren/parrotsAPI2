@@ -30,7 +30,7 @@ namespace ParrotsAPI2.Services.Bid
                 bidEntity.PersonCount = changedBid.PersonCount;
                 bidEntity.Message = changedBid.Message;
                 bidEntity.OfferPrice = changedBid.OfferPrice;
-                bidEntity.Currency = changedBid.Currency;
+                //bidEntity.Currency = changedBid.Currency;
                 bidEntity.DateTime = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();

@@ -184,14 +184,16 @@ namespace ParrotsAPI2.Services.Voyage
 
             var bidDtos = _context.Bids
                 .Where(bid => bid.VoyageId == id)
-                .Select(bid => new BidDto
+                .Select(bid => new VoyageBidDto
                 {
+                        Id = bid.Id,
                         Message = bid.Message,
                         OfferPrice = bid.OfferPrice,
                         Currency = bid.Currency,
                         DateTime =bid.DateTime,
                         VoyageId =bid.VoyageId,  
                         UserId= bid.UserId,
+                        PersonCount = bid.PersonCount,
                         UserName = _context.Users
                             .Where(u => u.Id == bid.UserId)
                             .Select(u => u.UserName)
@@ -247,7 +249,7 @@ namespace ParrotsAPI2.Services.Voyage
                 var userDto = _mapper.Map<UserDto>(voyage?.User);
                 var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
                 var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-                var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
+                var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
                 var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
                 voyageDto.User = userDto;
@@ -291,7 +293,7 @@ namespace ParrotsAPI2.Services.Voyage
                 var userDto = _mapper.Map<UserDto>(voyage?.User);
                 var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
                 var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-                var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
+                var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
                 var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
                 voyageDto.User = userDto;
@@ -524,13 +526,6 @@ namespace ParrotsAPI2.Services.Voyage
 
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType, DateTime? startDate, DateTime? endDate)
         {
-        //sample request format
-        // https:// localhost:7151/api/Voyage/GetFilteredVoyages?lat1=50
-        // &lat2=60&lon1=50&lon2=60
-        // &vacancy=5
-        // &startDate=2027-01-26T12%3A30%3A00.0000000
-        // &endDate=2045-01-17T12%3A30%3A00.0000000
-        // &vehicleType=Run
 
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
             try
@@ -579,7 +574,7 @@ namespace ParrotsAPI2.Services.Voyage
                     var userDto = _mapper.Map<UserDto>(voyage?.User);
                     var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
                     var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-                    var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
+                    var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
                     var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
                     var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
                     voyageDto.User = userDto;

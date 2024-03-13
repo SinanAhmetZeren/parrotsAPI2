@@ -53,6 +53,9 @@ namespace ParrotsAPI2
 
             CreateMap<Bid, BidDto>();
             CreateMap<BidDto, Bid>();
+            CreateMap<Bid, VoyageBidDto>();
+            CreateMap<VoyageBidDto, Bid>();
+
             CreateMap<Bid, GetBidDto>();
             CreateMap<GetBidDto, Bid>();
 
