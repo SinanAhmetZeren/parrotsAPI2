@@ -18,9 +18,9 @@ namespace ParrotsAPI2.Services.Vehicle
             _context = context;
             _mapper = mapper;
         }
-        public async Task<ServiceResponse<List<GetVehicleDto>>> AddVehicle(AddVehicleDto newVehicle)
+        public async Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle)
         {
-            var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
+            var serviceResponse = new ServiceResponse<GetVehicleDto>();
             string profileImageUrl = "";
             if (newVehicle.ImageFile != null && newVehicle.ImageFile.Length > 0)
             {
@@ -30,7 +30,7 @@ namespace ParrotsAPI2.Services.Vehicle
                 {
                     await newVehicle.ImageFile.CopyToAsync(stream);
                 }
-                profileImageUrl = "/Uploads/VehicleImages/" + fileName;
+                profileImageUrl =  fileName;
             }
 
             var vehicle = _mapper.Map<Models.Vehicle>(newVehicle);
@@ -39,16 +39,16 @@ namespace ParrotsAPI2.Services.Vehicle
             vehicle.User = currentUser;
             _context.Vehicles.Add(vehicle);
             await _context.SaveChangesAsync();
-
-            var vehicles = await _context.Vehicles.ToListAsync();
-            serviceResponse.Data = vehicles.Select(c => _mapper.Map<GetVehicleDto>(c)).ToList();
+            serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
 
             return serviceResponse;
+
+
         }
 
-        public async Task<ServiceResponse<GetVehicleDto>> AddVehicleImage(int vehicleId, IFormFile imageFile)
+        public async Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile)
         {
-            var serviceResponse = new ServiceResponse<GetVehicleDto>();
+            var serviceResponse = new ServiceResponse<string>();
             var existingVehicle = await _context.Vehicles
                 .Include(v => v.VehicleImages)
                 .FirstOrDefaultAsync(v => v.Id == vehicleId);
@@ -66,13 +66,21 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             var newVehicleImage = new VehicleImage
             {
-                VehicleImagePath = "/Uploads/VehicleImages/" + fileName
+                VehicleImagePath = fileName
             };
             existingVehicle.VehicleImages ??= new List<VehicleImage>();
             existingVehicle.VehicleImages.Add(newVehicleImage);
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _mapper.Map<GetVehicleDto>(existingVehicle);
+            var newImageId = newVehicleImage.Id.ToString();
+
+            serviceResponse.Data = newImageId;
             return serviceResponse;
+
+
+
+
+
+
         }
 
         public async Task<ServiceResponse<string>> DeleteVehicle(int id)
