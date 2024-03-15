@@ -438,6 +438,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Longitude <= lon2))
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
+                    .Include(v => v.Waypoints.Where(w => w.Order == 1))
                     .ToListAsync();
 
 
