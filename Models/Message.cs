@@ -13,5 +13,6 @@ namespace ParrotsAPI2.Models
         public string SenderId { get; set; }
         public string ReceiverId { get; set; }
 
+
     }
 }

@@ -8,6 +8,12 @@
         public bool Rendered { get; set; }
         public bool ReadByReceiver { get; set; }
         public string SenderId { get; set; }
+        public string SenderProfileUrl { get; set; }
+        public string SenderUsername { get; set; }
         public string ReceiverId { get; set; }
+        public string ReceiverProfileUrl { get; set; }
+        public string ReceiverUsername { get; set; }
+
+
     }
 }

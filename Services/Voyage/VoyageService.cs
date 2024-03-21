@@ -562,14 +562,20 @@ namespace ParrotsAPI2.Services.Voyage
                 {
                     query = query.Where(v => v.EndDate <= endDate.Value);
                 }
-                if (vehicleType.HasValue)
+
+                //if (vehicleType.HasValue)
+                //{
+                //    query = query.Where(v => v.Vehicle.Type == vehicleType.Value);
+                //}
+
+                if (vehicleType.HasValue && Enum.IsDefined(typeof(VehicleType), vehicleType.Value))
                 {
-                    query = query.Where(v => v.Vehicle.Type == vehicleType.Value);
+                    query = query.Where(v => v.Vehicle.Type == (VehicleType)vehicleType.Value);
                 }
 
 
+
                 var queryResult = await query.ToListAsync();
-                //var filteredVoyages = _mapper.Map<List<GetVoyageDto>>(queryResult);
                 var filteredVoyages = queryResult.Select(voyage =>
                 {
                     var userDto = _mapper.Map<UserDto>(voyage?.User);

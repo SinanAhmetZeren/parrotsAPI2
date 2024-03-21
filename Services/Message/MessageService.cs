@@ -196,6 +196,8 @@ namespace ParrotsAPI2.Services.Message
                     .Where(m => m.SenderId == userId || m.ReceiverId == userId)
                     .ToListAsync();
 
+
+
                 if (messages == null || messages.Count == 0)
                 {
                     serviceResponse.Success = false;
@@ -203,7 +205,31 @@ namespace ParrotsAPI2.Services.Message
                     return serviceResponse;
                 }
 
-                var messageDtos = _mapper.Map<List<GetMessageDto>>(messages);
+                var messageDtos = new List<GetMessageDto>();
+
+                foreach (var message in messages)
+                {
+                    var sender = await _context.Users.FindAsync(message.SenderId);
+                    var receiver = await _context.Users.FindAsync(message.ReceiverId);
+
+                    messageDtos.Add(new GetMessageDto
+                    {
+                        Id = message.Id,
+                        Text = message.Text,
+                        DateTime = message.DateTime,
+                        Rendered = message.Rendered,
+                        ReadByReceiver = message.ReadByReceiver,
+                        SenderId = message.SenderId,
+                        ReceiverId = message.ReceiverId,
+                        SenderProfileUrl = sender?.ProfileImageUrl,
+                        SenderUsername = sender?.UserName,
+                        ReceiverProfileUrl = receiver?.ProfileImageUrl,
+                        ReceiverUsername  = receiver?.UserName
+                    });
+                }
+
+
+
                 serviceResponse.Data = messageDtos;
             }
             catch (Exception ex)

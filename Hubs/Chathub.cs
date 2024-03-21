@@ -27,10 +27,10 @@ namespace ParrotsAPI2.Hubs
             _logger.LogInformation($"--> ChatHub initialized at {DateTime.UtcNow}");
         }
 
-        public override async Task OnConnectedAsync()
+        /*
+        public override async Task OnConnectedAsync2()
         {
             _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}");
-            //await Clients.All.SendAsync("ReceiveHelloMessage", $"hi there {Context.ConnectionId}");
 
             var user = await _userManager.GetUserAsync(Context.User);
             if (user != null)
@@ -40,15 +40,62 @@ namespace ParrotsAPI2.Hubs
             }
             await base.OnConnectedAsync();
         }
+        */
+         
+        public override async Task OnConnectedAsync()
+        {
+            // var userId = Context.User.Identity.Name; // Assuming you're using JWT authentication
+
+            var userId = Context.GetHttpContext().Request.Query["userId"].ToString();
+
+            _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}, UserId={userId}");
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.ConnectionId = Context.ConnectionId;
+                try
+                {
+                    await _userManager.UpdateAsync(user);
+                    await _dbContext.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error updating user connectionId: {ex.Message}");
+                }
+            }
+            await base.OnConnectedAsync();
+        }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var user = await _userManager.GetUserAsync(Context.User);
+
+            var userId = Context.GetHttpContext().Request.Query["userId"].ToString();
+            _logger.LogInformation($"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}");
+
+            //var user = await _userManager.GetUserAsync(Context.User);
+            //if (user != null)
+            //{
+            //    user.ConnectionId = null;
+            //    await _userManager.UpdateAsync(user);
+            //}
+
+            var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 user.ConnectionId = null;
-                await _userManager.UpdateAsync(user);
+                try
+                {
+                    await _userManager.UpdateAsync(user);
+                    await _dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error updating user connectionId on disconnect: {ex.Message}");
+                }
             }
+
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -68,8 +115,14 @@ namespace ParrotsAPI2.Hubs
             var receiverConnectionId = await GetConnectionIdForUser(receiverId);
             if (receiverConnectionId != null)
             {
-                await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", senderId, content);
+                // await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", senderId, content);
+                // await Clients.All.SendAsync("ReceiveMessage", senderId, content);
+                //await Clients.All.SendAsync("ReceiveMessage", content);
+
+                // await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, message);
             }
+            return;
+
         }
 
         public async Task GetMessages(string userId)
@@ -92,6 +145,9 @@ namespace ParrotsAPI2.Hubs
                 Rendered = false,
                 ReadByReceiver = false
             };
+
+            Console.WriteLine("-------------------------------------------------");
+
             _dbContext.Messages.Add(message);
             await _dbContext.SaveChangesAsync();
         }
