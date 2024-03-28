@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http; 
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.MessageDtos;
 using ParrotsAPI2.Dtos.WaypointDtos;
@@ -35,6 +35,12 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesByUserId(string userId)
         {
             return Ok(await _messageService.GetMessagesByUserId(userId));
+        }
+
+        [HttpGet("getMessagesBetweenUsers/{user1Id}/{user2Id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> GetMessagesBetweenUsers(string user1Id, string user2Id)
+        {
+            return Ok(await _messageService.GetMessagesBetweenUsers(user1Id, user2Id));
         }
 
 

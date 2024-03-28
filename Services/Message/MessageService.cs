@@ -190,15 +190,15 @@ namespace ParrotsAPI2.Services.Message
         {
             var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
 
-            try
-            {
-                var messages = await _context.Messages
+                try
+                {
+                var latestMessages = await _context.Messages
                     .Where(m => m.SenderId == userId || m.ReceiverId == userId)
+                    .GroupBy(m => m.SenderId == userId ? m.ReceiverId : m.SenderId)
+                    .Select(g => g.OrderByDescending(m => m.DateTime).FirstOrDefault())
                     .ToListAsync();
 
-
-
-                if (messages == null || messages.Count == 0)
+                if (latestMessages == null || latestMessages.Count == 0)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "No messages found for the given user ID";
@@ -207,10 +207,10 @@ namespace ParrotsAPI2.Services.Message
 
                 var messageDtos = new List<GetMessageDto>();
 
-                foreach (var message in messages)
+                foreach (var message in latestMessages)
                 {
-                    var sender = await _context.Users.FindAsync(message.SenderId);
-                    var receiver = await _context.Users.FindAsync(message.ReceiverId);
+                    var senderId = message.SenderId == userId ? message.ReceiverId : message.SenderId;
+                    var sender = await _context.Users.FindAsync(senderId);
 
                     messageDtos.Add(new GetMessageDto
                     {
@@ -223,13 +223,10 @@ namespace ParrotsAPI2.Services.Message
                         ReceiverId = message.ReceiverId,
                         SenderProfileUrl = sender?.ProfileImageUrl,
                         SenderUsername = sender?.UserName,
-                        ReceiverProfileUrl = receiver?.ProfileImageUrl,
-                        ReceiverUsername  = receiver?.UserName
+                        ReceiverProfileUrl = sender?.ProfileImageUrl,
+                        ReceiverUsername = sender?.UserName
                     });
                 }
-
-
-
                 serviceResponse.Data = messageDtos;
             }
             catch (Exception ex)
@@ -237,7 +234,6 @@ namespace ParrotsAPI2.Services.Message
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving messages: {ex.Message}";
             }
-
             return serviceResponse;
         }
         public async Task<ServiceResponse<GetMessageDto>> UpdateMessage(UpdateMessageDto updatedMessage)
@@ -269,6 +265,49 @@ namespace ParrotsAPI2.Services.Message
 
             return serviceResponse;
         }
+        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesBetweenUsers(string userId1, string userId2)
+        {
+            var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
 
+            try
+            {
+                var messages = await _context.Messages
+                    .Where(m => (m.SenderId == userId1 && m.ReceiverId == userId2) || (m.SenderId == userId2 && m.ReceiverId == userId1))
+                    .ToListAsync();
+                if (messages == null || messages.Count == 0)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No messages found between the given users";
+                    return serviceResponse;
+                }
+                var messageDtos = new List<GetMessageDto>();
+                foreach (var message in messages)
+                {
+                    var sender = await _context.Users.FindAsync(message.SenderId);
+                    var receiver = await _context.Users.FindAsync(message.ReceiverId);
+                    messageDtos.Add(new GetMessageDto
+                    {
+                        Id = message.Id,
+                        Text = message.Text,
+                        DateTime = message.DateTime,
+                        Rendered = message.Rendered,
+                        ReadByReceiver = message.ReadByReceiver,
+                        SenderId = message.SenderId,
+                        ReceiverId = message.ReceiverId,
+                        //SenderProfileUrl = sender?.ProfileImageUrl,
+                        //SenderUsername = sender?.UserName,
+                        //ReceiverProfileUrl = receiver?.ProfileImageUrl,
+                        //ReceiverUsername = receiver?.UserName
+                    });
+                }
+                serviceResponse.Data = messageDtos;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error retrieving messages: {ex.Message}";
+            }
+            return serviceResponse;
+        }
     }
 }

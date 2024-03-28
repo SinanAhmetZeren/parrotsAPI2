@@ -27,20 +27,6 @@ namespace ParrotsAPI2.Hubs
             _logger.LogInformation($"--> ChatHub initialized at {DateTime.UtcNow}");
         }
 
-        /*
-        public override async Task OnConnectedAsync2()
-        {
-            _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}");
-
-            var user = await _userManager.GetUserAsync(Context.User);
-            if (user != null)
-            {
-                user.ConnectionId = Context.ConnectionId;
-                await _userManager.UpdateAsync(user);
-            }
-            await base.OnConnectedAsync();
-        }
-        */
          
         public override async Task OnConnectedAsync()
         {
@@ -101,25 +87,29 @@ namespace ParrotsAPI2.Hubs
 
         public async Task SendMessage(string senderId, string receiverId, string content)
         {
+            var newTime = DateTime.UtcNow;
             var message = new Message
             {
                 SenderId = senderId,
                 ReceiverId = receiverId,
                 Text = content,
-                DateTime = DateTime.UtcNow,
+                DateTime = newTime,
                 Rendered = false,
                 ReadByReceiver = false
             };
             _dbContext.Messages.Add(message);
             await _dbContext.SaveChangesAsync();
             var receiverConnectionId = await GetConnectionIdForUser(receiverId);
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(c => c.Id == senderId);
+            var senderProfileUrl = user.ProfileImageUrl;
+            var senderUsername = user.UserName;
+
+
             if (receiverConnectionId != null)
             {
-                // await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", senderId, content);
-                // await Clients.All.SendAsync("ReceiveMessage", senderId, content);
-                //await Clients.All.SendAsync("ReceiveMessage", content);
-
-                // await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, message);
+                await Clients.Client(receiverConnectionId)
+                    .SendAsync("ReceiveMessage", senderId, content, newTime, senderProfileUrl, senderUsername);
             }
             return;
 

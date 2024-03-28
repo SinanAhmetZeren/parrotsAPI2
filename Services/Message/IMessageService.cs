@@ -13,6 +13,7 @@ namespace ParrotsAPI2.Services.Message
         Task<ServiceResponse<GetMessageDto>> AddMessage(AddMessageDto newMessage);
         Task<ServiceResponse<GetMessageDto>> UpdateMessage(UpdateMessageDto updatedMessage);
         Task<ServiceResponse<GetMessageDto>> DeleteMessage(int id);
+        Task<ServiceResponse<List<GetMessageDto>>> GetMessagesBetweenUsers(string userId1, string userId2);
 
     }
 }
