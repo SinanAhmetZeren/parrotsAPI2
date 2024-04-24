@@ -3,6 +3,8 @@
     public class VoyageBidDto
     {
         public int Id { get; set; }
+        public bool Accepted { get; set; }
+
         public int PersonCount { get; set; }
         public string Message { get; set; }
         public decimal OfferPrice { get; set; }

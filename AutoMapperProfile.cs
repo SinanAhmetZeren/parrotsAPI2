@@ -1,4 +1,5 @@
 ﻿using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Dtos.FavoriteDtos;
 using ParrotsAPI2.Dtos.MessageDtos;
 using ParrotsAPI2.Dtos.VehicleDtos;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
@@ -70,6 +71,11 @@ namespace ParrotsAPI2
             CreateMap<AddMessageDto, Message>();
             CreateMap<Message, UpdateMessageDto>();
             CreateMap<UpdateMessageDto, Message>();
+
+            CreateMap<Favorite, GetFavoriteDto>();
+            CreateMap<GetFavoriteDto, Favorite>();
+            CreateMap<Favorite, AddFavoriteDto>();
+            CreateMap<AddFavoriteDto, Favorite>();
         }
     }
 }

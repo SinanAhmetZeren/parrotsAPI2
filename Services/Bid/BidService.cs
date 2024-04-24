@@ -30,7 +30,6 @@ namespace ParrotsAPI2.Services.Bid
                 bidEntity.PersonCount = changedBid.PersonCount;
                 bidEntity.Message = changedBid.Message;
                 bidEntity.OfferPrice = changedBid.OfferPrice;
-                //bidEntity.Currency = changedBid.Currency;
                 bidEntity.DateTime = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
@@ -51,6 +50,7 @@ namespace ParrotsAPI2.Services.Bid
             {
                 var bidEntity = new Models.Bid
                 {
+                    Accepted = false,
                     PersonCount = newBid.PersonCount,
                     Message = newBid.Message,
                     OfferPrice = newBid.OfferPrice,
@@ -82,7 +82,6 @@ namespace ParrotsAPI2.Services.Bid
             return response;
         }
 
-
         public async Task<ServiceResponse<GetBidDto>> GetBidById(int bidId)
         {
             var response = new ServiceResponse<GetBidDto>();
@@ -97,6 +96,7 @@ namespace ParrotsAPI2.Services.Bid
                 {
                     var bidDto = new GetBidDto
                     {
+                        Accepted = bidEntity.Accepted,
                         Id = bidEntity.Id,
                         PersonCount = bidEntity.PersonCount,
                         Message = bidEntity.Message,
@@ -149,6 +149,7 @@ namespace ParrotsAPI2.Services.Bid
                     )
                     .Select(combined => new GetBidDto
                     {
+                        Accepted = combined.Bid.Accepted,
                         Id = combined.Bid.Id,
                         PersonCount = combined.Bid.PersonCount,
                         Message = combined.Bid.Message,
@@ -187,7 +188,9 @@ namespace ParrotsAPI2.Services.Bid
                 var bids2 = await _context.Bids
                     .Where(b => b.VoyageId == voyageId)
                     .Select(b => new GetBidDto
-                    {   Id = b.Id,
+                    {   
+                        Accepted= b.Accepted,
+                        Id = b.Id,
                         PersonCount = b.PersonCount,
                         Message = b.Message,
                         OfferPrice = b.OfferPrice,
@@ -265,14 +268,27 @@ namespace ParrotsAPI2.Services.Bid
             }
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<string>> AcceptBid(int bidId)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+            try
+            {
+                var bidEntity = await _context.Bids.FirstOrDefaultAsync(c => c.Id == bidId);
+                if (bidEntity == null)
+                {
+                    throw new Exception($"Bid with ID `{bidId}` not found");
+                }
+                bidEntity.Accepted = true;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
+        }
     }
 }
 
-/*
-public int VoyageId { get; set; }
-public string VoyageName { get; set; }
-public string VoyageImageUrl { get; set; }
-public string UserId { get; set; }
-public string UserName { get; set; }
-public string UserImageUrl { get; set; }
-*/

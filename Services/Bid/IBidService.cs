@@ -10,6 +10,7 @@ namespace ParrotsAPI2.Services.Bid
         Task<ServiceResponse<List<GetBidDto>>> GetBidsByUserId(string userId);
         Task<ServiceResponse<GetBidDto>> CreateBid(BidDto newBid);
         Task<ServiceResponse<GetBidDto>> ChangeBid(ChangeBidDto changedBid);
+        Task<ServiceResponse<string>> AcceptBid(int bidId);
         Task<ServiceResponse<string>> DeleteBid(int bidId);
     }
 }

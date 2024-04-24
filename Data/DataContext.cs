@@ -14,6 +14,7 @@ namespace ParrotsAPI2.Data
         public DbSet<Voyage> Voyages { get; set; }
         public DbSet<VoyageImage> VoyageImages { get; set; }
         public DbSet<Waypoint> Waypoints { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

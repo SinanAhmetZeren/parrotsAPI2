@@ -90,6 +90,7 @@ builder.Services.AddScoped<IVoyageService, VoyageService>();
 builder.Services.AddScoped<IWaypointService, WaypointService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IBidService, BidService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ChatHub>();
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>

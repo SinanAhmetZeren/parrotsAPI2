@@ -31,6 +31,18 @@ namespace ParrotsAPI2.Controllers
             return BadRequest(serviceResponse);
         }
 
+
+        [HttpPost("acceptbid")]
+        public async Task<ActionResult<ServiceResponse<string>>> AcceptBid(int bidId)
+        {
+            var serviceResponse = await _bidService.AcceptBid(bidId);
+            if (serviceResponse.Success)
+            {
+                return Ok(serviceResponse);
+            }
+            return BadRequest(serviceResponse);
+        }
+
         [HttpGet("bidId/{bidId}")]
         public async Task<ActionResult<ServiceResponse<BidDto>>> GetBidById(int bidId)
         {
