@@ -185,7 +185,7 @@ namespace ParrotsAPI2.Services.Voyage
             var bidDtos = _context.Bids
                 .Where(bid => bid.VoyageId == id)
                 .Select(bid => new VoyageBidDto
-                {
+                {       Accepted= bid.Accepted,
                         Id = bid.Id,
                         Message = bid.Message,
                         OfferPrice = bid.OfferPrice,

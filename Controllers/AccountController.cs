@@ -57,7 +57,7 @@ namespace API.Controllers
             {
                 Email = registerDto.Email,
                 UserName = registerDto.UserName,
-                ProfileImageUrl = selectedImage
+                ProfileImageUrl = selectedImage,
             };
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (result.Succeeded)
@@ -92,7 +92,8 @@ namespace API.Controllers
                 Token = _tokenService.CreateToken(user),
                 UserName = user.UserName,
                 Email = user.Email,
-                UserId = user.Id
+                UserId = user.Id,
+                ProfileImageUrl = user.ProfileImageUrl,
             };
         }
     }

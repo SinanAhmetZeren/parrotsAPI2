@@ -34,6 +34,13 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _vehicleService.GetVehiclesByUserId(userId));
         }
 
+
+        [HttpGet("GetVehiclesImagesByVehicleId/{vehicleId}")]
+        public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> GetVehicleImagesByVehicleId(int vehicleId)
+        {
+            return Ok(await _vehicleService.GetVehicleImagesByVehicleId(vehicleId));
+        }
+
         [HttpPost("addVehicle")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> AddVehicle(AddVehicleDto newVehicle)
         {

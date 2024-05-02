@@ -212,6 +212,43 @@ namespace ParrotsAPI2.Services.Vehicle
 
         }
 
+        public async Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId)
+        {
+            var serviceResponse = new ServiceResponse<List<VehicleImageDto>>();
+
+            try
+            {
+                var vehicleImages = await _context.VehicleImages
+                    .Where(vi => vi.VehicleId == vehicleId)
+                    .ToListAsync();
+
+                if (vehicleImages == null || !vehicleImages.Any())
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Vehicle images not found for the given vehicleId.";
+                    return serviceResponse;
+                }
+
+                var vehicleImageDtos = vehicleImages.Select(vi => new VehicleImageDto
+                {
+                    Id = vi.Id,
+                    VehicleImagePath = vi.VehicleImagePath,
+                    VehicleId = vi.VehicleId
+                }).ToList();
+
+                serviceResponse.Data = vehicleImageDtos;
+                serviceResponse.Success = true;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"An error occurred while retrieving vehicle images: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+
+
         public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
         {
             var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
@@ -300,7 +337,7 @@ namespace ParrotsAPI2.Services.Vehicle
                 {
                     await imageFile.CopyToAsync(stream);
                 }
-                vehicle.ProfileImageUrl = "/Uploads/VehicleImages/" + fileName;
+                vehicle.ProfileImageUrl = fileName;
                 await _context.SaveChangesAsync();
                 var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
                 serviceResponse.Success = true;
@@ -339,6 +376,9 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             return response;
         }
+
+
+
 
     }
 }

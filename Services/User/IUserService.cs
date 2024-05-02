@@ -8,6 +8,7 @@ namespace ParrotsAPI2.Services.User
     {
         Task<ServiceResponse<List<GetUserDto>>> GetAllUsers();
         Task<ServiceResponse<GetUserDto>> GetUserById(string id);
+        Task<ServiceResponse<List<UserDto>>> GetUsersByUsername(string username);
         Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser);
         Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser);
         Task<ServiceResponse<GetUserDto>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser);

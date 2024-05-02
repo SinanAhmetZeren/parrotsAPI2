@@ -100,6 +100,7 @@ namespace ParrotsAPI2.Hubs
             _dbContext.Messages.Add(message);
             await _dbContext.SaveChangesAsync();
             var receiverConnectionId = await GetConnectionIdForUser(receiverId);
+            //var senderConnectionId = await GetConnectionIdForUser(senderId);
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(c => c.Id == senderId);
             var senderProfileUrl = user.ProfileImageUrl;
@@ -110,6 +111,11 @@ namespace ParrotsAPI2.Hubs
             {
                 await Clients.Client(receiverConnectionId)
                     .SendAsync("ReceiveMessage", senderId, content, newTime, senderProfileUrl, senderUsername);
+                await Clients.Client(receiverConnectionId)
+                   .SendAsync("ReceiveMessageRefetch");
+                //await Clients.Client(senderConnectionId)
+                //    .SendAsync("ReceiveMessageRefetch");
+
             }
             return;
 

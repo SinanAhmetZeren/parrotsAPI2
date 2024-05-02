@@ -127,6 +127,18 @@ namespace ParrotsAPI2.Controllers
         }
 
 
+
+        [HttpGet("searchUsers/{username}")]
+        public async Task<ActionResult<ServiceResponse<List<UserDto>>>> GetUsersByUsername(string username)
+        {
+            return Ok(await _userService.GetUsersByUsername(username));
+        }
+
+
+
+
+        
+
     }
 }
 

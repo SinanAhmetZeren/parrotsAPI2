@@ -302,6 +302,41 @@ namespace ParrotsAPI2.Services.User
             }
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<UserDto>>> GetUsersByUsername(string username)
+        {
+            var serviceResponse = new ServiceResponse<List<UserDto>>();
+
+            if (username  == "null")
+            {
+                serviceResponse.Data = null;
+                serviceResponse.Message = "Username is null";
+                return serviceResponse;
+            };
+
+            var searchUsers = await _context.Users
+                        .Where(u => u.UserName == username).ToListAsync();
+
+            if (searchUsers != null && searchUsers.Any())
+            {
+                var userDtos = searchUsers.Select(user => new UserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    ProfileImageUrl = user.ProfileImageUrl,
+                }).ToList();
+
+                serviceResponse.Data = userDtos;
+            }
+            else
+            {
+                serviceResponse.Message = "No users found with the specified username";
+            }
+
+            return serviceResponse;
+        }
+
+
     }
 
 

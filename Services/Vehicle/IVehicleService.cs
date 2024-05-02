@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ParrotsAPI2.Dtos.VehicleDtos;
+using ParrotsAPI2.Dtos.VehicleImageDtos;
 
 namespace ParrotsAPI2.Services.Vehicle
 {
@@ -15,6 +16,7 @@ namespace ParrotsAPI2.Services.Vehicle
         Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile);
         Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile);
         Task<ServiceResponse<string>> DeleteVehicleImage(int vehicleImageId);
+        Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId);
 
 
     }
