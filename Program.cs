@@ -152,14 +152,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.MapHub<ChatHub>("/chathub/11");
-/*
-app.UseCors(builder =>
-{
-    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost");
-    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("ws://localhost");
-    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost");
-});
-*/
+
 app.UseCors("AllowAll");
 app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();

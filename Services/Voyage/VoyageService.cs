@@ -42,8 +42,9 @@ namespace ParrotsAPI2.Services.Voyage
             
             voyage.User = user; 
             voyage.Vehicle = vehicle;
-            voyage.VehicleImage = vehicle.ProfileImageUrl;
+            voyage.VehicleImage = vehicle?.ProfileImageUrl;
             voyage.ProfileImage = voyageProfileImage;
+            voyage.VehicleType = vehicle.Type;
 
             
             _context.Voyages.Add(voyage);
