@@ -17,6 +17,7 @@
         public string BackgroundImageUrl { get; set; }
         public IFormFile ImageFile { get; set; }
         public bool UnseenMessages { get; set; }
+        public bool EmailVisible { get; set; }
         public List<GetUsersVehiclesDto>? UsersVehicles { get; set; }
         public List<GetUsersVoyagesDto>? UsersVoyages { get; set; }
         public List<Bid>? Bids { get; set; }

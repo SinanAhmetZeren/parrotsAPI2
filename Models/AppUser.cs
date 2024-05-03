@@ -19,6 +19,7 @@ namespace ParrotsAPI2.Models
         public string? BackgroundImageUrl { get; set; }
 
         public bool UnseenMessages { get; set; } = false;
+        public bool EmailVisible { get; set; } = false;
         public string? ConnectionId { get; set; }
         public List<Vehicle>? Vehicles { get; set; }
         public List<Voyage>? Voyages { get; set; }

@@ -21,32 +21,32 @@ namespace ParrotsAPI2.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<AppUser>()
-    .HasKey(u => u.Id);
+                .HasKey(u => u.Id);
 
             modelBuilder.Entity<Vehicle>()
                 .HasOne(v => v.User)
                 .WithMany(u => u.Vehicles)
                 .HasForeignKey(v => v.UserId)
                 .HasPrincipalKey(u => u.Id)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade on user deletion
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Vehicles)
                 .WithOne(v => v.User)
                 .HasForeignKey(v => v.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade on user deletion
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Voyages)
                 .WithOne(v => v.User)
                 .HasForeignKey(v => v.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade on user deletion
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Bids)
                 .WithOne(b => b.User)
                 .HasForeignKey(b => b.UserId)
-                .OnDelete(DeleteBehavior.NoAction); // No cascade on user deletion for bids
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<Message>()
                 .HasOne<AppUser>()
@@ -64,7 +64,7 @@ namespace ParrotsAPI2.Data
                 .HasMany(v => v.VehicleImages)
                 .WithOne(vi => vi.Vehicle)
                 .HasForeignKey(vi => vi.VehicleId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade on vehicle deletion
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<Vehicle>()
                 .HasMany(v => v.Voyages)
@@ -82,13 +82,13 @@ namespace ParrotsAPI2.Data
                 .HasMany(v => v.VoyageImages)
                 .WithOne(vi => vi.Voyage)
                 .HasForeignKey(vi => vi.VoyageId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade on voyage deletion
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<Voyage>()
                 .HasMany(v => v.Waypoints)
                 .WithOne(w => w.Voyage)
                 .HasForeignKey(w => w.VoyageId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade on voyage deletion
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Vehicles)
