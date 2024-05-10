@@ -173,6 +173,12 @@ namespace ParrotsAPI2.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ConfirmationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ConnectionId")
                         .HasColumnType("nvarchar(max)");
 

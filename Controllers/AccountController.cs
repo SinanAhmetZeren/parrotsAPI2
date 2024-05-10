@@ -1,9 +1,13 @@
-﻿using System.Security.Claims;
+﻿using System.Net.Mail;
+using System.Net;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.RegisterLoginDtos;
+using ParrotsAPI2.Helpers;
+using ParrotsAPI2.Models;
 using ParrotsAPI2.Services.Token;
 
 namespace API.Controllers
@@ -27,46 +31,215 @@ namespace API.Controllers
         {
             var user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
-            if (user == null) return Unauthorized();
+            if (user == null || !user.Confirmed)
+            {
+                return Unauthorized("User not found or not confirmed");
+            }
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (result)
             {
                 return CreateUserObject(user);
             }
-            return Unauthorized();
+            return Unauthorized("Invalid password");
         }
+
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
         {
-            if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
+
+            CodeGenerator codeGenerator = new CodeGenerator();
+            string confirmationCode = codeGenerator.GenerateCode();
+
+            //var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
+
+            var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == registerDto.Email);
+
+
+            if (existingUser != null)
             {
-                ModelState.AddModelError("email", "Email taken");
+                if (existingUser.Confirmed)
+                {
+                    // USER EXISTS AND CONFIRMED
+                    ModelState.AddModelError("email", "Email taken");
+                    return ValidationProblem();
+                }
+                else
+                {
+                    // USER EXISTS AND NOT CONFIRMED
+
+                    string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+                    Random random = new Random();
+                    int randomIndex = random.Next(0, images.Length);
+                    string selectedImage = images[randomIndex];
+
+                    existingUser.UserName = registerDto.UserName;
+                    existingUser.ProfileImageUrl = selectedImage; 
+                    existingUser.ConfirmationCode = confirmationCode;
+                    existingUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
+                    existingUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+
+
+
+                    var passwordHasher = new PasswordHasher<AppUser>();
+                    existingUser.PasswordHash = passwordHasher.HashPassword(existingUser, registerDto.Password);
+                    
+                    var updateResult = await _userManager.UpdateAsync(existingUser);
+                    if (!updateResult.Succeeded)
+                    {
+                        return StatusCode(500); 
+                    }   
+
+                    EmailSender emailSender = new EmailSender();
+                    _ = emailSender.SendConfirmationEmail(existingUser.Email, existingUser.ConfirmationCode, existingUser.UserName);
+
+                    return CreateUserObject(existingUser);
+                    }
+                }
+
+            else
+            {
+                // USER DOES NOT EXIST
+
+                string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+                Random random = new Random();
+                int randomIndex = random.Next(0, images.Length);
+                string selectedImage = images[randomIndex];
+
+                var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+                var newUser = new AppUser
+                    {
+                        Email = normalizedEmail,
+                        UserName = registerDto.UserName,
+                        ProfileImageUrl = selectedImage,
+                        ConfirmationCode = confirmationCode,
+                    };
+                newUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
+                newUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+
+                var result = await _userManager.CreateAsync(newUser, registerDto.Password);
+                if (result.Succeeded)
+                {
+                    EmailSender emailSender = new EmailSender();
+                    _ = emailSender.SendConfirmationEmail(newUser.Email, confirmationCode, newUser.UserName);
+                    return CreateUserObject(newUser);
+                }
+                else
+                {
+                    return BadRequest(result.Errors);
+                }
+            }
+        }
+
+
+
+        [AllowAnonymous]
+        [HttpPost("sendCode/{email}")]
+        public async Task<ActionResult<UserResponseDto>> SendCode(string email)
+        {
+            var normalizedEmail = _userManager.NormalizeEmail(email);
+            var existingConfirmedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == normalizedEmail && u.Confirmed);
+            if (existingConfirmedUser != null)
+            {
+                CodeGenerator codeGenerator = new CodeGenerator();
+                string confirmationCode = codeGenerator.GenerateCode();
+                existingConfirmedUser.ConfirmationCode = confirmationCode;
+                var updateResult = await _userManager.UpdateAsync(existingConfirmedUser);
+
+                if (updateResult.Succeeded)
+                {
+                    EmailSender emailSender = new EmailSender();
+                    _ = emailSender.SendConfirmationEmail(normalizedEmail, confirmationCode, existingConfirmedUser.UserName);
+                    return Ok();
+
+                }
+
+            }
+                return BadRequest();
+        }
+        
+
+
+
+        [AllowAnonymous]
+        [HttpPost("resetPassword")]
+        public async Task<ActionResult<UserResponseDto>> ResetPassword(UpdatePasswordDto updatePasswordDto)
+        {
+
+            CodeGenerator codeGenerator = new CodeGenerator();
+            string confirmationCode = codeGenerator.GenerateCode();
+
+            var existingUser = await _userManager.Users.FirstOrDefaultAsync(u =>
+                u.Email == updatePasswordDto.Email && 
+                u.ConfirmationCode == updatePasswordDto.ConfirmationCode && 
+                u.Confirmed);
+
+            if (existingUser == null)
+            {
+                ModelState.AddModelError("email", "Invalid email or confirmation code");
                 return ValidationProblem();
             }
 
-            /////
-            string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
-            Random random = new Random();
-            int randomIndex = random.Next(0, images.Length);
-            string selectedImage = images[randomIndex];
-            /////
 
-            var user = new AppUser
-            {
-                Email = registerDto.Email,
-                UserName = registerDto.UserName,
-                ProfileImageUrl = selectedImage,
-            };
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(existingUser);
+            var result = await _userManager.ResetPasswordAsync(existingUser, token, updatePasswordDto.Password);
+
             if (result.Succeeded)
             {
-                return CreateUserObject(user);
+                existingUser.ConfirmationCode = null;
+                await _userManager.UpdateAsync(existingUser);
+                var userResponse = new UserResponseDto
+                {
+                    Email = existingUser.Email,
+                    UserName = existingUser.UserName,
+                    UserId = existingUser.Id,
+                    ProfileImageUrl = existingUser.ProfileImageUrl,
+                    Token = _tokenService.CreateToken(existingUser) 
+                };
+
+                return Ok(userResponse);
+            }
+            else
+            {
+                return BadRequest("Password reset failed");
             }
 
 
-            return BadRequest(result.Errors);
+        }
+
+
+
+
+
+        [AllowAnonymous]
+        [HttpPost("confirmCode")]
+        public async Task<ActionResult<UserResponseDto>> ConfirmCode(ConfirmDto confirmDto)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == confirmDto.Email);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            if (user.ConfirmationCode != confirmDto.Code)
+            {
+                return BadRequest("Invalid confirmation code");
+            }
+
+            user.Confirmed = true;
+            user.ConfirmationCode = null;
+            await _userManager.UpdateAsync(user);
+
+            return new UserResponseDto
+            {
+                Token = _tokenService.CreateToken(user),
+                UserName = user.UserName,
+                Email = user.Email,
+                UserId = user.Id,
+                ProfileImageUrl = user.ProfileImageUrl,
+            };
+
         }
 
         [Authorize]
@@ -96,5 +269,9 @@ namespace API.Controllers
                 ProfileImageUrl = user.ProfileImageUrl,
             };
         }
+
+
     }
 }
+
+

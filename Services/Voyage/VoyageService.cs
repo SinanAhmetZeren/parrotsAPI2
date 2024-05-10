@@ -57,38 +57,7 @@ namespace ParrotsAPI2.Services.Voyage
 
         }
 
-        /*
-        public async Task<ServiceResponse<GetVoyageDto>> AddVoyageImage(int voyageId, IFormFile imageFile)
-        {
-            var serviceResponse = new ServiceResponse<GetVoyageDto>();
-            var existingVoyage = await _context.Voyages
-                .Include(v => v.VoyageImages)
-                .FirstOrDefaultAsync(v => v.Id == voyageId);
-            if (existingVoyage == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "Voyage not found";
-                return serviceResponse;
-            }
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-            var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(stream);
-            }
-            var newVoyageImage = new VoyageImage
-            {
-                VoyageImagePath = fileName
-            };
-            existingVoyage.VoyageImages ??= new List<VoyageImage>();
-            existingVoyage.VoyageImages.Add(newVoyageImage);
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = _mapper.Map<GetVoyageDto>(existingVoyage);
-
-            return serviceResponse;
-        }
-        */
-
+      
         public async Task<ServiceResponse<string>> AddVoyageImage(int voyageId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<string>();
