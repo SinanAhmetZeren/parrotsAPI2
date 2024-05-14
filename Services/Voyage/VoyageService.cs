@@ -406,6 +406,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2))
+                    .Where(v => v.LastBidDate >= DateTime.Today) 
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
                     .Include(v => v.Waypoints.Where(w => w.Order == 1))
@@ -533,17 +534,12 @@ namespace ParrotsAPI2.Services.Voyage
                     query = query.Where(v => v.EndDate <= endDate.Value);
                 }
 
-                //if (vehicleType.HasValue)
-                //{
-                //    query = query.Where(v => v.Vehicle.Type == vehicleType.Value);
-                //}
-
                 if (vehicleType.HasValue && Enum.IsDefined(typeof(VehicleType), vehicleType.Value))
                 {
                     query = query.Where(v => v.Vehicle.Type == (VehicleType)vehicleType.Value);
                 }
 
-
+                query = query.Where(v => v.LastBidDate >= DateTime.Today);
 
                 var queryResult = await query.ToListAsync();
                 var filteredVoyages = queryResult.Select(voyage =>
