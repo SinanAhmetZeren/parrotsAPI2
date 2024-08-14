@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.User;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Models;
+using System.Diagnostics;
+using Microsoft.Extensions.Logging; // Ensure you have a logger
+
 
 namespace ParrotsAPI2.Services.User
 {
@@ -15,11 +18,15 @@ namespace ParrotsAPI2.Services.User
 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly ILogger<UserService> _logger; 
 
-        public UserService(IMapper mapper, DataContext context)
+
+        public UserService(IMapper mapper, DataContext context, ILogger<UserService> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
+
         }
 
         public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
@@ -84,6 +91,17 @@ namespace ParrotsAPI2.Services.User
         public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            if (string.IsNullOrEmpty(id))
+            {
+                serviceResponse.Data = null;
+                serviceResponse.Message = "Id is null";
+                stopwatch.Stop();
+                _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
+                return serviceResponse;
+            }
 
             if (id == "null") {
                 serviceResponse.Data = null;
@@ -98,8 +116,10 @@ namespace ParrotsAPI2.Services.User
                 .Include(u => u.Vehicles)
                 .Include(u => u.Voyages)
                 .Include(u => u.Bids)
+                .AsSplitQuery() 
                 .FirstOrDefaultAsync(c => c.Id == id);
 
+            stopwatch.Stop();
 
             var usersVehicles = user.Vehicles;
             List<GetUsersVehiclesDto> vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(usersVehicles);
@@ -136,6 +156,7 @@ namespace ParrotsAPI2.Services.User
             {
                 serviceResponse.Message = "User not found";
             }
+            _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
 
             return serviceResponse;
         }
@@ -314,10 +335,10 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Data = null;
                 serviceResponse.Message = "Username is null";
                 return serviceResponse;
-            };
+            }
 
             var searchUsers = await _context.Users
-                        .Where(u => u.UserName == username).ToListAsync();
+                        .Where(u => u.UserName.Contains(username)).ToListAsync();
 
             if (searchUsers != null && searchUsers.Any())
             {
