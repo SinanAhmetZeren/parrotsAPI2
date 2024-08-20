@@ -170,6 +170,100 @@ namespace ParrotsAPI2.Services.Vehicle
             return serviceResponse;
         }
 
+
+
+        public async Task<ServiceResponse<string>> CheckAndDeleteVehicle(int id)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+
+            // Find the vehicle by ID
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            if (vehicle == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Vehicle with ID `{id}` not found";
+                return serviceResponse;
+            }
+
+            // Check if there are any vehicle images associated with the vehicle
+            var vehicleImagesExist = await _context.VehicleImages
+                .AnyAsync(vi => vi.VehicleId == id);
+
+            if (vehicleImagesExist)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Vehicle not deleted because it has associated images.";
+                return serviceResponse;
+            }
+
+            // If no vehicle images exist, proceed with deletion of the vehicle and related entities
+
+            // Get voyageIds - by vehicleId
+            var voyageIds = await _context.Voyages
+                .Where(v => v.VehicleId == id)
+                .Select(v => v.Id)
+                .ToListAsync();
+
+            // Delete voyageImages - by voyageIds
+            if (voyageIds.Count > 0)
+            {
+                var voyageImagesToDelete = await _context.VoyageImages
+                    .Where(vi => voyageIds.Contains(vi.VoyageId))
+                    .ToListAsync();
+                _context.VoyageImages.RemoveRange(voyageImagesToDelete);
+                await _context.SaveChangesAsync();
+            }
+
+            // Delete bids - by voyageIds
+            if (voyageIds.Count > 0)
+            {
+                var bidsToDelete = await _context.Bids
+                    .Where(b => voyageIds.Contains(b.VoyageId))
+                    .ToListAsync();
+                _context.Bids.RemoveRange(bidsToDelete);
+                await _context.SaveChangesAsync();
+            }
+
+            // Delete waypoints - by voyageIds
+            if (voyageIds.Count > 0)
+            {
+                var waypointsToDelete = await _context.Waypoints
+                    .Where(w => voyageIds.Contains(w.VoyageId))
+                    .ToListAsync();
+                _context.Waypoints.RemoveRange(waypointsToDelete);
+                await _context.SaveChangesAsync();
+            }
+
+            // Delete voyages - by vehicleId
+            var voyagesToDelete = await _context.Voyages
+                .Where(v => v.VehicleId == id)
+                .ToListAsync();
+            if (voyagesToDelete.Count > 0)
+            {
+                _context.Voyages.RemoveRange(voyagesToDelete);
+                await _context.SaveChangesAsync();
+            }
+
+            // Delete the vehicle
+            try
+            {
+                _context.Vehicles.Remove(vehicle);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = "Vehicle successfully deleted";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
+
+
+
+
         public async Task<ServiceResponse<List<GetVehicleDto>>> GetAllVehicles()
         {
             var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();

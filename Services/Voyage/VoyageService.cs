@@ -129,6 +129,71 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+
+
+        public async Task<ServiceResponse<List<GetVoyageDto>>> CheckAndDeleteVoyage(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            try
+            {
+                var voyage = await _context.Voyages.FindAsync(id);
+                if (voyage == null)
+                {
+                    throw new Exception($"Voyage with ID `{id}` not found");
+                }
+
+                // Fetch waypoints and voyage images
+                var waypointsToDelete = await _context.Waypoints
+                    .Where(w => w.VoyageId == id)
+                    .ToListAsync();
+
+                var voyageImagesToDelete = await _context.VoyageImages
+                    .Where(vi => vi.VoyageId == id)
+                    .ToListAsync();
+
+                // Check if there are no waypoints or no voyage images
+                if (!waypointsToDelete.Any() || !voyageImagesToDelete.Any())
+                {
+                    // Proceed with deletion
+                    var bidsToDelete = await _context.Bids
+                        .Where(b => b.VoyageId == id)
+                        .ToListAsync();
+
+                    
+                    _context.VoyageImages.RemoveRange(voyageImagesToDelete);
+                    _context.Waypoints.RemoveRange(waypointsToDelete);
+                    _context.Bids.RemoveRange(bidsToDelete);
+                    _context.Voyages.Remove(voyage);
+                    await _context.SaveChangesAsync();
+                    
+                    //Console.WriteLine("---------------------");
+                    //Console.WriteLine("proceed with deletion");
+                    //Console.WriteLine("---------------------");
+                    // Get the remaining voyages after deletion
+                    var voyages = await _context.Voyages.ToListAsync();
+                    serviceResponse.Data = voyages.Select(c => _mapper.Map<GetVoyageDto>(c)).ToList();
+                }
+                else
+                {
+                    // Do nothing if both waypoints and voyage images exist
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Voyage has associated waypoints and images, deletion aborted.";
+                }
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error deleting voyage: {ex.Message}";
+                if (ex.InnerException != null)
+                {
+                    serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
+                }
+            }
+            return serviceResponse;
+        }
+
+
+
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetAllVoyages()
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();

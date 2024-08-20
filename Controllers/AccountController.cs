@@ -51,11 +51,7 @@ namespace API.Controllers
 
             CodeGenerator codeGenerator = new CodeGenerator();
             string confirmationCode = codeGenerator.GenerateCode();
-
-            //var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
-
             var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == registerDto.Email);
-
 
             if (existingUser != null)
             {
@@ -107,16 +103,17 @@ namespace API.Controllers
                 int randomIndex = random.Next(0, images.Length);
                 string selectedImage = images[randomIndex];
 
-                var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
                 var newUser = new AppUser
                     {
-                        Email = normalizedEmail,
+                        Email = registerDto.Email,
                         UserName = registerDto.UserName,
                         ProfileImageUrl = selectedImage,
                         ConfirmationCode = confirmationCode,
                     };
-                newUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
-                newUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+
+                newUser.EmailConfirmed = true;
+                newUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email); 
+                newUser.NormalizedUserName = _userManager.NormalizeName (registerDto.UserName);
 
                 var result = await _userManager.CreateAsync(newUser, registerDto.Password);
                 if (result.Succeeded)
@@ -131,8 +128,6 @@ namespace API.Controllers
                 }
             }
         }
-
-
 
         [AllowAnonymous]
         [HttpPost("sendCode/{email}")]
@@ -159,9 +154,6 @@ namespace API.Controllers
                 return BadRequest();
         }
         
-
-
-
         [AllowAnonymous]
         [HttpPost("resetPassword")]
         public async Task<ActionResult<UserResponseDto>> ResetPassword(UpdatePasswordDto updatePasswordDto)
@@ -207,10 +199,6 @@ namespace API.Controllers
 
 
         }
-
-
-
-
 
         [AllowAnonymous]
         [HttpPost("confirmCode")]

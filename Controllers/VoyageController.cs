@@ -86,6 +86,18 @@ namespace ParrotsAPI2.Controllers
 
         }
 
+        [HttpDelete("checkAndDeleteVoyage/{id}")]
+        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> CheckAndDeleteVoyage(int id)
+        {
+            var response = await _voyageService.CheckAndDeleteVoyage(id);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+
+        }
+
         [Consumes("multipart/form-data")]
         [HttpPost("{voyageId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile)

@@ -85,6 +85,19 @@ namespace ParrotsAPI2.Controllers
 
         }
 
+        [HttpDelete("checkAndDeleteVehicle/{id}")]
+        public async Task<ActionResult<ServiceResponse<string>>> CheckAndDeleteVehicle(int id)
+        {
+            var response = await _vehicleService.CheckAndDeleteVehicle(id);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+
+        }
+
+
         [Consumes("multipart/form-data")]
         [HttpPost("{vehicleId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile)
