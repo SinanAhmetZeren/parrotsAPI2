@@ -137,6 +137,9 @@ namespace ParrotsAPI2.Services.User
                     Bio = user.Bio,
                     Email = user.Email,
                     Instagram = user.Instagram,
+                    Twitter = user.Twitter,
+                    Tiktok = user.Tiktok,
+                    Linkedin = user.Linkedin,
                     Facebook = user.Facebook,
                     PhoneNumber = user.PhoneNumber,
                     Youtube = user.Youtube,
@@ -177,6 +180,9 @@ namespace ParrotsAPI2.Services.User
                 user.Email = updatedUser.Email;
                 user.Instagram = updatedUser.Instagram;
                 user.Facebook = updatedUser.Facebook;
+                user.Twitter = updatedUser.Twitter;
+                user.Tiktok = updatedUser.Tiktok;
+                user.Linkedin = updatedUser.Linkedin;
                 user.PhoneNumber = updatedUser.PhoneNumber;
                 user.Youtube = updatedUser.Youtube;
                 user.ProfileImageUrl = updatedUser.ProfileImageUrl;

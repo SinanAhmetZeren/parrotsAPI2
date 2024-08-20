@@ -12,6 +12,9 @@ namespace ParrotsAPI2.Models
         public string? Facebook { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Youtube { get; set; }
+        public string? Tiktok { get; set; }
+        public string? Twitter { get; set; }
+        public string? Linkedin { get; set; }
         public string? ProfileImageUrl { get; set; }
         public string? BackgroundImageUrl { get; set; }
         public bool UnseenMessages { get; set; } = false;
