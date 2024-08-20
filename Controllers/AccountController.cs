@@ -29,8 +29,12 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserResponseDto>> Login(LoginDto loginDto)
         {
+            var normalizedEmail = _userManager.NormalizeEmail(loginDto.Email);
             var user = await _userManager.Users
-                .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+                .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
+
+            //var user = await _userManager.Users
+            //    .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
             if (user == null || !user.Confirmed)
             {
                 return Unauthorized("User not found or not confirmed");
