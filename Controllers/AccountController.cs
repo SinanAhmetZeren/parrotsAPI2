@@ -54,16 +54,34 @@ namespace API.Controllers
         {
 
             CodeGenerator codeGenerator = new CodeGenerator();
+            var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+            var normalizedUserName = _userManager.NormalizeName(registerDto.UserName);
             string confirmationCode = codeGenerator.GenerateCode();
-            var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == registerDto.Email);
+            var existingUser = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail || u.NormalizedUserName == normalizedUserName);
+
+
 
             if (existingUser != null)
             {
                 if (existingUser.Confirmed)
                 {
-                    // USER EXISTS AND CONFIRMED
-                    ModelState.AddModelError("email", "Email taken");
+                    if (existingUser.NormalizedEmail == normalizedEmail && 
+                        existingUser.NormalizedUserName == normalizedUserName)
+                    {
+                        ModelState.AddModelError("Email and Username", "Email and Username are already taken");
+                    }
+
+                    else if (existingUser.NormalizedEmail == normalizedEmail )
+                    {
+                        ModelState.AddModelError("Email", "Email is already taken");
+                    }
+                    else if (existingUser.NormalizedUserName == normalizedUserName)
+                    {
+                        ModelState.AddModelError("Username", "Username is already taken");
+                    }
                     return ValidationProblem();
+
                 }
                 else
                 {
