@@ -33,8 +33,6 @@ namespace API.Controllers
             var user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
 
-            //var user = await _userManager.Users
-            //    .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
             if (user == null || !user.Confirmed)
             {
                 return Unauthorized("User not found or not confirmed");
@@ -156,7 +154,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserResponseDto>> SendCode(string email)
         {
             var normalizedEmail = _userManager.NormalizeEmail(email);
-            var existingConfirmedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == normalizedEmail && u.Confirmed);
+            var existingConfirmedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail && u.Confirmed);
             if (existingConfirmedUser != null)
             {
                 CodeGenerator codeGenerator = new CodeGenerator();
@@ -184,10 +182,14 @@ namespace API.Controllers
             CodeGenerator codeGenerator = new CodeGenerator();
             string confirmationCode = codeGenerator.GenerateCode();
 
+            var normalizedEmail = _userManager.NormalizeEmail(updatePasswordDto.Email);
+
             var existingUser = await _userManager.Users.FirstOrDefaultAsync(u =>
-                u.Email == updatePasswordDto.Email && 
+                u.NormalizedEmail == normalizedEmail && 
                 u.ConfirmationCode == updatePasswordDto.ConfirmationCode && 
                 u.Confirmed);
+
+
 
             if (existingUser == null)
             {
@@ -226,7 +228,10 @@ namespace API.Controllers
         [HttpPost("confirmCode")]
         public async Task<ActionResult<UserResponseDto>> ConfirmCode(ConfirmDto confirmDto)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == confirmDto.Email);
+            var normalizedEmail = _userManager.NormalizeEmail(confirmDto.Email);
+
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
             if (user == null)
             {
                 return BadRequest("User not found");
@@ -256,8 +261,13 @@ namespace API.Controllers
         [HttpGet("getCurrentUser")]
         public async Task<ActionResult<UserResponseDto>> GetCurrentUser()
         {
+
+            var normalizedEmail = User.FindFirstValue(ClaimTypes.Email)?.ToUpper();
             var user = await _userManager.Users
-                .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+                .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
+
+            //var user = await _userManager.Users
+            //    .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
             if (user != null)
             {
                 return CreateUserObject(user);
