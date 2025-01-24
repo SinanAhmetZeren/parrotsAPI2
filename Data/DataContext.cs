@@ -6,7 +6,6 @@ namespace ParrotsAPI2.Data
     public class DataContext : IdentityDbContext<AppUser>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-        public DbSet<Character> Characters => Set<Character>();
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }

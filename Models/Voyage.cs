@@ -25,6 +25,7 @@ namespace ParrotsAPI2.Models
         public int? VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
         public string? VehicleImage { get; set; }         
+        public string? VehicleName { get; set; }
         public VehicleType VehicleType { get; set; }
     }
 

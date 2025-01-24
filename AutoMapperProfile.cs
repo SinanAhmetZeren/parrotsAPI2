@@ -13,8 +13,6 @@ namespace ParrotsAPI2
     {
         public AutoMapperProfile()
         {
-            CreateMap<Character, GetCharacterDto>();
-            CreateMap<AddCharacterDto, Character>();
             
             CreateMap<AppUser, GetUserDto>();
             CreateMap<AddUserDto, AppUser>();

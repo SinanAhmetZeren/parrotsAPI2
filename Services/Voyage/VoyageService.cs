@@ -45,8 +45,9 @@ namespace ParrotsAPI2.Services.Voyage
             voyage.VehicleImage = vehicle?.ProfileImageUrl;
             voyage.ProfileImage = voyageProfileImage;
             voyage.VehicleType = vehicle.Type;
+            voyage.VehicleName = vehicle.Name;
 
-            
+
             _context.Voyages.Add(voyage);
             await _context.SaveChangesAsync();
             var updatedVoyages = await _context.Voyages.ToListAsync();

@@ -17,5 +17,6 @@
         public string ProfileImage { get; set; }
         public int? VehicleId { get; set; }
         public string? VehicleImage { get; set; }
+        public string? VehicleName { get; set; }
     }
 }

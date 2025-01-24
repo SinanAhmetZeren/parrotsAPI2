@@ -1,28 +1,6 @@
-/*
-Install - Package Pomelo.EntityFrameworkCore.MySql
-
-program.cs:
-using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-
-services.AddDbContext<DataContext>(options =>
-    options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), 
-        new MySqlServerVersion(new Version(8, 0, 23)),
-        mySqlOptions => mySqlOptions
-            .CharSetBehavior(CharSetBehavior.NeverAppend)));
-
-appsettings:
-"DefaultConnection": "Server=localhost;Database=YourDatabaseName;User=YourUsername;Password=YourPassword;"
-
-csproj:
-<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.4" />
-*/
-
 
 
 global using ParrotsAPI2.Models;
-global using ParrotsAPI2.Services;
-global using ParrotsAPI2.Dtos.Character;
 global using ParrotsAPI2.Dtos.User;
 global using ParrotsAPI2.Dtos.VehicleDtos;
 global using ParrotsAPI2.Dtos.VoyageDtos;
@@ -35,7 +13,6 @@ global using ParrotsAPI2.Services.Vehicle;
 global using ParrotsAPI2.Services.Voyage;
 global using ParrotsAPI2.Services.Waypoint;
 global using ParrotsAPI2.Services.Message;
-global using ParrotsAPI2.Services.Character;
 global using ParrotsAPI2.Hubs;
 global using Microsoft.AspNetCore.Identity;
 using ParrotsAPI2.Services.Token;
@@ -55,12 +32,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Parrots API", Version = "v1" });
     var securityScheme = new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -80,10 +57,10 @@ builder.Services.AddSwaggerGen(c =>
 
 
 
+
 builder.Services.AddSignalR();
 builder.Logging.AddConsole();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IVoyageService, VoyageService>();
@@ -119,23 +96,15 @@ builder.Services.AddCors(options =>
 });
 
 
-// builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowSpecificOrigin", builder =>
-//    {
-//        builder.WithOrigins("http://localhost")
-//               .AllowAnyHeader()
-//               .AllowAnyMethod();
-//    });
-//});
-
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
+
+    
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Parrots API V1");
         c.DocExpansion(DocExpansion.List);
         c.EnableDeepLinking();
         c.DisplayOperationId();
@@ -144,7 +113,7 @@ if (app.Environment.IsDevelopment())
         c.EnableValidator();
         c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Head, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Patch, SubmitMethod.Delete);
     });
-
+    
 
 
 
@@ -154,7 +123,7 @@ app.UseHttpsRedirection();
 app.MapHub<ChatHub>("/chathub/11");
 
 app.UseCors("AllowAll");
-app.UseCors("AllowSpecificOrigin");
+//app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.MapControllers();
 app.UseRouting();
