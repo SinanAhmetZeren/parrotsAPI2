@@ -18,5 +18,7 @@
         public int? VehicleId { get; set; }
         public string? VehicleImage { get; set; }
         public string? VehicleName { get; set; }
+        public VehicleType VehicleType { get; set; }
+
     }
 }
