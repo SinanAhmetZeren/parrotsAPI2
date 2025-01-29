@@ -198,19 +198,25 @@ namespace ParrotsAPI2.Services.Message
                     .Select(g => g.OrderByDescending(m => m.DateTime).FirstOrDefault())
                     .ToListAsync();
 
-                if (latestMessages == null || latestMessages.Count == 0)
+                if (!latestMessages.Any())
                 {
                     serviceResponse.Success = false;
-                    serviceResponse.Message = "No messages found for the given user ID";
+                    serviceResponse.Message = "No messages found for the given user ID.";
                     return serviceResponse;
                 }
 
-                var messageDtos = new List<GetMessageDto>();
+                //if (latestMessages == null || latestMessages.Count == 0)
+                //{
+                //    serviceResponse.Success = false;
+                //    serviceResponse.Message = "No messages found for the given user ID";
+                //    return serviceResponse;
+                //}
 
+                var messageDtos = new List<GetMessageDto>();
                 foreach (var message in latestMessages)
                 {
-                    var senderId = message.SenderId == userId ? message.ReceiverId : message.SenderId;
-                    var sender = await _context.Users.FindAsync(senderId);
+                    var sender = await _context.Users.FindAsync(message.SenderId);
+                    var receiver = await _context.Users.FindAsync(message.ReceiverId);
 
                     messageDtos.Add(new GetMessageDto
                     {
@@ -223,8 +229,8 @@ namespace ParrotsAPI2.Services.Message
                         ReceiverId = message.ReceiverId,
                         SenderProfileUrl = sender?.ProfileImageUrl,
                         SenderUsername = sender?.UserName,
-                        ReceiverProfileUrl = sender?.ProfileImageUrl,
-                        ReceiverUsername = sender?.UserName
+                        ReceiverProfileUrl = receiver?.ProfileImageUrl,
+                        ReceiverUsername = receiver?.UserName
                     });
                 }
                 serviceResponse.Data = messageDtos;
