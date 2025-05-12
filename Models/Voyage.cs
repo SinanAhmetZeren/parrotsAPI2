@@ -30,6 +30,6 @@ namespace ParrotsAPI2.Models
         public DateTime CreatedAt { get; set; }
         public bool Confirmed { get; set; }
     }
-
+    
 
 }

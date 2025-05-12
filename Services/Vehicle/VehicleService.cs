@@ -347,7 +347,7 @@ namespace ParrotsAPI2.Services.Vehicle
         {
             var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
             var vehicles = await _context.Vehicles
-                .Where(v => v.UserId == userId)
+                .Where(v => v.UserId == userId && v.Confirmed == true)
                 .ToListAsync();
             serviceResponse.Data = _mapper.Map<List<GetVehicleDto>>(vehicles);
             return serviceResponse;
@@ -471,8 +471,27 @@ namespace ParrotsAPI2.Services.Vehicle
             return response;
         }
 
+        public async Task<ServiceResponse<string>> ConfirmVehicle(int vehicleId)
+        {
 
+            var serviceResponse = new ServiceResponse<string>();
 
+            var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == vehicleId);
+
+            if (vehicle == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "vehicle not found.";
+                return serviceResponse;
+            }
+            
+            vehicle.Confirmed = true;
+            await _context.SaveChangesAsync();
+
+            serviceResponse.Data = "vehicle confirmed";
+            return serviceResponse;
+
+        }
 
     }
 }

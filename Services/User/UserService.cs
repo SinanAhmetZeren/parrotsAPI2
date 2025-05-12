@@ -121,11 +121,12 @@ namespace ParrotsAPI2.Services.User
 
             stopwatch.Stop();
 
-            var usersVehicles = user.Vehicles;
-            List<GetUsersVehiclesDto> vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(usersVehicles);
+            var confirmedVehicles = user.Vehicles.Where(v => v.Confirmed).ToList();
+            var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
 
-            var usersVoyages = user.Voyages;
-            List<GetUsersVoyagesDto> voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(usersVoyages);
+            var confirmedVoyages = user.Voyages.Where(v => v.Confirmed).ToList();
+            var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
+
 
             if (user != null)
             {

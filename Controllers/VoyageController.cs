@@ -50,7 +50,7 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [HttpPost("/ConfirmVoyage/{voyageId}")]
+        [HttpPost("ConfirmVoyage/{voyageId}")]
         public async Task<IActionResult> ConfirmVoyage(int voyageId)
         {
             var response = await _voyageService.ConfirmVoyage(voyageId);
