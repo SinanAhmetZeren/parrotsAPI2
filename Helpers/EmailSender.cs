@@ -14,7 +14,7 @@ namespace ParrotsAPI2.Helpers
                 var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential("parrotsapp@gmail.com", "ytdo gihz mfke kfzt"),
+                    Credentials = new NetworkCredential("parrotsapp@gmail.com", "luno njqb wtvr aubg"),
                     EnableSsl = true,
                 };
                 string body = $"Welcome to Parrots {username}! \nYour confirmation code is: {confirmationCode}";

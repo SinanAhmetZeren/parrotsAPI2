@@ -153,8 +153,12 @@ namespace API.Controllers
         [HttpPost("sendCode/{email}")]
         public async Task<ActionResult<UserResponseDto>> SendCode(string email)
         {
+            Console.WriteLine("email: ",email);
             var normalizedEmail = _userManager.NormalizeEmail(email);
+            Console.WriteLine("normalizedEmail",normalizedEmail);
             var existingConfirmedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail && u.Confirmed);
+            Console.WriteLine("existingUser",existingConfirmedUser);
+            
             if (existingConfirmedUser != null)
             {
                 CodeGenerator codeGenerator = new CodeGenerator();
@@ -169,7 +173,7 @@ namespace API.Controllers
                     return Ok();
 
                 }
-
+                Console.WriteLine("hello");
             }
                 return BadRequest();
         }

@@ -18,29 +18,31 @@ namespace ParrotsAPI2.Services.Waypoint
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<GetWaypointDto>>> AddWaypoint(AddWaypointDto newWaypoint)
+
+        public async Task<ServiceResponse<int>> AddWaypoint(AddWaypointDto newWaypoint)
         {
+            var serviceResponse = new ServiceResponse<int>();
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newWaypoint.ImageFile.FileName);
+            var filePath = Path.Combine("Uploads/WaypointImages/", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newWaypoint.ImageFile.FileName);
-                    var filePath = Path.Combine("Uploads/WaypointImages/", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await newWaypoint.ImageFile.CopyToAsync(stream);
-                    }
-                    // newWaypoint.ProfileImage = "/Uploads/WaypointImages/" + fileName;
-
-                var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
-                waypoint.ProfileImage =  fileName;
-                _context.Waypoints.Add(waypoint);
-                await _context.SaveChangesAsync();
-
-                var updatedWaypoints = await _context.Waypoints.ToListAsync();
-                serviceResponse.Data = updatedWaypoints.Select(c => _mapper.Map<GetWaypointDto>(c)).ToList();
-
-                return serviceResponse;
+                await newWaypoint.ImageFile.CopyToAsync(stream);
             }
+
+            var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
+            waypoint.ProfileImage = fileName;
+
+            _context.Waypoints.Add(waypoint);
+            await _context.SaveChangesAsync();
+
+            serviceResponse.Data = waypoint.Id;  // Return the newly created waypoint ID
+
+            return serviceResponse;
         }
+
+
 
         /*
         public async Task<ServiceResponse<List<GetWaypointDto>>> DeleteWaypoint(int id)

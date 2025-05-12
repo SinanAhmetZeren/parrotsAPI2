@@ -27,6 +27,8 @@ namespace ParrotsAPI2.Models
         public string? VehicleImage { get; set; }         
         public string? VehicleName { get; set; }
         public VehicleType VehicleType { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool Confirmed { get; set; }
     }
 
 

@@ -19,6 +19,7 @@ namespace ParrotsAPI2.Services.Voyage
         Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByCoordinates(double lat1, double lat2, double lon1, double lon2);
         Task<ServiceResponse<List<int>>> GetVoyageIdsByCoordinates(double lat1, double lat2, double lon1, double lon2);
         Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType, DateTime? startDate, DateTime? endDate);
+        Task<ServiceResponse<string>> ConfirmVoyage(int voyageId);
 
     }
 }

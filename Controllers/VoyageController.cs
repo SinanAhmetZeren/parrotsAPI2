@@ -49,6 +49,20 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _voyageService.AddVoyage(newVoyage));
         }
 
+
+        [HttpPost("/ConfirmVoyage/{voyageId}")]
+        public async Task<IActionResult> ConfirmVoyage(int voyageId)
+        {
+            var response = await _voyageService.ConfirmVoyage(voyageId);
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+
         [HttpPut("UpdateVoyage")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
         {
