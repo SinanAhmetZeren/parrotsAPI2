@@ -35,15 +35,15 @@ namespace ParrotsAPI2.Services.Vehicle
 
             var vehicle = _mapper.Map<Models.Vehicle>(newVehicle);
             vehicle.ProfileImageUrl = profileImageUrl;
+            vehicle.Confirmed = false;                  // Set confirmed as false
+            vehicle.CreatedAt = DateTime.UtcNow;        // Set created date as now
+
             var currentUser = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVehicle.UserId);
             vehicle.User = currentUser;
             _context.Vehicles.Add(vehicle);
             await _context.SaveChangesAsync();
             serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
-
             return serviceResponse;
-
-
         }
 
         public async Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile)
@@ -170,8 +170,6 @@ namespace ParrotsAPI2.Services.Vehicle
             return serviceResponse;
         }
 
-
-
         public async Task<ServiceResponse<string>> CheckAndDeleteVehicle(int id)
         {
             var serviceResponse = new ServiceResponse<string>();
@@ -260,10 +258,6 @@ namespace ParrotsAPI2.Services.Vehicle
             return serviceResponse;
         }
 
-
-
-
-
         public async Task<ServiceResponse<List<GetVehicleDto>>> GetAllVehicles()
         {
             var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
@@ -341,7 +335,6 @@ namespace ParrotsAPI2.Services.Vehicle
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
         {

@@ -20,6 +20,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using ParrotsAPI2.Services.Bid;
 using Microsoft.Extensions.FileProviders;
+using ParrotsAPI2.Services.Cleanup;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,6 +82,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     })
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
+builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 
 
 

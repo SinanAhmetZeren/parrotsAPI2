@@ -7,6 +7,13 @@
     <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services\NewFolder1\**" />
+    <Content Remove="Services\NewFolder1\**" />
+    <EmbeddedResource Remove="Services\NewFolder1\**" />
+    <None Remove="Services\NewFolder1\**" />
+  </ItemGroup>
+
  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />

@@ -157,7 +157,4 @@ C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.Extens
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\ParrotsAPI2.staticwebassets.runtime.json
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.UI.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Embedded.dll
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net8.0\ParrotsAPI2.staticwebassets.endpoints.json
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\staticwebassets\msbuild.ParrotsAPI2.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\ParrotsA.289CAAF3.Up2Date
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net8.0\ParrotsAPI2.csproj.CopyComplete
