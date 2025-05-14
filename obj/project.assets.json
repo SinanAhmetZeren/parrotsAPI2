@@ -5821,11 +5821,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
+      "projectUniqueName": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
       "projectName": "ParrotsAPI2",
-      "projectPath": "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
+      "projectPath": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
       "packagesPath": "C:\\Users\\sinan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\obj\\",
+      "outputPath": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\sinan\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5849,7 +5849,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -5917,6 +5923,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.14, 8.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.14, 8.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.14, 8.0.14]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.14, 8.0.14]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -5925,8 +5949,16 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://amokachi.hostmycalls.com:1202/v3/index.json."
+    }
+  ]
 }
