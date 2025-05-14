@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.MessageDtos;
 using ParrotsAPI2.Dtos.WaypointDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class MessageController : ControllerBase
     {
         private readonly IMessageService _messageService;

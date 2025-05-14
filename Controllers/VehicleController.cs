@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.VehicleDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehicleController : ControllerBase
+    [Authorize]
+    
+        public class VehicleController : ControllerBase
     {
         private readonly IVehicleService _vehicleService;
 

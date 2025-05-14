@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.BidDtos;
 using ParrotsAPI2.Services.Bid;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParrotsAPI2.Controllers
 
@@ -9,6 +10,8 @@ namespace ParrotsAPI2.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
+
     public class BidController : ControllerBase
     {
         private readonly IBidService _bidService;

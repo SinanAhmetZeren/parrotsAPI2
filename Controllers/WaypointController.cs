@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.WaypointDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class WaypointController : ControllerBase
     {
         private readonly IWaypointService _waypointService;

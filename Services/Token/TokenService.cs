@@ -27,7 +27,7 @@ namespace ParrotsAPI2.Services.Token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(1007),
                 SigningCredentials = creds
             };
 

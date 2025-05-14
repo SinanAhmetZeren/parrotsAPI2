@@ -21,7 +21,9 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using ParrotsAPI2.Services.Bid;
 using Microsoft.Extensions.FileProviders;
 using ParrotsAPI2.Services.Cleanup;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,32 +32,46 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Parrots API", Version = "v1" });
+
     var securityScheme = new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        BearerFormat = "JWT",
-        Description = "Enter 'Bearer' [space] and your token",
-        In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
         Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your token",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
     };
+
     c.AddSecurityDefinition("Bearer", securityScheme);
+
     var securityRequirement = new OpenApiSecurityRequirement
     {
-        { securityScheme, new[] { "Bearer" } },
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
     };
+
     c.AddSecurityRequirement(securityRequirement);
 });
-
 
 
 
@@ -83,9 +99,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
-
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -98,11 +111,33 @@ builder.Services.AddCors(options =>
 });
 
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"])),
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
-
-    
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
@@ -115,21 +150,16 @@ if (app.Environment.IsDevelopment())
         c.EnableValidator();
         c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Head, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Patch, SubmitMethod.Delete);
     });
-    
-
-
-
-
 }
-app.UseHttpsRedirection();
-app.MapHub<ChatHub>("/chathub/11");
 
-app.UseCors("AllowAll");
-//app.UseCors("AllowSpecificOrigin");
-app.UseAuthentication();
-app.MapControllers();
+app.UseHttpsRedirection();
+// app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
+app.UseCors("AllowAll");  
+app.UseAuthentication();
 app.UseAuthorization();
+app.MapHub<ChatHub>("/chathub/11");
+app.MapControllers();
 
 app.UseStaticFiles(new StaticFileOptions
 {

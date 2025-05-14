@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Services.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class UserController : ControllerBase
     {
 
@@ -32,6 +35,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPost("AddUser")]
+        [AllowAnonymous]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> AddUser(AddUserDto newUser)
         {
 
