@@ -206,6 +206,13 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.Vehicle)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
+           if (voyage == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Voyage not found";
+                return serviceResponse;
+            }
+
             var userDto = _mapper.Map<UserDto>(voyage?.User);
             var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
             var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
@@ -244,15 +251,8 @@ namespace ParrotsAPI2.Services.Voyage
             voyageDto.Vehicle = vehicleDto;
             voyageDto.Bids = bidDtos;
             voyageDto.Waypoints = waypointDtos;
-
             serviceResponse.Data = voyageDto;
-
-            if (voyage == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "Voyage not found";
-                return serviceResponse;
-            }
+ 
             return serviceResponse;
         }
 

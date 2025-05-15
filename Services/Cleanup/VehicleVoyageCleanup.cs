@@ -4,7 +4,7 @@ namespace ParrotsAPI2.Services.Cleanup
 {
     public class VehicleVoyageCleanupService : IHostedService, IDisposable
     {
-        private Timer _timer;
+        private Timer? _timer;
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<VehicleVoyageCleanupService> _logger;
 
@@ -25,7 +25,7 @@ namespace ParrotsAPI2.Services.Cleanup
             return Task.CompletedTask;
         }
 
-        private async void DoCleanup(object state)
+        private async void DoCleanup(object? state)
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();

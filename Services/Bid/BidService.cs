@@ -165,10 +165,6 @@ namespace ParrotsAPI2.Services.Bid
                     })
                     .ToListAsync();
 
-
-
-
-
                 response.Data = bids;
                 response.Message = "Bids retrieved successfully";
             }
@@ -185,23 +181,6 @@ namespace ParrotsAPI2.Services.Bid
             var response = new ServiceResponse<List<GetBidDto>>();
             try
             {
-                var bids2 = await _context.Bids
-                    .Where(b => b.VoyageId == voyageId)
-                    .Select(b => new GetBidDto
-                    {   
-                        Accepted= b.Accepted,
-                        Id = b.Id,
-                        PersonCount = b.PersonCount,
-                        Message = b.Message,
-                        OfferPrice = b.OfferPrice,
-                        Currency = b.Currency,
-                        DateTime = b.DateTime,
-                        VoyageId = b.VoyageId,
-                        UserId = b.UserId
-                    })
-                    .ToListAsync();
-
-
                 var bids = await _context.Bids
                     .Where(b => b.VoyageId == voyageId)
                     .Join(
@@ -259,6 +238,7 @@ namespace ParrotsAPI2.Services.Bid
                 }
                 _context.Bids.Remove(bid);
                 await _context.SaveChangesAsync();
+                serviceResponse.Success = true;
                 serviceResponse.Data = "Bid successfully deleted";
             }
             catch (Exception ex)
@@ -277,18 +257,27 @@ namespace ParrotsAPI2.Services.Bid
                 var bidEntity = await _context.Bids.FirstOrDefaultAsync(c => c.Id == bidId);
                 if (bidEntity == null)
                 {
-                    throw new Exception($"Bid with ID `{bidId}` not found");
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Bid with ID {bidId} not found";
+                    return serviceResponse;
                 }
+
                 bidEntity.Accepted = true;
                 await _context.SaveChangesAsync();
+
+                serviceResponse.Success = true;
+                serviceResponse.Data = "Bid accepted successfully";
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
+                serviceResponse.Message = $"Error accepting bid: {ex.Message}";
             }
             return serviceResponse;
         }
+
+
+
     }
 }
 
