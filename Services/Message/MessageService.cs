@@ -22,30 +22,28 @@ namespace ParrotsAPI2.Services.Message
 
             try
             {
-                var sender = await _context.Users.FindAsync(newMessage.SenderId);
-                var receiver = await _context.Users.FindAsync(newMessage.ReceiverId);
-
-                if (sender == null || receiver == null)
+                var senderExists = await _context.Users.AnyAsync(u => u.Id == newMessage.SenderId);
+                var receiverExists = await _context.Users.AnyAsync(u => u.Id == newMessage.ReceiverId);
+                if (!senderExists || !receiverExists)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Invalid sender or receiver specified";
                     return serviceResponse;
                 }
-
                 var message = new Models.Message
                 {
                     Text = newMessage.Text,
-                    DateTime = DateTime.Now,
+                    DateTime = DateTime.UtcNow,
                     Rendered = false,
                     ReadByReceiver = false,
-                    SenderId = sender.Id,
-                    ReceiverId = receiver.Id,
+                    SenderId = newMessage.SenderId,
+                    ReceiverId = newMessage.ReceiverId
                 };
-
                 _context.Messages.Add(message);
                 await _context.SaveChangesAsync();
 
                 var messageDto = _mapper.Map<GetMessageDto>(message);
+                serviceResponse.Success = true;
                 serviceResponse.Data = messageDto;
             }
             catch (Exception ex)
@@ -75,6 +73,7 @@ namespace ParrotsAPI2.Services.Message
                 await _context.SaveChangesAsync();
 
                 var messageDto = _mapper.Map<GetMessageDto>(message);
+                serviceResponse.Success = true;
                 serviceResponse.Data = messageDto;
             }
             catch (Exception ex)
@@ -85,25 +84,7 @@ namespace ParrotsAPI2.Services.Message
 
             return serviceResponse;
         }
-        public async Task<ServiceResponse<List<GetMessageDto>>> GetAllMessages()
-        {
-            var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
 
-            try
-            {
-                var messages = await _context.Messages.ToListAsync();
-                var messageDtos = _mapper.Map<List<GetMessageDto>>(messages);
-
-                serviceResponse.Data = messageDtos;
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = $"Error retrieving messages: {ex.Message}";
-            }
-
-            return serviceResponse;
-        }
         public async Task<ServiceResponse<GetMessageDto>> GetMessageById(int id)
         {
             var serviceResponse = new ServiceResponse<GetMessageDto>();
@@ -186,7 +167,7 @@ namespace ParrotsAPI2.Services.Message
 
             return serviceResponse;
         }
-        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByUserId(string userId)
+        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByUserId2(string userId)
         {
             var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
 
@@ -204,14 +185,6 @@ namespace ParrotsAPI2.Services.Message
                     serviceResponse.Message = "No messages found for the given user ID.";
                     return serviceResponse;
                 }
-
-                //if (latestMessages == null || latestMessages.Count == 0)
-                //{
-                //    serviceResponse.Success = false;
-                //    serviceResponse.Message = "No messages found for the given user ID";
-                //    return serviceResponse;
-                //}
-
                 var messageDtos = new List<GetMessageDto>();
                 foreach (var message in latestMessages)
                 {
@@ -242,6 +215,66 @@ namespace ParrotsAPI2.Services.Message
             }
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<GetMessageDto>>> GetMessagesByUserId(string userId)
+        {
+            var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
+
+            try
+            {
+                // Step 1: Get the latest message from each conversation
+                var latestMessages = await _context.Messages
+                    .Where(m => m.SenderId == userId || m.ReceiverId == userId)
+                    .GroupBy(m => m.SenderId == userId ? m.ReceiverId : m.SenderId)
+                    .Select(g => g.OrderByDescending(m => m.DateTime).FirstOrDefault())
+                    .ToListAsync();
+
+                if (!latestMessages.Any())
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No messages found for the given user ID.";
+                    return serviceResponse;
+                }
+
+                // Step 2: Extract all user IDs involved in the latest messages
+                var userIds = latestMessages
+                    .SelectMany(m => new[] { m.SenderId, m.ReceiverId })
+                    .Distinct()
+                    .ToList();
+
+                // Step 3: Fetch all related users in one query
+                var users = await _context.Users
+                    .Where(u => userIds.Contains(u.Id))
+                    .ToDictionaryAsync(u => u.Id);
+
+                // Step 4: Map messages to DTOs with user info
+                var messageDtos = latestMessages.Select(message => new GetMessageDto
+                {
+                    Id = message.Id,
+                    Text = message.Text,
+                    DateTime = message.DateTime,
+                    Rendered = message.Rendered,
+                    ReadByReceiver = message.ReadByReceiver,
+                    SenderId = message.SenderId,
+                    ReceiverId = message.ReceiverId,
+                    SenderProfileUrl = users.GetValueOrDefault(message.SenderId)?.ProfileImageUrl,
+                    SenderUsername = users.GetValueOrDefault(message.SenderId)?.UserName,
+                    ReceiverProfileUrl = users.GetValueOrDefault(message.ReceiverId)?.ProfileImageUrl,
+                    ReceiverUsername = users.GetValueOrDefault(message.ReceiverId)?.UserName
+                }).ToList();
+
+                serviceResponse.Data = messageDtos;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error retrieving messages: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+
+
         public async Task<ServiceResponse<GetMessageDto>> UpdateMessage(UpdateMessageDto updatedMessage)
         {
             var serviceResponse = new ServiceResponse<GetMessageDto>();
@@ -286,11 +319,19 @@ namespace ParrotsAPI2.Services.Message
                     serviceResponse.Message = "No messages found between the given users";
                     return serviceResponse;
                 }
+
+                var user1 = await _context.Users.FindAsync(userId1);
+                var user2 = await _context.Users.FindAsync(userId2);
+
                 var messageDtos = new List<GetMessageDto>();
                 foreach (var message in messages)
                 {
-                    var sender = await _context.Users.FindAsync(message.SenderId);
-                    var receiver = await _context.Users.FindAsync(message.ReceiverId);
+                    // var sender = await _context.Users.FindAsync(message.SenderId);
+                    // var receiver = await _context.Users.FindAsync(message.ReceiverId);
+
+                    var sender = message.SenderId == userId1 ? user1 : user2;
+                    var receiver = message.ReceiverId == userId1 ? user1 : user2;
+
                     messageDtos.Add(new GetMessageDto
                     {
                         Id = message.Id,

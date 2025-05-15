@@ -19,12 +19,7 @@ namespace ParrotsAPI2.Controllers
             _messageService = messageService;
         }
 
-
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<ServiceResponse<List<GetMessageDto>>>> Get()
-        {
-            return Ok(await _messageService.GetAllMessages());
-        }
+ 
 
 
         [HttpGet("getsingleMessage/{id}")]
