@@ -33,48 +33,86 @@ namespace ParrotsAPI2.Services.User
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
 
-            if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
+            try
             {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newUser.ImageFile.FileName);
-                var filePath = Path.Combine("Uploads/UserImages/", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                // Check if username or email already exists
+                var existingUser = await _context.Users
+                    .FirstOrDefaultAsync(u => u.UserName == newUser.UserName || u.Email == newUser.Email);
+
+                if (existingUser != null)
                 {
-                    await newUser.ImageFile.CopyToAsync(stream);
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Username or email already exists.";
+                    return serviceResponse;
                 }
-                newUser.ProfileImageUrl = "/Uploads/UserImages/" + fileName; 
+
+                // Handle image upload if provided
+                if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/UserImages");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    var fileName = Guid.NewGuid() + Path.GetExtension(newUser.ImageFile.FileName);
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await newUser.ImageFile.CopyToAsync(stream);
+                    }
+
+                    newUser.ProfileImageUrl = $"/Uploads/UserImages/{fileName}";
+                }
+
+                // Map and add new user
+                var user = _mapper.Map<AppUser>(newUser);
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                // Return updated user list
+                var updatedUsers = await _context.Users.ToListAsync();
+                serviceResponse.Data = updatedUsers.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error adding user: {ex.Message}";
             }
 
-            var user = _mapper.Map<AppUser>(newUser);
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            var updatedUsers = await _context.Users.ToListAsync();
-            serviceResponse.Data = updatedUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
             return serviceResponse;
         }
-
         public async Task<ServiceResponse<List<GetUserDto>>> DeleteUser(string id)
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
+
             try
             {
                 var user = await _context.Users.FindAsync(id);
 
                 if (user == null)
                 {
-                    throw new Exception($"User with ID `{id}` not found");
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"User with ID '{id}' not found.";
+                    return serviceResponse; // Return early on not found
                 }
+
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
+
                 var users = await _context.Users.ToListAsync();
                 serviceResponse.Data = users.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
+                serviceResponse.Message = $"Error deleting user: {ex.Message}";
             }
+
             return serviceResponse;
         }
+
 
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
@@ -88,7 +126,7 @@ namespace ParrotsAPI2.Services.User
 
         }
 
-        public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
+        public async Task<ServiceResponse<GetUserDto>> GetUserById_old(string id)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
             var stopwatch = new Stopwatch();
@@ -121,10 +159,10 @@ namespace ParrotsAPI2.Services.User
 
             stopwatch.Stop();
 
-            var confirmedVehicles = user.Vehicles.Where(v => v.Confirmed).ToList();
+            var confirmedVehicles = user?.Vehicles?.Where(v => v.Confirmed).ToList();
             var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
 
-            var confirmedVoyages = user.Voyages.Where(v => v.Confirmed).ToList();
+            var confirmedVoyages = user?.Voyages?.Where(v => v.Confirmed).ToList();
             var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
 
 
@@ -133,20 +171,20 @@ namespace ParrotsAPI2.Services.User
                 var userDto = new GetUserDto
                 {
                     Id = user.Id,
-                    UserName = user.UserName,
-                    Title = user.Title,
-                    Bio = user.Bio,
-                    Email = user.Email,
-                    Instagram = user.Instagram,
-                    Twitter = user.Twitter,
-                    Tiktok = user.Tiktok,
-                    Linkedin = user.Linkedin,
-                    Facebook = user.Facebook,
-                    PhoneNumber = user.PhoneNumber,
-                    Youtube = user.Youtube,
-                    ProfileImageUrl = user.ProfileImageUrl,
-                    BackgroundImageUrl = user.BackgroundImageUrl,
-                    ImageFile = null,
+                    UserName = user.UserName ?? string.Empty,
+                    Title = user.Title ?? string.Empty,
+                    Bio = user.Bio ?? string.Empty,
+                    Email = user.Email ?? string.Empty,
+                    Instagram = user.Instagram ?? string.Empty,
+                    Twitter = user.Twitter ?? string.Empty,
+                    Tiktok = user.Tiktok ?? string.Empty,
+                    Linkedin = user.Linkedin ?? string.Empty,
+                    Facebook = user.Facebook ?? string.Empty,
+                    PhoneNumber = user.PhoneNumber ?? string.Empty,
+                    Youtube = user.Youtube ?? string.Empty,
+                    ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                    BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
+                    ImageFile = default!,
                     UnseenMessages = user.UnseenMessages,
                     UsersVehicles = vehicleDtos,
                     UsersVoyages = voyageDtos,
@@ -164,6 +202,84 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
+        {
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            // Validate input id early
+            if (string.IsNullOrEmpty(id) || id == "null")
+            {
+                serviceResponse.Data = null;
+                serviceResponse.Message = "Id is null or invalid";
+                stopwatch.Stop();
+                _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
+                return serviceResponse;
+            }
+
+            // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
+            var user = await _context.Users
+                .AsNoTracking()
+                .Include(u => u.SentMessages)
+                .Include(u => u.ReceivedMessages)
+                .Include(u => u.Vehicles)
+                .Include(u => u.Voyages)
+                .Include(u => u.Bids)
+                .AsSplitQuery() 
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            stopwatch.Stop();
+
+            if (user == null)
+            {
+                serviceResponse.Message = "User not found";
+                _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
+                return serviceResponse;
+            }
+
+            var confirmedVehicles = (user?.Vehicles != null)
+            ? user.Vehicles.Where(v => v.Confirmed).ToList()
+            : new List<Models.Vehicle>();
+
+            var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
+
+            var confirmedVoyages = (user?.Voyages != null)
+                ? user.Voyages.Where(v => v.Confirmed).ToList()
+                : new List<Models.Voyage>();
+
+            var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
+
+            // Create DTO explicitly instead of AutoMapper for this part - can also be mapped if preferred
+            var userDto = new GetUserDto
+            {
+                Id = user?.Id ?? string.Empty,
+                UserName = user?.UserName ?? string.Empty,
+                Title = user?.Title ?? string.Empty,
+                Bio = user?.Bio ?? string.Empty,
+                Email = user?.Email ?? string.Empty,
+                Instagram = user?.Instagram ?? string.Empty,
+                Twitter = user?.Twitter ?? string.Empty,
+                Tiktok = user?.Tiktok ?? string.Empty,
+                Linkedin = user?.Linkedin ?? string.Empty,
+                Facebook = user?.Facebook ?? string.Empty,
+                PhoneNumber = user?.PhoneNumber ?? string.Empty,
+                Youtube = user?.Youtube ?? string.Empty,
+                ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
+                BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
+                ImageFile = default!,
+                UnseenMessages = user!= null ? user.UnseenMessages : false,
+                UsersVehicles = vehicleDtos,
+                UsersVoyages = voyageDtos,
+                EmailVisible = user!= null ? user.EmailVisible : false,
+            };
+
+            serviceResponse.Data = userDto;
+            _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
+            return serviceResponse;
+        }
+
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
         {
@@ -201,80 +317,138 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> PatchUser(string userId,[FromBody]JsonPatchDocument<UpdateUserDto> patchDoc,ModelStateDictionary modelState)
+        public async Task<ServiceResponse<GetUserDto>> PatchUser(
+            string userId,
+            [FromBody] JsonPatchDocument<UpdateUserDto> patchDoc,
+            ModelStateDictionary modelState)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
             try
             {
+                // ✅ Check if patchDoc is null before proceeding
+                if (patchDoc == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Patch document cannot be null.";
+                    return serviceResponse;
+                }
+
                 var user = await _context.Users.FindAsync(userId);
                 if (user == null)
                 {
-                    throw new Exception($"User with ID `{userId}` not found");
+                    // ✅ Clean error message when user not found
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"User with ID `{userId}` not found.";
+                    return serviceResponse;
                 }
 
+                // ✅ Map AppUser → UpdateUserDto
                 var userDto = _mapper.Map<UpdateUserDto>(user);
+
+                // ✅ Apply patch and pass ModelState for validation feedback
                 patchDoc.ApplyTo(userDto, modelState);
 
+                // ✅ Use ModelStateDictionary to catch validation errors
                 if (!modelState.IsValid)
                 {
                     serviceResponse.Success = false;
-                    serviceResponse.Message = "Invalid model state after patch operations";
+                    serviceResponse.Message = "Invalid model state after applying patch operations.";
                     return serviceResponse;
                 }
+
+                // ✅ Map patched DTO back to entity
                 _mapper.Map(userDto, user);
+
+                // ✅ Mark entity as modified and persist changes
                 _context.Users.Attach(user);
                 _context.Entry(user).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
+
+                // ✅ Map result to GetUserDto for response
+                serviceResponse.Data = _mapper.Map<GetUserDto>(user);
+            }
+            catch (Exception ex)
+            {
+                // ✅ Clean exception handling with message
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error while patching user: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+ 
+
+        public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile)
+        {
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+            if (imageFile.Length > MaxFileSize)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Image size exceeds 5MB limit";
+                return serviceResponse;
+            }
+            // Check for null image file first
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No image provided";
+                return serviceResponse;
+            }
+
+            // Find the user
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "User not found";
+                return serviceResponse;
+            }
+
+            // Save the image file
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            var filePath = Path.Combine("Uploads/UserImages/", fileName);
+
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Ensure directory exists
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                user.ProfileImageUrl = "/Uploads/UserImages/" + fileName; // use a relative path that can be used in frontend
+                await _context.SaveChangesAsync();
+
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
+                serviceResponse.Message = $"Image upload failed: {ex.Message}";
             }
 
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile)
-        {
-            var serviceResponse = new ServiceResponse<GetUserDto>();
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "User not found";
-                return serviceResponse;
-            }
-
-            if (imageFile != null && imageFile.Length > 0)
-            {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                var filePath = Path.Combine("Uploads/UserImages/", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await imageFile.CopyToAsync(stream);
-                }
-                user.ProfileImageUrl = fileName;
-                await _context.SaveChangesAsync();
-                var userDto = _mapper.Map<GetUserDto>(user);
-
-                serviceResponse.Success = true;
-                serviceResponse.Data = userDto;
-            }
-            else
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No image provided";
-            }
-
-            return serviceResponse;
-        }
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUserBackgroundImage(string userId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
+            const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+            if (imageFile.Length > MaxFileSize)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Image size exceeds 5MB limit";
+                return serviceResponse;
+            }
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No image provided";
+                return serviceResponse;
+            }
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
             {
@@ -282,31 +456,29 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Message = "User not found";
                 return serviceResponse;
             }
-
-            if (imageFile != null && imageFile.Length > 0)
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            var filePath = Path.Combine("Uploads/UserImages", fileName);
+            try
             {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                var filePath = Path.Combine("Uploads/UserImages/", fileName);
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Ensure the folder exists
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await imageFile.CopyToAsync(stream);
                 }
-                user.BackgroundImageUrl =  fileName;
+                // Save only the file name to DB (frontend will build full URL)
+                user.BackgroundImageUrl = fileName;
                 await _context.SaveChangesAsync();
-                var userDto = _mapper.Map<GetUserDto>(user);
 
-                serviceResponse.Success = true;
-                serviceResponse.Data = userDto;
+                serviceResponse.Data = _mapper.Map<GetUserDto>(user);
             }
-
-            else
+            catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "No image provided";
+                serviceResponse.Message = $"Image upload failed: {ex.Message}";
             }
-
             return serviceResponse;
         }
+
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
         {
@@ -333,34 +505,37 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
+
         public async Task<ServiceResponse<List<UserDto>>> GetUsersByUsername(string username)
         {
             var serviceResponse = new ServiceResponse<List<UserDto>>();
-
-            if (username  == "null")
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(username))
             {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Username is null or empty";
                 serviceResponse.Data = null;
-                serviceResponse.Message = "Username is null";
                 return serviceResponse;
             }
-
             var searchUsers = await _context.Users
-                        .Where(u => u.UserName.Contains(username)).ToListAsync();
+                .Where(u => u.UserName != null && u.UserName.Contains(username))
+                .ToListAsync();
 
-            if (searchUsers != null && searchUsers.Any())
+            if (searchUsers.Any())
             {
-                var userDtos = searchUsers.Select(user => new UserDto
+                serviceResponse.Data = searchUsers.Select(user => new UserDto
                 {
                     Id = user.Id,
-                    UserName = user.UserName,
+                    UserName = user.UserName ?? string.Empty,
                     ProfileImageUrl = user.ProfileImageUrl,
                 }).ToList();
 
-                serviceResponse.Data = userDtos;
+                serviceResponse.Success = true;
             }
             else
             {
+                serviceResponse.Success = false;
                 serviceResponse.Message = "No users found with the specified username";
+                serviceResponse.Data = new List<UserDto>();
             }
 
             return serviceResponse;
@@ -368,6 +543,4 @@ namespace ParrotsAPI2.Services.User
 
 
     }
-
-
 }

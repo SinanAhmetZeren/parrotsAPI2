@@ -105,10 +105,10 @@ namespace ParrotsAPI2.Services.Bid
                         DateTime = bidEntity.DateTime,
                         VoyageId = bidEntity.VoyageId,
                         UserId = bidEntity.UserId,
-                        VoyageImageUrl = bidEntity.Voyage?.ProfileImage,
-                        UserImageUrl = bidEntity.User?.ProfileImageUrl,
-                        UserName = bidEntity.User?.UserName,
-                        VoyageName = bidEntity.Voyage?.Name
+                        VoyageImageUrl = bidEntity.Voyage?.ProfileImage ?? string.Empty,
+                        UserImageUrl = bidEntity.User?.ProfileImageUrl ?? string.Empty,
+                        UserName = bidEntity.User?.UserName ?? string.Empty,
+                        VoyageName = bidEntity.Voyage?.Name ?? string.Empty
                     };
 
                     response.Data = bidDto;
@@ -158,10 +158,10 @@ namespace ParrotsAPI2.Services.Bid
                         DateTime = combined.Bid.DateTime,
                         VoyageId = combined.Bid.VoyageId,
                         UserId = combined.Bid.UserId,
-                        VoyageImageUrl = combined.Voyage.ProfileImage,
-                        UserImageUrl = combined.User.ProfileImageUrl,
-                        UserName = combined.User.UserName,
-                        VoyageName = combined.Voyage.Name
+                        VoyageImageUrl = combined.Voyage != null ? combined.Voyage.ProfileImage : string.Empty,
+                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl  : string.Empty,
+                        UserName = (combined.User != null && combined.User.UserName != null) ? combined.User.UserName : string.Empty,
+                        VoyageName = combined.Voyage != null ? combined.Voyage.Name : string.Empty
                     })
                     .ToListAsync();
 
@@ -206,8 +206,8 @@ namespace ParrotsAPI2.Services.Bid
                         VoyageId = combined.Bid.VoyageId,
                         UserId = combined.Bid.UserId,
                         VoyageImageUrl = combined.Voyage.ProfileImage,
-                        UserImageUrl = combined.User.ProfileImageUrl,
-                        UserName = combined.User.UserName,
+                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl  : string.Empty,
+                        UserName = (combined.User != null && combined.User.UserName != null) ? combined.User.UserName : string.Empty,
                         VoyageName = combined.Voyage.Name
                     })
                     .ToListAsync();

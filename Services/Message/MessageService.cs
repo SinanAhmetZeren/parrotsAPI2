@@ -188,6 +188,8 @@ namespace ParrotsAPI2.Services.Message
                 var messageDtos = new List<GetMessageDto>();
                 foreach (var message in latestMessages)
                 {
+                    if (message == null) continue;
+
                     var sender = await _context.Users.FindAsync(message.SenderId);
                     var receiver = await _context.Users.FindAsync(message.ReceiverId);
 
@@ -200,10 +202,11 @@ namespace ParrotsAPI2.Services.Message
                         ReadByReceiver = message.ReadByReceiver,
                         SenderId = message.SenderId,
                         ReceiverId = message.ReceiverId,
-                        SenderProfileUrl = sender?.ProfileImageUrl,
-                        SenderUsername = sender?.UserName,
-                        ReceiverProfileUrl = receiver?.ProfileImageUrl,
-                        ReceiverUsername = receiver?.UserName
+                        SenderProfileUrl = sender != null && sender.ProfileImageUrl != null ? sender.ProfileImageUrl : string.Empty,
+                        SenderUsername = sender != null && sender.UserName != null ? sender.UserName : string.Empty,
+                        ReceiverProfileUrl = receiver != null && receiver.ProfileImageUrl != null ? receiver.ProfileImageUrl : string.Empty,
+                        ReceiverUsername = receiver != null && receiver.UserName != null ? receiver.UserName : string.Empty,
+
                     });
                 }
                 serviceResponse.Data = messageDtos;
@@ -248,7 +251,9 @@ namespace ParrotsAPI2.Services.Message
                     .ToDictionaryAsync(u => u.Id);
 
                 // Step 4: Map messages to DTOs with user info
-                var messageDtos = latestMessages.Select(message => new GetMessageDto
+
+
+                var messageDtos = latestMessages.Where(message => message != null).Select(message => new GetMessageDto
                 {
                     Id = message.Id,
                     Text = message.Text,
@@ -257,10 +262,10 @@ namespace ParrotsAPI2.Services.Message
                     ReadByReceiver = message.ReadByReceiver,
                     SenderId = message.SenderId,
                     ReceiverId = message.ReceiverId,
-                    SenderProfileUrl = users.GetValueOrDefault(message.SenderId)?.ProfileImageUrl,
-                    SenderUsername = users.GetValueOrDefault(message.SenderId)?.UserName,
-                    ReceiverProfileUrl = users.GetValueOrDefault(message.ReceiverId)?.ProfileImageUrl,
-                    ReceiverUsername = users.GetValueOrDefault(message.ReceiverId)?.UserName
+                    SenderProfileUrl = users.GetValueOrDefault(message.SenderId)?.ProfileImageUrl ?? string.Empty,
+                    SenderUsername = users.GetValueOrDefault(message.SenderId)?.UserName ?? string.Empty,
+                    ReceiverProfileUrl = users.GetValueOrDefault(message.ReceiverId)?.ProfileImageUrl ?? string.Empty,
+                    ReceiverUsername = users.GetValueOrDefault(message.ReceiverId)?.UserName ?? string.Empty
                 }).ToList();
 
                 serviceResponse.Data = messageDtos;
