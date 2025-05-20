@@ -29,6 +29,8 @@ namespace ParrotsAPI2.Models
         public VehicleType VehicleType { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool Confirmed { get; set; }
+        public bool IsDeleted { get; set; }
+
     }
     
 

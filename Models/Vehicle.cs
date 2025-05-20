@@ -17,6 +17,8 @@ namespace ParrotsAPI2.Models
         public List<Voyage>? Voyages { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool Confirmed { get; set; }
+        public bool IsDeleted { get; set; }
+
     }
 }
 

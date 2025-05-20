@@ -21,11 +21,11 @@ namespace ParrotsAPI2.Services.Cleanup
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Vehicle Voyage Cleanup Service started.");
-            _timer = new Timer(DoCleanup, null, TimeSpan.Zero, TimeSpan.FromMinutes(TimerIntervalInMinutes));
+            _timer = new Timer(DoVehicleVoyageCleanup, null, TimeSpan.Zero, TimeSpan.FromMinutes(TimerIntervalInMinutes));
             return Task.CompletedTask;
         }
 
-        private async void DoCleanup(object? state)
+        private async void DoVehicleVoyageCleanup(object? state)
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();
