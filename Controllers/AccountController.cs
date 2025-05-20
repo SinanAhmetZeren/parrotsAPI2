@@ -109,7 +109,7 @@ namespace API.Controllers
                     }   
 
                     EmailSender emailSender = new EmailSender();
-                    _ = emailSender.SendConfirmationEmail(existingUser.Email, existingUser.ConfirmationCode, existingUser.UserName);
+                    _ = emailSender.SendConfirmationEmail(existingUser.Email ?? string.Empty, existingUser.ConfirmationCode, existingUser.UserName);
 
                     return CreateUserObject(existingUser);
                     }
@@ -170,7 +170,7 @@ namespace API.Controllers
                 if (updateResult.Succeeded)
                 {
                     EmailSender emailSender = new EmailSender();
-                    _ = emailSender.SendConfirmationEmail(normalizedEmail, confirmationCode, existingConfirmedUser.UserName);
+                    _ = emailSender.SendConfirmationEmail(normalizedEmail, confirmationCode, existingConfirmedUser.UserName ?? string.Empty);
                     return Ok();
 
                 }
@@ -212,10 +212,10 @@ namespace API.Controllers
                 await _userManager.UpdateAsync(existingUser);
                 var userResponse = new UserResponseDto
                 {
-                    Email = existingUser.Email,
-                    UserName = existingUser.UserName,
+                    Email = existingUser.Email ?? string.Empty,
+                    UserName = existingUser.UserName ?? string.Empty,
                     UserId = existingUser.Id,
-                    ProfileImageUrl = existingUser.ProfileImageUrl,
+                    ProfileImageUrl = existingUser.ProfileImageUrl ?? string.Empty,
                     Token = _tokenService.CreateToken(existingUser) 
                 };
 
@@ -254,10 +254,10 @@ namespace API.Controllers
             return new UserResponseDto
             {
                 Token = _tokenService.CreateToken(user),
-                UserName = user.UserName,
-                Email = user.Email,
+                UserName = user.UserName  ?? string.Empty,
+                Email = user.Email  ?? string.Empty,
                 UserId = user.Id,
-                ProfileImageUrl = user.ProfileImageUrl,
+                ProfileImageUrl = user.ProfileImageUrl  ?? string.Empty,
             };
 
         }
@@ -288,10 +288,10 @@ namespace API.Controllers
             return new UserResponseDto
             {
                 Token = _tokenService.CreateToken(user),
-                UserName = user.UserName,
-                Email = user.Email,
+                UserName = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty,
                 UserId = user.Id,
-                ProfileImageUrl = user.ProfileImageUrl,
+                ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
             };
         }
 

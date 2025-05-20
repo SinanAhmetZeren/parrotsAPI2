@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Z4k+nCZjkv4=",
+  "dgSpecHash": "h8DrEYYVQPE=",
   "success": true,
-  "projectFilePath": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
+  "projectFilePath": "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sinan\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\sinan\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

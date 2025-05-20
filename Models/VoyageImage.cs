@@ -7,9 +7,9 @@ namespace ParrotsAPI2.Models
     public class VoyageImage
     {
         public int Id { get; set; }
-        public string VoyageImagePath { get; set; }
+        public string VoyageImagePath { get; set; } = string.Empty;
         public int VoyageId { get; set; }
-        public Voyage Voyage { get; set; }
+        public Voyage? Voyage { get; set; }
     }
     
 }

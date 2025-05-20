@@ -63,8 +63,8 @@ namespace ParrotsAPI2.Services.Voyage
             voyage.Vehicle = vehicle;
             voyage.VehicleImage = vehicle?.ProfileImageUrl;  
             voyage.ProfileImage = voyageProfileImage;
-            voyage.VehicleType = vehicle.Type;
-            voyage.VehicleName = vehicle.Name;
+            voyage.VehicleType = vehicle?.Type ?? default;
+            voyage.VehicleName = vehicle?.Name;
             voyage.CreatedAt = DateTime.UtcNow;
             // voyage.Confirmed = false;
             // voyage.IsDeleted = false;
@@ -352,9 +352,13 @@ namespace ParrotsAPI2.Services.Voyage
                 var userDto = _mapper.Map<UserDto>(voyage?.User);
                 var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
                 var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-                var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
+                var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids
+                        .Where(bid => voyage != null && bid.VoyageId == voyage.Id)
+                        .ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
-                var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
+                var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints
+                        .Where(w => voyage != null && w.VoyageId == voyage.Id)
+                        .ToList());
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
@@ -396,9 +400,9 @@ namespace ParrotsAPI2.Services.Voyage
                 var userDto = _mapper.Map<UserDto>(voyage?.User);
                 var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
                 var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-                var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
+                var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids.Where(bid => voyage != null && bid.VoyageId == voyage.Id).ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
-                var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
+                var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => voyage != null && w.VoyageId == voyage.Id).ToList());
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
@@ -561,21 +565,27 @@ namespace ParrotsAPI2.Services.Voyage
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
             try
             {
-              var voyages = await _context.Voyages
+                var voyages = await _context.Voyages
                     .Where(v =>
-                        v.Confirmed == true &&
-                        v.IsDeleted == false &&
+                        v.Confirmed &&
+                        !v.IsDeleted &&
+                        v.Waypoints != null &&
                         v.Waypoints.Any(w =>
                             w.Order == 1 &&
                             w.Latitude >= lat1 &&
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2))
-                    .Where(v => v.LastBidDate >= DateTime.Today) 
+                    .Where(v => v.LastBidDate >= DateTime.Today)
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
-                    .Include(v => v.Waypoints.Where(w => w.Order == 1))
                     .ToListAsync();
+
+                foreach (var voyage in voyages)
+                {
+                    voyage.Waypoints = voyage.Waypoints?.Where(w => w.Order == 1).ToList();
+                }
+
                 if (voyages == null || voyages.Count == 0)
                 {
                     serviceResponse.Success = false;
@@ -603,6 +613,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Where(v =>
                         v.Confirmed == true &&
                         v.IsDeleted == false &&
+                        v.Waypoints != null &&
                         v.Waypoints.Any(w =>
                             w.Order == 1 &&
                             w.Latitude >= lat1 &&
@@ -667,70 +678,80 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType, DateTime? startDate, DateTime? endDate)
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(
+            double? lat1, double? lat2, double? lon1, double? lon2,
+            int? vacancy, VehicleType? vehicleType,
+            DateTime? startDate, DateTime? endDate)
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+
             try
             {
+                // ✅ Consolidate Confirmed + IsDeleted + LastBidDate filters at the start
                 var query = _context.Voyages
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.LastBidDate >= DateTime.Today)
                     .AsQueryable();
 
+                // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
                 if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue)
                 {
                     query = query.Where(v =>
-                        v.Confirmed == true &&
-                        v.IsDeleted == false &&
-                        v.Waypoints.Any(wp =>
+                        v.Waypoints != null && v.Waypoints.Any(wp =>
                             wp.Order == 1 &&
-                            wp.Latitude >= lat1.Value &&
-                            wp.Latitude <= lat2.Value &&
-                            wp.Longitude >= lon1.Value &&
-                            wp.Longitude <= lon2.Value
+                            wp.Latitude >= lat1.Value && wp.Latitude <= lat2.Value &&
+                            wp.Longitude >= lon1.Value && wp.Longitude <= lon2.Value
                         )
                     );
-
-                    // Always filter confirmed voyages regardless of lat/lon filters
-                    query = query.Where(v => v.Confirmed == true && v.IsDeleted == false);
-
                 }
+
                 if (vacancy.HasValue)
-                {
                     query = query.Where(v => v.Vacancy >= vacancy.Value);
-                }
+
                 if (startDate.HasValue)
-                {
-                
                     query = query.Where(v => v.StartDate >= startDate.Value);
-                }
+
                 if (endDate.HasValue)
-                {
                     query = query.Where(v => v.EndDate <= endDate.Value);
-                }
 
-                if (vehicleType.HasValue && Enum.IsDefined(typeof(VehicleType), vehicleType.Value))
-                {
-                    query = query.Where(v => v.Vehicle.Type == (VehicleType)vehicleType.Value);
-                }
-
-                query = query.Where(v => v.LastBidDate >= DateTime.Today);
+                // ✅ Cleaner Enum check
+                if (vehicleType.HasValue && Enum.IsDefined(vehicleType.Value))
+                    query = query.Where(v => v.Vehicle != null && v.Vehicle.Type == vehicleType.Value);
 
                 var queryResult = await query.ToListAsync();
+
+                // ✅ Return clear message if no voyages match
+                if (queryResult == null || queryResult.Count == 0)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No voyages found matching the filters.";
+                    return serviceResponse;
+                }
+
                 var filteredVoyages = queryResult.Select(voyage =>
                 {
-                    var userDto = _mapper.Map<UserDto>(voyage?.User);
-                    var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
-                    var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-                    var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids.Where(bid => bid.VoyageId == voyage.Id).ToList());
+                    // ✅ No need for `?.` because voyage is never null here
+                    var userDto = _mapper.Map<UserDto>(voyage.User);
+                    var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages ?? new List<VoyageImage>());
+                    var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
+
+                    // ✅ Ensure null-safe collections
+                    var bidDtos = _mapper.Map<List<VoyageBidDto>>(
+                        _context.Bids.Where(b => b.VoyageId == voyage.Id).ToList()
+                    );
+                    var waypointDtos = _mapper.Map<List<GetWaypointDto>>(
+                        _context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList()
+                    );
+
                     var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
-                    var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
                     voyageDto.User = userDto;
                     voyageDto.VoyageImages = voyageImageDtos;
                     voyageDto.Vehicle = vehicleDto;
                     voyageDto.Bids = bidDtos;
                     voyageDto.Waypoints = waypointDtos;
+
                     return voyageDto;
                 }).ToList();
 
@@ -740,10 +761,11 @@ namespace ParrotsAPI2.Services.Voyage
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving voyages: {ex.Message}";
-
             }
+
             return serviceResponse;
         }
+
 
         public async Task<ServiceResponse<string>> ConfirmVoyage(int voyageId)
         {

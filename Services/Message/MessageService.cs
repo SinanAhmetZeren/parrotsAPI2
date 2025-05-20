@@ -195,13 +195,13 @@ namespace ParrotsAPI2.Services.Message
 
                     messageDtos.Add(new GetMessageDto
                     {
-                        Id = message.Id,
-                        Text = message.Text,
-                        DateTime = message.DateTime,
-                        Rendered = message.Rendered,
-                        ReadByReceiver = message.ReadByReceiver,
-                        SenderId = message.SenderId,
-                        ReceiverId = message.ReceiverId,
+                        Id = message?.Id ?? 0,
+                        Text = message?.Text ?? string.Empty,
+                        DateTime = message?.DateTime ?? DateTime.MinValue,
+                        Rendered = message?.Rendered ?? false,
+                        ReadByReceiver = message?.ReadByReceiver ?? false,
+                        SenderId = message?.SenderId ?? string.Empty,
+                        ReceiverId = message?.ReceiverId ?? string.Empty,
                         SenderProfileUrl = sender != null && sender.ProfileImageUrl != null ? sender.ProfileImageUrl : string.Empty,
                         SenderUsername = sender != null && sender.UserName != null ? sender.UserName : string.Empty,
                         ReceiverProfileUrl = receiver != null && receiver.ProfileImageUrl != null ? receiver.ProfileImageUrl : string.Empty,
@@ -255,17 +255,17 @@ namespace ParrotsAPI2.Services.Message
 
                 var messageDtos = latestMessages.Where(message => message != null).Select(message => new GetMessageDto
                 {
-                    Id = message.Id,
-                    Text = message.Text,
-                    DateTime = message.DateTime,
-                    Rendered = message.Rendered,
-                    ReadByReceiver = message.ReadByReceiver,
-                    SenderId = message.SenderId,
-                    ReceiverId = message.ReceiverId,
-                    SenderProfileUrl = users.GetValueOrDefault(message.SenderId)?.ProfileImageUrl ?? string.Empty,
-                    SenderUsername = users.GetValueOrDefault(message.SenderId)?.UserName ?? string.Empty,
-                    ReceiverProfileUrl = users.GetValueOrDefault(message.ReceiverId)?.ProfileImageUrl ?? string.Empty,
-                    ReceiverUsername = users.GetValueOrDefault(message.ReceiverId)?.UserName ?? string.Empty
+                    Id = message?.Id ?? 0,
+                    Text = message?.Text ?? string.Empty,
+                    DateTime = message?.DateTime ?? DateTime.MinValue,
+                    Rendered = message?.Rendered ?? false,
+                    ReadByReceiver = message?.ReadByReceiver ?? false,
+                    SenderId = message?.SenderId ?? string.Empty,
+                    ReceiverId = message?.ReceiverId ?? string.Empty,
+                    SenderProfileUrl = users.GetValueOrDefault(message?.SenderId)?.ProfileImageUrl ?? string.Empty,
+                    SenderUsername = users.GetValueOrDefault(message?.SenderId)?.UserName ?? string.Empty,
+                    ReceiverProfileUrl = users.GetValueOrDefault(message?.ReceiverId)?.ProfileImageUrl ?? string.Empty,
+                    ReceiverUsername = users.GetValueOrDefault(message?.ReceiverId)?.UserName ?? string.Empty
                 }).ToList();
 
                 serviceResponse.Data = messageDtos;

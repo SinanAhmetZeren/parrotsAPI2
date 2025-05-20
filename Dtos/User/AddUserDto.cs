@@ -2,21 +2,21 @@
 {
     public class AddUserDto
     {
-        public string UserName { get; set; }
-        public string Title { get; set; }
-        public string Bio { get; set; }
-        public string Email { get; set; }
-        public string Instagram { get; set; }
-        public string? Tiktok { get; set; }
-        public string? Twitter { get; set; }
-        public string? Linkedin { get; set; }
-        public string Facebook { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Youtube { get; set; }
-        public string ProfileImageUrl { get; set; }
-        public string BackgroundImageUrl { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Bio { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Instagram { get; set; } = string.Empty;
+        public string Tiktok { get; set; } = string.Empty;
+        public string Twitter { get; set; } = string.Empty;
+        public string Linkedin { get; set; } = string.Empty;
+        public string Facebook { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Youtube { get; set; } = string.Empty;
+        public string ProfileImageUrl { get; set; } = string.Empty;
+        public string BackgroundImageUrl { get; set; } = string.Empty;
         
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
         public bool UnseenMessages { get; set; }
         public List<Vehicle>? Vehicles { get; set; }
         public List<Voyage>? Voyages { get; set; }

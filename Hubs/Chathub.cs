@@ -32,7 +32,7 @@ namespace ParrotsAPI2.Hubs
         {
             // var userId = Context.User.Identity.Name; // Assuming you're using JWT authentication
 
-            var userId = Context.GetHttpContext().Request.Query["userId"].ToString();
+            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
 
             _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}, UserId={userId}");
 
@@ -54,10 +54,10 @@ namespace ParrotsAPI2.Hubs
             await base.OnConnectedAsync();
         }
 
-        public override async Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
 
-            var userId = Context.GetHttpContext().Request.Query["userId"].ToString();
+            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
             _logger.LogInformation($"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}");
 
             //var user = await _userManager.GetUserAsync(Context.User);
@@ -103,8 +103,8 @@ namespace ParrotsAPI2.Hubs
             //var senderConnectionId = await GetConnectionIdForUser(senderId);
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(c => c.Id == senderId);
-            var senderProfileUrl = user.ProfileImageUrl;
-            var senderUsername = user.UserName;
+            var senderProfileUrl = user?.ProfileImageUrl ?? string.Empty;
+            var senderUsername = user?.UserName ?? string.Empty;
 
 
             if (receiverConnectionId != null)
