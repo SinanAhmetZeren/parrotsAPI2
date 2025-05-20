@@ -18,12 +18,13 @@ namespace ParrotsAPI2.Controllers
             _vehicleService = vehicleService;
         }
 
+/*
         [HttpGet("GetAllVehicles")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> Get()
         {
             return Ok(await _vehicleService.GetAllVehicles());
         }
-
+*/
 
         [HttpGet("GetVehicleById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingle(int id)
@@ -57,6 +58,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _vehicleService.ConfirmVehicle(vehicleId));
         }
 
+/*
         [HttpPut("UpdateVehicle")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> UpdateVehicle(UpdateVehicleDto updatedVehicle)
         {
@@ -67,6 +69,7 @@ namespace ParrotsAPI2.Controllers
             }
             return Ok(response);
         }
+*/
 
         [HttpPatch("PatchVehicle/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> PatchVehicle(

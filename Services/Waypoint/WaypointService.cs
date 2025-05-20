@@ -139,7 +139,6 @@ namespace ParrotsAPI2.Services.Waypoint
 
             return serviceResponse;
         }
-
         public async Task<ServiceResponse<List<GetWaypointDto>>> GetWaypointsByCoords(double lat1, double lon1, double lat2, double lon2)
         {
             var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();

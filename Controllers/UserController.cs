@@ -18,12 +18,13 @@ namespace ParrotsAPI2.Controllers
             _userService = userService;
         }
 
+/*
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> Get()
         {
             return Ok(await _userService.GetAllUsers());
         }
-
+*/
 
 
         [HttpGet("getUserById/{id}")]
@@ -33,7 +34,7 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-
+/*
         [HttpPost("AddUser")]
         [AllowAnonymous]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> AddUser(AddUserDto newUser)
@@ -41,7 +42,7 @@ namespace ParrotsAPI2.Controllers
 
             return Ok(await _userService.AddUser(newUser));
         }
-
+*/
         [HttpPut("UpdateUser")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUser(UpdateUserDto updatedUser)
         {
@@ -53,6 +54,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
+/*
         [HttpPut("updateUnseen")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
         {
@@ -63,7 +65,7 @@ namespace ParrotsAPI2.Controllers
             }
             return Ok(response);
         }
-
+*/
         
 
 
@@ -83,7 +85,7 @@ namespace ParrotsAPI2.Controllers
 
 
 
-
+/*
         [HttpDelete("DeleteUser/{id}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(string id)
         {
@@ -93,9 +95,8 @@ namespace ParrotsAPI2.Controllers
                 return NotFound(response);
             }
             return Ok(response);
-
         }
-
+*/
 
         [Consumes("multipart/form-data")]
         [HttpPost("{userId}/updateProfileImage")]
@@ -130,18 +131,11 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
-
-
         [HttpGet("searchUsers/{username}")]
         public async Task<ActionResult<ServiceResponse<List<UserDto>>>> GetUsersByUsername(string username)
         {
             return Ok(await _userService.GetUsersByUsername(username));
         }
-
-
-
-
-        
 
     }
 }

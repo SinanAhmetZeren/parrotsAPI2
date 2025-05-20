@@ -25,7 +25,6 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<BidDto>>> CreateBid(BidDto newBid)
         {
             var serviceResponse = await _bidService.CreateBid(newBid);
-
             if (serviceResponse.Success)
             {
                 return Ok(serviceResponse);
@@ -46,6 +45,32 @@ namespace ParrotsAPI2.Controllers
             return BadRequest(serviceResponse);
         }
 
+
+
+        [HttpPost("changeBid")]
+        public async Task<ActionResult<ServiceResponse<BidDto>>> ChangeBid(ChangeBidDto changedBid)
+        {
+            var serviceResponse = await _bidService.ChangeBid(changedBid);
+            if (serviceResponse.Success)
+            {
+                return Ok(serviceResponse);
+            }
+            return NotFound(serviceResponse);
+        }
+
+        [HttpDelete("deletebid")]
+        public async Task<ActionResult<ServiceResponse<string>>> DeleteBid(int bidId)
+        {
+            var serviceResponse = await _bidService.DeleteBid(bidId);
+            if (serviceResponse.Success)
+            {
+                return Ok(serviceResponse);
+            }
+            return NotFound(serviceResponse);
+        }
+
+
+        /*
         [HttpGet("bidId/{bidId}")]
         public async Task<ActionResult<ServiceResponse<BidDto>>> GetBidById(int bidId)
         {
@@ -58,21 +83,9 @@ namespace ParrotsAPI2.Controllers
 
             return NotFound(serviceResponse);
         }
+        */
 
-        [HttpPost("changeBid")]
-        public async Task<ActionResult<ServiceResponse<BidDto>>> ChangeBid(ChangeBidDto changedBid)
-        {
-            var serviceResponse = await _bidService.ChangeBid(changedBid);
-
-            if (serviceResponse.Success)
-            {
-                return Ok(serviceResponse);
-            }
-
-            return NotFound(serviceResponse);
-        }
-
-
+        /*
         [HttpGet("userBids/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByUserId(string userId)
         {
@@ -85,7 +98,9 @@ namespace ParrotsAPI2.Controllers
 
             return NotFound(serviceResponse);
         }
+        */
 
+        /*
         [HttpGet("voyageBids/{voyageId}")]
         public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByVoyageId(int voyageId)
         {
@@ -98,19 +113,9 @@ namespace ParrotsAPI2.Controllers
 
             return NotFound(serviceResponse);
         }
+        */
 
-        [HttpDelete]
-        public async Task<ActionResult<ServiceResponse<string>>> DeleteBid(int bidId)
-        {
-            var serviceResponse = await _bidService.DeleteBid(bidId);
 
-            if (serviceResponse.Success)
-            {
-                return Ok(serviceResponse);
-            }
-
-            return NotFound(serviceResponse);
-        }
 
 
     }

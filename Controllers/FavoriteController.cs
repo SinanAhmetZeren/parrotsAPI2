@@ -18,13 +18,13 @@ namespace ParrotsAPI2.Controllers
             _favoriteService = favoriteService;
         }
 
-
+/*
         [HttpGet("getFavoritesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetFavoriteDto>>>> GetFavoritesByUserId(string userId)
         {
             return Ok(await _favoriteService.GetFavoritesByUserId(userId));
         }
-
+*/
 
         [HttpGet("getFavoriteVoyagesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetFavoriteDto>>>> GetFavoriteVoyagesByUserId(string userId)
