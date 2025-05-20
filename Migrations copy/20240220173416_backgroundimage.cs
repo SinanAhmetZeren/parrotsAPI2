@@ -5,7 +5,7 @@
 namespace ParrotsAPI2.Migrations
 {
     /// <inheritdoc />
-    public partial class BackgroundImage : Migration
+    public partial class backgroundimage : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

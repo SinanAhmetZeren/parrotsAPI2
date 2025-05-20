@@ -12,8 +12,8 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240220173416_BackgroundImage")]
-    partial class BackgroundImage
+    [Migration("20240219090205_userYoutube")]
+    partial class userYoutube
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,9 +165,6 @@ namespace ParrotsAPI2.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("BackgroundImageUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");

@@ -5,13 +5,13 @@
 namespace ParrotsAPI2.Migrations
 {
     /// <inheritdoc />
-    public partial class BackgroundImage : Migration
+    public partial class userYoutube : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "BackgroundImageUrl",
+                name: "Youtube",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
                 nullable: true);
@@ -21,7 +21,7 @@ namespace ParrotsAPI2.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "BackgroundImageUrl",
+                name: "Youtube",
                 table: "AspNetUsers");
         }
     }

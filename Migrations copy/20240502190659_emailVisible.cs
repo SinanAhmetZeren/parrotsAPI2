@@ -5,23 +5,24 @@
 namespace ParrotsAPI2.Migrations
 {
     /// <inheritdoc />
-    public partial class BackgroundImage : Migration
+    public partial class emailVisible : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "BackgroundImageUrl",
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailVisible",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "BackgroundImageUrl",
+                name: "EmailVisible",
                 table: "AspNetUsers");
         }
     }

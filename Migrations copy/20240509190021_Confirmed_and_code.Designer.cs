@@ -12,8 +12,8 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240220173416_BackgroundImage")]
-    partial class BackgroundImage
+    [Migration("20240509190021_Confirmed_and_code")]
+    partial class Confirmed_and_code
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,6 +176,12 @@ namespace ParrotsAPI2.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ConfirmationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ConnectionId")
                         .HasColumnType("nvarchar(max)");
 
@@ -185,6 +191,9 @@ namespace ParrotsAPI2.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EmailVisible")
                         .HasColumnType("bit");
 
                     b.Property<string>("Facebook")
@@ -259,6 +268,9 @@ namespace ParrotsAPI2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -319,6 +331,30 @@ namespace ParrotsAPI2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Characters");
+                });
+
+            modelBuilder.Entity("ParrotsAPI2.Models.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("ParrotsAPI2.Models.Message", b =>

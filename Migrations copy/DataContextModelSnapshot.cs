@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParrotsAPI2.Data;
 
@@ -12,11 +11,9 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240220173416_BackgroundImage")]
-    partial class BackgroundImage
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,21 +173,32 @@ namespace ParrotsAPI2.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ConfirmationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ConnectionId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("EmailVisible")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Facebook")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Instagram")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Linkedin")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -222,7 +230,13 @@ namespace ParrotsAPI2.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Tiktok")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Twitter")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -259,6 +273,9 @@ namespace ParrotsAPI2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -292,7 +309,7 @@ namespace ParrotsAPI2.Migrations
                     b.ToTable("Bids");
                 });
 
-            modelBuilder.Entity("ParrotsAPI2.Models.Character", b =>
+            modelBuilder.Entity("ParrotsAPI2.Models.Favorite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -300,25 +317,20 @@ namespace ParrotsAPI2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Class")
+                    b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Hitpoints")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Intelligence")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Characters");
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("ParrotsAPI2.Models.Message", b =>
@@ -370,9 +382,18 @@ namespace ParrotsAPI2.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -433,6 +454,12 @@ namespace ParrotsAPI2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -441,6 +468,9 @@ namespace ParrotsAPI2.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("FixedPrice")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastBidDate")
@@ -474,6 +504,9 @@ namespace ParrotsAPI2.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("VehicleImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VehicleName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VehicleType")

@@ -5,24 +5,25 @@
 namespace ParrotsAPI2.Migrations
 {
     /// <inheritdoc />
-    public partial class BackgroundImage : Migration
+    public partial class bidAccept : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "BackgroundImageUrl",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.AddColumn<bool>(
+                name: "Accepted",
+                table: "Bids",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "BackgroundImageUrl",
-                table: "AspNetUsers");
+                name: "Accepted",
+                table: "Bids");
         }
     }
 }

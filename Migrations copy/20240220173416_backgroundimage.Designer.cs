@@ -12,8 +12,8 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240220173416_BackgroundImage")]
-    partial class BackgroundImage
+    [Migration("20240220173416_backgroundimage")]
+    partial class backgroundimage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -12,8 +12,8 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240220173416_BackgroundImage")]
-    partial class BackgroundImage
+    [Migration("20240201210537_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,9 +166,6 @@ namespace ParrotsAPI2.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("BackgroundImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
@@ -234,9 +231,6 @@ namespace ParrotsAPI2.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Youtube")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -382,8 +376,9 @@ namespace ParrotsAPI2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -475,9 +470,6 @@ namespace ParrotsAPI2.Migrations
 
                     b.Property<string>("VehicleImage")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VehicleType")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -609,9 +601,9 @@ namespace ParrotsAPI2.Migrations
                         .IsRequired();
 
                     b.HasOne("ParrotsAPI2.Models.Voyage", "Voyage")
-                        .WithMany()
+                        .WithMany("Bids")
                         .HasForeignKey("VoyageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -718,6 +710,8 @@ namespace ParrotsAPI2.Migrations
 
             modelBuilder.Entity("ParrotsAPI2.Models.Voyage", b =>
                 {
+                    b.Navigation("Bids");
+
                     b.Navigation("VoyageImages");
 
                     b.Navigation("Waypoints");
