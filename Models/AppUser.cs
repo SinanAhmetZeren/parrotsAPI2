@@ -10,7 +10,7 @@ namespace ParrotsAPI2.Models
         public string? Bio { get; set; }
         public string? Instagram { get; set; }
         public string? Facebook { get; set; }
-        public string? PhoneNumber { get; set; }
+        public override string? PhoneNumber { get; set; }
         public string? Youtube { get; set; }
         public string? Tiktok { get; set; }
         public string? Twitter { get; set; }

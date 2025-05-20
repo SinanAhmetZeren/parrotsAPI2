@@ -5,7 +5,7 @@
 namespace ParrotsAPI2.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateBidsVoyagesForeignKey : Migration
+    public partial class VoyageForeignKey : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

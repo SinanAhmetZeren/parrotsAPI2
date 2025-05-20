@@ -1,3 +1,11 @@
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.csproj.AssemblyReference.cache
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.AssemblyInfoInputs.cache
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.AssemblyInfo.cs
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.csproj.CoreCompileInputs.cache
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.sourcelink.json
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\appsettings.json
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\ParrotsAPI2.staticwebassets.runtime.json
@@ -12,6 +20,7 @@ C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\AutoMapper.Exten
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Azure.Core.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Azure.Identity.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Humanizer.dll
+C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Microsoft.AspNetCore.Http.Connections.Client.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.UI.dll
@@ -126,14 +135,6 @@ C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\runtimes\win\lib
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.csproj.AssemblyReference.cache
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.AssemblyInfoInputs.cache
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.AssemblyInfo.cs
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.csproj.CoreCompileInputs.cache
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.sourcelink.json
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\scopedcss\bundle\ParrotsAPI2.styles.css
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\compressed\ofa40bqe71-o84wqeh1og.gz
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\compressed\j9swiz3yzq-90yqlj465b.gz
@@ -209,4 +210,3 @@ C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\refint\ParrotsAP
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.pdb
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.genruntimeconfig.cache
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ref\ParrotsAPI2.dll
-c:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
