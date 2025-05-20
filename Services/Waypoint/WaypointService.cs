@@ -42,33 +42,6 @@ namespace ParrotsAPI2.Services.Waypoint
             return serviceResponse;
         }
 
-
-
-        /*
-        public async Task<ServiceResponse<List<GetWaypointDto>>> DeleteWaypoint(int id)
-        {
-            var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();
-            try
-            {
-                var waypoint = await _context.Waypoints.FindAsync(id);
-                if (waypoint == null)
-                {
-                    throw new Exception($"Waypoint with ID `{id}` not found");
-                }
-                _context.Waypoints.Remove(waypoint);
-                await _context.SaveChangesAsync();
-                var voyages = await _context.Waypoints.ToListAsync();
-                serviceResponse.Data = voyages.Select(c => _mapper.Map<GetWaypointDto>(c)).ToList();
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
-            }
-            return serviceResponse;
-        }
-        */
-
         public async Task<ServiceResponse<List<GetWaypointDto>>> DeleteWaypoint(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();
@@ -113,9 +86,6 @@ namespace ParrotsAPI2.Services.Waypoint
             }
             return serviceResponse;
         }
-
-
-
 
         public async Task<ServiceResponse<List<GetWaypointDto>>> GetAllWaypoints()
         {

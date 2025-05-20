@@ -113,7 +113,6 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
@@ -124,83 +123,6 @@ namespace ParrotsAPI2.Services.User
             serviceResponse.Data = dbUsers.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
             return serviceResponse;
 
-        }
-
-        public async Task<ServiceResponse<GetUserDto>> GetUserById_old(string id)
-        {
-            var serviceResponse = new ServiceResponse<GetUserDto>();
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            if (string.IsNullOrEmpty(id))
-            {
-                serviceResponse.Data = null;
-                serviceResponse.Message = "Id is null";
-                stopwatch.Stop();
-                _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
-                return serviceResponse;
-            }
-
-            if (id == "null") {
-                serviceResponse.Data = null;
-                serviceResponse.Message = "Id is null";
-                return serviceResponse; 
-                };
-
-            var user = await _context.Users
-                .AsNoTracking()
-                .Include(u => u.SentMessages)
-                .Include(u => u.ReceivedMessages)
-                .Include(u => u.Vehicles)
-                .Include(u => u.Voyages)
-                .Include(u => u.Bids)
-                .AsSplitQuery() 
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            stopwatch.Stop();
-
-            var confirmedVehicles = user?.Vehicles?.Where(v => v.Confirmed).ToList();
-            var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
-
-            var confirmedVoyages = user?.Voyages?.Where(v => v.Confirmed).ToList();
-            var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
-
-
-            if (user != null)
-            {
-                var userDto = new GetUserDto
-                {
-                    Id = user.Id,
-                    UserName = user.UserName ?? string.Empty,
-                    Title = user.Title ?? string.Empty,
-                    Bio = user.Bio ?? string.Empty,
-                    Email = user.Email ?? string.Empty,
-                    Instagram = user.Instagram ?? string.Empty,
-                    Twitter = user.Twitter ?? string.Empty,
-                    Tiktok = user.Tiktok ?? string.Empty,
-                    Linkedin = user.Linkedin ?? string.Empty,
-                    Facebook = user.Facebook ?? string.Empty,
-                    PhoneNumber = user.PhoneNumber ?? string.Empty,
-                    Youtube = user.Youtube ?? string.Empty,
-                    ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
-                    BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
-                    ImageFile = default!,
-                    UnseenMessages = user.UnseenMessages,
-                    UsersVehicles = vehicleDtos,
-                    UsersVoyages = voyageDtos,
-                    EmailVisible = user.EmailVisible,
-                    
-                };
-
-                serviceResponse.Data = userDto;
-            }
-            else
-            {
-                serviceResponse.Message = "User not found";
-            }
-            _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
-
-            return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetUserDto>> GetUserById(string id)
@@ -279,7 +201,6 @@ namespace ParrotsAPI2.Services.User
             _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
         {
@@ -377,7 +298,6 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
- 
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile)
         {
@@ -432,7 +352,6 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<GetUserDto>> UpdateUserBackgroundImage(string userId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
@@ -479,7 +398,6 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<GetUserDto>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
@@ -504,7 +422,6 @@ namespace ParrotsAPI2.Services.User
             }
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<List<UserDto>>> GetUsersByUsername(string username)
         {

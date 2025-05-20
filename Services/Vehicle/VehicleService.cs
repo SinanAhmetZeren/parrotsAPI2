@@ -72,7 +72,7 @@ namespace ParrotsAPI2.Services.Vehicle
 
         var vehicle = _mapper.Map<Models.Vehicle>(newVehicle);
         vehicle.ProfileImageUrl = profileImageUrl;
-        vehicle.Confirmed = false;
+        // vehicle.Confirmed = false;
         vehicle.CreatedAt = DateTime.UtcNow;
 
         var currentUser = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVehicle.UserId);
@@ -309,7 +309,7 @@ namespace ParrotsAPI2.Services.Vehicle
             .Include(v => v.User)
             .Include(v => v.VehicleImages)
             .Include(v => v.Voyages)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.Id == id && c.Confirmed == true && c.IsDeleted == false);
 
         if (vehicle == null)
         {
@@ -327,7 +327,6 @@ namespace ParrotsAPI2.Services.Vehicle
         vehicleDto.User = userDto;
         vehicleDto.VehicleImages = vehicleImageDtos;
         vehicleDto.Voyages = voyageDtos;
-
         serviceResponse.Data = vehicleDto;
 
         // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
@@ -379,7 +378,7 @@ namespace ParrotsAPI2.Services.Vehicle
         try
         {
             var vehicles = await _context.Vehicles
-                .Where(v => v.UserId == userId && v.Confirmed)
+                .Where(v => v.UserId == userId && v.Confirmed && v.IsDeleted == false)
                 .ToListAsync();
 
             if (vehicles == null || !vehicles.Any())
@@ -531,7 +530,6 @@ namespace ParrotsAPI2.Services.Vehicle
         return serviceResponse;
     }
 
-
     public async Task<ServiceResponse<string>> DeleteVehicleImage(int vehicleImageId)
     {
         var response = new ServiceResponse<string>();
@@ -557,7 +555,6 @@ namespace ParrotsAPI2.Services.Vehicle
         }
         return response;
     }
- 
     public async Task<ServiceResponse<string>> ConfirmVehicle(int vehicleId)
     {
 

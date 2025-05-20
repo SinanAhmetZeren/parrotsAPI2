@@ -66,8 +66,8 @@ namespace ParrotsAPI2.Services.Voyage
             voyage.VehicleType = vehicle.Type;
             voyage.VehicleName = vehicle.Name;
             voyage.CreatedAt = DateTime.UtcNow;
-            voyage.Confirmed = false;
-            voyage.IsDeleted = false;
+            // voyage.Confirmed = false;
+            // voyage.IsDeleted = false;
 
             _context.Voyages.Add(voyage);
             await _context.SaveChangesAsync();
@@ -147,7 +147,6 @@ namespace ParrotsAPI2.Services.Voyage
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<List<GetVoyageDto>>> DeleteVoyage(int id)
         {
@@ -264,66 +263,6 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> GetVoyageById2(int id)
-        {
-            var serviceResponse = new ServiceResponse<GetVoyageDto>();
-
-            var voyage = await _context.Voyages
-                .Include(v => v.User)
-                .Include(v => v.VoyageImages)
-                .Include(v => v.Vehicle)
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-           if (voyage == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "Voyage not found";
-                return serviceResponse;
-            }
-
-            var userDto = _mapper.Map<UserDto>(voyage?.User);
-            var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
-            var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-            //var bidDtos = _mapper.Map<List<BidDto>>(_context.Bids.Where(bid => bid.VoyageId == id).ToList());
-
-            var bidDtos = _context.Bids
-                .Where(bid => bid.VoyageId == id)
-                .Select(bid => new VoyageBidDto
-                {       Accepted= bid.Accepted,
-                        Id = bid.Id,
-                        Message = bid.Message,
-                        OfferPrice = bid.OfferPrice,
-                        Currency = bid.Currency,
-                        DateTime =bid.DateTime,
-                        VoyageId =bid.VoyageId,  
-                        UserId= bid.UserId,
-                        PersonCount = bid.PersonCount,
-                        UserName = _context.Users
-                            .Where(u => u.Id == bid.UserId)
-                            .Select(u => u.UserName)
-                            .FirstOrDefault(),
-                        UserProfileImage = _context.Users
-                            .Where(u => u.Id == bid.UserId)
-                            .Select(u => u.ProfileImageUrl)
-                            .FirstOrDefault()
-                })
-                .ToList();
-
-
-
-            var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
-            var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints.Where(w => w.VoyageId == id).ToList());
-
-            voyageDto.User = userDto;
-            voyageDto.VoyageImages = voyageImageDtos;
-            voyageDto.Vehicle = vehicleDto;
-            voyageDto.Bids = bidDtos;
-            voyageDto.Waypoints = waypointDtos;
-            serviceResponse.Data = voyageDto;
- 
-            return serviceResponse;
-        }
-
         public async Task<ServiceResponse<GetVoyageDto>> GetVoyageById(int id)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
@@ -331,7 +270,7 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.User)
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id && c.Confirmed == true && c.IsDeleted == false);
 
             if (voyage == null)
             {
@@ -390,7 +329,6 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(string userId)  // updated for confirmed
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
@@ -399,7 +337,7 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
                 //.Where(v => v.UserId == userId)
-                .Where(v => v.UserId == userId && v.Confirmed == true)
+                .Where(v => v.UserId == userId && v.Confirmed == true && v.IsDeleted == false)
                 .ToListAsync();
 
             if (voyages == null || voyages.Count == 0)
@@ -438,7 +376,7 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
                 //.Where(v => v.VehicleId == vehicleId)
-                .Where(v => v.VehicleId == vehicleId && v.Confirmed == true)
+                .Where(v => v.VehicleId == vehicleId && v.Confirmed == true && v.IsDeleted == false)
                 .ToListAsync();
 
             if (voyages == null || voyages.Count == 0)
@@ -626,6 +564,7 @@ namespace ParrotsAPI2.Services.Voyage
               var voyages = await _context.Voyages
                     .Where(v =>
                         v.Confirmed == true &&
+                        v.IsDeleted == false &&
                         v.Waypoints.Any(w =>
                             w.Order == 1 &&
                             w.Latitude >= lat1 &&
@@ -663,6 +602,7 @@ namespace ParrotsAPI2.Services.Voyage
                 var voyageIds = await _context.Voyages
                     .Where(v =>
                         v.Confirmed == true &&
+                        v.IsDeleted == false &&
                         v.Waypoints.Any(w =>
                             w.Order == 1 &&
                             w.Latitude >= lat1 &&
@@ -729,7 +669,6 @@ namespace ParrotsAPI2.Services.Voyage
 
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType, DateTime? startDate, DateTime? endDate)
         {
-
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
             try
             {
@@ -743,6 +682,7 @@ namespace ParrotsAPI2.Services.Voyage
                 {
                     query = query.Where(v =>
                         v.Confirmed == true &&
+                        v.IsDeleted == false &&
                         v.Waypoints.Any(wp =>
                             wp.Order == 1 &&
                             wp.Latitude >= lat1.Value &&
@@ -805,13 +745,10 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<string>> ConfirmVoyage(int voyageId)
         {
             var serviceResponse = new ServiceResponse<string>();
-
             var voyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == voyageId);
-
             if (voyage == null)
             {
                 serviceResponse.Success = false;
@@ -821,7 +758,6 @@ namespace ParrotsAPI2.Services.Voyage
 
             voyage.Confirmed = true;
             await _context.SaveChangesAsync();
-
             serviceResponse.Data = "Voyage confirmed";
             return serviceResponse;
         }
