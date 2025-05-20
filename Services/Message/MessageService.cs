@@ -241,7 +241,7 @@ namespace ParrotsAPI2.Services.Message
 
                 // Step 2: Extract all user IDs involved in the latest messages
                 var userIds = latestMessages
-                    .SelectMany(m => new[] { m.SenderId, m.ReceiverId })
+                    .SelectMany(m => new[] { m?.SenderId, m?.ReceiverId })
                     .Distinct()
                     .ToList();
 
@@ -262,10 +262,10 @@ namespace ParrotsAPI2.Services.Message
                     ReadByReceiver = message?.ReadByReceiver ?? false,
                     SenderId = message?.SenderId ?? string.Empty,
                     ReceiverId = message?.ReceiverId ?? string.Empty,
-                    SenderProfileUrl = users.GetValueOrDefault(message?.SenderId)?.ProfileImageUrl ?? string.Empty,
-                    SenderUsername = users.GetValueOrDefault(message?.SenderId)?.UserName ?? string.Empty,
-                    ReceiverProfileUrl = users.GetValueOrDefault(message?.ReceiverId)?.ProfileImageUrl ?? string.Empty,
-                    ReceiverUsername = users.GetValueOrDefault(message?.ReceiverId)?.UserName ?? string.Empty
+                    SenderProfileUrl = ((IReadOnlyDictionary<string?, AppUser>)users).GetValueOrDefault(message?.SenderId)?.ProfileImageUrl ?? string.Empty,
+                    SenderUsername = ((IReadOnlyDictionary<string?, AppUser>)users).GetValueOrDefault(message?.SenderId)?.UserName ?? string.Empty,
+                    ReceiverProfileUrl = ((IReadOnlyDictionary<string?, AppUser>)users).GetValueOrDefault(message?.ReceiverId)?.ProfileImageUrl ?? string.Empty,
+                    ReceiverUsername = ((IReadOnlyDictionary<string?, AppUser>)users).GetValueOrDefault(message?.ReceiverId)?.UserName ?? string.Empty
                 }).ToList();
 
                 serviceResponse.Data = messageDtos;
