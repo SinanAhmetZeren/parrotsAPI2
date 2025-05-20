@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj": {}
+    "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj": {}
   },
   "projects": {
-    "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj": {
+    "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
+        "projectUniqueName": "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
         "projectName": "ParrotsAPI2",
-        "projectPath": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
+        "projectPath": "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
         "packagesPath": "C:\\Users\\sinan\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\obj\\",
+        "outputPath": "C:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sinan\\AppData\\Roaming\\NuGet\\NuGet.Config",

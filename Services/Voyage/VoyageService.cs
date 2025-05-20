@@ -65,8 +65,9 @@ namespace ParrotsAPI2.Services.Voyage
             voyage.ProfileImage = voyageProfileImage;
             voyage.VehicleType = vehicle.Type;
             voyage.VehicleName = vehicle.Name;
-            voyage.Confirmed = false;
             voyage.CreatedAt = DateTime.UtcNow;
+            voyage.Confirmed = false;
+            voyage.IsDeleted = false;
 
             _context.Voyages.Add(voyage);
             await _context.SaveChangesAsync();
