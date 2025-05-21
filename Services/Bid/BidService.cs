@@ -224,7 +224,7 @@ namespace ParrotsAPI2.Services.Bid
             return response;
         }
 
-        public async Task<ServiceResponse<string>> DeleteBid(int bidId)
+        public async Task<ServiceResponse<string>> DeleteBid(int bidId, string voyageOwnerId)
         {
             var serviceResponse = new ServiceResponse<string>();
             try
@@ -236,6 +236,24 @@ namespace ParrotsAPI2.Services.Bid
                     serviceResponse.Message = $"Bid with ID `{bidId}` not found";
                     return serviceResponse;
                 }
+
+                var voyage = await _context.Voyages
+                        .FirstOrDefaultAsync(v => v.Id == bid.VoyageId);
+
+                    if (voyage == null)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = $"Voyage with ID {bid.VoyageId} not found";
+                        return serviceResponse;
+                    }
+
+                    if (voyage.UserId != voyageOwnerId)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Unauthorized: You are not the owner of this voyage.";
+                        return serviceResponse;
+                    }
+
                 _context.Bids.Remove(bid);
                 await _context.SaveChangesAsync();
                 serviceResponse.Success = true;
@@ -249,9 +267,10 @@ namespace ParrotsAPI2.Services.Bid
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<string>> AcceptBid(int bidId)
+        public async Task<ServiceResponse<string>> AcceptBid(int bidId, string voyageOwnerId)
         {
             var serviceResponse = new ServiceResponse<string>();
+
             try
             {
                 var bidEntity = await _context.Bids.FirstOrDefaultAsync(c => c.Id == bidId);
@@ -261,6 +280,23 @@ namespace ParrotsAPI2.Services.Bid
                     serviceResponse.Message = $"Bid with ID {bidId} not found";
                     return serviceResponse;
                 }
+
+                var voyage = await _context.Voyages
+                        .FirstOrDefaultAsync(v => v.Id == bidEntity.VoyageId);
+
+                    if (voyage == null)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = $"Voyage with ID {bidEntity.VoyageId} not found";
+                        return serviceResponse;
+                    }
+
+                    if (voyage.UserId != voyageOwnerId)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Unauthorized: You are not the owner of this voyage.";
+                        return serviceResponse;
+                    }
 
                 bidEntity.Accepted = true;
                 await _context.SaveChangesAsync();

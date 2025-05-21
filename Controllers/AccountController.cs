@@ -234,8 +234,6 @@ namespace API.Controllers
         public async Task<ActionResult<UserResponseDto>> ConfirmCode(ConfirmDto confirmDto)
         {
             var normalizedEmail = _userManager.NormalizeEmail(confirmDto.Email);
-
-
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
             if (user == null)
             {
@@ -270,9 +268,6 @@ namespace API.Controllers
             var normalizedEmail = User.FindFirstValue(ClaimTypes.Email)?.ToUpper();
             var user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
-
-            //var user = await _userManager.Users
-            //    .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
             if (user != null)
             {
                 return CreateUserObject(user);
