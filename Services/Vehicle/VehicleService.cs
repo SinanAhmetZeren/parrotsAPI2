@@ -92,7 +92,7 @@ namespace ParrotsAPI2.Services.Vehicle
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile)
+    public async Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile, string userId)
     {
         var serviceResponse = new ServiceResponse<string>();
 
@@ -140,7 +140,8 @@ namespace ParrotsAPI2.Services.Vehicle
             var newVehicleImage = new VehicleImage
             {
                 VehicleImagePath = fileName,
-                VehicleId = vehicleId // NEW: ensures consistency even if not using navigation property
+                VehicleId = vehicleId,
+                UserId = userId
             };
 
             existingVehicle.VehicleImages ??= new List<VehicleImage>();
@@ -371,33 +372,71 @@ namespace ParrotsAPI2.Services.Vehicle
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
-    {
-        var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
-
-        try
+        public async Task<ServiceResponse<VehicleImageDto>> GetVehicleImageById(int vehicleImageId)
         {
-            var vehicles = await _context.Vehicles
-                .Where(v => v.UserId == userId && v.Confirmed && v.IsDeleted == false)
-                .ToListAsync();
+            var serviceResponse = new ServiceResponse<VehicleImageDto>();
 
-            if (vehicles == null || !vehicles.Any())
+            try
+            {
+                var vehicleImage = await _context.VehicleImages
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(vi => vi.Id == vehicleImageId);
+
+                if (vehicleImage == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Vehicle image not found for the given image ID.";
+                    return serviceResponse;
+                }
+
+                var vehicleImageDto = new VehicleImageDto
+                {
+                    Id = vehicleImage.Id,
+                    VehicleImagePath = vehicleImage.VehicleImagePath,
+                    VehicleId = vehicleImage.VehicleId,
+                    UserId = vehicleImage.UserId
+                };
+
+                serviceResponse.Data = vehicleImageDto;
+                serviceResponse.Success = true;
+            }
+            catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "No confirmed vehicles found for the specified user.";
-                return serviceResponse;
+                serviceResponse.Message = $"An error occurred while retrieving the vehicle image: {ex.Message}";
             }
 
-            serviceResponse.Data = _mapper.Map<List<GetVehicleDto>>(vehicles);
-        }
-        catch (Exception ex)
-        {
-            serviceResponse.Success = false;
-            serviceResponse.Message = $"An error occurred while fetching vehicles: {ex.Message}";
+            return serviceResponse;
         }
 
-        return serviceResponse;
-    }
+
+        public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
+        {
+            var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
+
+            try
+            {
+                var vehicles = await _context.Vehicles
+                    .Where(v => v.UserId == userId && v.Confirmed && v.IsDeleted == false)
+                    .ToListAsync();
+
+                if (vehicles == null || !vehicles.Any())
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No confirmed vehicles found for the specified user.";
+                    return serviceResponse;
+                }
+
+                serviceResponse.Data = _mapper.Map<List<GetVehicleDto>>(vehicles);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"An error occurred while fetching vehicles: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
 
     public async Task<ServiceResponse<GetVehicleDto>> PatchVehicle(int vehicleId, [FromBody] JsonPatchDocument<UpdateVehicleDto> patchDoc, ModelStateDictionary modelState)
     {
@@ -496,7 +535,7 @@ namespace ParrotsAPI2.Services.Vehicle
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile)
+    public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile )
     {
         var serviceResponse = new ServiceResponse<GetVehicleDto>();
 

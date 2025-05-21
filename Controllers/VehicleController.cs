@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.VehicleDtos;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ParrotsAPI2.Controllers
 {
@@ -49,12 +50,54 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> AddVehicle(AddVehicleDto newVehicle)
         {
 
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (newVehicle.UserId != requestUserId)
+            {
+                return Forbid(); 
+            }
+
             return Ok(await _vehicleService.AddVehicle(newVehicle));
         }
 
         [HttpPost("confirmVehicle/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> ConfirmVehicle(int vehicleId)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            // Fetch the vehicle (assuming you have a method for this)
+            var vehicle = await _vehicleService.GetVehicleById(vehicleId);
+            if (vehicle == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Vehicle not found."
+                });
+            }
+
+            // Check if the vehicle belongs to the current user
+            if (vehicle?.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
             return Ok(await _vehicleService.ConfirmVehicle(vehicleId));
         }
 
@@ -75,6 +118,32 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> PatchVehicle(
             int vehicleId, JsonPatchDocument<UpdateVehicleDto> patchDoc)
         {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var vehicle = await _vehicleService.GetVehicleById(vehicleId);
+            if (vehicle == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Vehicle not found."
+                });
+            }
+
+            if (vehicle?.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
+
             var response = await _vehicleService.PatchVehicle(vehicleId, patchDoc, ModelState);
 
             if (response.Data == null)
@@ -88,6 +157,34 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("DeleteVehicle/{id}")]
         public async Task<ActionResult<ServiceResponse<string>>> DeleteVehicle(int id)
         {
+
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var vehicle = await _vehicleService.GetVehicleById(id);
+            if (vehicle == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Vehicle not found."
+                });
+            }
+
+            if (vehicle?.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
+
             var response = await _vehicleService.DeleteVehicle(id);
             if (response.Data == null)
             {
@@ -100,6 +197,35 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("checkAndDeleteVehicle/{id}")]
         public async Task<ActionResult<ServiceResponse<string>>> CheckAndDeleteVehicle(int id)
         {
+
+
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var vehicle = await _vehicleService.GetVehicleById(id);
+            if (vehicle == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Vehicle not found."
+                });
+            }
+
+            if (vehicle?.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
+
             var response = await _vehicleService.CheckAndDeleteVehicle(id);
             if (response.Data == null)
             {
@@ -114,8 +240,32 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{vehicleId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile)
         {
-            var serviceResponse = await _vehicleService.UpdateVehicleProfileImage(vehicleId, imageFile);
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
 
+            var vehicle = await _vehicleService.GetVehicleById(vehicleId);
+            if (vehicle == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Vehicle not found."
+                });
+            }
+
+            if (vehicle?.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
+            var serviceResponse = await _vehicleService.UpdateVehicleProfileImage(vehicleId, imageFile );
             if (serviceResponse.Success)
             {
                 return Ok(new { imagePath = serviceResponse.Data });
@@ -130,8 +280,33 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{vehicleId}/addVehicleImage")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> AddVehicleImage(int vehicleId, IFormFile imageFile)
         {
-            var serviceResponse = await _vehicleService.AddVehicleImage(vehicleId, imageFile);
 
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var vehicle = await _vehicleService.GetVehicleById(vehicleId);
+            if (vehicle == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Vehicle not found."
+                });
+            }
+
+            if (vehicle?.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+            var serviceResponse = await _vehicleService.AddVehicleImage(vehicleId, imageFile, userId: requestUserId);
             if (serviceResponse.Success)
             {
                 return Ok(new { imagePath = serviceResponse.Data });
@@ -145,6 +320,31 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("DeleteVehicleImage/{imageId}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> DeleteVehicleImage(int imageId)
         {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var imageResponse = await _vehicleService.GetVehicleImageById(imageId);
+            if (imageResponse == null || imageResponse.Data == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Image not found."
+                });
+            }
+
+            if (imageResponse.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
             var response = await _vehicleService.DeleteVehicleImage(imageId);
             if (response.Data == null)
             {

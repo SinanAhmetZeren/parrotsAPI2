@@ -16,8 +16,11 @@ namespace ParrotsAPI2.Services.Vehicle
         Task<ServiceResponse<string>> CheckAndDeleteVehicle(int id);
         Task<ServiceResponse<GetVehicleDto>> PatchVehicle(int vehicleId, JsonPatchDocument<UpdateVehicleDto> patchDoc, ModelStateDictionary modelState);
         Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile);
-        Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile);
+        Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile, string userId);
         Task<ServiceResponse<string>> DeleteVehicleImage(int vehicleImageId);
         Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId);
+        Task<ServiceResponse<VehicleImageDto>> GetVehicleImageById(int vehicleImageId);
+
+        
     }
 }

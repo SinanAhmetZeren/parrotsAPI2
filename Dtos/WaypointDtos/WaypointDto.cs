@@ -11,5 +11,7 @@
 
         public int Order { get; set; }
         public int VoyageId { get; set; }
+        public string UserId { get; set; } = string.Empty;
+
     }
 }

@@ -61,7 +61,7 @@ namespace ParrotsAPI2.Services.Voyage
 
             voyage.User = user;
             voyage.Vehicle = vehicle;
-            voyage.VehicleImage = vehicle?.ProfileImageUrl;  
+            voyage.VehicleImage = vehicle?.ProfileImageUrl;
             voyage.ProfileImage = voyageProfileImage;
             voyage.VehicleType = vehicle?.Type ?? default;
             voyage.VehicleName = vehicle?.Name;
@@ -71,12 +71,12 @@ namespace ParrotsAPI2.Services.Voyage
 
             _context.Voyages.Add(voyage);
             await _context.SaveChangesAsync();
-            
+
             serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<string>> AddVoyageImage(int voyageId, IFormFile imageFile)
+        public async Task<ServiceResponse<string>> AddVoyageImage(int voyageId, IFormFile imageFile, string userId)
         {
             var serviceResponse = new ServiceResponse<string>();
 
@@ -128,7 +128,8 @@ namespace ParrotsAPI2.Services.Voyage
 
                 var newVoyageImage = new VoyageImage
                 {
-                    VoyageImagePath = fileName
+                    VoyageImagePath = fileName,
+                    UserId = userId
                 };
 
                 existingVoyage.VoyageImages ??= new List<VoyageImage>();
@@ -254,7 +255,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             return serviceResponse;
         }
- 
+
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetAllVoyages()
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
@@ -414,7 +415,7 @@ namespace ParrotsAPI2.Services.Voyage
             serviceResponse.Data = voyageDtos;
             return serviceResponse;
         }
-        public async Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int voyageId,JsonPatchDocument<UpdateVoyageDto> patchDoc,ModelStateDictionary modelState)
+        public async Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
 
@@ -526,11 +527,11 @@ namespace ParrotsAPI2.Services.Voyage
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
                     var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
 
-                     var directoryPath = Path.GetDirectoryName(filePath);
-                     if (directoryPath != null && !Directory.Exists(directoryPath))
-                     {
-                         Directory.CreateDirectory(directoryPath);
-                     }
+                    var directoryPath = Path.GetDirectoryName(filePath);
+                    if (directoryPath != null && !Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -542,7 +543,7 @@ namespace ParrotsAPI2.Services.Voyage
                     serviceResponse.Success = true;
                     serviceResponse.Data = voyageDto;
 
-                    
+
                 }
                 else
                 {
@@ -781,6 +782,44 @@ namespace ParrotsAPI2.Services.Voyage
             voyage.Confirmed = true;
             await _context.SaveChangesAsync();
             serviceResponse.Data = "Voyage confirmed";
+            return serviceResponse;
+        }
+
+
+        public async Task<ServiceResponse<VoyageImageDto>> GetVoyageImageById(int voyageImageId)
+        {
+            var serviceResponse = new ServiceResponse<VoyageImageDto>();
+
+            try
+            {
+                var voyageImage = await _context.VoyageImages
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(vi => vi.Id == voyageImageId);
+
+                if (voyageImage == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Voyage image not found for the given image ID.";
+                    return serviceResponse;
+                }
+
+                var voyageImageDto = new VoyageImageDto
+                {
+                    Id = voyageImage.Id,
+                    VoyageImagePath = voyageImage.VoyageImagePath,
+                    VoyageId = voyageImage.VoyageId,
+                    UserId = voyageImage.UserId
+                };
+
+                serviceResponse.Data = voyageImageDto;
+                serviceResponse.Success = true;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"An error occurred while retrieving the voyage image: {ex.Message}";
+            }
+
             return serviceResponse;
         }
 

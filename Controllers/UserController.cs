@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Services.User;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ParrotsAPI2.Controllers
 {
@@ -30,6 +31,22 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("getUserById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string id)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            if (requestUserId != id)
+            {
+                return Forbid();
+            }
+
             return Ok(await _userService.GetUserById(id));
         }
 
@@ -46,6 +63,22 @@ namespace ParrotsAPI2.Controllers
         [HttpPut("UpdateUser")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUser(UpdateUserDto updatedUser)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            if (requestUserId != updatedUser.Id)
+            {
+                return Forbid();
+            }
+
             var response = await _userService.UpdateUser(updatedUser);
             if (response.Data == null)
             {
@@ -73,6 +106,23 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUser(
             string userId, JsonPatchDocument<UpdateUserDto> patchDoc)
         {
+
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            if (requestUserId != userId)
+            {
+                return Forbid();
+            }
+
             var response = await _userService.PatchUser(userId, patchDoc, ModelState);
 
             if (response.Data == null)
@@ -102,8 +152,23 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{userId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateProfileImage(string userId, IFormFile imageFile)
         {
-            var serviceResponse = await _userService.UpdateUserProfileImage(userId, imageFile);
 
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            if (requestUserId != userId)
+            {
+                return Forbid();
+            }
+
+            var serviceResponse = await _userService.UpdateUserProfileImage(userId, imageFile);
             if (serviceResponse.Success)
             {
                 return Ok(new { imagePath = serviceResponse.Data });
@@ -119,6 +184,23 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{userId}/updateBackgroundImage")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateBackgroundImage(string userId, IFormFile imageFile)
         {
+
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            if (requestUserId != userId)
+            {
+                return Forbid();
+            }
+
             var serviceResponse = await _userService.UpdateUserBackgroundImage(userId, imageFile);
 
             if (serviceResponse.Success)

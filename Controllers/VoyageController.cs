@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ParrotsAPI2.Controllers
 {
@@ -48,6 +49,22 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("AddVoyage")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> AddVoyage(AddVoyageDto newVoyage)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            if (requestUserId != newVoyage.UserId)
+            {
+                return Forbid();
+            }
+
             return Ok(await _voyageService.AddVoyage(newVoyage));
         }
 
@@ -55,6 +72,28 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("ConfirmVoyage/{voyageId}")]
         public async Task<IActionResult> ConfirmVoyage(int voyageId)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var voyageResponse = await _voyageService.GetVoyageById(voyageId);
+
+            if (voyageResponse.Data == null)
+            {
+                return NotFound(voyageResponse);
+            }
+            if (requestUserId != voyageResponse.Data.UserId)
+            {
+                return Forbid();
+            }
+     
             var response = await _voyageService.ConfirmVoyage(voyageId);
             if (!response.Success)
             {
@@ -82,6 +121,28 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> PatchVoyage(
             int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc)
         {
+
+
+           var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var voyageResponse = await _voyageService.GetVoyageById(voyageId);
+            if (voyageResponse.Data == null)
+            {
+                return NotFound(voyageResponse);
+            }
+            if (requestUserId != voyageResponse.Data.UserId)
+            {
+                return Forbid();
+            }
+
             var response = await _voyageService.PatchVoyage(voyageId, patchDoc, ModelState);
 
             if (response.Data == null)
@@ -96,6 +157,27 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("DeleteVoyage/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteVoyage(int id)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var voyageResponse = await _voyageService.GetVoyageById(id);
+            if (voyageResponse.Data == null)
+            {
+                return NotFound(voyageResponse);
+            }
+            if (requestUserId != voyageResponse.Data.UserId)
+            {
+                return Forbid();
+            }
+
             var response = await _voyageService.DeleteVoyage(id);
             if (response.Data == null)
             {
@@ -108,6 +190,28 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("checkAndDeleteVoyage/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> CheckAndDeleteVoyage(int id)
         {
+
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var voyageResponse = await _voyageService.GetVoyageById(id);
+            if (voyageResponse.Data == null)
+            {
+                return NotFound(voyageResponse);
+            }
+            if (requestUserId != voyageResponse.Data.UserId)
+            {
+                return Forbid();
+            }
+
             var response = await _voyageService.CheckAndDeleteVoyage(id);
             if (response.Data == null)
             {
@@ -121,6 +225,28 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{voyageId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile)
         {
+
+
+           var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var voyageResponse = await _voyageService.GetVoyageById(voyageId);
+            if (voyageResponse.Data == null)
+            {
+                return NotFound(voyageResponse);
+            }
+            if (requestUserId != voyageResponse.Data.UserId)
+            {
+                return Forbid();
+            }
+
             var serviceResponse = await _voyageService.UpdateVoyageProfileImage(voyageId, imageFile);
 
             if (serviceResponse.Success)
@@ -137,7 +263,29 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{voyageId}/addVoyageImage")]
         public async Task<ActionResult<ServiceResponse<string>>> AddVoyageImage(int voyageId, IFormFile imageFile)
         {
-            var serviceResponse = await _voyageService.AddVoyageImage(voyageId, imageFile);
+
+
+           var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var voyageResponse = await _voyageService.GetVoyageById(voyageId);
+            if (voyageResponse.Data == null)
+            {
+                return NotFound(voyageResponse);
+            }
+            if (requestUserId != voyageResponse.Data.UserId)
+            {
+                return Forbid();
+            }
+
+            var serviceResponse = await _voyageService.AddVoyageImage(voyageId, imageFile, userId: requestUserId);
 
             if (serviceResponse.Success)
             {
@@ -152,6 +300,34 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("{voyageImageId}/deleteVoyageImage")]
         public async Task<ActionResult<ServiceResponse<string>>> DeleteVoyageImage(int voyageImageId)
         {
+
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var imageResponse = await _voyageService.GetVoyageImageById(voyageImageId);
+            if (imageResponse == null || imageResponse.Data == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Image not found."
+                });
+            }
+
+            if (imageResponse.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
+
             var serviceResponse = await _voyageService.DeleteVoyageImage(voyageImageId);
             if (serviceResponse.Success)
             {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.WaypointDtos;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ParrotsAPI2.Controllers
 {
@@ -12,10 +13,12 @@ namespace ParrotsAPI2.Controllers
     public class WaypointController : ControllerBase
     {
         private readonly IWaypointService _waypointService;
+        private readonly IVoyageService _voyageService;
 
-        public WaypointController(IWaypointService waypointService)
+        public WaypointController(IWaypointService waypointService, IVoyageService voyageService)
         {
             _waypointService = waypointService;
+            _voyageService = voyageService;
         }
 
 /*
@@ -46,12 +49,57 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetWaypointDto>>>> AddWaypoint(AddWaypointDto newWaypoint)
         {
 
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            var voyageResponse = await _voyageService.GetVoyageById(newWaypoint.VoyageId);
+            if (voyageResponse == null || voyageResponse.Data == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Image not found."
+                });
+            }
+            if (voyageResponse.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
             return Ok(await _waypointService.AddWaypoint(newWaypoint));
         }
+
 
         [HttpDelete("DeleteWaypoint/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteWaypoint(int id)
         {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            var waypointResponse = await _waypointService.GetWaypointById(id);
+            if (waypointResponse == null || waypointResponse.Data == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Image not found."
+                });
+            }
+            if (waypointResponse.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
             var response = await _waypointService.DeleteWaypoint(id);
             if (response.Data == null)
             {

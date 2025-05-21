@@ -11,9 +11,11 @@ namespace ParrotsAPI2.Models
         public string VehicleImagePath { get; set; } = string.Empty;
 
         public int VehicleId { get; set; }
-        
+
         [JsonIgnore]
         public Vehicle? Vehicle { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        
     }
     
 }

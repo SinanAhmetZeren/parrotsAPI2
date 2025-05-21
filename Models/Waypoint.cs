@@ -13,5 +13,7 @@ namespace ParrotsAPI2.Models
         public int Order { get; set; }
         public int VoyageId { get; set; }
         public Voyage? Voyage { get; set; }
+        public string UserId { get; set; } = string.Empty;
+
     }
 }

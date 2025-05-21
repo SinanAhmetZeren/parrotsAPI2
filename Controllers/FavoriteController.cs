@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Dtos.FavoriteDtos;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ParrotsAPI2.Controllers
 {
@@ -29,6 +30,19 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("getFavoriteVoyagesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetFavoriteDto>>>> GetFavoriteVoyagesByUserId(string userId)
         {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (userId != requestUserId)
+            {
+                return Forbid();
+            }
             return Ok(await _favoriteService.GetFavoriteVoyagesByUserId(userId));
         }
 
@@ -36,6 +50,19 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("getFavoriteVehiclesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetFavoriteDto>>>> GetFavoriteVehiclesByUserId(string userId)
         {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (userId != requestUserId)
+            {
+                return Forbid();
+            }
             return Ok(await _favoriteService.GetFavoriteVehiclesByUserId(userId));
         }
 
@@ -43,6 +70,19 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("getFavoriteVehicleIdsByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<int>>>> GetFavoriteVehicleIdsByUserId(string userId)
         {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (userId != requestUserId)
+            {
+                return Forbid();
+            }
             return Ok(await _favoriteService.GetFavoriteVehicleIdsByUserId(userId));
         }
 
@@ -50,6 +90,19 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("getFavoriteVoyageIdsByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<int>>>> GetFavoriteVoyageIdsByUserId(string userId)
         {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (userId != requestUserId)
+            {
+                return Forbid();
+            }
             return Ok(await _favoriteService.GetFavoriteVoyageIdsByUserId(userId));
         }
 
@@ -57,12 +110,41 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetFavoriteDto>>>> AddFavorite(AddFavoriteDto newFavorite)
         {
 
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (newFavorite.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+
             return Ok(await _favoriteService.AddFavorite(newFavorite));
         }
 
         [HttpDelete("deleteFavoriteVoyage/{userId}/{voyageId}")]
         public async Task<ActionResult<ServiceResponse<string>>> DeleteFavoriteVoyage(string userId, int voyageId)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (userId != requestUserId)
+            {
+                return Forbid();
+            }
+
             var response = await _favoriteService.DeleteFavoriteVoyage(userId, voyageId);
             if (response.Data == null)
             {
@@ -75,6 +157,21 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("deleteFavoriteVehicle/{userId}/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<string>>> DeleteFavoriteVehicle(string userId, int vehicleId)
         {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            if (userId != requestUserId)
+            {
+                return Forbid();
+            }
+
             var response = await _favoriteService.DeleteFavoriteVehicle(userId, vehicleId);
             if (response.Data == null)
             {
