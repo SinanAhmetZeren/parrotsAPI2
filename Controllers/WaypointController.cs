@@ -58,7 +58,7 @@ namespace ParrotsAPI2.Controllers
                     Message = "User identity not found."
                 });
             }
-            var voyageResponse = await _voyageService.GetVoyageById(newWaypoint.VoyageId);
+            var voyageResponse = await _voyageService.GetUnconfirmedVoyageById(newWaypoint.VoyageId);
             if (voyageResponse == null || voyageResponse.Data == null)
             {
                 return NotFound(new ServiceResponse<string>

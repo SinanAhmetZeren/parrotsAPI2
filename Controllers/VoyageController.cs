@@ -83,7 +83,7 @@ namespace ParrotsAPI2.Controllers
                 });
             }
 
-            var voyageResponse = await _voyageService.GetVoyageById(voyageId);
+            var voyageResponse = await _voyageService.GetUnconfirmedVoyageById(voyageId);
 
             if (voyageResponse.Data == null)
             {
@@ -275,7 +275,7 @@ namespace ParrotsAPI2.Controllers
                 });
             }
 
-            var voyageResponse = await _voyageService.GetVoyageById(voyageId);
+            var voyageResponse = await _voyageService.GetUnconfirmedVoyageById(voyageId);
             if (voyageResponse.Data == null)
             {
                 return NotFound(voyageResponse);

@@ -330,6 +330,74 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+
+
+        public async Task<ServiceResponse<GetVoyageDto>> GetUnconfirmedVoyageById(int id)
+        {
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            var voyage = await _context.Voyages
+                .Include(v => v.User)
+                .Include(v => v.VoyageImages)
+                .Include(v => v.Vehicle)
+                .FirstOrDefaultAsync(c => c.Id == id  && c.IsDeleted == false);
+
+            if (voyage == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Voyage not found";
+                return serviceResponse;
+            }
+
+            // Map related entities to their DTOs
+            var userDto = _mapper.Map<UserDto>(voyage.User);
+            var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
+            var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
+
+            // Improved bid query with async and projection
+            var bidDtos = await _context.Bids
+                .Where(bid => bid.VoyageId == id)
+                .Select(bid => new VoyageBidDto
+                {
+                    Accepted = bid.Accepted,
+                    Id = bid.Id,
+                    Message = bid.Message,
+                    OfferPrice = bid.OfferPrice,
+                    Currency = bid.Currency,
+                    DateTime = bid.DateTime,
+                    VoyageId = bid.VoyageId,
+                    UserId = bid.UserId,
+                    PersonCount = bid.PersonCount,
+                    UserName = _context.Users
+                        .Where(u => u.Id == bid.UserId)
+                        .Select(u => u.UserName)
+                        .FirstOrDefault(),
+                    UserProfileImage = _context.Users
+                        .Where(u => u.Id == bid.UserId)
+                        .Select(u => u.ProfileImageUrl)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            // Map voyage entity to DTO
+            var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+
+            // Get waypoints asynchronously
+            var waypointDtos = await _context.Waypoints
+                .Where(w => w.VoyageId == id)
+                .Select(w => _mapper.Map<GetWaypointDto>(w))
+                .ToListAsync();
+
+            // Assign related DTOs
+            voyageDto.User = userDto;
+            voyageDto.VoyageImages = voyageImageDtos;
+            voyageDto.Vehicle = vehicleDto;
+            voyageDto.Bids = bidDtos;
+            voyageDto.Waypoints = waypointDtos;
+
+            serviceResponse.Data = voyageDto;
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(string userId)  // updated for confirmed
         {
             var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();

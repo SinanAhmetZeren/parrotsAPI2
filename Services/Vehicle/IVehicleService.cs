@@ -8,6 +8,7 @@ namespace ParrotsAPI2.Services.Vehicle
     {
         Task<ServiceResponse<List<GetVehicleDto>>> GetAllVehicles();
         Task<ServiceResponse<GetVehicleDto>> GetVehicleById(int id);
+        Task<ServiceResponse<GetVehicleDto>> GetUnconfirmedVehicleById(int id);
         Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId);
         Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle);
         Task<ServiceResponse<string>> ConfirmVehicle(int vehicleId);

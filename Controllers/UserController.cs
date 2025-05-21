@@ -42,11 +42,6 @@ namespace ParrotsAPI2.Controllers
                 });
             }
 
-            if (requestUserId != id)
-            {
-                return Forbid();
-            }
-
             return Ok(await _userService.GetUserById(id));
         }
 

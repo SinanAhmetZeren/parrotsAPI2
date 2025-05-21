@@ -82,7 +82,7 @@ namespace ParrotsAPI2.Controllers
             }
 
             // Fetch the vehicle (assuming you have a method for this)
-            var vehicle = await _vehicleService.GetVehicleById(vehicleId);
+            var vehicle = await _vehicleService.GetUnconfirmedVehicleById(vehicleId);
             if (vehicle == null)
             {
                 return NotFound(new ServiceResponse<string>
@@ -292,7 +292,7 @@ namespace ParrotsAPI2.Controllers
                 });
             }
 
-            var vehicle = await _vehicleService.GetVehicleById(vehicleId);
+            var vehicle = await _vehicleService.GetUnconfirmedVehicleById(vehicleId);
             if (vehicle == null)
             {
                 return NotFound(new ServiceResponse<string>

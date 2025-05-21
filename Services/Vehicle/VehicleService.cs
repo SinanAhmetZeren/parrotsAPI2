@@ -335,42 +335,75 @@ namespace ParrotsAPI2.Services.Vehicle
 
     }
 
-    public async Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId)
+    public async Task<ServiceResponse<GetVehicleDto>> GetUnconfirmedVehicleById(int id)
     {
-        var serviceResponse = new ServiceResponse<List<VehicleImageDto>>();
+        var serviceResponse = new ServiceResponse<GetVehicleDto>();
+        var vehicle = await _context.Vehicles
+            .Include(v => v.User)
+            .Include(v => v.VehicleImages)
+            .Include(v => v.Voyages)
+            .FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
 
-        try
-        {
-            var vehicleImages = await _context.VehicleImages
-                .AsNoTracking()
-                .Where(vi => vi.VehicleId == vehicleId)
-                .ToListAsync();
-
-            if (vehicleImages == null || !vehicleImages.Any())
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "Vehicle images not found for the given vehicleId.";
-                return serviceResponse;
-            }
-
-            var vehicleImageDtos = vehicleImages.Select(vi => new VehicleImageDto
-            {
-                Id = vi.Id,
-                VehicleImagePath = vi.VehicleImagePath,
-                VehicleId = vi.VehicleId
-            }).ToList();
-
-            serviceResponse.Data = vehicleImageDtos;
-            serviceResponse.Success = true;
-        }
-        catch (Exception ex)
+        if (vehicle == null)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = $"An error occurred while retrieving vehicle images: {ex.Message}";
+            serviceResponse.Message = "Vehicle not found";
+            return serviceResponse;
         }
 
+        var userDto = _mapper.Map<UserDto>(vehicle?.User);
+        var vehicleImageDtos = _mapper.Map<List<VehicleImageDto>>(vehicle?.VehicleImages);
+        var voyageDtos = _mapper.Map<List<VoyageDto>>(vehicle?.Voyages);
+
+        var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
+
+        vehicleDto.User = userDto;
+        vehicleDto.VehicleImages = vehicleImageDtos;
+        vehicleDto.Voyages = voyageDtos;
+        serviceResponse.Data = vehicleDto;
+
+        // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
         return serviceResponse;
+
     }
+
+
+        public async Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId)
+        {
+            var serviceResponse = new ServiceResponse<List<VehicleImageDto>>();
+
+            try
+            {
+                var vehicleImages = await _context.VehicleImages
+                    .AsNoTracking()
+                    .Where(vi => vi.VehicleId == vehicleId)
+                    .ToListAsync();
+
+                if (vehicleImages == null || !vehicleImages.Any())
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Vehicle images not found for the given vehicleId.";
+                    return serviceResponse;
+                }
+
+                var vehicleImageDtos = vehicleImages.Select(vi => new VehicleImageDto
+                {
+                    Id = vi.Id,
+                    VehicleImagePath = vi.VehicleImagePath,
+                    VehicleId = vi.VehicleId
+                }).ToList();
+
+                serviceResponse.Data = vehicleImageDtos;
+                serviceResponse.Success = true;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"An error occurred while retrieving vehicle images: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
 
         public async Task<ServiceResponse<VehicleImageDto>> GetVehicleImageById(int vehicleImageId)
         {
