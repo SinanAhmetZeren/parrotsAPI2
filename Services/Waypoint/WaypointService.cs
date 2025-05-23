@@ -21,7 +21,7 @@ namespace ParrotsAPI2.Services.Waypoint
 
 
 
-        public async Task<ServiceResponse<int>> AddWaypoint(AddWaypointDto newWaypoint)
+        public async Task<ServiceResponse<int>> AddWaypoint(AddWaypointDto newWaypoint, string userId)
         {
             var serviceResponse = new ServiceResponse<int>();
 
@@ -62,6 +62,7 @@ namespace ParrotsAPI2.Services.Waypoint
             // Map DTO to entity and save to DB
             var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
             waypoint.ProfileImage = fileName;
+            waypoint.UserId = userId;
 
             _context.Waypoints.Add(waypoint);
             await _context.SaveChangesAsync();

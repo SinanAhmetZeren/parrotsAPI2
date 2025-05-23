@@ -78,6 +78,8 @@ namespace ParrotsAPI2.Services.Voyage
 
         public async Task<ServiceResponse<string>> AddVoyageImage(int voyageId, IFormFile imageFile, string userId)
         {
+            // userId is read from the token.
+            // if voyage owner Id is not equal to userId, controller returns forbidden
             var serviceResponse = new ServiceResponse<string>();
 
             try
@@ -329,8 +331,6 @@ namespace ParrotsAPI2.Services.Voyage
             serviceResponse.Data = voyageDto;
             return serviceResponse;
         }
-
-
 
         public async Task<ServiceResponse<GetVoyageDto>> GetUnconfirmedVoyageById(int id)
         {

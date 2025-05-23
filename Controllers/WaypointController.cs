@@ -71,7 +71,7 @@ namespace ParrotsAPI2.Controllers
             {
                 return Forbid();
             }
-            return Ok(await _waypointService.AddWaypoint(newWaypoint));
+            return Ok(await _waypointService.AddWaypoint(newWaypoint, userId: requestUserId));
         }
 
 
