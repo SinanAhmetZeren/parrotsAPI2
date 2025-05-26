@@ -9,6 +9,7 @@ using ParrotsAPI2.Dtos.RegisterLoginDtos;
 using ParrotsAPI2.Helpers;
 using ParrotsAPI2.Models;
 using ParrotsAPI2.Services.Token;
+using Google.Apis.Auth;
 
 
 namespace API.Controllers
@@ -277,6 +278,56 @@ namespace API.Controllers
                 return BadRequest("User not found");
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost("google-login")]
+        public async Task<ActionResult<UserResponseDto>> GoogleLogin([FromBody] GoogleLoginDto googleLoginDto)
+        {
+            try
+            {
+                // Validate Google ID token
+                var payload = await GoogleJsonWebSignature.ValidateAsync(googleLoginDto.IdToken);
+
+                // Check if user already exists by normalized email
+                var normalizedEmail = _userManager.NormalizeEmail(payload.Email);
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail);
+
+                if (user == null)
+                {
+                    // New user - create it
+
+                    string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+                    Random random = new Random();
+                    int randomIndex = random.Next(0, images.Length);
+                    string selectedImage = images[randomIndex];
+                    user = new AppUser
+                    {
+                        Email = payload.Email,
+                        UserName = payload.Email,
+                        EmailConfirmed = true,
+                        Confirmed = true,
+                        NormalizedEmail = normalizedEmail,
+                        NormalizedUserName = _userManager.NormalizeName(payload.Email),
+                        ProfileImageUrl = selectedImage,
+                        EmailVisible = true,
+                    };
+
+                    var createResult = await _userManager.CreateAsync(user);
+                    if (!createResult.Succeeded)
+                    {
+                        return BadRequest("Failed to create user from Google login");
+                    }
+                }
+
+                // Generate your JWT token for this user
+                return CreateUserObject(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Google token: {ex.Message}");
+            }
+        }
+
 
         private UserResponseDto CreateUserObject(AppUser user)
         {

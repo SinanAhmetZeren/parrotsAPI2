@@ -210,3 +210,9 @@ C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\refint\ParrotsAP
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.pdb
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ParrotsAPI2.genruntimeconfig.cache
 C:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\obj\Debug\net9.0\ref\ParrotsAPI2.dll
+c:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Google.Apis.dll
+c:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Google.Apis.Auth.dll
+c:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Google.Apis.Core.dll
+c:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.Google.dll
+c:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\System.Management.dll
+c:\Users\sinan\OneDrive\Masaüstü\ParrotsAPI2\bin\Debug\net9.0\runtimes\win\lib\net7.0\System.Management.dll
