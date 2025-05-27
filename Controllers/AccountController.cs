@@ -304,6 +304,7 @@ namespace API.Controllers
                     user = new AppUser
                     {
                         Email = payload.Email,
+                        DisplayEmail = payload.Email,
                         UserName = payload.Email,
                         EmailConfirmed = true,
                         Confirmed = true,
