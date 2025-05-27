@@ -68,6 +68,7 @@ namespace ParrotsAPI2.Services.User
 
                 // Map and add new user
                 var user = _mapper.Map<AppUser>(newUser);
+                user.DisplayEmail = newUser.Email;
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
@@ -181,6 +182,7 @@ namespace ParrotsAPI2.Services.User
                 Title = user?.Title ?? string.Empty,
                 Bio = user?.Bio ?? string.Empty,
                 Email = user?.Email ?? string.Empty,
+                DisplayEmail = user?.DisplayEmail ?? string.Empty,
                 Instagram = user?.Instagram ?? string.Empty,
                 Twitter = user?.Twitter ?? string.Empty,
                 Tiktok = user?.Tiktok ?? string.Empty,
@@ -215,7 +217,8 @@ namespace ParrotsAPI2.Services.User
                 user.UserName = updatedUser.UserName;
                 user.Title = updatedUser.Title;
                 user.Bio = updatedUser.Bio;
-                user.Email = updatedUser.Email;
+                // user.Email = updatedUser.Email;
+                user.DisplayEmail = updatedUser.DisplayEmail;
                 user.Instagram = updatedUser.Instagram;
                 user.Facebook = updatedUser.Facebook;
                 user.Twitter = updatedUser.Twitter;

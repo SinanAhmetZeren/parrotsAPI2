@@ -8,6 +8,7 @@ namespace ParrotsAPI2.Models
     {   
         public string? Title { get; set; } 
         public string? Bio { get; set; }
+        public string? DisplayEmail { get; set; }
         public string? Instagram { get; set; }
         public string? Facebook { get; set; }
         public override string? PhoneNumber { get; set; }
