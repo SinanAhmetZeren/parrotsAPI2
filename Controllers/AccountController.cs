@@ -132,6 +132,7 @@ namespace API.Controllers
                     ProfileImageUrl = selectedImage,
                     ConfirmationCode = confirmationCode,
                     BackgroundImageUrl = "amazon.jpeg",
+                    DisplayEmail = registerDto.Email,
                     };
 
                 newUser.EmailConfirmed = true;

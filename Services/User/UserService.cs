@@ -196,7 +196,8 @@ namespace ParrotsAPI2.Services.User
                 UnseenMessages = user!= null ? user.UnseenMessages : false,
                 UsersVehicles = vehicleDtos,
                 UsersVoyages = voyageDtos,
-                EmailVisible = user!= null ? user.EmailVisible : false,
+                // EmailVisible = user!= null ? user.EmailVisible : false,
+                EmailVisible = true,
             };
 
             serviceResponse.Data = userDto;
