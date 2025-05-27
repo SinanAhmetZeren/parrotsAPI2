@@ -63,7 +63,7 @@ namespace ParrotsAPI2.Services.User
                         await newUser.ImageFile.CopyToAsync(stream);
                     }
 
-                    newUser.ProfileImageUrl = $"/Uploads/UserImages/{fileName}";
+                    newUser.ProfileImageUrl = fileName;
                 }
 
                 // Map and add new user
@@ -338,7 +338,7 @@ namespace ParrotsAPI2.Services.User
                     await imageFile.CopyToAsync(stream);
                 }
 
-                user.ProfileImageUrl = "/Uploads/UserImages/" + fileName; // use a relative path that can be used in frontend
+                user.ProfileImageUrl = fileName;
                 await _context.SaveChangesAsync();
 
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);

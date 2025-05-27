@@ -126,11 +126,12 @@ namespace API.Controllers
                 string selectedImage = images[randomIndex];
 
                 var newUser = new AppUser
-                    {
-                        Email = registerDto.Email,
-                        UserName = registerDto.UserName,
-                        ProfileImageUrl = selectedImage,
-                        ConfirmationCode = confirmationCode,
+                {
+                    Email = registerDto.Email,
+                    UserName = registerDto.UserName,
+                    ProfileImageUrl = selectedImage,
+                    ConfirmationCode = confirmationCode,
+                    BackgroundImageUrl = "amazon.jpeg",
                     };
 
                 newUser.EmailConfirmed = true;
@@ -309,6 +310,7 @@ namespace API.Controllers
                         NormalizedEmail = normalizedEmail,
                         NormalizedUserName = _userManager.NormalizeName(payload.Email),
                         ProfileImageUrl = selectedImage,
+                        BackgroundImageUrl = "amazon.jpeg",
                         EmailVisible = true,
                     };
 
