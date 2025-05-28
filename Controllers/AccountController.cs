@@ -302,13 +302,11 @@ namespace API.Controllers
                 var a = 0;
                 var json = await response.Content.ReadAsStringAsync();
                 var tokenInfo = JsonSerializer.Deserialize<GoogleTokenInfo>(json);
-                var f = 0;
 
-                // if (tokenInfo.EmailVerified != "true")
-                // {
-                //     return BadRequest("Email not verified by Google.");
-                // }
-                var b = 0;
+                if (tokenInfo.EmailVerified != "true")
+                {
+                    return BadRequest("Email not verified by Google.");
+                }
 
 
                 // Check if user already exists by normalized email

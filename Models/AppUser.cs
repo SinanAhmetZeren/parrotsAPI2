@@ -5,8 +5,8 @@ using ParrotsAPI2.Models;
 namespace ParrotsAPI2.Models
 {
     public class AppUser : IdentityUser
-    {   
-        public string? Title { get; set; } 
+    {
+        public string? Title { get; set; }
         public string? Bio { get; set; }
         public string? DisplayEmail { get; set; }
         public string? Instagram { get; set; }
@@ -28,6 +28,9 @@ namespace ParrotsAPI2.Models
         public List<Message>? ReceivedMessages { get; set; }
         public string? ConfirmationCode { get; set; }
         public bool Confirmed { get; set; } = false;
+                // 🔐 Add these two properties
+        // public string? RefreshToken { get; set; }
+        // public DateTime RefreshTokenExpiryTime { get; set; }
 
     }
 }
