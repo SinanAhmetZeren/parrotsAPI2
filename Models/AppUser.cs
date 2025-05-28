@@ -28,8 +28,8 @@ namespace ParrotsAPI2.Models
         public List<Message>? ReceivedMessages { get; set; }
         public string? ConfirmationCode { get; set; }
         public bool Confirmed { get; set; } = false;
-         public string? RefreshToken { get; set; } = string.Empty;
-         public DateTime RefreshTokenExpiryTime { get; set; } = DateTime.UtcNow.AddDays(7);
+         public string? RefreshToken { get; set; }  
+         public DateTime? RefreshTokenExpiryTime { get; set; }  
 
     }
 }

@@ -33,7 +33,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserResponseDto>> Login(LoginDto loginDto)
         {
             var normalizedEmail = _userManager.NormalizeEmail(loginDto.Email);
-            var user = await _userManager.Users
+            AppUser? user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
 
             if (user == null || !user.Confirmed)
@@ -47,7 +47,7 @@ namespace API.Controllers
                 var refreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshToken = refreshToken;
                 user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
-                await _userManager.UpdateAsync(user);
+                var updatedUser = await _userManager.UpdateAsync(user);
 
                 var userResponse = CreateUserObject(user);
                 userResponse.RefreshToken = refreshToken;  // Add refresh token to response
