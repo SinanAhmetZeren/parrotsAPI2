@@ -10,6 +10,7 @@ using ParrotsAPI2.Helpers;
 using ParrotsAPI2.Models;
 using ParrotsAPI2.Services.Token;
 using Google.Apis.Auth;
+using System.Text.Json;
 
 
 namespace API.Controllers
@@ -288,10 +289,30 @@ namespace API.Controllers
             try
             {
                 // Validate Google ID token
-                var payload = await GoogleJsonWebSignature.ValidateAsync(googleLoginDto.IdToken);
+   
+                // var payload = await GoogleJsonWebSignature.ValidateAsync(googleLoginDto.AccessToken);
+
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync($"https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={googleLoginDto.AccessToken}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return BadRequest("Invalid access token");
+                }
+                var a = 0;
+                var json = await response.Content.ReadAsStringAsync();
+                var tokenInfo = JsonSerializer.Deserialize<GoogleTokenInfo>(json);
+                var f = 0;
+
+                // if (tokenInfo.EmailVerified != "true")
+                // {
+                //     return BadRequest("Email not verified by Google.");
+                // }
+                var b = 0;
+
 
                 // Check if user already exists by normalized email
-                var normalizedEmail = _userManager.NormalizeEmail(payload.Email);
+                 var normalizedEmail = _userManager.NormalizeEmail(tokenInfo.Email);
                 var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail);
 
                 if (user == null)
@@ -304,13 +325,13 @@ namespace API.Controllers
                     string selectedImage = images[randomIndex];
                     user = new AppUser
                     {
-                        Email = payload.Email,
-                        DisplayEmail = payload.Email,
-                        UserName = payload.Email,
+                        Email = tokenInfo.Email,
+                        DisplayEmail = tokenInfo.Email,
+                        UserName = tokenInfo.Email,
                         EmailConfirmed = true,
                         Confirmed = true,
                         NormalizedEmail = normalizedEmail,
-                        NormalizedUserName = _userManager.NormalizeName(payload.Email),
+                        NormalizedUserName = _userManager.NormalizeName(tokenInfo.Email),
                         ProfileImageUrl = selectedImage,
                         BackgroundImageUrl = "amazon.jpeg",
                         EmailVisible = true,

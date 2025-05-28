@@ -163,13 +163,13 @@ namespace ParrotsAPI2.Services.User
             }
 
             var confirmedVehicles = (user?.Vehicles != null)
-            ? user.Vehicles.Where(v => v.Confirmed).ToList()
+            ? user.Vehicles.Where(v => v.Confirmed && !v.IsDeleted).ToList()
             : new List<Models.Vehicle>();
 
             var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
 
             var confirmedVoyages = (user?.Voyages != null)
-                ? user.Voyages.Where(v => v.Confirmed).ToList()
+                ? user.Voyages.Where(v => v.Confirmed && !v.IsDeleted).ToList()
                 : new List<Models.Voyage>();
 
             var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);

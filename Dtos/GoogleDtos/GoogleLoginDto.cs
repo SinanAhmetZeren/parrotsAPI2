@@ -1,4 +1,4 @@
 public class GoogleLoginDto
 {
-    public string IdToken { get; set; } = string.Empty;
+    public string AccessToken { get; set; } = string.Empty;
 }
