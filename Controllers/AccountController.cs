@@ -408,27 +408,26 @@ namespace API.Controllers
         public async Task<ActionResult<UserResponseDto>> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshTokenDto.RefreshToken);
-
             if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
                 return Unauthorized("Invalid or expired refresh token");
             }
-
-            // Generate new tokens
+            // Generate new access token
             var newAccessToken = _tokenService.CreateToken(user);
-            var newRefreshToken = _tokenService.GenerateRefreshToken();
-
-            // Update user refresh token
-            user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-            await _userManager.UpdateAsync(user);
+            // var newRefreshToken = _tokenService.GenerateRefreshToken();
+            // user.RefreshToken = newRefreshToken;
+            // user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            // await _userManager.UpdateAsync(user);
 
             var userResponse = CreateUserObject(user);
             userResponse.Token = newAccessToken;
-            userResponse.RefreshToken = newRefreshToken;
+
+            // Commented out: do not return a new refresh token
+            // userResponse.RefreshToken = newRefreshToken;
 
             return userResponse;
         }
+
 
 
         private UserResponseDto CreateUserObject(AppUser user)
