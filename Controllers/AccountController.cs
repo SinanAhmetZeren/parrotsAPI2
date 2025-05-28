@@ -43,37 +43,43 @@ namespace API.Controllers
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (result)
             {
-                return CreateUserObject(user);
+                // return CreateUserObject(user);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
+                await _userManager.UpdateAsync(user);
+
+                var userResponse = CreateUserObject(user);
+                userResponse.RefreshToken = refreshToken;  // Add refresh token to response
+                return userResponse;
             }
             return Unauthorized("Invalid password");
         }
+
 
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
         {
-
             CodeGenerator codeGenerator = new CodeGenerator();
             var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
             var normalizedUserName = _userManager.NormalizeName(registerDto.UserName);
             string confirmationCode = codeGenerator.GenerateCode();
+
             var existingUser = await _userManager.Users
                 .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail || u.NormalizedUserName == normalizedUserName);
-
-
 
             if (existingUser != null)
             {
                 if (existingUser.Confirmed)
                 {
-                    if (existingUser.NormalizedEmail == normalizedEmail && 
+                    if (existingUser.NormalizedEmail == normalizedEmail &&
                         existingUser.NormalizedUserName == normalizedUserName)
                     {
                         ModelState.AddModelError("Email and Username", "Email and Username are already taken");
                     }
-
-                    else if (existingUser.NormalizedEmail == normalizedEmail )
+                    else if (existingUser.NormalizedEmail == normalizedEmail)
                     {
                         ModelState.AddModelError("Email", "Email is already taken");
                     }
@@ -82,45 +88,46 @@ namespace API.Controllers
                         ModelState.AddModelError("Username", "Username is already taken");
                     }
                     return ValidationProblem();
-
                 }
                 else
                 {
                     // USER EXISTS AND NOT CONFIRMED
-
                     string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
                     Random random = new Random();
                     int randomIndex = random.Next(0, images.Length);
                     string selectedImage = images[randomIndex];
 
                     existingUser.UserName = registerDto.UserName;
-                    existingUser.ProfileImageUrl = selectedImage; 
+                    existingUser.ProfileImageUrl = selectedImage;
                     existingUser.ConfirmationCode = confirmationCode;
                     existingUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
                     existingUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
 
-
-
                     var passwordHasher = new PasswordHasher<AppUser>();
                     existingUser.PasswordHash = passwordHasher.HashPassword(existingUser, registerDto.Password);
-                    
+
+                    // Generate refresh token here
+                    var refreshToken = _tokenService.GenerateRefreshToken();
+                    existingUser.RefreshToken = refreshToken;
+                    existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
                     var updateResult = await _userManager.UpdateAsync(existingUser);
                     if (!updateResult.Succeeded)
                     {
-                        return StatusCode(500); 
-                    }   
+                        return StatusCode(500);
+                    }
 
                     EmailSender emailSender = new EmailSender();
                     _ = emailSender.SendConfirmationEmail(existingUser.Email ?? string.Empty, existingUser.ConfirmationCode, existingUser.UserName);
 
-                    return CreateUserObject(existingUser);
-                    }
+                    var userResponse = CreateUserObject(existingUser);
+                    userResponse.RefreshToken = refreshToken;  // return refresh token
+                    return userResponse;
                 }
-
+            }
             else
             {
                 // USER DOES NOT EXIST
-
                 string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
                 Random random = new Random();
                 int randomIndex = random.Next(0, images.Length);
@@ -134,18 +141,29 @@ namespace API.Controllers
                     ConfirmationCode = confirmationCode,
                     BackgroundImageUrl = "amazon.jpeg",
                     DisplayEmail = registerDto.Email,
-                    };
+                };
 
                 newUser.EmailConfirmed = true;
-                newUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email); 
-                newUser.NormalizedUserName = _userManager.NormalizeName (registerDto.UserName);
+                newUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+                newUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
 
                 var result = await _userManager.CreateAsync(newUser, registerDto.Password);
                 if (result.Succeeded)
                 {
+                    // Generate refresh token here
+                    var refreshToken = _tokenService.GenerateRefreshToken();
+                    newUser.RefreshToken = refreshToken;
+                    newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+                    await _userManager.UpdateAsync(newUser);
+
                     EmailSender emailSender = new EmailSender();
                     _ = emailSender.SendConfirmationEmail(newUser.Email, confirmationCode, newUser.UserName);
-                    return CreateUserObject(newUser);
+
+                    var userResponse = CreateUserObject(newUser);
+                    userResponse.RefreshToken = refreshToken;  // return refresh token
+
+                    return userResponse;
                 }
                 else
                 {
@@ -154,16 +172,20 @@ namespace API.Controllers
             }
         }
 
+
+
+
+
         [AllowAnonymous]
         [HttpPost("sendCode/{email}")]
         public async Task<ActionResult<UserResponseDto>> SendCode(string email)
         {
-            Console.WriteLine("email: ",email);
+            Console.WriteLine("email: ", email);
             var normalizedEmail = _userManager.NormalizeEmail(email);
-            Console.WriteLine("normalizedEmail",normalizedEmail);
+            Console.WriteLine("normalizedEmail", normalizedEmail);
             var existingConfirmedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail && u.Confirmed);
-            Console.WriteLine("existingUser",existingConfirmedUser);
-            
+            Console.WriteLine("existingUser", existingConfirmedUser);
+
             if (existingConfirmedUser != null)
             {
                 CodeGenerator codeGenerator = new CodeGenerator();
@@ -176,13 +198,13 @@ namespace API.Controllers
                     EmailSender emailSender = new EmailSender();
                     _ = emailSender.SendConfirmationEmail(normalizedEmail, confirmationCode, existingConfirmedUser.UserName ?? string.Empty);
                     return Ok();
-
                 }
-                Console.WriteLine("hello");
             }
-                return BadRequest();
+            return BadRequest();
         }
-        
+
+
+
         [AllowAnonymous]
         [HttpPost("resetPassword")]
         public async Task<ActionResult<UserResponseDto>> ResetPassword(UpdatePasswordDto updatePasswordDto)
@@ -194,8 +216,8 @@ namespace API.Controllers
             var normalizedEmail = _userManager.NormalizeEmail(updatePasswordDto.Email);
 
             var existingUser = await _userManager.Users.FirstOrDefaultAsync(u =>
-                u.NormalizedEmail == normalizedEmail && 
-                u.ConfirmationCode == updatePasswordDto.ConfirmationCode && 
+                u.NormalizedEmail == normalizedEmail &&
+                u.ConfirmationCode == updatePasswordDto.ConfirmationCode &&
                 u.Confirmed);
 
 
@@ -213,14 +235,22 @@ namespace API.Controllers
             if (result.Succeeded)
             {
                 existingUser.ConfirmationCode = null;
+
+                // Generate and save new refresh token
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                existingUser.RefreshToken = refreshToken;
+                existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
                 await _userManager.UpdateAsync(existingUser);
+
                 var userResponse = new UserResponseDto
                 {
                     Email = existingUser.Email ?? string.Empty,
                     UserName = existingUser.UserName ?? string.Empty,
                     UserId = existingUser.Id,
                     ProfileImageUrl = existingUser.ProfileImageUrl ?? string.Empty,
-                    Token = _tokenService.CreateToken(existingUser) 
+                    Token = _tokenService.CreateToken(existingUser),
+                    RefreshToken = refreshToken // include refresh token here
                 };
 
                 return Ok(userResponse);
@@ -251,15 +281,22 @@ namespace API.Controllers
 
             user.Confirmed = true;
             user.ConfirmationCode = null;
+
+            // Generate and assign refresh token
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
             await _userManager.UpdateAsync(user);
 
             return new UserResponseDto
             {
                 Token = _tokenService.CreateToken(user),
-                UserName = user.UserName  ?? string.Empty,
-                Email = user.Email  ?? string.Empty,
+                RefreshToken = refreshToken, // include refresh token here
+                UserName = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty,
                 UserId = user.Id,
-                ProfileImageUrl = user.ProfileImageUrl  ?? string.Empty,
+                ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
             };
 
         }
@@ -289,7 +326,7 @@ namespace API.Controllers
             try
             {
                 // Validate Google ID token
-   
+
                 // var payload = await GoogleJsonWebSignature.ValidateAsync(googleLoginDto.AccessToken);
 
                 var httpClient = new HttpClient();
@@ -310,7 +347,7 @@ namespace API.Controllers
 
 
                 // Check if user already exists by normalized email
-                 var normalizedEmail = _userManager.NormalizeEmail(tokenInfo.Email);
+                var normalizedEmail = _userManager.NormalizeEmail(tokenInfo.Email);
                 var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail);
 
                 if (user == null)
@@ -341,14 +378,56 @@ namespace API.Controllers
                         return BadRequest("Failed to create user from Google login");
                     }
                 }
+                // Generate refresh token and assign it
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
-                // Generate your JWT token for this user
-                return CreateUserObject(user);
+                await _userManager.UpdateAsync(user);
+
+                // Return JWT token + refresh token
+                return new UserResponseDto
+                {
+                    Token = _tokenService.CreateToken(user),
+                    RefreshToken = refreshToken,
+                    UserName = user.UserName ?? string.Empty,
+                    Email = user.Email ?? string.Empty,
+                    UserId = user.Id,
+                    ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                };
             }
             catch (Exception ex)
             {
                 return BadRequest($"Invalid Google token: {ex.Message}");
             }
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<UserResponseDto>> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshTokenDto.RefreshToken);
+
+            if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            {
+                return Unauthorized("Invalid or expired refresh token");
+            }
+
+            // Generate new tokens
+            var newAccessToken = _tokenService.CreateToken(user);
+            var newRefreshToken = _tokenService.GenerateRefreshToken();
+
+            // Update user refresh token
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await _userManager.UpdateAsync(user);
+
+            var userResponse = CreateUserObject(user);
+            userResponse.Token = newAccessToken;
+            userResponse.RefreshToken = newRefreshToken;
+
+            return userResponse;
         }
 
 
@@ -361,6 +440,7 @@ namespace API.Controllers
                 Email = user.Email ?? string.Empty,
                 UserId = user.Id,
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                RefreshToken = user.RefreshToken ?? string.Empty
             };
         }
 

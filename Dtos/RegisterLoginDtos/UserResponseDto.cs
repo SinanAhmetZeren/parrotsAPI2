@@ -7,6 +7,7 @@
         public string UserName { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
         public string ProfileImageUrl { get; set; } = string.Empty;
+        public string RefreshToken { get; set; } = string.Empty;
 
     }
 }
