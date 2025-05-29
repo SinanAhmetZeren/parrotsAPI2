@@ -11,6 +11,7 @@ using ParrotsAPI2.Models;
 using ParrotsAPI2.Services.Token;
 using Google.Apis.Auth;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 
 
 namespace API.Controllers
@@ -21,11 +22,18 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
-
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
+        private readonly string _googleClientId;
+        
+        public AccountController(
+            UserManager<AppUser> userManager,
+            TokenService tokenService,
+            IOptions<GoogleAuthOptions> googleOptions
+        )
         {
             _tokenService = tokenService;
             _userManager = userManager;
+            _googleClientId = googleOptions.Value.ClientId;
+
         }
 
         [AllowAnonymous]
@@ -339,12 +347,16 @@ namespace API.Controllers
                 var a = 0;
                 var json = await response.Content.ReadAsStringAsync();
                 var tokenInfo = JsonSerializer.Deserialize<GoogleTokenInfo>(json);
+                var b = 0;
 
-                if (tokenInfo.EmailVerified != "true")
+                if (!tokenInfo.VerifiedEmail)
                 {
                     return BadRequest("Email not verified by Google.");
                 }
-
+                if (tokenInfo.Audience != _googleClientId)
+                {
+                    return BadRequest("Token was not issued for this app.");
+                }
 
                 // Check if user already exists by normalized email
                 var normalizedEmail = _userManager.NormalizeEmail(tokenInfo.Email);
@@ -362,7 +374,7 @@ namespace API.Controllers
                     {
                         Email = tokenInfo.Email,
                         DisplayEmail = tokenInfo.Email,
-                        UserName = tokenInfo.Email,
+                        UserName = tokenInfo.Email.Split('@')[0],
                         EmailConfirmed = true,
                         Confirmed = true,
                         NormalizedEmail = normalizedEmail,
@@ -410,21 +422,12 @@ namespace API.Controllers
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshTokenDto.RefreshToken);
             if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
-                return Unauthorized("Invalid or expired refresh token");
-            }
-            // Generate new access token
-            var newAccessToken = _tokenService.CreateToken(user);
-            // var newRefreshToken = _tokenService.GenerateRefreshToken();
-            // user.RefreshToken = newRefreshToken;
-            // user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-            // await _userManager.UpdateAsync(user);
+                return StatusCode(401, new { error = "Invalid or expired refresh token" });
 
+            }
+            var newAccessToken = _tokenService.CreateToken(user);
             var userResponse = CreateUserObject(user);
             userResponse.Token = newAccessToken;
-
-            // Commented out: do not return a new refresh token
-            // userResponse.RefreshToken = newRefreshToken;
-
             return userResponse;
         }
 

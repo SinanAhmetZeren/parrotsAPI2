@@ -97,9 +97,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredLength = 3;
         options.Password.RequiredUniqueChars = 1;
+
+        options.User.AllowedUserNameCharacters =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ "; // <-- note the space at the end
+
     })
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
+
+ 
+
+
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddCors(options =>
 {
@@ -136,11 +144,13 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration["Google:ClientSecret"];
 });
 
-
+builder.Services.Configure<GoogleAuthOptions>(
+    builder.Configuration.GetSection("Google"));
 
 builder.Services.AddAuthorization();
-
 builder.Services.AddAuthorization();
+
+
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

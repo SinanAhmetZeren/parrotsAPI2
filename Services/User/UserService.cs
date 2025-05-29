@@ -18,7 +18,7 @@ namespace ParrotsAPI2.Services.User
 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
-        private readonly ILogger<UserService> _logger; 
+        private readonly ILogger<UserService> _logger;
 
 
         public UserService(IMapper mapper, DataContext context, ILogger<UserService> logger)
@@ -150,7 +150,7 @@ namespace ParrotsAPI2.Services.User
                 .Include(u => u.Vehicles)
                 .Include(u => u.Voyages)
                 .Include(u => u.Bids)
-                .AsSplitQuery() 
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             stopwatch.Stop();
@@ -193,7 +193,7 @@ namespace ParrotsAPI2.Services.User
                 ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
                 BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
                 ImageFile = default!,
-                UnseenMessages = user!= null ? user.UnseenMessages : false,
+                UnseenMessages = user != null ? user.UnseenMessages : false,
                 UsersVehicles = vehicleDtos,
                 UsersVoyages = voyageDtos,
                 // EmailVisible = user!= null ? user.EmailVisible : false,
@@ -230,16 +230,16 @@ namespace ParrotsAPI2.Services.User
                 user.ProfileImageUrl = updatedUser.ProfileImageUrl;
                 user.BackgroundImageUrl = updatedUser.BackgroundImageUrl;
 
-            await _context.SaveChangesAsync();
-                    serviceResponse.Data = _mapper.Map<GetUserDto>(user);
-                }
-                catch (Exception ex)
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = ex.Message;
-                }
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _mapper.Map<GetUserDto>(user);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
 
-                return serviceResponse;
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetUserDto>> PatchUser(
@@ -461,6 +461,7 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
+
 
 
     }

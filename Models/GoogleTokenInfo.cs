@@ -5,8 +5,11 @@ public class GoogleTokenInfo
     [JsonPropertyName("email")]
     public string Email { get; set; }
 
-    [JsonPropertyName("email_verified")]
-    public string EmailVerified { get; set; }
+    [JsonPropertyName("verified_email")]
+    public bool VerifiedEmail { get; set; } // <- changed name and type
+    
+    [JsonPropertyName("audience")]
+    public string Audience { get; set; }
 
     [JsonPropertyName("exp")]
     public long Exp { get; set; }
