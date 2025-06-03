@@ -204,7 +204,7 @@ namespace API.Controllers
                 if (updateResult.Succeeded)
                 {
                     EmailSender emailSender = new EmailSender();
-                    _ = emailSender.SendConfirmationEmail(normalizedEmail, confirmationCode, existingConfirmedUser.UserName ?? string.Empty);
+                    var emailResult = emailSender.SendConfirmationEmail(normalizedEmail, confirmationCode, existingConfirmedUser.UserName ?? string.Empty);
                     return Ok();
                 }
             }

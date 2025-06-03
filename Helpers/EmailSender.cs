@@ -14,7 +14,7 @@ namespace ParrotsAPI2.Helpers
                 var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential("parrotsapp@gmail.com", "luno njqb wtvr aubg"),
+                    Credentials = new NetworkCredential("parrotsapp@gmail.com", "asfy dhdu mmjq kwss"),
                     EnableSsl = true,
                 };
                 string body = $"Welcome to Parrots {username}! \nYour confirmation code is: {confirmationCode}";
@@ -23,7 +23,7 @@ namespace ParrotsAPI2.Helpers
                     From = new MailAddress("parrotsapp@gmail.com"),
                     Subject = "Parrots Confirmation Code",
                     Body = body,
-
+                    IsBodyHtml = false,
                 };
                 message.To.Add(recipientEmail);
                 await smtpClient.SendMailAsync(message);

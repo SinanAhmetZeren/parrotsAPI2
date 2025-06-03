@@ -8,5 +8,7 @@
         public string Type { get; set; } = string.Empty;
         public int ItemId { get; set; }
         
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
     }
 }
