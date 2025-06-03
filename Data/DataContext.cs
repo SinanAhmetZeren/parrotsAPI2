@@ -27,25 +27,25 @@ namespace ParrotsAPI2.Data
                 .WithMany(u => u.Vehicles)
                 .HasForeignKey(v => v.UserId)
                 .HasPrincipalKey(u => u.Id)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Vehicles)
                 .WithOne(v => v.User)
                 .HasForeignKey(v => v.UserId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Voyages)
                 .WithOne(v => v.User)
                 .HasForeignKey(v => v.UserId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Bids)
                 .WithOne(b => b.User)
                 .HasForeignKey(b => b.UserId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Message>()
                 .HasOne<AppUser>()
@@ -63,7 +63,7 @@ namespace ParrotsAPI2.Data
                 .HasMany(v => v.VehicleImages)
                 .WithOne(vi => vi.Vehicle)
                 .HasForeignKey(vi => vi.VehicleId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Vehicle>()
                 .HasMany(v => v.Voyages)
@@ -81,13 +81,13 @@ namespace ParrotsAPI2.Data
                 .HasMany(v => v.VoyageImages)
                 .WithOne(vi => vi.Voyage)
                 .HasForeignKey(vi => vi.VoyageId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Voyage>()
                 .HasMany(v => v.Waypoints)
                 .WithOne(w => w.Voyage)
                 .HasForeignKey(w => w.VoyageId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.Vehicles)
@@ -120,6 +120,37 @@ namespace ParrotsAPI2.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
+            // Seed default vehicles ("walk" and "run") with UserId = "1"
+            /*
+            modelBuilder.Entity<Vehicle>().HasData(
+                new Vehicle
+                {
+                    Id = 1,
+                    Name = "walk",
+                    ProfileImageUrl = "0",
+                    Type = VehicleType.Walk, // replace with appropriate enum value
+                    Capacity = 10000000,
+                    Description = "Walk",
+                    UserId = "1",
+                    CreatedAt = new DateTime(1980, 6, 3, 0, 0, 0, DateTimeKind.Utc),
+                    Confirmed = true,
+                    IsDeleted = false
+                },
+                new Vehicle
+                {
+                    Id = 2,
+                    Name = "run",
+                    ProfileImageUrl = "0",
+                    Type = VehicleType.Run, // replace with appropriate enum value
+                    Capacity = 10000000,
+                    Description = "Run",
+                    UserId = "1",
+                    CreatedAt = new DateTime(1980, 6, 3, 0, 0, 0, DateTimeKind.Utc),
+                    Confirmed = true,
+                    IsDeleted = false
+                }
+            );
+            */
 
         }
     }

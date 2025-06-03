@@ -319,6 +319,13 @@ namespace ParrotsAPI2.Services.Vehicle
             return serviceResponse;
         }
 
+        if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run )
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = "Run or walk cant be fetched.";
+            return serviceResponse;
+        }
+
         var userDto = _mapper.Map<UserDto>(vehicle?.User);
         var vehicleImageDtos = _mapper.Map<List<VehicleImageDto>>(vehicle?.VehicleImages);
         var voyageDtos = _mapper.Map<List<VoyageDto>>(vehicle?.Voyages);
@@ -338,6 +345,7 @@ namespace ParrotsAPI2.Services.Vehicle
     public async Task<ServiceResponse<GetVehicleDto>> GetUnconfirmedVehicleById(int id)
     {
         var serviceResponse = new ServiceResponse<GetVehicleDto>();
+
         var vehicle = await _context.Vehicles
             .Include(v => v.User)
             .Include(v => v.VehicleImages)
@@ -348,6 +356,13 @@ namespace ParrotsAPI2.Services.Vehicle
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "Vehicle not found";
+            return serviceResponse;
+        }
+
+        if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run )
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = "Run or walk cant be fetched.";
             return serviceResponse;
         }
 
@@ -368,168 +383,184 @@ namespace ParrotsAPI2.Services.Vehicle
     }
 
 
-        public async Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId)
-        {
-            var serviceResponse = new ServiceResponse<List<VehicleImageDto>>();
-
-            try
-            {
-                var vehicleImages = await _context.VehicleImages
-                    .AsNoTracking()
-                    .Where(vi => vi.VehicleId == vehicleId)
-                    .ToListAsync();
-
-                if (vehicleImages == null || !vehicleImages.Any())
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Vehicle images not found for the given vehicleId.";
-                    return serviceResponse;
-                }
-
-                var vehicleImageDtos = vehicleImages.Select(vi => new VehicleImageDto
-                {
-                    Id = vi.Id,
-                    VehicleImagePath = vi.VehicleImagePath,
-                    VehicleId = vi.VehicleId
-                }).ToList();
-
-                serviceResponse.Data = vehicleImageDtos;
-                serviceResponse.Success = true;
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = $"An error occurred while retrieving vehicle images: {ex.Message}";
-            }
-
-            return serviceResponse;
-        }
-
-        public async Task<ServiceResponse<VehicleImageDto>> GetVehicleImageById(int vehicleImageId)
-        {
-            var serviceResponse = new ServiceResponse<VehicleImageDto>();
-
-            try
-            {
-                var vehicleImage = await _context.VehicleImages
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(vi => vi.Id == vehicleImageId);
-
-                if (vehicleImage == null)
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Vehicle image not found for the given image ID.";
-                    return serviceResponse;
-                }
-
-                var vehicleImageDto = new VehicleImageDto
-                {
-                    Id = vehicleImage.Id,
-                    VehicleImagePath = vehicleImage.VehicleImagePath,
-                    VehicleId = vehicleImage.VehicleId,
-                    UserId = vehicleImage.UserId
-                };
-
-                serviceResponse.Data = vehicleImageDto;
-                serviceResponse.Success = true;
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = $"An error occurred while retrieving the vehicle image: {ex.Message}";
-            }
-
-            return serviceResponse;
-        }
-
-
-        public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
-        {
-            var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
-
-            try
-            {
-                var vehicles = await _context.Vehicles
-                    .Where(v => v.UserId == userId && v.Confirmed && v.IsDeleted == false)
-                    .ToListAsync();
-
-                if (vehicles == null || !vehicles.Any())
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "No confirmed vehicles found for the specified user.";
-                    return serviceResponse;
-                }
-
-                serviceResponse.Data = _mapper.Map<List<GetVehicleDto>>(vehicles);
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = $"An error occurred while fetching vehicles: {ex.Message}";
-            }
-
-            return serviceResponse;
-        }
-
-    public async Task<ServiceResponse<GetVehicleDto>> PatchVehicle(int vehicleId, [FromBody] JsonPatchDocument<UpdateVehicleDto> patchDoc, ModelStateDictionary modelState)
+    public async Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId)
     {
-        var serviceResponse = new ServiceResponse<GetVehicleDto>();
+        var serviceResponse = new ServiceResponse<List<VehicleImageDto>>();
 
         try
         {
-            var vehicle = await _context.Vehicles.FindAsync(vehicleId);
+            var vehicleImages = await _context.VehicleImages
+                .AsNoTracking()
+                .Where(vi => vi.VehicleId == vehicleId)
+                .ToListAsync();
 
-            // if (vehicle == null)
-            // {
-            //     throw new Exception($"vehicle with ID `{vehicleId}` not found");
-            // }
-            if (vehicle == null)
+            if (vehicleImages == null || !vehicleImages.Any())
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = $"Vehicle with ID `{vehicleId}` not found.";
+                serviceResponse.Message = "Vehicle images not found for the given vehicleId.";
                 return serviceResponse;
             }
 
-            // var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
-            var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
-
-            // patchDoc.ApplyTo(vehicleDto, modelState);
-            patchDoc.ApplyTo(vehicleDto, modelState);
-
-            // if (!modelState.IsValid)
-            // {
-            //     serviceResponse.Success = false;
-            //     serviceResponse.Message = "Invalid model state after patch operations";
-            //     return serviceResponse;
-            // }
-            if (!modelState.IsValid)
+            var vehicleImageDtos = vehicleImages.Select(vi => new VehicleImageDto
             {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "Invalid model state after applying patch.";
-                return serviceResponse;
-            }
+                Id = vi.Id,
+                VehicleImagePath = vi.VehicleImagePath,
+                VehicleId = vi.VehicleId
+            }).ToList();
 
-            // _mapper.Map(vehicleDto, vehicle);
-            _mapper.Map(vehicleDto, vehicle);
-
-            // _context.Vehicles.Attach(vehicle);
-            // _context.Entry(vehicle).State = EntityState.Modified;
-            // Removed because the entity is already tracked by EF Core
-
-            await _context.SaveChangesAsync();
-
-            // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
-            serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+            serviceResponse.Data = vehicleImageDtos;
+            serviceResponse.Success = true;
         }
         catch (Exception ex)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = $"Error updating vehicle: {ex.Message}";
-            if (ex.InnerException != null)
-            {
-                serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
-            }
+            serviceResponse.Message = $"An error occurred while retrieving vehicle images: {ex.Message}";
         }
+
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<VehicleImageDto>> GetVehicleImageById(int vehicleImageId)
+    {
+        var serviceResponse = new ServiceResponse<VehicleImageDto>();
+
+        try
+        {
+            var vehicleImage = await _context.VehicleImages
+                .AsNoTracking()
+                .FirstOrDefaultAsync(vi => vi.Id == vehicleImageId);
+
+            if (vehicleImage == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Vehicle image not found for the given image ID.";
+                return serviceResponse;
+            }
+
+            var vehicleImageDto = new VehicleImageDto
+            {
+                Id = vehicleImage.Id,
+                VehicleImagePath = vehicleImage.VehicleImagePath,
+                VehicleId = vehicleImage.VehicleId,
+                UserId = vehicleImage.UserId
+            };
+
+            serviceResponse.Data = vehicleImageDto;
+            serviceResponse.Success = true;
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = $"An error occurred while retrieving the vehicle image: {ex.Message}";
+        }
+
+        return serviceResponse;
+    }
+
+
+    public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
+    {
+        var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
+
+        // if userId is 1, return error
+        if (userId == "1")
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = "User ID '1' is not allowed to fetch vehicles.";
+            return serviceResponse;
+        }
+        
+        try
+        {
+            var vehicles = await _context.Vehicles
+                .Where(v => v.UserId == userId && v.Confirmed && v.IsDeleted == false)
+                .ToListAsync();
+
+            if (vehicles == null || !vehicles.Any())
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No confirmed vehicles found for the specified user.";
+                return serviceResponse;
+            }
+
+            serviceResponse.Data = _mapper.Map<List<GetVehicleDto>>(vehicles);
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = $"An error occurred while fetching vehicles: {ex.Message}";
+        }
+
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<GetVehicleDto>> PatchVehicle(int vehicleId, [FromBody] JsonPatchDocument<UpdateVehicleDto> patchDoc, ModelStateDictionary modelState)
+    {
+        var serviceResponse = new ServiceResponse<GetVehicleDto>();
+            try
+            {
+                var vehicle = await _context.Vehicles.FindAsync(vehicleId);
+
+                // if (vehicle == null)
+                // {
+                //     throw new Exception($"vehicle with ID `{vehicleId}` not found");
+                // }
+                if (vehicle == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Vehicle with ID `{vehicleId}` not found.";
+                    return serviceResponse;
+                }
+
+                // var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
+                var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
+
+
+                // if patchdoc vheicle type is walk or run, return error
+                if (vehicleDto.Type == VehicleType.Walk || vehicleDto.Type  == VehicleType.Run)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Walk and Run vehicles cannot be patched.";
+                    return serviceResponse;
+                }
+
+                // patchDoc.ApplyTo(vehicleDto, modelState);
+                patchDoc.ApplyTo(vehicleDto, modelState);
+
+                // if (!modelState.IsValid)
+                // {
+                //     serviceResponse.Success = false;
+                //     serviceResponse.Message = "Invalid model state after patch operations";
+                //     return serviceResponse;
+                // }
+                if (!modelState.IsValid)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid model state after applying patch.";
+                    return serviceResponse;
+                }
+
+                // _mapper.Map(vehicleDto, vehicle);
+                _mapper.Map(vehicleDto, vehicle);
+
+                // _context.Vehicles.Attach(vehicle);
+                // _context.Entry(vehicle).State = EntityState.Modified;
+                // Removed because the entity is already tracked by EF Core
+
+                await _context.SaveChangesAsync();
+
+                // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+                serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error updating vehicle: {ex.Message}";
+                if (ex.InnerException != null)
+                {
+                    serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
+                }
+            }
 
         return serviceResponse;
     }
@@ -547,6 +578,15 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
     
+            // if patchdoc vheicle type is walk or run, return error
+            if (vehicle.Type == VehicleType.Walk || vehicle.Type  == VehicleType.Run)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Walk and Run vehicles cannot be patched.";
+                return serviceResponse;
+            }
+
+
             vehicle.Name = updatedVehicle.Name?.Trim() ?? string.Empty;
             vehicle.Type = updatedVehicle.Type;
             vehicle.Capacity = updatedVehicle.Capacity;
