@@ -7,7 +7,7 @@ namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class VoyageController : ControllerBase
     {
         private readonly IVoyageService _voyageService;

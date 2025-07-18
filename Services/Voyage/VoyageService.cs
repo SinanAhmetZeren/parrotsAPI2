@@ -648,11 +648,13 @@ namespace ParrotsAPI2.Services.Voyage
                     .Where(v => v.LastBidDate >= DateTime.Today)
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
+                    .Include(v => v.Waypoints)
                     .ToListAsync();
 
                 foreach (var voyage in voyages)
                 {
                     voyage.Waypoints = voyage.Waypoints?.Where(w => w.Order == 1).ToList();
+                    Console.WriteLine("Voyage Waypoint : " + voyage.Waypoints);
                 }
 
                 if (voyages == null || voyages.Count == 0)

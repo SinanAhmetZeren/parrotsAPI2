@@ -11,8 +11,7 @@ namespace ParrotsAPI2.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
-
+    // [Authorize]
     public class BidController : ControllerBase
     {
         private readonly IBidService _bidService;

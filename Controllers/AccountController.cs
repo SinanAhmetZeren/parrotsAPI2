@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
@@ -309,7 +310,9 @@ namespace API.Controllers
 
         }
 
-        [Authorize]
+        // [Authorize]
+    [AllowAnonymous]  // remove later !!!!!!!!
+
         [HttpGet("getCurrentUser")]
         public async Task<ActionResult<UserResponseDto>> GetCurrentUser()
         {
@@ -327,7 +330,7 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
+        // [AllowAnonymous]
         [HttpPost("google-login")]
         public async Task<ActionResult<UserResponseDto>> GoogleLogin([FromBody] GoogleLoginDto googleLoginDto)
         {

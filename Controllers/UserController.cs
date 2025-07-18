@@ -7,7 +7,8 @@ namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
+    [AllowAnonymous] // Uncomment this line to allow anonymous access
 
     public class UserController : ControllerBase
     {
@@ -19,19 +20,19 @@ namespace ParrotsAPI2.Controllers
             _userService = userService;
         }
 
-/*
-        [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> Get()
-        {
-            return Ok(await _userService.GetAllUsers());
-        }
-*/
+        /*
+                [HttpGet("GetAllUsers")]
+                public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> Get()
+                {
+                    return Ok(await _userService.GetAllUsers());
+                }
+        */
 
-
+        [AllowAnonymous]
         [HttpGet("getUserById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string id)
         {
-
+/*
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
@@ -41,20 +42,20 @@ namespace ParrotsAPI2.Controllers
                     Message = "User identity not found."
                 });
             }
-
+*/
             return Ok(await _userService.GetUserById(id));
         }
 
 
-/*
-        [HttpPost("AddUser")]
-        [AllowAnonymous]
-        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> AddUser(AddUserDto newUser)
-        {
+        /*
+                [HttpPost("AddUser")]
+                [AllowAnonymous]
+                public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> AddUser(AddUserDto newUser)
+                {
 
-            return Ok(await _userService.AddUser(newUser));
-        }
-*/
+                    return Ok(await _userService.AddUser(newUser));
+                }
+        */
         [HttpPut("UpdateUser")]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUser(UpdateUserDto updatedUser)
         {
@@ -82,19 +83,19 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-/*
-        [HttpPut("updateUnseen")]
-        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
-        {
-            var response = await _userService.UpdateUserUnseenMessage(updatedUser);
-            if (response.Data == null)
-            {
-                return NotFound(response);
-            }
-            return Ok(response);
-        }
-*/
-        
+        /*
+                [HttpPut("updateUnseen")]
+                public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
+                {
+                    var response = await _userService.UpdateUserUnseenMessage(updatedUser);
+                    if (response.Data == null)
+                    {
+                        return NotFound(response);
+                    }
+                    return Ok(response);
+                }
+        */
+
 
 
         [HttpPatch("PatchUser/{userId}")]
@@ -130,18 +131,18 @@ namespace ParrotsAPI2.Controllers
 
 
 
-/*
-        [HttpDelete("DeleteUser/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(string id)
-        {
-            var response = await _userService.DeleteUser(id);
-            if (response.Data == null)
-            {
-                return NotFound(response);
-            }
-            return Ok(response);
-        }
-*/
+        /*
+                [HttpDelete("DeleteUser/{id}")]
+                public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(string id)
+                {
+                    var response = await _userService.DeleteUser(id);
+                    if (response.Data == null)
+                    {
+                        return NotFound(response);
+                    }
+                    return Ok(response);
+                }
+        */
 
         [Consumes("multipart/form-data")]
         [HttpPost("{userId}/updateProfileImage")]
