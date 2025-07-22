@@ -55,11 +55,13 @@ namespace API.Controllers
                 // return CreateUserObject(user);
                 var refreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
+                // user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(60); // refresh token valid for 7 days
                 var updatedUser = await _userManager.UpdateAsync(user);
 
                 var userResponse = CreateUserObject(user);
                 userResponse.RefreshToken = refreshToken;  // Add refresh token to response
+                userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
                 return userResponse;
             }
             return Unauthorized("Invalid password");
@@ -131,6 +133,8 @@ namespace API.Controllers
 
                     var userResponse = CreateUserObject(existingUser);
                     userResponse.RefreshToken = refreshToken;  // return refresh token
+                    userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
+
                     return userResponse;
                 }
             }
@@ -171,7 +175,8 @@ namespace API.Controllers
 
                     var userResponse = CreateUserObject(newUser);
                     userResponse.RefreshToken = refreshToken;  // return refresh token
-
+                    userResponse.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
+    
                     return userResponse;
                 }
                 else
@@ -229,8 +234,6 @@ namespace API.Controllers
                 u.ConfirmationCode == updatePasswordDto.ConfirmationCode &&
                 u.Confirmed);
 
-
-
             if (existingUser == null)
             {
                 ModelState.AddModelError("email", "Invalid email or confirmation code");
@@ -259,7 +262,8 @@ namespace API.Controllers
                     UserId = existingUser.Id,
                     ProfileImageUrl = existingUser.ProfileImageUrl ?? string.Empty,
                     Token = _tokenService.CreateToken(existingUser),
-                    RefreshToken = refreshToken // include refresh token here
+                    RefreshToken = refreshToken, // include refresh token here
+                    RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime
                 };
 
                 return Ok(userResponse);
@@ -302,6 +306,7 @@ namespace API.Controllers
             {
                 Token = _tokenService.CreateToken(user),
                 RefreshToken = refreshToken, // include refresh token here
+                RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
                 UserName = user.UserName ?? string.Empty,
                 Email = user.Email ?? string.Empty,
                 UserId = user.Id,
@@ -431,6 +436,7 @@ namespace API.Controllers
             var newAccessToken = _tokenService.CreateToken(user);
             var userResponse = CreateUserObject(user);
             userResponse.Token = newAccessToken;
+            
             return userResponse;
         }
 
@@ -446,6 +452,7 @@ namespace API.Controllers
                 UserId = user.Id,
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty
+                
             };
         }
 
