@@ -51,6 +51,13 @@ namespace ParrotsAPI2.Controllers
         {
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine($"Request User ID: {requestUserId}"); 
+            Console.WriteLine($"Request User ID: {requestUserId}"); 
+            Console.WriteLine($"Request User ID: {requestUserId}"); 
+            Console.WriteLine($"Request User ID: {requestUserId}"); 
+            Console.WriteLine($"Request User ID: {requestUserId}"); 
+            Console.WriteLine($"Request User ID: {requestUserId}"); 
+            Console.WriteLine($"Request User ID: {requestUserId}"); 
             if (requestUserId == null)
             {
                 return Unauthorized(new ServiceResponse<string>
@@ -63,6 +70,14 @@ namespace ParrotsAPI2.Controllers
             {
                 return Forbid(); 
             }
+            Console.WriteLine($"creating vehicle..."); 
+            Console.WriteLine($"creating vehicle..."); 
+            Console.WriteLine($"creating vehicle..."); 
+            Console.WriteLine($"creating vehicle..."); 
+            Console.WriteLine($"creating vehicle..."); 
+            Console.WriteLine($"creating vehicle..."); 
+            Console.WriteLine($"creating vehicle..."); 
+            Console.WriteLine($"creating vehicle..."); 
 
             return Ok(await _vehicleService.AddVehicle(newVehicle));
         }
@@ -197,9 +212,6 @@ namespace ParrotsAPI2.Controllers
         [HttpDelete("checkAndDeleteVehicle/{id}")]
         public async Task<ActionResult<ServiceResponse<string>>> CheckAndDeleteVehicle(int id)
         {
-
-
-
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
@@ -209,7 +221,6 @@ namespace ParrotsAPI2.Controllers
                     Message = "User identity not found."
                 });
             }
-
             var vehicle = await _vehicleService.GetVehicleById(id);
             if (vehicle == null)
             {
@@ -219,20 +230,16 @@ namespace ParrotsAPI2.Controllers
                     Message = "Vehicle not found."
                 });
             }
-
             if (vehicle?.Data?.UserId != requestUserId)
             {
                 return Forbid();
             }
-
-
             var response = await _vehicleService.CheckAndDeleteVehicle(id);
             if (response.Data == null)
             {
                 return NotFound(response);
             }
             return Ok(response);
-
         }
 
 

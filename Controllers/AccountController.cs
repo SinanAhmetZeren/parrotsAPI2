@@ -55,8 +55,8 @@ namespace API.Controllers
                 // return CreateUserObject(user);
                 var refreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshToken = refreshToken;
-                // user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
-                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(60); // refresh token valid for 7 days
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
+                //user.RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(20); // refresh token valid for 7 days
                 var updatedUser = await _userManager.UpdateAsync(user);
 
                 var userResponse = CreateUserObject(user);
@@ -408,12 +408,15 @@ namespace API.Controllers
                 // Return JWT token + refresh token
                 return new UserResponseDto
                 {
-                    Token = _tokenService.CreateToken(user),
-                    RefreshToken = refreshToken,
+ 
                     UserName = user.UserName ?? string.Empty,
                     Email = user.Email ?? string.Empty,
                     UserId = user.Id,
                     ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                    Token = _tokenService.CreateToken(user),
+                    RefreshToken = refreshToken,
+                    RefreshTokenExpiryTime = user.RefreshTokenExpiryTime
+
                 };
             }
             catch (Exception ex)
