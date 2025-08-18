@@ -767,12 +767,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .AsQueryable();
 
                 // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
-                // if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue)
-
-                if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue &&
-                    !(lat1 == 0 && lat2 == 0 && lon1 == 0 && lon2 == 0))
-
-
+                if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue)
                 {
                     query = query.Where(v =>
                         v.Waypoints != null && v.Waypoints.Any(wp =>
