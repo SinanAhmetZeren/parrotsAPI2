@@ -26,18 +26,22 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-
+using Newtonsoft.Json;
+ 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add DbContext with Azure SQL connection string
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Controllers + NewtonsoftJson
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
-builder.Services.AddControllers();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
-
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Parrots API", Version = "v1" });
@@ -58,27 +62,17 @@ builder.Services.AddSwaggerGen(c =>
     };
 
     c.AddSecurityDefinition("Bearer", securityScheme);
-
-    var securityRequirement = new OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] {}
+            new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
+            new string[] { }
         }
-    };
-
-    c.AddSecurityRequirement(securityRequirement);
+    });
 });
 
+// Services
 builder.Services.AddSignalR();
-builder.Logging.AddConsole();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
@@ -89,38 +83,32 @@ builder.Services.AddScoped<IBidService, BidService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ChatHub>();
-builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
-    {
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 3;
-        options.Password.RequiredUniqueChars = 1;
-
-        options.User.AllowedUserNameCharacters =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ "; // <-- note the space at the end
-
-    })
-    .AddEntityFrameworkStores<DataContext>()
-    .AddDefaultTokenProviders();
-
- 
-
-
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
+
+// Identity
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 3;
+    options.Password.RequiredUniqueChars = 1;
+
+    options.User.AllowedUserNameCharacters =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+})
+.AddEntityFrameworkStores<DataContext>()
+.AddDefaultTokenProviders();
+
+// CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-
+// Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -134,50 +122,53 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"] ?? throw new InvalidOperationException("TokenKey is not configured"))),
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"] ?? throw new InvalidOperationException("TokenKey not configured"))),
         ClockSkew = TimeSpan.Zero
     };
 })
-.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+.AddGoogle(options =>
 {
     options.ClientId = builder.Configuration["Google:ClientId"];
     options.ClientSecret = builder.Configuration["Google:ClientSecret"];
 });
 
-builder.Services.Configure<GoogleAuthOptions>(
-    builder.Configuration.GetSection("Google"));
-
 builder.Services.AddAuthorization();
-builder.Services.AddAuthorization();
-
-
 
 var app = builder.Build();
+
+// Apply EF Core migrations and seed admin user
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+    context.Database.Migrate();
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    if (!userManager.Users.Any())
+    {
+        var admin = new AppUser { UserName = "admin", Email = "admin@example.com" };
+        userManager.CreateAsync(admin, "Admin123!").Wait();
+    }
+}
+
+// Swagger in Development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Parrots API V1");
-        c.DocExpansion(DocExpansion.List);
-        c.EnableDeepLinking();
-        c.DisplayOperationId();
-        c.EnableFilter();
-        c.ShowExtensions();
-        c.EnableValidator();
-        c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Head, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Patch, SubmitMethod.Delete);
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-// app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
-app.UseCors("AllowAll");  
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Map Hub and Controllers
 app.MapHub<ChatHub>("/chathub/11");
 app.MapControllers();
 
+// Serve static files
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
@@ -185,8 +176,4 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Uploads"
 });
 
-
 app.Run();
-
-
-
