@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace ParrotsAPI2.Services.Voyage
 {
-    public class VoyageService2 : IVoyageService
+    public class VoyageService2 //: IVoyageService
     {
 
         private readonly IMapper _mapper;

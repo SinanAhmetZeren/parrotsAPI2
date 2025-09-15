@@ -40,7 +40,6 @@ namespace ParrotsAPI2.Services.Vehicle
             return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
         }
 
-
         public async Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle)
         {
             var serviceResponse = new ServiceResponse<GetVehicleDto>();
@@ -88,7 +87,6 @@ namespace ParrotsAPI2.Services.Vehicle
             serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile, string userId)
         {
@@ -141,8 +139,6 @@ namespace ParrotsAPI2.Services.Vehicle
 
             return serviceResponse;
         }
-
-
 
         public async Task<ServiceResponse<string>> DeleteVehicle(int id)
         {
@@ -200,7 +196,6 @@ namespace ParrotsAPI2.Services.Vehicle
 
             return serviceResponse;
         }
-
 
         //only deletes if the vehicle has no images
         public async Task<ServiceResponse<string>> CheckAndDeleteVehicle(int id)
@@ -271,7 +266,6 @@ namespace ParrotsAPI2.Services.Vehicle
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<List<GetVehicleDto>>> GetAllVehicles()
         {
@@ -360,7 +354,6 @@ namespace ParrotsAPI2.Services.Vehicle
 
         }
 
-
         public async Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId)
         {
             var serviceResponse = new ServiceResponse<List<VehicleImageDto>>();
@@ -434,7 +427,6 @@ namespace ParrotsAPI2.Services.Vehicle
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId)
         {
@@ -516,7 +508,6 @@ namespace ParrotsAPI2.Services.Vehicle
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetVehicleDto>();
@@ -556,7 +547,6 @@ namespace ParrotsAPI2.Services.Vehicle
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<string>> DeleteVehicleImage(int vehicleImageId)
         {

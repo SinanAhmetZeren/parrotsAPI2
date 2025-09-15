@@ -93,7 +93,7 @@ namespace ParrotsAPI2.Controllers
             {
                 return Forbid();
             }
-     
+
             var response = await _voyageService.ConfirmVoyage(voyageId);
             if (!response.Success)
             {
@@ -103,18 +103,18 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-/*
-        [HttpPut("UpdateVoyage")]
-        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
-        {
-            var response = await _voyageService.UpdateVoyage(updatedVoyage);
-            if (response.Data == null)
-            {
-                return NotFound(response);
-            }
-            return Ok(response);
-        }
-*/
+        /*
+                [HttpPut("UpdateVoyage")]
+                public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
+                {
+                    var response = await _voyageService.UpdateVoyage(updatedVoyage);
+                    if (response.Data == null)
+                    {
+                        return NotFound(response);
+                    }
+                    return Ok(response);
+                }
+        */
 
 
         [HttpPatch("PatchVoyage/{voyageId}")]
@@ -123,7 +123,7 @@ namespace ParrotsAPI2.Controllers
         {
 
 
-           var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
                 return Unauthorized(new ServiceResponse<string>
@@ -227,7 +227,7 @@ namespace ParrotsAPI2.Controllers
         {
 
 
-           var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
                 return Unauthorized(new ServiceResponse<string>
@@ -265,7 +265,7 @@ namespace ParrotsAPI2.Controllers
         {
 
 
-           var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
                 return Unauthorized(new ServiceResponse<string>
@@ -331,8 +331,11 @@ namespace ParrotsAPI2.Controllers
             var serviceResponse = await _voyageService.DeleteVoyageImage(voyageImageId);
             if (serviceResponse.Success)
             {
-                return Ok(new { message = "Voyage image deleted successfully", 
-                    voyageDetails = serviceResponse.Data });
+                return Ok(new
+                {
+                    message = "Voyage image deleted successfully",
+                    voyageDetails = serviceResponse.Data
+                });
             }
             else
             {

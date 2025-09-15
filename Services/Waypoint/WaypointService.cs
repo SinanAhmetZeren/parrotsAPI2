@@ -11,63 +11,57 @@ namespace ParrotsAPI2.Services.Waypoint
 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly ILogger<WaypointService> _logger;
+        private readonly BlobService _blobService; // 🟢 CHANGED
 
-        public WaypointService(IMapper mapper, DataContext context)
+        // 🟢 CHANGED - Added BlobService to constructor
+        public WaypointService(IMapper mapper, DataContext context, ILogger<WaypointService> logger, BlobService blobService)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
+            _blobService = blobService;
         }
 
+        // 🔹 Helper method for uploading images
+        private async Task<string> UploadImageToBlobAsync(IFormFile file)
+        {
+            const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("No image provided");
 
+            if (file.Length > MaxFileSize)
+                throw new ArgumentException("Image size exceeds 5MB limit");
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
+        }
 
         public async Task<ServiceResponse<int>> AddWaypoint(AddWaypointDto newWaypoint, string userId)
         {
             var serviceResponse = new ServiceResponse<int>();
-
-            // Check if input is valid
-            if (newWaypoint == null || newWaypoint.ImageFile == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "Waypoint or ImageFile is null.";
-                return serviceResponse;
-            }
-
-            // Prepare file name and path
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newWaypoint.ImageFile.FileName);
-            var filePath = Path.Combine("Uploads/WaypointImages/", fileName);
-
             try
             {
-                // Ensure the directory exists
-                var directory = Path.GetDirectoryName(filePath);
-                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                if (newWaypoint == null || newWaypoint.ImageFile == null)
                 {
-                    Directory.CreateDirectory(directory);
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Waypoint or ImageFile is null.";
+                    return serviceResponse;
                 }
-
-                // Save the file
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await newWaypoint.ImageFile.CopyToAsync(stream);
-                }
+                var uploadedFileName = await UploadImageToBlobAsync(newWaypoint.ImageFile);
+                var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
+                waypoint.ProfileImage = uploadedFileName; // Use uploaded file name / blob URL
+                waypoint.UserId = userId;
+                _context.Waypoints.Add(waypoint);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = waypoint.Id;
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = $"Error saving image: {ex.Message}";
-                return serviceResponse;
+                serviceResponse.Message = $"Error adding waypoint: {ex.Message}";
             }
-
-            // Map DTO to entity and save to DB
-            var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
-            waypoint.ProfileImage = fileName;
-            waypoint.UserId = userId;
-
-            _context.Waypoints.Add(waypoint);
-            await _context.SaveChangesAsync();
-
-            serviceResponse.Data = waypoint.Id;
             return serviceResponse;
         }
 
@@ -83,16 +77,15 @@ namespace ParrotsAPI2.Services.Waypoint
                 {
                     throw new Exception($"Waypoint with ID `{id}` not found");
                 }
-
-                // Check if the deleted waypoint has order = 1
+                if (!string.IsNullOrEmpty(waypoint.ProfileImage))
+                {
+                    await _blobService.DeleteAsync(waypoint.ProfileImage);
+                }
                 bool isOrderOne = waypoint.Order == 1;
-
                 _context.Waypoints.Remove(waypoint);
                 await _context.SaveChangesAsync();
-
                 if (isOrderOne)
                 {
-                    // Find other waypoints with the same voyageId
                     var waypointsWithSameVoyageId = await _context.Waypoints
                         .Where(w => w.VoyageId == waypoint.VoyageId)
                         .OrderBy(w => w.Order)
@@ -100,23 +93,22 @@ namespace ParrotsAPI2.Services.Waypoint
 
                     if (waypointsWithSameVoyageId.Any())
                     {
-                        // Update the waypoint with the smallest order to order = 1
                         waypointsWithSameVoyageId.First().Order = 1;
+                        await _context.SaveChangesAsync();
                     }
-
-                    await _context.SaveChangesAsync();
                 }
-
-                var voyages = await _context.Waypoints.ToListAsync();
-                serviceResponse.Data = voyages.Select(c => _mapper.Map<GetWaypointDto>(c)).ToList();
+                var waypoints = await _context.Waypoints.ToListAsync();
+                serviceResponse.Data = waypoints.Select(c => _mapper.Map<GetWaypointDto>(c)).ToList();
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
+                serviceResponse.Message = $"Error deleting waypoint: {ex.Message}";
             }
             return serviceResponse;
         }
+
+
 
         public async Task<ServiceResponse<List<GetWaypointDto>>> GetAllWaypoints()
         {

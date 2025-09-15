@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging; // Ensure you have a logger
 
 namespace ParrotsAPI2.Services.User
 {
-    public class UserService2 : IUserService
+    public class UserService2 //: IUserService
     {
 
 

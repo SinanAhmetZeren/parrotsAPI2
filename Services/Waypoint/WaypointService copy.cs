@@ -6,7 +6,7 @@ using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Waypoint
 {
-    public class WaypointService2 : IWaypointService
+    public class WaypointService2 //: IWaypointService
     {
 
         private readonly IMapper _mapper;

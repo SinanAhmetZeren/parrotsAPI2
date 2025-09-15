@@ -8,7 +8,7 @@ using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Vehicle
 {
-    public class VehicleService2 : IVehicleService
+    public class VehicleService2 //: IVehicleService
     {
 
         private readonly IMapper _mapper;

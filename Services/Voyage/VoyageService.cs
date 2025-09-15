@@ -53,10 +53,7 @@ namespace ParrotsAPI2.Services.Voyage
                 // Upload profile image if provided
                 if (newVoyage.ImageFile is not null && newVoyage.ImageFile.Length > 0)
                 {
-                    voyageProfileImage = await _blobService.UploadAsync(
-                        newVoyage.ImageFile.OpenReadStream(),
-                        Guid.NewGuid().ToString() + Path.GetExtension(newVoyage.ImageFile.FileName)
-                    );
+                    voyageProfileImage = await UploadImageToBlobAsync(newVoyage.ImageFile);
                 }
 
                 // Validate user
@@ -101,6 +98,7 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+
         public async Task<ServiceResponse<string>> AddVoyageImage(int voyageId, IFormFile imageFile, string userId)
         {
             var serviceResponse = new ServiceResponse<string>();
@@ -111,23 +109,6 @@ namespace ParrotsAPI2.Services.Voyage
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "No image file provided.";
-                    return serviceResponse;
-                }
-
-                const long maxFileSize = 5 * 1024 * 1024; // 5 MB
-                if (imageFile.Length > maxFileSize)
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Image file size exceeds 5 MB limit.";
-                    return serviceResponse;
-                }
-
-                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                var fileExtension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
-                if (!allowedExtensions.Contains(fileExtension))
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Unsupported image file type. Allowed types: jpg, jpeg, png, gif.";
                     return serviceResponse;
                 }
 
@@ -142,11 +123,8 @@ namespace ParrotsAPI2.Services.Voyage
                     return serviceResponse;
                 }
 
-                // Upload image to Blob storage
-                var fileName = await _blobService.UploadAsync(
-                    imageFile.OpenReadStream(),
-                    Guid.NewGuid().ToString() + fileExtension
-                );
+                // Upload image using the helper method
+                var fileName = await UploadImageToBlobAsync(imageFile);
 
                 var newVoyageImage = new VoyageImage
                 {
@@ -170,15 +148,18 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetVoyageDto>>> DeleteVoyage(int id)
+
+        public async Task<ServiceResponse<string>> DeleteVoyage(int id)
         {
-            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+            var serviceResponse = new ServiceResponse<string>();
             try
             {
                 var voyage = await _context.Voyages.FindAsync(id);
                 if (voyage == null)
                 {
-                    throw new Exception($"Voyage with ID `{id}` not found");
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Voyage with ID `{id}` not found";
+                    return serviceResponse;
                 }
 
                 // Soft delete voyage
@@ -189,21 +170,15 @@ namespace ParrotsAPI2.Services.Voyage
                     .Where(f => f.Type == "voyage" && f.ItemId == id)
                     .ToListAsync();
 
-                if (relatedFavorites.Count > 0)
+                if (relatedFavorites.Any())
                 {
                     _context.Favorites.RemoveRange(relatedFavorites);
                 }
 
                 await _context.SaveChangesAsync();
 
-                // Return non-deleted voyages
-                var voyages = await _context.Voyages
-                    .Where(v => !v.IsDeleted)
-                    .ToListAsync();
-
-                serviceResponse.Data = voyages
-                    .Select(c => _mapper.Map<GetVoyageDto>(c))
-                    .ToList();
+                serviceResponse.Success = true;
+                serviceResponse.Data = $"Voyage with ID {id} has been soft deleted successfully.";
             }
             catch (Exception ex)
             {
@@ -214,6 +189,7 @@ namespace ParrotsAPI2.Services.Voyage
                     serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
                 }
             }
+
             return serviceResponse;
         }
 
@@ -599,6 +575,7 @@ namespace ParrotsAPI2.Services.Voyage
         public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
+
             try
             {
                 var voyage = await _context.Voyages.FindAsync(voyageId);
@@ -608,19 +585,20 @@ namespace ParrotsAPI2.Services.Voyage
                     serviceResponse.Message = "Voyage not found";
                     return serviceResponse;
                 }
+
                 if (imageFile == null || imageFile.Length == 0)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "No image provided";
                     return serviceResponse;
                 }
-                // Upload image using BlobService
-                var fileName = await _blobService.UploadAsync(
-                    imageFile.OpenReadStream(),
-                    Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName)
-                );
+
+                // Upload image using helper method
+                var fileName = await UploadImageToBlobAsync(imageFile);
+
                 voyage.ProfileImage = fileName; // Blob URL or filename depending on your BlobService
                 await _context.SaveChangesAsync();
+
                 serviceResponse.Success = true;
                 serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
             }
@@ -717,14 +695,13 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> DeleteVoyageImage(int voyageImageId)
+        public async Task<ServiceResponse<string>> DeleteVoyageImage(int voyageImageId)
         {
-            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            var serviceResponse = new ServiceResponse<string>();
 
             try
             {
                 var voyageImage = await _context.VoyageImages
-                    .Include(vi => vi.Voyage)
                     .FirstOrDefaultAsync(v => v.Id == voyageImageId);
 
                 if (voyageImage == null)
@@ -743,15 +720,8 @@ namespace ParrotsAPI2.Services.Voyage
                 _context.VoyageImages.Remove(voyageImage);
                 await _context.SaveChangesAsync();
 
-                var updatedVoyage = await _context.Voyages
-                    .Include(v => v.User)
-                    .Include(v => v.Vehicle)
-                    .Include(v => v.VoyageImages)
-                    .FirstOrDefaultAsync(v => v.Id == voyageImage.VoyageId);
-
                 serviceResponse.Success = true;
-                serviceResponse.Message = "Voyage image deleted successfully";
-                serviceResponse.Data = _mapper.Map<GetVoyageDto>(updatedVoyage);
+                serviceResponse.Data = $"Voyage image with ID {voyageImageId} deleted successfully.";
             }
             catch (Exception ex)
             {
@@ -761,6 +731,7 @@ namespace ParrotsAPI2.Services.Voyage
 
             return serviceResponse;
         }
+
 
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(
             double? lat1, double? lat2, double? lon1, double? lon2,
