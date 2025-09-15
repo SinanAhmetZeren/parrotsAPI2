@@ -16,11 +16,31 @@ namespace ParrotsAPI2.Services.Voyage
 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly ILogger<VoyageService> _logger;
+        private readonly BlobService _blobService; // 🟢 CHANGED
 
-        public VoyageService(IMapper mapper, DataContext context)
+        // 🟢 CHANGED - Added BlobService to constructor
+        public VoyageService(IMapper mapper, DataContext context, ILogger<VoyageService> logger, BlobService blobService)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
+            _blobService = blobService;
+        }
+
+        // 🔹 Helper method for uploading images
+        private async Task<string> UploadImageToBlobAsync(IFormFile file)
+        {
+            const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("No image provided");
+
+            if (file.Length > MaxFileSize)
+                throw new ArgumentException("Image size exceeds 5MB limit");
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
         }
 
         public async Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage)
@@ -28,70 +48,73 @@ namespace ParrotsAPI2.Services.Voyage
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             string voyageProfileImage = "";
 
-            if (newVoyage.ImageFile is not null && newVoyage.ImageFile.Length > 0)
+            try
             {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newVoyage.ImageFile.FileName);
-                var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                // Upload profile image if provided
+                if (newVoyage.ImageFile is not null && newVoyage.ImageFile.Length > 0)
                 {
-                    await newVoyage.ImageFile.CopyToAsync(stream);
+                    voyageProfileImage = await _blobService.UploadAsync(
+                        newVoyage.ImageFile.OpenReadStream(),
+                        Guid.NewGuid().ToString() + Path.GetExtension(newVoyage.ImageFile.FileName)
+                    );
                 }
-                voyageProfileImage = fileName;
-            }
 
-            // var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVoyage.UserId);
-            var user = await _context.Users.FindAsync(newVoyage.UserId);
-            if (user == null)
+                // Validate user
+                var user = await _context.Users.FindAsync(newVoyage.UserId);
+                if (user == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "User not found.";
+                    return serviceResponse;
+                }
+
+                // Validate vehicle
+                var vehicle = await _context.Vehicles.FindAsync(newVoyage.VehicleId);
+                if (vehicle == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Vehicle not found.";
+                    return serviceResponse;
+                }
+
+                // Map and set related properties
+                var voyage = _mapper.Map<Models.Voyage>(newVoyage);
+                voyage.User = user;
+                voyage.Vehicle = vehicle;
+                voyage.VehicleImage = vehicle.ProfileImageUrl;
+                voyage.ProfileImage = voyageProfileImage;
+                voyage.VehicleType = vehicle.Type;
+                voyage.VehicleName = vehicle.Name;
+                voyage.CreatedAt = DateTime.UtcNow;
+
+                _context.Voyages.Add(voyage);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
+            }
+            catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "User not found.";
-                return serviceResponse;
+                serviceResponse.Message = $"Error adding voyage: {ex.Message}";
             }
 
-            // var vehicle = await _context.Vehicles.FirstOrDefaultAsync(c => c.Id == newVoyage.VehicleId);
-            var vehicle = await _context.Vehicles.FindAsync(newVoyage.VehicleId);
-            if (vehicle == null)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "Vehicle not found.";
-                return serviceResponse;
-            }
-
-            var voyage = _mapper.Map<Models.Voyage>(newVoyage);
-
-            voyage.User = user;
-            voyage.Vehicle = vehicle;
-            voyage.VehicleImage = vehicle?.ProfileImageUrl;
-            voyage.ProfileImage = voyageProfileImage;
-            voyage.VehicleType = vehicle?.Type ?? default;
-            voyage.VehicleName = vehicle?.Name;
-            voyage.CreatedAt = DateTime.UtcNow;
-            // voyage.Confirmed = false;
-            // voyage.IsDeleted = false;
-
-            _context.Voyages.Add(voyage);
-            await _context.SaveChangesAsync();
-
-            serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<string>> AddVoyageImage(int voyageId, IFormFile imageFile, string userId)
         {
-            // userId is read from the token.
-            // if voyage owner Id is not equal to userId, controller returns forbidden
             var serviceResponse = new ServiceResponse<string>();
 
             try
             {
-                if (imageFile == null)
+                if (imageFile == null || imageFile.Length == 0)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "No image file provided.";
                     return serviceResponse;
                 }
 
-                const long maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+                const long maxFileSize = 5 * 1024 * 1024; // 5 MB
                 if (imageFile.Length > maxFileSize)
                 {
                     serviceResponse.Success = false;
@@ -101,7 +124,6 @@ namespace ParrotsAPI2.Services.Voyage
 
                 var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
                 var fileExtension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
-
                 if (!allowedExtensions.Contains(fileExtension))
                 {
                     serviceResponse.Success = false;
@@ -120,13 +142,11 @@ namespace ParrotsAPI2.Services.Voyage
                     return serviceResponse;
                 }
 
-                var fileName = Guid.NewGuid().ToString() + fileExtension;
-                var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await imageFile.CopyToAsync(stream);
-                }
+                // Upload image to Blob storage
+                var fileName = await _blobService.UploadAsync(
+                    imageFile.OpenReadStream(),
+                    Guid.NewGuid().ToString() + fileExtension
+                );
 
                 var newVoyageImage = new VoyageImage
                 {
@@ -139,8 +159,7 @@ namespace ParrotsAPI2.Services.Voyage
 
                 await _context.SaveChangesAsync();
 
-                var newImageId = newVoyageImage.Id.ToString();
-                serviceResponse.Data = newImageId;
+                serviceResponse.Data = newVoyageImage.Id.ToString();
             }
             catch (Exception ex)
             {
@@ -339,7 +358,7 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.User)
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
-                .FirstOrDefaultAsync(c => c.Id == id  && c.IsDeleted == false);
+                .FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
 
             if (voyage == null)
             {
@@ -483,6 +502,7 @@ namespace ParrotsAPI2.Services.Voyage
             serviceResponse.Data = voyageDtos;
             return serviceResponse;
         }
+
         public async Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
@@ -532,7 +552,6 @@ namespace ParrotsAPI2.Services.Voyage
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
         {
@@ -589,44 +608,29 @@ namespace ParrotsAPI2.Services.Voyage
                     serviceResponse.Message = "Voyage not found";
                     return serviceResponse;
                 }
-
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                    var filePath = Path.Combine("Uploads/VoyageImages/", fileName);
-
-                    var directoryPath = Path.GetDirectoryName(filePath);
-                    if (directoryPath != null && !Directory.Exists(directoryPath))
-                    {
-                        Directory.CreateDirectory(directoryPath);
-                    }
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(stream);
-                    }
-                    voyage.ProfileImage = "/Uploads/VoyageImages/" + fileName;
-                    await _context.SaveChangesAsync();
-                    var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
-                    serviceResponse.Success = true;
-                    serviceResponse.Data = voyageDto;
-
-
-                }
-                else
+                if (imageFile == null || imageFile.Length == 0)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "No image provided";
+                    return serviceResponse;
                 }
-
-                return serviceResponse;
+                // Upload image using BlobService
+                var fileName = await _blobService.UploadAsync(
+                    imageFile.OpenReadStream(),
+                    Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName)
+                );
+                voyage.ProfileImage = fileName; // Blob URL or filename depending on your BlobService
+                await _context.SaveChangesAsync();
+                serviceResponse.Success = true;
+                serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
-                return serviceResponse;
+                serviceResponse.Message = $"Error updating voyage image: {ex.Message}";
             }
+
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByCoordinates(double lat1, double lat2, double lon1, double lon2)
@@ -716,33 +720,42 @@ namespace ParrotsAPI2.Services.Voyage
         public async Task<ServiceResponse<GetVoyageDto>> DeleteVoyageImage(int voyageImageId)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
+
             try
             {
-                var voyageImage = await _context.VoyageImages.FirstOrDefaultAsync(v => v.Id == voyageImageId);
+                var voyageImage = await _context.VoyageImages
+                    .Include(vi => vi.Voyage)
+                    .FirstOrDefaultAsync(v => v.Id == voyageImageId);
 
                 if (voyageImage == null)
                 {
+                    serviceResponse.Success = false;
                     serviceResponse.Message = "Voyage image not found";
                     return serviceResponse;
                 }
+
+                // Delete image from blob storage if using blob URLs
+                if (!string.IsNullOrEmpty(voyageImage.VoyageImagePath))
+                {
+                    await _blobService.DeleteAsync(voyageImage.VoyageImagePath);
+                }
+
                 _context.VoyageImages.Remove(voyageImage);
                 await _context.SaveChangesAsync();
-                var updatedVoyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == voyageImage.VoyageId);
 
-                // Consider including related data if GetVoyageDto expects them:
-                // var updatedVoyage = await _context.Voyages
-                //     .Include(v => v.User)
-                //     .Include(v => v.VoyageImages)
-                //     .Include(v => v.Vehicle)
-                //     .FirstOrDefaultAsync(v => v.Id == voyageImage.VoyageId);
+                var updatedVoyage = await _context.Voyages
+                    .Include(v => v.User)
+                    .Include(v => v.Vehicle)
+                    .Include(v => v.VoyageImages)
+                    .FirstOrDefaultAsync(v => v.Id == voyageImage.VoyageId);
 
-
-                serviceResponse.Data = _mapper.Map<GetVoyageDto>(updatedVoyage);
                 serviceResponse.Success = true;
                 serviceResponse.Message = "Voyage image deleted successfully";
+                serviceResponse.Data = _mapper.Map<GetVoyageDto>(updatedVoyage);
             }
             catch (Exception ex)
             {
+                serviceResponse.Success = false;
                 serviceResponse.Message = $"Error deleting voyage image: {ex.Message}";
             }
 
@@ -837,7 +850,6 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<string>> ConfirmVoyage(int voyageId)
         {
             var serviceResponse = new ServiceResponse<string>();
@@ -854,7 +866,6 @@ namespace ParrotsAPI2.Services.Voyage
             serviceResponse.Data = "Voyage confirmed";
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<VoyageImageDto>> GetVoyageImageById(int voyageImageId)
         {
