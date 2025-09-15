@@ -20,29 +20,23 @@ namespace ParrotsAPI2.Controllers
             _userService = userService;
         }
 
-        /*
-                [HttpGet("GetAllUsers")]
-                public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> Get()
-                {
-                    return Ok(await _userService.GetAllUsers());
-                }
-        */
+
 
         [AllowAnonymous]
         [HttpGet("getUserById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string id)
         {
-/*
-            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (requestUserId == null)
-            {
-                return Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "User identity not found."
-                });
-            }
-*/
+            /*
+                        var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        if (requestUserId == null)
+                        {
+                            return Unauthorized(new ServiceResponse<string>
+                            {
+                                Success = false,
+                                Message = "User identity not found."
+                            });
+                        }
+            */
             return Ok(await _userService.GetUserById(id));
         }
 
@@ -131,18 +125,7 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        /*
-                [HttpDelete("DeleteUser/{id}")]
-                public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(string id)
-                {
-                    var response = await _userService.DeleteUser(id);
-                    if (response.Data == null)
-                    {
-                        return NotFound(response);
-                    }
-                    return Ok(response);
-                }
-        */
+
 
         [Consumes("multipart/form-data")]
         [HttpPost("{userId}/updateProfileImage")]

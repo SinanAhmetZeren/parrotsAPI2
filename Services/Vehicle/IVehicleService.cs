@@ -12,7 +12,6 @@ namespace ParrotsAPI2.Services.Vehicle
         Task<ServiceResponse<List<GetVehicleDto>>> GetVehiclesByUserId(string userId);
         Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle);
         Task<ServiceResponse<string>> ConfirmVehicle(int vehicleId);
-        Task<ServiceResponse<GetVehicleDto>> UpdateVehicle(UpdateVehicleDto updatedVehicle);
         Task<ServiceResponse<string>> DeleteVehicle(int id);
         Task<ServiceResponse<string>> CheckAndDeleteVehicle(int id);
         Task<ServiceResponse<GetVehicleDto>> PatchVehicle(int vehicleId, JsonPatchDocument<UpdateVehicleDto> patchDoc, ModelStateDictionary modelState);
@@ -22,6 +21,6 @@ namespace ParrotsAPI2.Services.Vehicle
         Task<ServiceResponse<List<VehicleImageDto>>> GetVehicleImagesByVehicleId(int vehicleId);
         Task<ServiceResponse<VehicleImageDto>> GetVehicleImageById(int vehicleImageId);
 
-        
+
     }
 }

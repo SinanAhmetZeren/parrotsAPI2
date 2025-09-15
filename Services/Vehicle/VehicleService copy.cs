@@ -8,38 +8,16 @@ using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Vehicle
 {
-    public class VehicleService : IVehicleService
+    public class VehicleService2 : IVehicleService
     {
 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
-        private readonly ILogger<VehicleService> _logger;
-        private readonly BlobService _blobService; // 🟢 CHANGED
-
-        // 🟢 CHANGED - Added BlobService to constructor
-        public VehicleService(IMapper mapper, DataContext context, ILogger<VehicleService> logger, BlobService blobService)
+        public VehicleService2(IMapper mapper, DataContext context)
         {
             _context = context;
             _mapper = mapper;
-            _logger = logger;
-            _blobService = blobService;
         }
-
-        // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file)
-        {
-            const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
-
-            if (file == null || file.Length == 0)
-                throw new ArgumentException("No image provided");
-
-            if (file.Length > MaxFileSize)
-                throw new ArgumentException("Image size exceeds 5MB limit");
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
-        }
-
 
         public async Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle)
         {
@@ -50,26 +28,51 @@ namespace ParrotsAPI2.Services.Vehicle
                 serviceResponse.Message = "Vehicle data is missing.";
                 return serviceResponse;
             }
-
             string profileImageUrl = string.Empty;
-
             if (newVehicle.ImageFile != null && newVehicle.ImageFile.Length > 0)
             {
+                const long maxSizeInBytes = 5 * 1024 * 1024;
+                if (newVehicle.ImageFile.Length > maxSizeInBytes)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Image file exceeds the 5MB limit.";
+                    return serviceResponse;
+                }
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extension = Path.GetExtension(newVehicle.ImageFile.FileName).ToLower();
+                if (!allowedExtensions.Contains(extension))
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Unsupported image format.";
+                    return serviceResponse;
+                }
+
                 try
                 {
-                    // Use helper method to handle file upload and validation
-                    profileImageUrl = await UploadImageToBlobAsync(newVehicle.ImageFile);
+                    var fileName = Guid.NewGuid().ToString() + extension;
+                    var relativePath = Path.Combine("Uploads/VehicleImages/", fileName);
+                    var absolutePath = Path.Combine(Directory.GetCurrentDirectory(), relativePath);
+
+                    Directory.CreateDirectory(Path.GetDirectoryName(absolutePath)!); // ensure folder exists
+
+                    using (var stream = new FileStream(absolutePath, FileMode.Create))
+                    {
+                        await newVehicle.ImageFile.CopyToAsync(stream);
+                    }
+
+                    profileImageUrl = fileName;
                 }
                 catch (Exception ex)
                 {
                     serviceResponse.Success = false;
-                    serviceResponse.Message = $"Image upload failed: {ex.Message}";
+                    serviceResponse.Message = $"Failed to save image: {ex.Message}";
                     return serviceResponse;
                 }
             }
 
             var vehicle = _mapper.Map<Models.Vehicle>(newVehicle);
             vehicle.ProfileImageUrl = profileImageUrl;
+            // vehicle.Confirmed = false;
             vehicle.CreatedAt = DateTime.UtcNow;
 
             var currentUser = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVehicle.UserId);
@@ -89,11 +92,11 @@ namespace ParrotsAPI2.Services.Vehicle
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<string>> AddVehicleImage(int vehicleId, IFormFile imageFile, string userId)
         {
             var serviceResponse = new ServiceResponse<string>();
 
+            // Check if the image file is null or empty
             if (imageFile == null || imageFile.Length == 0)
             {
                 serviceResponse.Success = false;
@@ -101,6 +104,7 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
 
+            // Load vehicle and include existing images
             var existingVehicle = await _context.Vehicles
                 .Include(v => v.VehicleImages)
                 .FirstOrDefaultAsync(v => v.Id == vehicleId);
@@ -114,9 +118,25 @@ namespace ParrotsAPI2.Services.Vehicle
 
             try
             {
-                // Upload using helper
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                // Generate unique file name
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
 
+                // Ensure directory exists (NEW: prevents runtime errors if folder doesn't exist)
+                var directoryPath = Path.Combine("Uploads", "VehicleImages");
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                var filePath = Path.Combine(directoryPath, fileName);
+
+                // Save image file to disk
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                // Create new VehicleImage and associate it
                 var newVehicleImage = new VehicleImage
                 {
                     VehicleImagePath = fileName,
@@ -129,6 +149,7 @@ namespace ParrotsAPI2.Services.Vehicle
 
                 await _context.SaveChangesAsync();
 
+                // Return newly created image ID
                 serviceResponse.Data = newVehicleImage.Id.ToString();
             }
             catch (Exception ex)
@@ -136,12 +157,13 @@ namespace ParrotsAPI2.Services.Vehicle
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error saving vehicle image: {ex.Message}";
                 if (ex.InnerException != null)
+                {
                     serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
+                }
             }
 
             return serviceResponse;
         }
-
 
 
         public async Task<ServiceResponse<string>> DeleteVehicle(int id)
@@ -478,14 +500,22 @@ namespace ParrotsAPI2.Services.Vehicle
             try
             {
                 var vehicle = await _context.Vehicles.FindAsync(vehicleId);
+
+                // if (vehicle == null)
+                // {
+                //     throw new Exception($"vehicle with ID `{vehicleId}` not found");
+                // }
                 if (vehicle == null)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = $"Vehicle with ID `{vehicleId}` not found.";
                     return serviceResponse;
                 }
+
                 // var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
                 var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
+
+
                 // if patchdoc vheicle type is walk or run, return error
                 if (vehicleDto.Type == VehicleType.Walk || vehicleDto.Type == VehicleType.Run)
                 {
@@ -493,14 +523,75 @@ namespace ParrotsAPI2.Services.Vehicle
                     serviceResponse.Message = "Walk and Run vehicles cannot be patched.";
                     return serviceResponse;
                 }
+
+                // patchDoc.ApplyTo(vehicleDto, modelState);
                 patchDoc.ApplyTo(vehicleDto, modelState);
+
+                // if (!modelState.IsValid)
+                // {
+                //     serviceResponse.Success = false;
+                //     serviceResponse.Message = "Invalid model state after patch operations";
+                //     return serviceResponse;
+                // }
                 if (!modelState.IsValid)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Invalid model state after applying patch.";
                     return serviceResponse;
                 }
+
+                // _mapper.Map(vehicleDto, vehicle);
                 _mapper.Map(vehicleDto, vehicle);
+
+                // _context.Vehicles.Attach(vehicle);
+                // _context.Entry(vehicle).State = EntityState.Modified;
+                // Removed because the entity is already tracked by EF Core
+
+                await _context.SaveChangesAsync();
+
+                // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+                serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error updating vehicle: {ex.Message}";
+                if (ex.InnerException != null)
+                {
+                    serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
+                }
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicle(UpdateVehicleDto updatedVehicle)
+        {
+            var serviceResponse = new ServiceResponse<GetVehicleDto>();
+            try
+            {
+                var vehicle = await _context.Vehicles.FindAsync(updatedVehicle.Id);
+                if (vehicle == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Vehicle with ID `{updatedVehicle.Id}` not found.";
+                    return serviceResponse;
+                }
+
+                // if patchdoc vheicle type is walk or run, return error
+                if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Walk and Run vehicles cannot be patched.";
+                    return serviceResponse;
+                }
+
+
+                vehicle.Name = updatedVehicle.Name?.Trim() ?? string.Empty;
+                vehicle.Type = updatedVehicle.Type;
+                vehicle.Capacity = updatedVehicle.Capacity;
+                vehicle.Description = updatedVehicle.Description?.Trim() ?? string.Empty;
+                vehicle.ProfileImageUrl = updatedVehicle.ProfileImageUrl?.Trim() ?? string.Empty;
                 await _context.SaveChangesAsync();
                 serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
             }
@@ -513,9 +604,9 @@ namespace ParrotsAPI2.Services.Vehicle
                     serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
                 }
             }
+
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile)
         {
@@ -525,38 +616,31 @@ namespace ParrotsAPI2.Services.Vehicle
             if (vehicle == null)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "Vehicle not found";
+                serviceResponse.Message = "vehicle not found";
                 return serviceResponse;
             }
-
-            if (imageFile == null || imageFile.Length == 0)
+            if (imageFile?.Length > 0)
             {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No image provided";
-                return serviceResponse;
-            }
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var filePath = Path.Combine("Uploads/VehicleImages/", fileName);
 
-            try
-            {
-                // Use the helper method to upload the image
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                await using var stream = new FileStream(filePath, FileMode.Create);
+                await imageFile.CopyToAsync(stream);
 
-                // Update the vehicle profile image URL
                 vehicle.ProfileImageUrl = fileName;
                 await _context.SaveChangesAsync();
 
-                serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+                var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
                 serviceResponse.Success = true;
+                serviceResponse.Data = vehicleDto;
             }
-            catch (Exception ex)
+            else
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = $"Error uploading image: {ex.Message}";
+                serviceResponse.Message = "No image provided";
             }
-
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<string>> DeleteVehicleImage(int vehicleImageId)
         {
@@ -570,25 +654,9 @@ namespace ParrotsAPI2.Services.Vehicle
                     response.Message = "Vehicle image not found.";
                     return response;
                 }
-
-                // Delete image from Blob Storage if it exists
-                if (!string.IsNullOrEmpty(vehicleImage.VehicleImagePath))
-                {
-                    try
-                    {
-                        await _blobService.DeleteAsync(vehicleImage.VehicleImagePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning($"Failed to delete image from blob: {ex.Message}");
-                    }
-                }
-
-                // Remove the record from database
                 _context.VehicleImages.Remove(vehicleImage);
                 await _context.SaveChangesAsync();
 
-                response.Success = true;
                 response.Data = $"Vehicle image with ID {vehicleImageId} has been deleted successfully.";
                 response.Message = "Vehicle image deleted successfully.";
             }
@@ -599,7 +667,6 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             return response;
         }
-
         public async Task<ServiceResponse<string>> ConfirmVehicle(int vehicleId)
         {
 

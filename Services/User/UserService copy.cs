@@ -12,40 +12,22 @@ using Microsoft.Extensions.Logging; // Ensure you have a logger
 
 namespace ParrotsAPI2.Services.User
 {
-    public class UserService : IUserService
+    public class UserService2 : IUserService
     {
 
 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly ILogger<UserService> _logger;
-        private readonly BlobService _blobService; // 🟢 CHANGED
 
-        // 🟢 CHANGED - Added BlobService to constructor
-        public UserService(IMapper mapper, DataContext context, ILogger<UserService> logger, BlobService blobService)
+
+        public UserService2(IMapper mapper, DataContext context, ILogger<UserService> logger)
         {
             _context = context;
             _mapper = mapper;
             _logger = logger;
-            _blobService = blobService;
+
         }
-
-
-        // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file)
-        {
-            const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
-
-            if (file == null || file.Length == 0)
-                throw new ArgumentException("No image provided");
-
-            if (file.Length > MaxFileSize)
-                throw new ArgumentException("Image size exceeds 5MB limit");
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
-        }
-
 
         public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
         {
@@ -64,19 +46,24 @@ namespace ParrotsAPI2.Services.User
                     return serviceResponse;
                 }
 
-                // Handle image upload using BlobService helper
+                // Handle image upload if provided
                 if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
                 {
-                    try
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/UserImages");
+                    if (!Directory.Exists(uploadsFolder))
                     {
-                        newUser.ProfileImageUrl = await UploadImageToBlobAsync(newUser.ImageFile);
+                        Directory.CreateDirectory(uploadsFolder);
                     }
-                    catch (Exception ex)
+
+                    var fileName = Guid.NewGuid() + Path.GetExtension(newUser.ImageFile.FileName);
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = $"Error uploading image: {ex.Message}";
-                        return serviceResponse;
+                        await newUser.ImageFile.CopyToAsync(stream);
                     }
+
+                    newUser.ProfileImageUrl = fileName;
                 }
 
                 // Map and add new user
@@ -97,7 +84,6 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
@@ -291,20 +277,18 @@ namespace ParrotsAPI2.Services.User
         public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
-
-            // Check for null image file first
-            if (imageFile == null || imageFile.Length == 0)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = "No image provided";
-                return serviceResponse;
-            }
-
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
             if (imageFile.Length > MaxFileSize)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Image size exceeds 5MB limit";
+                return serviceResponse;
+            }
+            // Check for null image file first
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No image provided";
                 return serviceResponse;
             }
 
@@ -317,15 +301,22 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
             }
 
+            // Save the image file
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            var filePath = Path.Combine("Uploads/UserImages/", fileName);
+
             try
             {
-                // Upload image to Blob storage
-                var fileName = await UploadImageToBlobAsync(imageFile);
-                user.ProfileImageUrl = fileName;
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Ensure directory exists
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
 
+                user.ProfileImageUrl = fileName;
                 await _context.SaveChangesAsync();
+
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
-                serviceResponse.Success = true;
             }
             catch (Exception ex)
             {
@@ -336,31 +327,39 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-
         public async Task<ServiceResponse<GetUserDto>> UpdateUserBackgroundImage(string userId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
-
+            const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+            if (imageFile.Length > MaxFileSize)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Image size exceeds 5MB limit";
+                return serviceResponse;
+            }
             if (imageFile == null || imageFile.Length == 0)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "No image provided";
                 return serviceResponse;
             }
-
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "User not found";
+                return serviceResponse;
+            }
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            var filePath = Path.Combine("Uploads/UserImages", fileName);
             try
             {
-                // Use helper function to handle upload and validation
-                var fileName = await UploadImageToBlobAsync(imageFile);
-
-                var user = await _context.Users.FindAsync(userId);
-                if (user == null)
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Ensure the folder exists
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "User not found";
-                    return serviceResponse;
+                    await imageFile.CopyToAsync(stream);
                 }
-
+                // Save only the file name to DB (frontend will build full URL)
                 user.BackgroundImageUrl = fileName;
                 await _context.SaveChangesAsync();
 
@@ -371,10 +370,8 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Image upload failed: {ex.Message}";
             }
-
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUserUnseenMessage(UpdateUserUnseenMessageDto updatedUser)
         {

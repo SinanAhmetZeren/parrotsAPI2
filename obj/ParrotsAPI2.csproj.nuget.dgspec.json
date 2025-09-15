@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj": {}
+    "/Users/ahmetzeren/Repos/parrotsAPI2/ParrotsAPI2.csproj": {}
   },
   "projects": {
-    "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj": {
+    "/Users/ahmetzeren/Repos/parrotsAPI2/ParrotsAPI2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
+        "projectUniqueName": "/Users/ahmetzeren/Repos/parrotsAPI2/ParrotsAPI2.csproj",
         "projectName": "ParrotsAPI2",
-        "projectPath": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\ParrotsAPI2.csproj",
-        "packagesPath": "C:\\Users\\sinan\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\sinan\\OneDrive\\Masaüstü\\ParrotsAPI2\\obj\\",
+        "projectPath": "/Users/ahmetzeren/Repos/parrotsAPI2/ParrotsAPI2.csproj",
+        "packagesPath": "/Users/ahmetzeren/.nuget/packages/",
+        "outputPath": "/Users/ahmetzeren/Repos/parrotsAPI2/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\sinan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/ahmetzeren/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -48,6 +47,10 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "Azure.Storage.Blobs": {
+              "target": "Package",
+              "version": "[12.25.0, )"
             },
             "Google.Apis.Auth": {
               "target": "Package",
@@ -127,7 +130,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.205/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
