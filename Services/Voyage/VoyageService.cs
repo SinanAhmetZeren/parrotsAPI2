@@ -875,6 +875,5 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        // Aaaaa
     }
 }

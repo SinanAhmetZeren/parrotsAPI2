@@ -436,7 +436,6 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-        //aaa
 
     }
 }
