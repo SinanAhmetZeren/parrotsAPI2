@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿/* using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.BidDtos;
 using ParrotsAPI2.Dtos.VoyageImageDtos;
 using ParrotsAPI2.Dtos.WaypointDtos;
@@ -202,3 +202,4 @@ namespace ParrotsAPI2.Services.Waypoint
 
     }
 }
+*/

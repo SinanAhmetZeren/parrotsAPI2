@@ -1,47 +1,51 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
-public class BlobService
+
+namespace ParrotsAPI2.Services.Blob
 {
-    private readonly string _connectionString;
-    private readonly string _containerName;
-
-    public BlobService(string connectionString, string containerName)
+    public class BlobService : IBlobService
     {
-        _connectionString = connectionString;
-        _containerName = containerName;
-    }
+        private readonly string _connectionString;
+        private readonly string _containerName;
 
-    public async Task<string> UploadAsync(Stream fileStream, string fileName, string contentType = null)
-    {
-        var blobServiceClient = new BlobServiceClient(_connectionString);
-        var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
-
-        // Ensure container exists
-        await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
-
-        var blobClient = containerClient.GetBlobClient(fileName);
-
-        var blobHttpHeaders = new BlobHttpHeaders();
-        if (!string.IsNullOrEmpty(contentType))
+        public BlobService(string connectionString, string containerName)
         {
-            blobHttpHeaders.ContentType = contentType;
+            _connectionString = connectionString;
+            _containerName = containerName;
         }
 
-        await blobClient.UploadAsync(fileStream, new BlobUploadOptions
+        public async Task<string> UploadAsync(Stream fileStream, string fileName, string contentType = null)
         {
-            HttpHeaders = blobHttpHeaders
-        });
+            var blobServiceClient = new BlobServiceClient(_connectionString);
+            var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
 
-        return blobClient.Uri.ToString();
-    }
+            // Ensure container exists
+            await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
 
-    public async Task<bool> DeleteAsync(string fileName)
-    {
-        var blobServiceClient = new BlobServiceClient(_connectionString);
-        var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
-        var blobClient = containerClient.GetBlobClient(fileName);
+            var blobClient = containerClient.GetBlobClient(fileName);
 
-        return await blobClient.DeleteIfExistsAsync();
+            var blobHttpHeaders = new BlobHttpHeaders();
+            if (!string.IsNullOrEmpty(contentType))
+            {
+                blobHttpHeaders.ContentType = contentType;
+            }
+
+            await blobClient.UploadAsync(fileStream, new BlobUploadOptions
+            {
+                HttpHeaders = blobHttpHeaders
+            });
+
+            return blobClient.Uri.ToString();
+        }
+
+        public async Task<bool> DeleteAsync(string fileName)
+        {
+            var blobServiceClient = new BlobServiceClient(_connectionString);
+            var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
+            var blobClient = containerClient.GetBlobClient(fileName);
+
+            return await blobClient.DeleteIfExistsAsync();
+        }
     }
 }

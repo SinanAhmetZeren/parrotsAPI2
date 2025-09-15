@@ -19,10 +19,10 @@ namespace ParrotsAPI2.Services.User
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly ILogger<UserService> _logger;
-        private readonly BlobService _blobService; // 🟢 CHANGED
+        private readonly IBlobService _blobService; // 🟢 CHANGED
 
         // 🟢 CHANGED - Added BlobService to constructor
-        public UserService(IMapper mapper, DataContext context, ILogger<UserService> logger, BlobService blobService)
+        public UserService(IMapper mapper, DataContext context, ILogger<UserService> logger, IBlobService blobService)
         {
             _context = context;
             _mapper = mapper;

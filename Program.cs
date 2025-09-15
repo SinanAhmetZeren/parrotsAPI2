@@ -15,19 +15,20 @@ global using ParrotsAPI2.Services.Waypoint;
 global using ParrotsAPI2.Services.Message;
 global using ParrotsAPI2.Hubs;
 global using Microsoft.AspNetCore.Identity;
-using ParrotsAPI2.Services.Token;
+global using ParrotsAPI2.Services.Token;
+global using ParrotsAPI2.Services.Bid;
+global using ParrotsAPI2.Services.Cleanup;
+global using ParrotsAPI2.Services.Blob;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using ParrotsAPI2.Services.Bid;
 using Microsoft.Extensions.FileProviders;
-using ParrotsAPI2.Services.Cleanup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 using Newtonsoft.Json;
- 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext with Azure SQL connection string
@@ -84,6 +85,14 @@ builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ChatHub>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
+builder.Services.AddScoped<IBlobService>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetValue<string>("AzureBlobStorage:ConnectionString");
+    var containerName = configuration.GetValue<string>("AzureBlobStorage:ContainerName");
+    return new BlobService(connectionString, containerName);
+});
+
 
 // Identity
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>

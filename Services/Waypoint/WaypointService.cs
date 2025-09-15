@@ -12,10 +12,10 @@ namespace ParrotsAPI2.Services.Waypoint
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly ILogger<WaypointService> _logger;
-        private readonly BlobService _blobService; // 🟢 CHANGED
+        private readonly IBlobService _blobService; // 🟢 CHANGED
 
         // 🟢 CHANGED - Added BlobService to constructor
-        public WaypointService(IMapper mapper, DataContext context, ILogger<WaypointService> logger, BlobService blobService)
+        public WaypointService(IMapper mapper, DataContext context, ILogger<WaypointService> logger, IBlobService blobService)
         {
             _context = context;
             _mapper = mapper;

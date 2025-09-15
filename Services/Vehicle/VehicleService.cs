@@ -14,10 +14,10 @@ namespace ParrotsAPI2.Services.Vehicle
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly ILogger<VehicleService> _logger;
-        private readonly BlobService _blobService; // 🟢 CHANGED
+        private readonly IBlobService _blobService; // 🟢 CHANGED
 
         // 🟢 CHANGED - Added BlobService to constructor
-        public VehicleService(IMapper mapper, DataContext context, ILogger<VehicleService> logger, BlobService blobService)
+        public VehicleService(IMapper mapper, DataContext context, ILogger<VehicleService> logger, IBlobService blobService)
         {
             _context = context;
             _mapper = mapper;

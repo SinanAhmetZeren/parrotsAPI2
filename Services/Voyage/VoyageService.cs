@@ -17,10 +17,10 @@ namespace ParrotsAPI2.Services.Voyage
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly ILogger<VoyageService> _logger;
-        private readonly BlobService _blobService; // 🟢 CHANGED
+        private readonly IBlobService _blobService; // 🟢 CHANGED
 
         // 🟢 CHANGED - Added BlobService to constructor
-        public VoyageService(IMapper mapper, DataContext context, ILogger<VoyageService> logger, BlobService blobService)
+        public VoyageService(IMapper mapper, DataContext context, ILogger<VoyageService> logger, IBlobService blobService)
         {
             _context = context;
             _mapper = mapper;
