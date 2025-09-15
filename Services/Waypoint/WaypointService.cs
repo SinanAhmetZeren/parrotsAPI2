@@ -190,7 +190,7 @@ namespace ParrotsAPI2.Services.Waypoint
                 serviceResponse.Message = $"Error retrieving waypoints: {ex.Message}";
             }
             return serviceResponse;
-        }
+        } //AAAAAAA
 
     }
 }
