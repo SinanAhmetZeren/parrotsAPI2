@@ -9,8 +9,8 @@ namespace ParrotsAPI2.Controllers
     [Route("api/[controller]")]
     [ApiController]
     // [Authorize]
-    
-        public class VehicleController : ControllerBase
+
+    public class VehicleController : ControllerBase
     {
         private readonly IVehicleService _vehicleService;
 
@@ -19,13 +19,13 @@ namespace ParrotsAPI2.Controllers
             _vehicleService = vehicleService;
         }
 
-/*
-        [HttpGet("GetAllVehicles")]
-        public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> Get()
-        {
-            return Ok(await _vehicleService.GetAllVehicles());
-        }
-*/
+        /*
+                [HttpGet("GetAllVehicles")]
+                public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> Get()
+                {
+                    return Ok(await _vehicleService.GetAllVehicles());
+                }
+        */
 
         [HttpGet("GetVehicleById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingle(int id)
@@ -51,13 +51,6 @@ namespace ParrotsAPI2.Controllers
         {
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Console.WriteLine($"Request User ID: {requestUserId}"); 
-            Console.WriteLine($"Request User ID: {requestUserId}"); 
-            Console.WriteLine($"Request User ID: {requestUserId}"); 
-            Console.WriteLine($"Request User ID: {requestUserId}"); 
-            Console.WriteLine($"Request User ID: {requestUserId}"); 
-            Console.WriteLine($"Request User ID: {requestUserId}"); 
-            Console.WriteLine($"Request User ID: {requestUserId}"); 
             if (requestUserId == null)
             {
                 return Unauthorized(new ServiceResponse<string>
@@ -68,17 +61,8 @@ namespace ParrotsAPI2.Controllers
             }
             if (newVehicle.UserId != requestUserId)
             {
-                return Forbid(); 
+                return Forbid();
             }
-            Console.WriteLine($"creating vehicle..."); 
-            Console.WriteLine($"creating vehicle..."); 
-            Console.WriteLine($"creating vehicle..."); 
-            Console.WriteLine($"creating vehicle..."); 
-            Console.WriteLine($"creating vehicle..."); 
-            Console.WriteLine($"creating vehicle..."); 
-            Console.WriteLine($"creating vehicle..."); 
-            Console.WriteLine($"creating vehicle..."); 
-
             return Ok(await _vehicleService.AddVehicle(newVehicle));
         }
 
@@ -116,18 +100,18 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _vehicleService.ConfirmVehicle(vehicleId));
         }
 
-/*
-        [HttpPut("UpdateVehicle")]
-        public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> UpdateVehicle(UpdateVehicleDto updatedVehicle)
-        {
-            var response = await _vehicleService.UpdateVehicle(updatedVehicle);
-            if (response.Data == null)
-            {
-                return NotFound(response);
-            }
-            return Ok(response);
-        }
-*/
+        /*
+                [HttpPut("UpdateVehicle")]
+                public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> UpdateVehicle(UpdateVehicleDto updatedVehicle)
+                {
+                    var response = await _vehicleService.UpdateVehicle(updatedVehicle);
+                    if (response.Data == null)
+                    {
+                        return NotFound(response);
+                    }
+                    return Ok(response);
+                }
+        */
 
         [HttpPatch("PatchVehicle/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> PatchVehicle(
@@ -272,7 +256,7 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            var serviceResponse = await _vehicleService.UpdateVehicleProfileImage(vehicleId, imageFile );
+            var serviceResponse = await _vehicleService.UpdateVehicleProfileImage(vehicleId, imageFile);
             if (serviceResponse.Success)
             {
                 return Ok(new { imagePath = serviceResponse.Data });

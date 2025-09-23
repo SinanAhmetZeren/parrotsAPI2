@@ -411,9 +411,13 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Data = null;
                 return serviceResponse;
             }
+
+
             var searchUsers = await _context.Users
-                .Where(u => u.UserName != null && u.UserName.Contains(username))
-                .ToListAsync();
+                 .Where(u => u.UserName != null
+                             && u.UserName.Contains(username)
+                             && u.UserName.ToLower() != "admin") // exclude "admin"
+                 .ToListAsync();
 
             if (searchUsers.Any())
             {

@@ -88,8 +88,8 @@ builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddScoped<IBlobService>(sp =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
-    var connectionString = configuration.GetValue<string>("AzureBlobStorage:ConnectionString");
-    var containerName = configuration.GetValue<string>("AzureBlobStorage:ContainerName");
+    var connectionString = configuration.GetValue<string>("AzureStorage:ConnectionString");
+    var containerName = configuration.GetValue<string>("AzureStorage:ContainerName");
     return new BlobService(connectionString, containerName);
 });
 

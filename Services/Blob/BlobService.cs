@@ -15,7 +15,7 @@ namespace ParrotsAPI2.Services.Blob
             _containerName = containerName;
         }
 
-        public async Task<string> UploadAsync(Stream fileStream, string fileName, string contentType = null)
+        public async Task<string> UploadAsync(Stream fileStream, string fileName, string? contentType = null)
         {
             var blobServiceClient = new BlobServiceClient(_connectionString);
             var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);

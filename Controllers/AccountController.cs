@@ -24,7 +24,7 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly string _googleClientId;
-        
+
         public AccountController(
             UserManager<AppUser> userManager,
             TokenService tokenService,
@@ -103,7 +103,19 @@ namespace API.Controllers
                 else
                 {
                     // USER EXISTS AND NOT CONFIRMED
-                    string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+                    // https://parrotsstorage.blob.core.windows.net/parrotsuploads/parrot-looks.jpg
+                    //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+
+                    string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+                    string[] images =
+                    {
+                        $"{baseUrl}parrot-looks.jpg",
+                        $"{baseUrl}parrot-looks2.jpg",
+                        $"{baseUrl}parrot-looks3.jpg",
+                        $"{baseUrl}parrot-looks4.jpg",
+                        $"{baseUrl}parrot-looks5.jpg",
+                        $"{baseUrl}parrot-looks6.jpg"
+                    };
                     Random random = new Random();
                     int randomIndex = random.Next(0, images.Length);
                     string selectedImage = images[randomIndex];
@@ -141,7 +153,18 @@ namespace API.Controllers
             else
             {
                 // USER DOES NOT EXIST
-                string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+                //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+
+                string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+                string[] images =
+                {
+                        $"{baseUrl}parrot-looks.jpg",
+                        $"{baseUrl}parrot-looks2.jpg",
+                        $"{baseUrl}parrot-looks3.jpg",
+                        $"{baseUrl}parrot-looks4.jpg",
+                        $"{baseUrl}parrot-looks5.jpg",
+                    };
+
                 Random random = new Random();
                 int randomIndex = random.Next(0, images.Length);
                 string selectedImage = images[randomIndex];
@@ -152,7 +175,7 @@ namespace API.Controllers
                     UserName = registerDto.UserName,
                     ProfileImageUrl = selectedImage,
                     ConfirmationCode = confirmationCode,
-                    BackgroundImageUrl = "amazon.jpeg",
+                    BackgroundImageUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/amazon.jpeg",
                     DisplayEmail = registerDto.Email,
                 };
 
@@ -176,7 +199,7 @@ namespace API.Controllers
                     var userResponse = CreateUserObject(newUser);
                     userResponse.RefreshToken = refreshToken;  // return refresh token
                     userResponse.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
-    
+
                     return userResponse;
                 }
                 else
@@ -316,7 +339,7 @@ namespace API.Controllers
         }
 
         // [Authorize]
-    [AllowAnonymous]  // remove later !!!!!!!!
+        [AllowAnonymous]  // remove later !!!!!!!!
 
         [HttpGet("getCurrentUser")]
         public async Task<ActionResult<UserResponseDto>> GetCurrentUser()
@@ -373,8 +396,19 @@ namespace API.Controllers
                 if (user == null)
                 {
                     // New user - create it
+                    //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
 
-                    string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+                    string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+                    string[] images =
+                    {
+                        $"{baseUrl}parrot-looks.jpg",
+                        $"{baseUrl}parrot-looks2.jpg",
+                        $"{baseUrl}parrot-looks3.jpg",
+                        $"{baseUrl}parrot-looks4.jpg",
+                        $"{baseUrl}parrot-looks5.jpg",
+
+                    };
+
                     Random random = new Random();
                     int randomIndex = random.Next(0, images.Length);
                     string selectedImage = images[randomIndex];
@@ -388,7 +422,7 @@ namespace API.Controllers
                         NormalizedEmail = normalizedEmail,
                         NormalizedUserName = _userManager.NormalizeName(tokenInfo.Email),
                         ProfileImageUrl = selectedImage,
-                        BackgroundImageUrl = "amazon.jpeg",
+                        BackgroundImageUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/amazon.jpeg",
                         EmailVisible = true,
                     };
 
@@ -408,7 +442,7 @@ namespace API.Controllers
                 // Return JWT token + refresh token
                 return new UserResponseDto
                 {
- 
+
                     UserName = user.UserName ?? string.Empty,
                     Email = user.Email ?? string.Empty,
                     UserId = user.Id,
@@ -439,7 +473,7 @@ namespace API.Controllers
             var newAccessToken = _tokenService.CreateToken(user);
             var userResponse = CreateUserObject(user);
             userResponse.Token = newAccessToken;
-            
+
             return userResponse;
         }
 
@@ -455,7 +489,7 @@ namespace API.Controllers
                 UserId = user.Id,
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty
-                
+
             };
         }
 
