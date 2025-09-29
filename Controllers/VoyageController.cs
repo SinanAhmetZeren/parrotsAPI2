@@ -65,7 +65,7 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            return Ok(await _voyageService.AddVoyage(newVoyage));
+            return Ok(await _voyageService.AddVoyage(newVoyage, userId: requestUserId));
         }
 
 
@@ -247,7 +247,7 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            var serviceResponse = await _voyageService.UpdateVoyageProfileImage(voyageId, imageFile);
+            var serviceResponse = await _voyageService.UpdateVoyageProfileImage(voyageId, imageFile, userId: requestUserId);
 
             if (serviceResponse.Success)
             {

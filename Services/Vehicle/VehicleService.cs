@@ -26,7 +26,7 @@ namespace ParrotsAPI2.Services.Vehicle
         }
 
         // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file)
+        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -37,10 +37,15 @@ namespace ParrotsAPI2.Services.Vehicle
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
+
+            var blobPath = string.IsNullOrEmpty(prefix)
+                ? fileName
+                : $"{prefix.TrimEnd('/')}/{fileName}";
+
+            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
         }
 
-        public async Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle)
+        public async Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle, string userId)
         {
             var serviceResponse = new ServiceResponse<GetVehicleDto>();
             if (newVehicle == null)
@@ -57,7 +62,8 @@ namespace ParrotsAPI2.Services.Vehicle
                 try
                 {
                     // Use helper method to handle file upload and validation
-                    profileImageUrl = await UploadImageToBlobAsync(newVehicle.ImageFile);
+                    var prefix = $"vehicle-images/{userId}";
+                    profileImageUrl = await UploadImageToBlobAsync(newVehicle.ImageFile, prefix);
                 }
                 catch (Exception ex)
                 {
@@ -113,7 +119,8 @@ namespace ParrotsAPI2.Services.Vehicle
             try
             {
                 // Upload using helper
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                var prefix = $"vehicle-images/{userId}";
+                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
 
                 var newVehicleImage = new VehicleImage
                 {
@@ -508,7 +515,7 @@ namespace ParrotsAPI2.Services.Vehicle
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile)
+        public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile, string userId)
         {
             var serviceResponse = new ServiceResponse<GetVehicleDto>();
 
@@ -530,7 +537,8 @@ namespace ParrotsAPI2.Services.Vehicle
             try
             {
                 // Use the helper method to upload the image
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                var prefix = $"vehicle-images/{userId}";
+                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
 
                 // Update the vehicle profile image URL
                 vehicle.ProfileImageUrl = fileName;

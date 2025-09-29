@@ -114,7 +114,6 @@ namespace API.Controllers
                         $"{baseUrl}parrot-looks3.jpg",
                         $"{baseUrl}parrot-looks4.jpg",
                         $"{baseUrl}parrot-looks5.jpg",
-                        $"{baseUrl}parrot-looks6.jpg"
                     };
                     Random random = new Random();
                     int randomIndex = random.Next(0, images.Length);

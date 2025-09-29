@@ -63,7 +63,7 @@ namespace ParrotsAPI2.Controllers
             {
                 return Forbid();
             }
-            return Ok(await _vehicleService.AddVehicle(newVehicle));
+            return Ok(await _vehicleService.AddVehicle(newVehicle, userId: requestUserId));
         }
 
         [HttpPost("confirmVehicle/{vehicleId}")]
@@ -256,7 +256,7 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            var serviceResponse = await _vehicleService.UpdateVehicleProfileImage(vehicleId, imageFile);
+            var serviceResponse = await _vehicleService.UpdateVehicleProfileImage(vehicleId, imageFile, userId: requestUserId);
             if (serviceResponse.Success)
             {
                 return Ok(new { imagePath = serviceResponse.Data });

@@ -24,7 +24,7 @@ namespace ParrotsAPI2.Services.Waypoint
         }
 
         // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file)
+        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -35,7 +35,13 @@ namespace ParrotsAPI2.Services.Waypoint
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
+
+            var blobPath = string.IsNullOrEmpty(prefix)
+                ? fileName
+                : $"{prefix.TrimEnd('/')}/{fileName}";
+
+            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
+
         }
 
         public async Task<ServiceResponse<int>> AddWaypoint(AddWaypointDto newWaypoint, string userId)
@@ -49,7 +55,9 @@ namespace ParrotsAPI2.Services.Waypoint
                     serviceResponse.Message = "Waypoint or ImageFile is null.";
                     return serviceResponse;
                 }
-                var uploadedFileName = await UploadImageToBlobAsync(newWaypoint.ImageFile);
+                // Add a folder-like prefix for organization
+                var prefix = $"waypoint-images/{userId}";
+                var uploadedFileName = await UploadImageToBlobAsync(newWaypoint.ImageFile, prefix);
                 var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
                 waypoint.ProfileImage = uploadedFileName; // Use uploaded file name / blob URL
                 waypoint.UserId = userId;

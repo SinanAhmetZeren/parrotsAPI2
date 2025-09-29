@@ -28,8 +28,7 @@ namespace ParrotsAPI2.Services.Voyage
             _blobService = blobService;
         }
 
-        // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file)
+        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -40,10 +39,16 @@ namespace ParrotsAPI2.Services.Voyage
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
+
+            var blobPath = string.IsNullOrEmpty(prefix)
+                ? fileName
+                : $"{prefix.TrimEnd('/')}/{fileName}";
+
+            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
+
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage)
+        public async Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage, string userId)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             string voyageProfileImage = "";
@@ -53,7 +58,8 @@ namespace ParrotsAPI2.Services.Voyage
                 // Upload profile image if provided
                 if (newVoyage.ImageFile is not null && newVoyage.ImageFile.Length > 0)
                 {
-                    voyageProfileImage = await UploadImageToBlobAsync(newVoyage.ImageFile);
+                    var prefix = $"voyage-images/{userId}";
+                    voyageProfileImage = await UploadImageToBlobAsync(newVoyage.ImageFile, prefix);
                 }
 
                 // Validate user
@@ -124,7 +130,8 @@ namespace ParrotsAPI2.Services.Voyage
                 }
 
                 // Upload image using the helper method
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                var prefix = $"voyage-images/{userId}";
+                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
 
                 var newVoyageImage = new VoyageImage
                 {
@@ -572,7 +579,7 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile)
+        public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile, string userId)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
 
@@ -594,7 +601,8 @@ namespace ParrotsAPI2.Services.Voyage
                 }
 
                 // Upload image using helper method
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                var prefix = $"voyage-images/{userId}";
+                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
 
                 voyage.ProfileImage = fileName; // Blob URL or filename depending on your BlobService
                 await _context.SaveChangesAsync();

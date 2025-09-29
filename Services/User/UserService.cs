@@ -32,7 +32,7 @@ namespace ParrotsAPI2.Services.User
 
 
         // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file)
+        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -43,10 +43,68 @@ namespace ParrotsAPI2.Services.User
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            return await _blobService.UploadAsync(file.OpenReadStream(), fileName);
+
+            var blobPath = string.IsNullOrEmpty(prefix)
+                ? fileName
+                : $"{prefix.TrimEnd('/')}/{fileName}";
+
+            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
         }
 
+        /*
+                public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
+                {
+                    var serviceResponse = new ServiceResponse<List<GetUserDto>>();
 
+                    try
+                    {
+                        // Check if username or email already exists
+                        var existingUser = await _context.Users
+                            .FirstOrDefaultAsync(u => u.UserName == newUser.UserName || u.Email == newUser.Email);
+
+                        if (existingUser != null)
+                        {
+                            serviceResponse.Success = false;
+                            serviceResponse.Message = "Username or email already exists.";
+                            return serviceResponse;
+                        }
+
+                        // Handle image upload using BlobService helper
+                        if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
+                        {
+                            try
+                            {
+                                var prefix = $"user-images";
+                                newUser.ProfileImageUrl = await UploadImageToBlobAsync(newUser.ImageFile, prefix);
+                            }
+                            catch (Exception ex)
+                            {
+                                serviceResponse.Success = false;
+                                serviceResponse.Message = $"Error uploading image: {ex.Message}";
+                                return serviceResponse;
+                            }
+                        }
+
+                        // Map and add new user
+                        var user = _mapper.Map<AppUser>(newUser);
+                        user.DisplayEmail = newUser.Email;
+                        _context.Users.Add(user);
+                        await _context.SaveChangesAsync();
+
+                        // Return updated user list
+                        var updatedUsers = await _context.Users.ToListAsync();
+                        serviceResponse.Data = updatedUsers.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = $"Error adding user: {ex.Message}";
+                    }
+
+                    return serviceResponse;
+                }
+
+        */
         public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
@@ -64,12 +122,24 @@ namespace ParrotsAPI2.Services.User
                     return serviceResponse;
                 }
 
-                // Handle image upload using BlobService helper
+                // Map and add new user first (without image)
+                var user = _mapper.Map<AppUser>(newUser);
+                user.DisplayEmail = newUser.Email;
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync(); // generates user.Id
+
+                // If an image was provided, upload with userId-based prefix
                 if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
                 {
                     try
                     {
-                        newUser.ProfileImageUrl = await UploadImageToBlobAsync(newUser.ImageFile);
+                        var prefix = $"user-images/{user.Id}";
+                        var uploadedFileName = await UploadImageToBlobAsync(newUser.ImageFile, prefix);
+
+                        // Update user with profile image URL
+                        user.ProfileImageUrl = uploadedFileName;
+                        await _context.SaveChangesAsync();
                     }
                     catch (Exception ex)
                     {
@@ -78,12 +148,6 @@ namespace ParrotsAPI2.Services.User
                         return serviceResponse;
                     }
                 }
-
-                // Map and add new user
-                var user = _mapper.Map<AppUser>(newUser);
-                user.DisplayEmail = newUser.Email;
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
 
                 // Return updated user list
                 var updatedUsers = await _context.Users.ToListAsync();
@@ -320,7 +384,8 @@ namespace ParrotsAPI2.Services.User
             try
             {
                 // Upload image to Blob storage
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                var prefix = $"user-images/{userId}";
+                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
                 user.ProfileImageUrl = fileName;
 
                 await _context.SaveChangesAsync();
@@ -351,7 +416,8 @@ namespace ParrotsAPI2.Services.User
             try
             {
                 // Use helper function to handle upload and validation
-                var fileName = await UploadImageToBlobAsync(imageFile);
+                var prefix = $"user-images/{userId}";
+                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
 
                 var user = await _context.Users.FindAsync(userId);
                 if (user == null)
