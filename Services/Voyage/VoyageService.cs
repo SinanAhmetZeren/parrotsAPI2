@@ -829,24 +829,6 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        /*
-                public async Task<ServiceResponse<string>> ConfirmVoyage2(int voyageId)
-                {
-                    var serviceResponse = new ServiceResponse<string>();
-                    var voyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == voyageId);
-                    if (voyage == null)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = "Voyage not found.";
-                        return serviceResponse;
-                    }
-
-                    voyage.Confirmed = true;
-                    await _context.SaveChangesAsync();
-                    serviceResponse.Data = "Voyage confirmed";
-                    return serviceResponse;
-                }
-        */
 
         public async Task<ServiceResponse<string>> ConfirmVoyage(int voyageId)
         {
