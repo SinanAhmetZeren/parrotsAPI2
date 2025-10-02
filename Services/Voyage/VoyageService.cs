@@ -829,10 +829,32 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+        /*
+                public async Task<ServiceResponse<string>> ConfirmVoyage2(int voyageId)
+                {
+                    var serviceResponse = new ServiceResponse<string>();
+                    var voyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == voyageId);
+                    if (voyage == null)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Voyage not found.";
+                        return serviceResponse;
+                    }
+
+                    voyage.Confirmed = true;
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = "Voyage confirmed";
+                    return serviceResponse;
+                }
+        */
+
         public async Task<ServiceResponse<string>> ConfirmVoyage(int voyageId)
         {
             var serviceResponse = new ServiceResponse<string>();
-            var voyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == voyageId);
+            var voyage = await _context.Voyages
+                .Include(v => v.Waypoints) // ensure waypoints are loaded
+                .FirstOrDefaultAsync(v => v.Id == voyageId);
+
             if (voyage == null)
             {
                 serviceResponse.Success = false;
@@ -841,10 +863,24 @@ namespace ParrotsAPI2.Services.Voyage
             }
 
             voyage.Confirmed = true;
+
+            if (voyage.Waypoints != null && voyage.Waypoints.Any())
+            {
+                // find waypoint with lowest order
+                var lowestWaypoint = voyage.Waypoints.OrderBy(w => w.Order).FirstOrDefault();
+                if (lowestWaypoint != null)
+                {
+                    lowestWaypoint.Order = 1;
+                }
+            }
+
             await _context.SaveChangesAsync();
+
             serviceResponse.Data = "Voyage confirmed";
             return serviceResponse;
         }
+
+
 
         public async Task<ServiceResponse<VoyageImageDto>> GetVoyageImageById(int voyageImageId)
         {
