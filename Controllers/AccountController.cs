@@ -385,6 +385,7 @@ namespace API.Controllers
                 }
                 if (tokenInfo.Audience != _googleClientId)
                 {
+                    var bc = 0;
                     return BadRequest("Token was not issued for this app.");
                 }
 

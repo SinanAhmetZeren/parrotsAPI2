@@ -3,3 +3,6 @@ appsettings.json
 appsettings.Development.json
 /bin/Debug
 /bin/Release
+bin/
+obj/
+appsettings.*.json

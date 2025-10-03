@@ -31,6 +31,11 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Bind Google settings from appsettings.json
+builder.Services.Configure<GoogleAuthOptions>(
+    builder.Configuration.GetSection("Google")
+);
+
 // Add DbContext with Azure SQL connection string
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -141,6 +146,7 @@ builder.Services.AddAuthentication(options =>
     options.ClientId = builder.Configuration["Google:ClientId"];
     options.ClientSecret = builder.Configuration["Google:ClientSecret"];
 });
+
 
 builder.Services.AddAuthorization();
 
