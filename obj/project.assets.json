@@ -1711,6 +1711,22 @@
           }
         }
       },
+      "SixLabors.ImageSharp/3.1.11": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/SixLabors.ImageSharp.props": {}
+        }
+      },
       "Swashbuckle.AspNetCore.Swagger/6.5.0": {
         "type": "package",
         "dependencies": {
@@ -4758,6 +4774,22 @@
         "newtonsoft.json.bson.nuspec"
       ]
     },
+    "SixLabors.ImageSharp/3.1.11": {
+      "sha512": "JfPLyigLthuE50yi6tMt7Amrenr/fA31t2CvJyhy/kQmfulIBAqo5T/YFUSRHtuYPXRSaUHygFeh6Qd933EoSw==",
+      "type": "package",
+      "path": "sixlabors.imagesharp/3.1.11",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "build/SixLabors.ImageSharp.props",
+        "lib/net6.0/SixLabors.ImageSharp.dll",
+        "lib/net6.0/SixLabors.ImageSharp.xml",
+        "sixlabors.imagesharp.128.png",
+        "sixlabors.imagesharp.3.1.11.nupkg.sha512",
+        "sixlabors.imagesharp.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore.Swagger/6.5.0": {
       "sha512": "XWmCmqyFmoItXKFsQSwQbEAsjDKcxlNf1l+/Ki42hcb6LjKL8m5Db69OTvz5vLonMSRntYO1XLqz0OP+n3vKnA==",
       "type": "package",
@@ -6000,6 +6032,7 @@
       "Microsoft.EntityFrameworkCore >= 8.0.1",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.1",
       "Microsoft.EntityFrameworkCore.SQLServer >= 8.0.1",
+      "SixLabors.ImageSharp >= 3.1.11",
       "Swashbuckle.AspNetCore.Swagger >= 6.5.0",
       "Swashbuckle.AspNetCore.SwaggerGen >= 6.5.0",
       "Swashbuckle.AspNetCore.SwaggerUI >= 6.5.0"
@@ -6101,6 +6134,10 @@
           "Microsoft.EntityFrameworkCore.SQLServer": {
             "target": "Package",
             "version": "[8.0.1, )"
+          },
+          "SixLabors.ImageSharp": {
+            "target": "Package",
+            "version": "[3.1.11, )"
           },
           "Swashbuckle.AspNetCore.Swagger": {
             "target": "Package",

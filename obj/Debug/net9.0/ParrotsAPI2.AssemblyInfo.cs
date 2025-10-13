@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ParrotsAPI2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47b895905a19f5cd9d5ed2880c8cccda4b8ae54f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+897fe303002990b9eb72958159ceeff49673d367")]
 [assembly: System.Reflection.AssemblyProductAttribute("ParrotsAPI2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ParrotsAPI2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

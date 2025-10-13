@@ -6,15 +6,17 @@ namespace ParrotsAPI2.Models
 
     public enum VehicleType
     {
-            Boat,
-            Car,
-            Caravan,
-            Bus,
-            Walk,
-            Run, 
-            Motorcycle,
-            Bicycle,
-            TinyHouse,
-            Airplane
+        Boat,
+        Car,
+        Caravan,
+        Bus,
+        Walk,
+        Run,
+        Motorcycle,
+        Bicycle,
+        TinyHouse,
+        Airplane,
+        Train
+
     }
 }
