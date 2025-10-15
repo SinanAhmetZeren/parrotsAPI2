@@ -6,6 +6,7 @@ using ParrotsAPI2.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using ParrotsAPI2.Helpers;
 
 namespace ParrotsAPI2.Hubs
 {
@@ -16,26 +17,22 @@ namespace ParrotsAPI2.Hubs
         private readonly UserManager<AppUser> _userManager;
 
         public ChatHub(
-            ILogger<ChatHub> logger, 
-            DataContext dbContext, 
+            ILogger<ChatHub> logger,
+            DataContext dbContext,
             UserManager<AppUser> userManager
             )
         {
             _logger = logger;
-            _dbContext = dbContext; 
+            _dbContext = dbContext;
             _userManager = userManager;
             _logger.LogInformation($"--> ChatHub initialized at {DateTime.UtcNow}");
         }
 
-         
+
         public override async Task OnConnectedAsync()
         {
-            // var userId = Context.User.Identity.Name; // Assuming you're using JWT authentication
-
             var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
-
             _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}, UserId={userId}");
-
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
@@ -54,19 +51,13 @@ namespace ParrotsAPI2.Hubs
             await base.OnConnectedAsync();
         }
 
+
+
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
 
             var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
             _logger.LogInformation($"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}");
-
-            //var user = await _userManager.GetUserAsync(Context.User);
-            //if (user != null)
-            //{
-            //    user.ConnectionId = null;
-            //    await _userManager.UpdateAsync(user);
-            //}
-
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
@@ -81,72 +72,131 @@ namespace ParrotsAPI2.Hubs
                     _logger.LogError($"Error updating user connectionId on disconnect: {ex.Message}");
                 }
             }
-
             await base.OnDisconnectedAsync(exception);
         }
+
 
         public async Task SendMessage(string senderId, string receiverId, string content)
         {
             var newTime = DateTime.UtcNow;
+
+            // 1️⃣ Get sender and receiver encryption keys
+            var sender = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
+            var receiver = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
+
+            if (sender == null || string.IsNullOrEmpty(sender.EncryptionKey))
+                throw new Exception("Sender or encryption key not found.");
+            if (receiver == null || string.IsNullOrEmpty(receiver.EncryptionKey))
+                throw new Exception("Receiver or encryption key not found.");
+
+            var senderKeyBytes = EncryptionHelper.KeyFromBase64(sender.EncryptionKey);
+            var receiverKeyBytes = EncryptionHelper.KeyFromBase64(receiver.EncryptionKey);
+
+            // 2️⃣ Encrypt content for both sender and receiver
+            var encryptedForSender = EncryptionHelper.EncryptString(content, senderKeyBytes);
+            var encryptedForReceiver = EncryptionHelper.EncryptString(content, receiverKeyBytes);
+
+            // 3️⃣ Create and save the message
             var message = new Message
             {
                 SenderId = senderId,
                 ReceiverId = receiverId,
-                Text = content,
+                TextSenderEncrypted = encryptedForSender,
+                TextReceiverEncrypted = encryptedForReceiver,
                 DateTime = newTime,
                 Rendered = false,
                 ReadByReceiver = false
             };
+
             _dbContext.Messages.Add(message);
             await _dbContext.SaveChangesAsync();
+
+            // 4️⃣ Prepare sender metadata
+            var senderProfileUrl = sender?.ProfileImageUrl ?? string.Empty;
+            var senderUsername = sender?.UserName ?? string.Empty;
+
+            // 5️⃣ Send the message via SignalR (original content)
             var receiverConnectionId = await GetConnectionIdForUser(receiverId);
-            //var senderConnectionId = await GetConnectionIdForUser(senderId);
-
-            var user = await _dbContext.Users.FirstOrDefaultAsync(c => c.Id == senderId);
-            var senderProfileUrl = user?.ProfileImageUrl ?? string.Empty;
-            var senderUsername = user?.UserName ?? string.Empty;
-
-
             if (receiverConnectionId != null)
             {
                 await Clients.Client(receiverConnectionId)
                     .SendAsync("ReceiveMessage", senderId, content, newTime, senderProfileUrl, senderUsername);
+
                 await Clients.Client(receiverConnectionId)
-                   .SendAsync("ReceiveMessageRefetch");
-                //await Clients.Client(senderConnectionId)
-                //    .SendAsync("ReceiveMessageRefetch");
-
+                    .SendAsync("ReceiveMessageRefetch");
             }
-            return;
-
         }
+
 
         public async Task GetMessages(string userId)
         {
+            // 1️⃣ Get the current user's encryption key
+            var currentUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (currentUser == null || string.IsNullOrEmpty(currentUser.EncryptionKey))
+                throw new Exception("User or encryption key not found.");
+
+            var currentUserKeyBytes = EncryptionHelper.KeyFromBase64(currentUser.EncryptionKey);
+
+            // 2️⃣ Fetch messages where user is sender or receiver
             var messages = await _dbContext.Messages
                 .Where(m => m.SenderId == userId || m.ReceiverId == userId)
                 .OrderBy(m => m.DateTime)
                 .ToListAsync();
-            await Clients.Caller.SendAsync("ReceiveMessages", messages);
+
+            // 3️⃣ Decrypt each message for this user
+            var decryptedMessages = messages.Select(m => new
+            {
+                Id = m.Id,
+                SenderId = m.SenderId,
+                ReceiverId = m.ReceiverId,
+                Text = m.SenderId == userId
+                    ? EncryptionHelper.DecryptString(m.TextSenderEncrypted, currentUserKeyBytes)
+                    : EncryptionHelper.DecryptString(m.TextReceiverEncrypted, currentUserKeyBytes),
+                DateTime = m.DateTime,
+                Rendered = m.Rendered,
+                ReadByReceiver = m.ReadByReceiver
+            }).ToList();
+
+            // 4️⃣ Send decrypted messages to client
+            await Clients.Caller.SendAsync("ReceiveMessages", decryptedMessages);
         }
+
+
 
         public async Task WriteMessageToDb(string senderId, string receiverId, string content)
         {
+            // 1️⃣ Get sender and receiver
+            var sender = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
+            var receiver = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
+
+            if (sender == null || string.IsNullOrEmpty(sender.EncryptionKey))
+                throw new Exception("Sender or encryption key not found.");
+            if (receiver == null || string.IsNullOrEmpty(receiver.EncryptionKey))
+                throw new Exception("Receiver or encryption key not found.");
+
+            var senderKeyBytes = EncryptionHelper.KeyFromBase64(sender.EncryptionKey);
+            var receiverKeyBytes = EncryptionHelper.KeyFromBase64(receiver.EncryptionKey);
+
+            // 2️⃣ Encrypt content for both sender and receiver
+            var encryptedForSender = EncryptionHelper.EncryptString(content, senderKeyBytes);
+            var encryptedForReceiver = EncryptionHelper.EncryptString(content, receiverKeyBytes);
+
+            // 3️⃣ Create and save message
             var message = new Message
             {
                 SenderId = senderId,
                 ReceiverId = receiverId,
-                Text = content,
+                TextSenderEncrypted = encryptedForSender,
+                TextReceiverEncrypted = encryptedForReceiver,
                 DateTime = DateTime.UtcNow,
                 Rendered = false,
                 ReadByReceiver = false
             };
 
-            Console.WriteLine("-------------------------------------------------");
-
             _dbContext.Messages.Add(message);
             await _dbContext.SaveChangesAsync();
         }
+
 
         private async Task<string?> GetConnectionIdForUser(string userId)
         {
@@ -156,7 +206,6 @@ namespace ParrotsAPI2.Hubs
                 var connectionId = user.ConnectionId;
                 return connectionId;
             }
-
             return null;
         }
 
