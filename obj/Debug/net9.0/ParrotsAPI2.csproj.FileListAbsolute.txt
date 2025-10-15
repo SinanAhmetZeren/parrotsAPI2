@@ -438,3 +438,4 @@ c:/Users/sinan/OneDrive/Masaüstü/ParrotsAPI2/bin/Debug/net9.0/runtimes/win/lib
 /Users/ahmetzeren/Repos/parrotsAPI2/obj/Debug/net9.0/ParrotsAPI2.pdb
 /Users/ahmetzeren/Repos/parrotsAPI2/obj/Debug/net9.0/ParrotsAPI2.genruntimeconfig.cache
 /Users/ahmetzeren/Repos/parrotsAPI2/obj/Debug/net9.0/ref/ParrotsAPI2.dll
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/SixLabors.ImageSharp.dll
