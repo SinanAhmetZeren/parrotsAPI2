@@ -439,3 +439,15 @@ c:/Users/sinan/OneDrive/Masaüstü/ParrotsAPI2/bin/Debug/net9.0/runtimes/win/lib
 /Users/ahmetzeren/Repos/parrotsAPI2/obj/Debug/net9.0/ParrotsAPI2.genruntimeconfig.cache
 /Users/ahmetzeren/Repos/parrotsAPI2/obj/Debug/net9.0/ref/ParrotsAPI2.dll
 /Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/SixLabors.ImageSharp.dll
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/publish/web.config
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/web.config
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/appsettings.Development.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/appsettings.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/ParrotsAPI2.deps.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/ParrotsAPI2.runtimeconfig.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/ParrotsAPI2.staticwebassets.endpoints.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/publish/appsettings.Development.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/publish/appsettings.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/publish/ParrotsAPI2.deps.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/publish/ParrotsAPI2.runtimeconfig.json
+/Users/ahmetzeren/Repos/parrotsAPI2/bin/Debug/net9.0/publish/publish/ParrotsAPI2.staticwebassets.endpoints.json

@@ -23,8 +23,8 @@ namespace ParrotsAPI2.Controllers
 
 
         [AllowAnonymous]
-        [HttpGet("getUserById/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string id)
+        [HttpGet("getUserById1/{id}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle1(string id)
         {
             /*
                         var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -38,6 +38,24 @@ namespace ParrotsAPI2.Controllers
                         }
             */
             return Ok(await _userService.GetUserById(id));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("getUserById/{publicId}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string publicId)
+        {
+            /*
+                        var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        if (requestUserId == null)
+                        {
+                            return Unauthorized(new ServiceResponse<string>
+                            {
+                                Success = false,
+                                Message = "User identity not found."
+                            });
+                        }
+            */
+            return Ok(await _userService.GetUserByPublicId(publicId));
         }
 
 

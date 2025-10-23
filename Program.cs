@@ -186,12 +186,12 @@ app.UseAuthorization();
 app.MapHub<ChatHub>("/chathub/11");
 app.MapControllers();
 
-// Serve static files
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
-    RequestPath = "/Uploads"
-});
+// // Serve static files
+// app.UseStaticFiles(new StaticFileOptions
+// {
+//     FileProvider = new PhysicalFileProvider(
+//         Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+//     RequestPath = "/Uploads"
+// });
 
 app.Run();
