@@ -7,7 +7,7 @@ namespace ParrotsAPI2.Helpers
     {
 
 
-        public async Task SendConfirmationEmail(string recipientEmail, string confirmationCode, string username )
+        public async Task SendConfirmationEmail(string recipientEmail, string confirmationCode, string username)
         {
             try
             {

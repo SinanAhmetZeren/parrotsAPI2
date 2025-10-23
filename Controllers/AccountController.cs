@@ -12,6 +12,9 @@ using ParrotsAPI2.Services.Token;
 using Google.Apis.Auth;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+
 
 
 namespace API.Controllers
@@ -70,8 +73,8 @@ namespace API.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
+        [HttpPost("register2")]
+        public async Task<ActionResult<UserResponseDto>> Register2(RegisterDto registerDto)
         {
             CodeGenerator codeGenerator = new CodeGenerator();
             var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
@@ -132,6 +135,8 @@ namespace API.Controllers
                     var refreshToken = _tokenService.GenerateRefreshToken();
                     existingUser.RefreshToken = refreshToken;
                     existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                    existingUser.EncryptionKey = GenerateBase64Key();
+                    existingUser.PublicId = GeneratePublicId();
 
                     var updateResult = await _userManager.UpdateAsync(existingUser);
                     if (!updateResult.Succeeded)
@@ -176,6 +181,8 @@ namespace API.Controllers
                     ConfirmationCode = confirmationCode,
                     BackgroundImageUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/amazon.jpeg",
                     DisplayEmail = registerDto.Email,
+                    EncryptionKey = GenerateBase64Key(),
+                    PublicId = GeneratePublicId()
                 };
 
                 newUser.EmailConfirmed = true;
@@ -209,6 +216,121 @@ namespace API.Controllers
         }
 
 
+
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
+        {
+            CodeGenerator codeGenerator = new CodeGenerator();
+            var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email?.Trim());
+            var normalizedUserName = _userManager.NormalizeName(registerDto.UserName?.Trim());
+            string confirmationCode = codeGenerator.GenerateCode();
+
+            var existingUser = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail || u.NormalizedUserName == normalizedUserName);
+
+            string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+            string[] images =
+            {
+        $"{baseUrl}parrot-looks.jpg",
+        $"{baseUrl}parrot-looks2.jpg",
+        $"{baseUrl}parrot-looks3.jpg",
+        $"{baseUrl}parrot-looks4.jpg",
+        $"{baseUrl}parrot-looks5.jpg",
+    };
+            Random random = new Random();
+            string selectedImage = images[random.Next(0, images.Length)];
+
+            if (existingUser != null)
+            {
+                if (existingUser.Confirmed)
+                {
+                    if (existingUser.NormalizedEmail == normalizedEmail &&
+                        existingUser.NormalizedUserName == normalizedUserName)
+                        ModelState.AddModelError("Email and Username", "Email and Username are already taken");
+                    else if (existingUser.NormalizedEmail == normalizedEmail)
+                        ModelState.AddModelError("Email", "Email is already taken");
+                    else if (existingUser.NormalizedUserName == normalizedUserName)
+                        ModelState.AddModelError("Username", "Username is already taken");
+
+                    return ValidationProblem();
+                }
+
+                // Existing user not confirmed — update
+                existingUser.UserName = registerDto.UserName;
+                existingUser.ProfileImageUrl = selectedImage;
+                existingUser.ConfirmationCode = confirmationCode;
+                existingUser.NormalizedUserName = normalizedUserName;
+                existingUser.NormalizedEmail = normalizedEmail;
+
+                var passwordHasher = new PasswordHasher<AppUser>();
+                existingUser.PasswordHash = passwordHasher.HashPassword(existingUser, registerDto.Password);
+                existingUser.RefreshToken = _tokenService.GenerateRefreshToken();
+                existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                existingUser.EncryptionKey = GenerateBase64Key();
+                existingUser.PublicId = GeneratePublicId();
+
+                var updateResult = await _userManager.UpdateAsync(existingUser);
+                if (!updateResult.Succeeded)
+                    return StatusCode(500);
+
+                if (IsValidEmail(existingUser.Email))
+                {
+                    _ = Task.Run(() =>
+                        new EmailSender().SendConfirmationEmail(existingUser.Email!, existingUser.ConfirmationCode, existingUser.UserName)
+                    );
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid email skipped: {existingUser.Email}");
+                }
+
+
+                var userResponse = CreateUserObject(existingUser);
+                userResponse.RefreshToken = existingUser.RefreshToken;
+                userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
+                return userResponse;
+            }
+            else
+            {
+                // New user
+                var newUser = new AppUser
+                {
+                    Email = registerDto.Email?.Trim(),
+                    UserName = registerDto.UserName?.Trim(),
+                    ProfileImageUrl = selectedImage,
+                    ConfirmationCode = confirmationCode,
+                    BackgroundImageUrl = $"{baseUrl}amazon.jpeg",
+                    DisplayEmail = registerDto.Email?.Trim(),
+                    EncryptionKey = GenerateBase64Key(),
+                    PublicId = GeneratePublicId(),
+                    EmailConfirmed = true,
+                    NormalizedEmail = normalizedEmail,
+                    NormalizedUserName = normalizedUserName
+                };
+
+                var result = await _userManager.CreateAsync(newUser, registerDto.Password);
+                if (!result.Succeeded) return BadRequest(result.Errors);
+
+                newUser.RefreshToken = _tokenService.GenerateRefreshToken();
+                newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                await _userManager.UpdateAsync(newUser);
+
+                // Fire-and-forget email
+                if (IsValidEmail(newUser.Email))
+                {
+                    _ = Task.Run(() =>
+                        new EmailSender().SendConfirmationEmail(newUser.Email!, newUser.ConfirmationCode, newUser.UserName)
+                    );
+                }
+
+                var userResponse = CreateUserObject(newUser);
+                userResponse.RefreshToken = newUser.RefreshToken;
+                userResponse.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
+                return userResponse;
+            }
+        }
 
 
 
@@ -492,6 +614,43 @@ namespace API.Controllers
 
             };
         }
+
+        private string GenerateBase64Key(int byteLength = 32) // 32 bytes = 256-bit key
+        {
+            byte[] key = new byte[byteLength];
+            RandomNumberGenerator.Fill(key); // cryptographically secure
+            return Convert.ToBase64String(key);
+        }
+
+        private bool IsValidEmail(string? email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            // Basic regex check: user@domain.tld
+            var trimmed = email.Trim();
+            var regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+            return regex.IsMatch(trimmed);
+        }
+
+        private static string GeneratePublicId(int length = 8)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            char[] id = new char[length];
+            byte[] randomBytes = new byte[length];
+
+            RandomNumberGenerator.Fill(randomBytes); // cryptographically secure
+
+            for (int i = 0; i < length; i++)
+            {
+                id[i] = chars[randomBytes[i] % chars.Length];
+            }
+
+            return new string(id);
+        }
+
+
+
 
 
     }
