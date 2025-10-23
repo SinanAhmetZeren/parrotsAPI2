@@ -227,6 +227,7 @@ namespace ParrotsAPI2.Services.User
             var userDto = new GetUserDto
             {
                 Id = user?.Id ?? string.Empty,
+                PublicId = user?.PublicId ?? string.Empty,
                 UserName = user?.UserName ?? string.Empty,
                 Title = user?.Title ?? string.Empty,
                 Bio = user?.Bio ?? string.Empty,
@@ -307,6 +308,7 @@ namespace ParrotsAPI2.Services.User
             var userDto = new GetUserDto
             {
                 Id = user?.Id ?? string.Empty,
+                PublicId = user?.PublicId ?? string.Empty,
                 UserName = user?.UserName ?? string.Empty,
                 Title = user?.Title ?? string.Empty,
                 Bio = user?.Bio ?? string.Empty,

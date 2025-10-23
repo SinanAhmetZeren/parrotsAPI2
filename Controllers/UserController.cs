@@ -23,8 +23,8 @@ namespace ParrotsAPI2.Controllers
 
 
         [AllowAnonymous]
-        [HttpGet("getUserById1/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle1(string id)
+        [HttpGet("getUserById/{id}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string id)
         {
             /*
                         var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -41,8 +41,8 @@ namespace ParrotsAPI2.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("getUserById/{publicId}")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingle(string publicId)
+        [HttpGet("getUserByPublicId/{publicId}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingleWithPublicId(string publicId)
         {
             /*
                         var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
