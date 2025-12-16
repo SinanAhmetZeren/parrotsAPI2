@@ -51,6 +51,36 @@ namespace ParrotsAPI2.Controllers
         }
 
 
+        [HttpPost("AddWaypointNoImage")]
+        public async Task<ActionResult<ServiceResponse<List<GetWaypointDto>>>> AddWaypointNoImage(AddWaypointDto newWaypoint)
+        {
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            var voyageResponse = await _voyageService.GetUnconfirmedVoyageById(newWaypoint.VoyageId);
+            if (voyageResponse == null || voyageResponse.Data == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Image not found."
+                });
+            }
+            if (voyageResponse.Data?.UserId != requestUserId)
+            {
+                return Forbid();
+            }
+            return Ok(await _waypointService.AddWaypointNoImage(newWaypoint, userId: requestUserId));
+        }
+
+
         [HttpDelete("DeleteWaypoint/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteWaypoint(int id)
         {

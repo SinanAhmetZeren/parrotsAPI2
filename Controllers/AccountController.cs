@@ -55,7 +55,6 @@ namespace API.Controllers
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (result)
             {
-                // return CreateUserObject(user);
                 var refreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshToken = refreshToken;
                 user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
@@ -69,153 +68,6 @@ namespace API.Controllers
             }
             return Unauthorized("Invalid password");
         }
-
-
-
-        [AllowAnonymous]
-        [HttpPost("register2")]
-        public async Task<ActionResult<UserResponseDto>> Register2(RegisterDto registerDto)
-        {
-            CodeGenerator codeGenerator = new CodeGenerator();
-            var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
-            var normalizedUserName = _userManager.NormalizeName(registerDto.UserName);
-            string confirmationCode = codeGenerator.GenerateCode();
-
-            var existingUser = await _userManager.Users
-                .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail || u.NormalizedUserName == normalizedUserName);
-
-            if (existingUser != null)
-            {
-                if (existingUser.Confirmed)
-                {
-                    if (existingUser.NormalizedEmail == normalizedEmail &&
-                        existingUser.NormalizedUserName == normalizedUserName)
-                    {
-                        ModelState.AddModelError("Email and Username", "Email and Username are already taken");
-                    }
-                    else if (existingUser.NormalizedEmail == normalizedEmail)
-                    {
-                        ModelState.AddModelError("Email", "Email is already taken");
-                    }
-                    else if (existingUser.NormalizedUserName == normalizedUserName)
-                    {
-                        ModelState.AddModelError("Username", "Username is already taken");
-                    }
-                    return ValidationProblem();
-                }
-                else
-                {
-                    // USER EXISTS AND NOT CONFIRMED
-                    // https://parrotsstorage.blob.core.windows.net/parrotsuploads/parrot-looks.jpg
-                    //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
-
-                    string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
-                    string[] images =
-                    {
-                        $"{baseUrl}parrot-looks.jpg",
-                        $"{baseUrl}parrot-looks2.jpg",
-                        $"{baseUrl}parrot-looks3.jpg",
-                        $"{baseUrl}parrot-looks4.jpg",
-                        $"{baseUrl}parrot-looks5.jpg",
-                    };
-                    Random random = new Random();
-                    int randomIndex = random.Next(0, images.Length);
-                    string selectedImage = images[randomIndex];
-
-                    existingUser.UserName = registerDto.UserName;
-                    existingUser.ProfileImageUrl = selectedImage;
-                    existingUser.ConfirmationCode = confirmationCode;
-                    existingUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
-                    existingUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
-
-                    var passwordHasher = new PasswordHasher<AppUser>();
-                    existingUser.PasswordHash = passwordHasher.HashPassword(existingUser, registerDto.Password);
-
-                    // Generate refresh token here
-                    var refreshToken = _tokenService.GenerateRefreshToken();
-                    existingUser.RefreshToken = refreshToken;
-                    existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-                    existingUser.EncryptionKey = GenerateBase64Key();
-                    existingUser.PublicId = GeneratePublicId();
-
-                    var updateResult = await _userManager.UpdateAsync(existingUser);
-                    if (!updateResult.Succeeded)
-                    {
-                        return StatusCode(500);
-                    }
-
-                    EmailSender emailSender = new EmailSender();
-                    _ = emailSender.SendConfirmationEmail(existingUser.Email ?? string.Empty, existingUser.ConfirmationCode, existingUser.UserName);
-
-                    var userResponse = CreateUserObject(existingUser);
-                    userResponse.RefreshToken = refreshToken;  // return refresh token
-                    userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
-
-                    return userResponse;
-                }
-            }
-            else
-            {
-                // USER DOES NOT EXIST
-                //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
-
-                string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
-                string[] images =
-                {
-                        $"{baseUrl}parrot-looks.jpg",
-                        $"{baseUrl}parrot-looks2.jpg",
-                        $"{baseUrl}parrot-looks3.jpg",
-                        $"{baseUrl}parrot-looks4.jpg",
-                        $"{baseUrl}parrot-looks5.jpg",
-                    };
-
-                Random random = new Random();
-                int randomIndex = random.Next(0, images.Length);
-                string selectedImage = images[randomIndex];
-
-                var newUser = new AppUser
-                {
-                    Email = registerDto.Email,
-                    UserName = registerDto.UserName,
-                    ProfileImageUrl = selectedImage,
-                    ConfirmationCode = confirmationCode,
-                    BackgroundImageUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/amazon.jpeg",
-                    DisplayEmail = registerDto.Email,
-                    EncryptionKey = GenerateBase64Key(),
-                    PublicId = GeneratePublicId()
-                };
-
-                newUser.EmailConfirmed = true;
-                newUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
-                newUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
-
-                var result = await _userManager.CreateAsync(newUser, registerDto.Password);
-                if (result.Succeeded)
-                {
-                    // Generate refresh token here
-                    var refreshToken = _tokenService.GenerateRefreshToken();
-                    newUser.RefreshToken = refreshToken;
-                    newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-
-                    await _userManager.UpdateAsync(newUser);
-
-                    EmailSender emailSender = new EmailSender();
-                    _ = emailSender.SendConfirmationEmail(newUser.Email, confirmationCode, newUser.UserName);
-
-                    var userResponse = CreateUserObject(newUser);
-                    userResponse.RefreshToken = refreshToken;  // return refresh token
-                    userResponse.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
-
-                    return userResponse;
-                }
-                else
-                {
-                    return BadRequest(result.Errors);
-                }
-            }
-        }
-
-
 
 
         [AllowAnonymous]
@@ -233,12 +85,12 @@ namespace API.Controllers
             string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
             string[] images =
             {
-        $"{baseUrl}parrot-looks.jpg",
-        $"{baseUrl}parrot-looks2.jpg",
-        $"{baseUrl}parrot-looks3.jpg",
-        $"{baseUrl}parrot-looks4.jpg",
-        $"{baseUrl}parrot-looks5.jpg",
-    };
+                $"{baseUrl}parrot-looks.jpg",
+                $"{baseUrl}parrot-looks2.jpg",
+                $"{baseUrl}parrot-looks3.jpg",
+                $"{baseUrl}parrot-looks4.jpg",
+                $"{baseUrl}parrot-looks5.jpg",
+            };
             Random random = new Random();
             string selectedImage = images[random.Next(0, images.Length)];
 
@@ -307,7 +159,9 @@ namespace API.Controllers
                     PublicId = GeneratePublicId(),
                     EmailConfirmed = true,
                     NormalizedEmail = normalizedEmail,
-                    NormalizedUserName = normalizedUserName
+                    NormalizedUserName = normalizedUserName,
+                    Title = "Wanderer",
+                    Bio = "Exploring new journeys."
                 };
 
                 var result = await _userManager.CreateAsync(newUser, registerDto.Password);
@@ -612,6 +466,7 @@ namespace API.Controllers
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty
 
+
             };
         }
 
@@ -657,3 +512,148 @@ namespace API.Controllers
 }
 
 
+/*
+        [AllowAnonymous]
+        [HttpPost("register2")]
+        public async Task<ActionResult<UserResponseDto>> Register2(RegisterDto registerDto)
+        {
+            CodeGenerator codeGenerator = new CodeGenerator();
+            var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+            var normalizedUserName = _userManager.NormalizeName(registerDto.UserName);
+            string confirmationCode = codeGenerator.GenerateCode();
+
+            var existingUser = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail || u.NormalizedUserName == normalizedUserName);
+
+            if (existingUser != null)
+            {
+                if (existingUser.Confirmed)
+                {
+                    if (existingUser.NormalizedEmail == normalizedEmail &&
+                        existingUser.NormalizedUserName == normalizedUserName)
+                    {
+                        ModelState.AddModelError("Email and Username", "Email and Username are already taken");
+                    }
+                    else if (existingUser.NormalizedEmail == normalizedEmail)
+                    {
+                        ModelState.AddModelError("Email", "Email is already taken");
+                    }
+                    else if (existingUser.NormalizedUserName == normalizedUserName)
+                    {
+                        ModelState.AddModelError("Username", "Username is already taken");
+                    }
+                    return ValidationProblem();
+                }
+                else
+                {
+                    // USER EXISTS AND NOT CONFIRMED
+                    // https://parrotsstorage.blob.core.windows.net/parrotsuploads/parrot-looks.jpg
+                    //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+
+                    string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+                    string[] images =
+                    {
+                        $"{baseUrl}parrot-looks.jpg",
+                        $"{baseUrl}parrot-looks2.jpg",
+                        $"{baseUrl}parrot-looks3.jpg",
+                        $"{baseUrl}parrot-looks4.jpg",
+                        $"{baseUrl}parrot-looks5.jpg",
+                    };
+                    Random random = new Random();
+                    int randomIndex = random.Next(0, images.Length);
+                    string selectedImage = images[randomIndex];
+
+                    existingUser.UserName = registerDto.UserName;
+                    existingUser.ProfileImageUrl = selectedImage;
+                    existingUser.ConfirmationCode = confirmationCode;
+                    existingUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
+                    existingUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+
+                    var passwordHasher = new PasswordHasher<AppUser>();
+                    existingUser.PasswordHash = passwordHasher.HashPassword(existingUser, registerDto.Password);
+
+                    // Generate refresh token here
+                    var refreshToken = _tokenService.GenerateRefreshToken();
+                    existingUser.RefreshToken = refreshToken;
+                    existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                    existingUser.EncryptionKey = GenerateBase64Key();
+                    existingUser.PublicId = GeneratePublicId();
+
+                    var updateResult = await _userManager.UpdateAsync(existingUser);
+                    if (!updateResult.Succeeded)
+                    {
+                        return StatusCode(500);
+                    }
+
+                    EmailSender emailSender = new EmailSender();
+                    _ = emailSender.SendConfirmationEmail(existingUser.Email ?? string.Empty, existingUser.ConfirmationCode, existingUser.UserName);
+
+                    var userResponse = CreateUserObject(existingUser);
+                    userResponse.RefreshToken = refreshToken;  // return refresh token
+                    userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
+
+                    return userResponse;
+                }
+            }
+            else
+            {
+                // USER DOES NOT EXIST
+                //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
+
+                string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+                string[] images =
+                {
+                        $"{baseUrl}parrot-looks.jpg",
+                        $"{baseUrl}parrot-looks2.jpg",
+                        $"{baseUrl}parrot-looks3.jpg",
+                        $"{baseUrl}parrot-looks4.jpg",
+                        $"{baseUrl}parrot-looks5.jpg",
+                    };
+
+                Random random = new Random();
+                int randomIndex = random.Next(0, images.Length);
+                string selectedImage = images[randomIndex];
+
+                var newUser = new AppUser
+                {
+                    Email = registerDto.Email,
+                    UserName = registerDto.UserName,
+                    ProfileImageUrl = selectedImage,
+                    ConfirmationCode = confirmationCode,
+                    BackgroundImageUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/amazon.jpeg",
+                    DisplayEmail = registerDto.Email,
+                    EncryptionKey = GenerateBase64Key(),
+                    PublicId = GeneratePublicId()
+                };
+
+                newUser.EmailConfirmed = true;
+                newUser.NormalizedEmail = _userManager.NormalizeEmail(registerDto.Email);
+                newUser.NormalizedUserName = _userManager.NormalizeName(registerDto.UserName);
+
+                var result = await _userManager.CreateAsync(newUser, registerDto.Password);
+                if (result.Succeeded)
+                {
+                    // Generate refresh token here
+                    var refreshToken = _tokenService.GenerateRefreshToken();
+                    newUser.RefreshToken = refreshToken;
+                    newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+                    await _userManager.UpdateAsync(newUser);
+
+                    EmailSender emailSender = new EmailSender();
+                    _ = emailSender.SendConfirmationEmail(newUser.Email, confirmationCode, newUser.UserName);
+
+                    var userResponse = CreateUserObject(newUser);
+                    userResponse.RefreshToken = refreshToken;  // return refresh token
+                    userResponse.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
+
+                    return userResponse;
+                }
+                else
+                {
+                    return BadRequest(result.Errors);
+                }
+            }
+        }
+
+*/

@@ -9,6 +9,7 @@ namespace ParrotsAPI2.Services.Waypoint
         Task<ServiceResponse<GetWaypointDto>> GetWaypointById(int id);
         Task<ServiceResponse<List<GetWaypointDto>>> GetWaypointsByVoyageId(int voyageId);
         Task<ServiceResponse<int>> AddWaypoint(AddWaypointDto newWaypoint, string userId);
+        Task<ServiceResponse<int>> AddWaypointNoImage(AddWaypointDto newWaypoint, string userId);
         Task<ServiceResponse<List<GetWaypointDto>>> DeleteWaypoint(int id);
         Task<ServiceResponse<List<GetWaypointDto>>> GetWaypointsByCoords(double lat1, double lon1, double lat2, double lon2);
     }

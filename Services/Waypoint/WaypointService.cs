@@ -75,6 +75,35 @@ namespace ParrotsAPI2.Services.Waypoint
 
 
 
+        public async Task<ServiceResponse<int>> AddWaypointNoImage(AddWaypointDto newWaypoint, string userId)
+        {
+            var serviceResponse = new ServiceResponse<int>();
+            try
+            {
+                if (newWaypoint == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Waypoint or ImageFile is null.";
+                    return serviceResponse;
+                }
+
+                var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
+                waypoint.ProfileImage = "";
+                waypoint.UserId = userId;
+                _context.Waypoints.Add(waypoint);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = waypoint.Id;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error adding waypoint: {ex.Message}";
+            }
+            return serviceResponse;
+        }
+
+
+
         public async Task<ServiceResponse<List<GetWaypointDto>>> DeleteWaypoint(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetWaypointDto>>();

@@ -40,7 +40,9 @@ builder.Services.Configure<GoogleAuthOptions>(
 
 // Add DbContext with Azure SQL connection string
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure()
+    ));
 
 // Controllers + NewtonsoftJson
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
