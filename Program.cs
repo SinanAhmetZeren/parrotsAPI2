@@ -151,6 +151,8 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration["Google:ClientSecret"];
 });
 
+//  Map your JSON to your CUSTOM class for use in your Controller
+builder.Services.Configure<GoogleAuthOptions>(builder.Configuration.GetSection("Google"));
 
 builder.Services.AddAuthorization();
 

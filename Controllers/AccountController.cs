@@ -27,6 +27,7 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly string _googleClientId;
+        private readonly string _googleAndroidClientId;
 
         public AccountController(
             UserManager<AppUser> userManager,
@@ -37,6 +38,7 @@ namespace API.Controllers
             _tokenService = tokenService;
             _userManager = userManager;
             _googleClientId = googleOptions.Value.ClientId;
+            _googleAndroidClientId = googleOptions.Value.AndroidClientId;
 
         }
 
@@ -350,18 +352,15 @@ namespace API.Controllers
                 {
                     return BadRequest("Invalid access token");
                 }
-                var a = 0;
                 var json = await response.Content.ReadAsStringAsync();
                 var tokenInfo = JsonSerializer.Deserialize<GoogleTokenInfo>(json);
-                var b = 0;
 
                 if (!tokenInfo.VerifiedEmail)
                 {
                     return BadRequest("Email not verified by Google.");
                 }
-                if (tokenInfo.Audience != _googleClientId)
+                if (tokenInfo.Audience != _googleClientId && tokenInfo.Audience != _googleAndroidClientId)
                 {
-                    var bc = 0;
                     return BadRequest("Token was not issued for this app.");
                 }
 

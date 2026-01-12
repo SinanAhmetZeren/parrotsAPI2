@@ -53,27 +53,78 @@ namespace ParrotsAPI2.Hubs
 
 
 
+        /*
+                public override async Task OnDisconnectedAsync(Exception? exception)
+                {
+
+                    var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
+                    _logger.LogInformation($"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}");
+                    var user = await _userManager.FindByIdAsync(userId);
+                    if (user != null)
+                    {
+                        user.ConnectionId = null;
+                        try
+                        {
+                            await _userManager.UpdateAsync(user);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError($"Error updating user connectionId on disconnect: {ex.Message}");
+                        }
+                    }
+                    await base.OnDisconnectedAsync(exception);
+                }
+        */
+
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-
             var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
-            _logger.LogInformation($"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}");
+
+            _logger.LogInformation(
+                $"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}"
+            );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                await base.OnDisconnectedAsync(exception);
+                return;
+            }
+
             var user = await _userManager.FindByIdAsync(userId);
-            if (user != null)
+
+            if (user == null)
+            {
+                await base.OnDisconnectedAsync(exception);
+                return;
+            }
+
+            // Prevent duplicate disconnect updates
+            if (user.ConnectionId == null)
+            {
+                await base.OnDisconnectedAsync(exception);
+                return;
+            }
+
+            try
             {
                 user.ConnectionId = null;
-                try
-                {
-                    await _userManager.UpdateAsync(user);
-                    await _dbContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"Error updating user connectionId on disconnect: {ex.Message}");
-                }
+                await _userManager.UpdateAsync(user); // ✅ THIS IS ENOUGH
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Error updating user connectionId on disconnect. UserId={UserId}",
+                    userId
+                );
+            }
+
             await base.OnDisconnectedAsync(exception);
         }
+
+
+
 
 
         public async Task SendMessage(string senderId, string receiverId, string content)
