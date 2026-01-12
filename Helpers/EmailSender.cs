@@ -1,5 +1,8 @@
-﻿using System.Net.Mail;
+﻿/*
+
 using System.Net;
+using System.Net.Mail;
+using Microsoft.Extensions.Logging;
 
 namespace ParrotsAPI2.Helpers
 {
@@ -36,3 +39,7 @@ namespace ParrotsAPI2.Helpers
 
     }
 }
+
+
+
+*/

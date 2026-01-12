@@ -30,6 +30,7 @@ using System.Security.Cryptography;
 
 
 using Newtonsoft.Json;
+using ParrotsAPI2.Services.EmailSender;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,6 +92,7 @@ builder.Services.AddScoped<IWaypointService, WaypointService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IBidService, BidService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ChatHub>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
@@ -101,6 +103,9 @@ builder.Services.AddScoped<IBlobService>(sp =>
     var containerName = configuration.GetValue<string>("AzureStorage:ContainerName");
     return new BlobService(connectionString, containerName);
 });
+
+builder.Services.AddMemoryCache();
+
 
 
 // Identity
