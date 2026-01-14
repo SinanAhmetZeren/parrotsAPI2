@@ -573,6 +573,7 @@ namespace ParrotsAPI2.Services.User
                     Id = user.Id,
                     UserName = user.UserName ?? string.Empty,
                     ProfileImageUrl = user.ProfileImageUrl,
+                    PublicId = user.PublicId
                 }).ToList();
 
                 serviceResponse.Success = true;

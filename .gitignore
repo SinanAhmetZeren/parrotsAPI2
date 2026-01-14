@@ -1,8 +1,53 @@
-﻿.vs
-appsettings.json
-appsettings.Development.json
-/bin/Debug
-/bin/Release
+﻿# =========================
+# OS / Editor junk
+# =========================
+.DS_Store
+Thumbs.db
+.vs/
+.vscode/
+
+# =========================
+# .NET build output
+# =========================
 bin/
 obj/
-appsettings.*.json
+**/bin/
+**/obj/
+
+# =========================
+# App settings (KEEP LOCAL)
+# =========================
+appsettings*.json
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# User-specific files
+# =========================
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# Publish / artifacts
+# =========================
+publish/
+*.zip
+*.tar
+*.gz
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.*
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp

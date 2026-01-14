@@ -136,8 +136,10 @@ namespace ParrotsAPI2.Services.Message
                             ReceiverId = message.ReceiverId,
                             SenderProfileUrl = users.GetValueOrDefault(message.SenderId)?.ProfileImageUrl ?? string.Empty,
                             SenderUsername = users.GetValueOrDefault(message.SenderId)?.UserName ?? string.Empty,
+                            SenderPublicId = users.GetValueOrDefault(message.SenderId)?.PublicId ?? string.Empty,
                             ReceiverProfileUrl = users.GetValueOrDefault(message.ReceiverId)?.ProfileImageUrl ?? string.Empty,
-                            ReceiverUsername = users.GetValueOrDefault(message.ReceiverId)?.UserName ?? string.Empty
+                            ReceiverUsername = users.GetValueOrDefault(message.ReceiverId)?.UserName ?? string.Empty,
+                            ReceiverPublicId = users.GetValueOrDefault(message.ReceiverId)?.PublicId ?? string.Empty
                         };
                     })
                     .ToList();
