@@ -310,6 +310,10 @@ namespace ParrotsAPI2.Services.Voyage
                     UserProfileImage = _context.Users
                         .Where(u => u.Id == bid.UserId)
                         .Select(u => u.ProfileImageUrl)
+                        .FirstOrDefault(),
+                    UserPublicId = _context.Users
+                        .Where(u => u.Id == bid.UserId)
+                        .Select(u => u.PublicId)
                         .FirstOrDefault()
                 })
                 .ToListAsync();
@@ -643,8 +647,10 @@ namespace ParrotsAPI2.Services.Voyage
 
                 foreach (var voyage in voyages)
                 {
-                    voyage.Waypoints = voyage.Waypoints?.Where(w => w.Order == 1).ToList();
-                    Console.WriteLine("Voyage Waypoint : " + voyage.Waypoints);
+                    var waypoints = voyage.Waypoints!;
+                    voyage.Waypoints = waypoints
+                        .Where(w => w.Order == 1)
+                        .ToList();
                 }
 
                 if (voyages == null || voyages.Count == 0)

@@ -40,10 +40,23 @@ builder.Services.Configure<GoogleAuthOptions>(
 );
 
 // Add DbContext with Azure SQL connection string
+// builder.Services.AddDbContext<DataContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+//         sqlOptions => sqlOptions.EnableRetryOnFailure()
+//     ));
+
+
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure()
-    ));
+{
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure();
+        });
+    options.AddInterceptors(new DbFailureInterceptor());
+});
+
 
 // Controllers + NewtonsoftJson
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -162,21 +175,59 @@ builder.Services.Configure<GoogleAuthOptions>(builder.Configuration.GetSection("
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+app.UseForwardedHeaders();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<DeviceRateLimitMiddleware>();
 
 
-// Apply EF Core migrations and seed admin user
-using (var scope = app.Services.CreateScope())
+// endpoints
+app.MapGet("/robots.txt", () =>
 {
-    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-    context.Database.Migrate();
+    return Results.Text(
+        "User-agent: *\nDisallow:",
+        "text/plain"
+    );
+});
 
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-    if (!userManager.Users.Any())
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+    try
     {
-        var admin = new AppUser { UserName = "admin", Email = "admin@example.com" };
-        userManager.CreateAsync(admin, "Admin123!").Wait();
+        var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Database migration failed");
+        // do NOT crash
+    }
+
+    try
+    {
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+
+        if (!await userManager.Users.AnyAsync())
+        {
+            var admin = new AppUser
+            {
+                UserName = "admin",
+                Email = "admin@example.com"
+            };
+
+            await userManager.CreateAsync(admin, "Admin123!");
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Admin user seeding failed");
+        // do NOT crash
     }
 }
+
+
 
 // Swagger in Development
 if (app.Environment.IsDevelopment())

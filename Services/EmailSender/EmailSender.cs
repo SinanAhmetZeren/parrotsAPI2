@@ -17,7 +17,7 @@ public class EmailSender : IEmailSender
         _config = config;
     }
 
-    public async Task SendConfirmationEmail(
+    public async Task SendConfirmationEmail( // HELPER FOR FORGOT PASSWORD  
         string recipientEmail,
         string confirmationCode,
         string username)
@@ -44,8 +44,8 @@ public class EmailSender : IEmailSender
             };
 
             string body =
-                $"Welcome to Parrots {username}!\n" +
-                $"Your confirmation code is: {confirmationCode}";
+                $"Hi {username}!\n" +
+                $"Your reset password confirmation code is: {confirmationCode}";
 
             var message = new MailMessage
             {

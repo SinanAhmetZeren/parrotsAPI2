@@ -306,86 +306,86 @@ namespace API.Controllers
         }
 
 
+
         [AllowAnonymous]
         [HttpPost("sendCode/{email}")]
         [RateLimit(5, 60, true)]
         public async Task<IActionResult> SendCode(string email)
         {
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
             if (string.IsNullOrWhiteSpace(email))
             {
-                _logger.LogWarning(
-                    "SendCode failed: empty email. IP: {IP}",
-                    HttpContext.Connection.RemoteIpAddress
-                );
+                _logger.LogWarning("SendCode failed: empty email. IP={IP}", ip);
                 return BadRequest("Email is required.");
             }
-
             var normalizedEmail = _userManager.NormalizeEmail(email.Trim());
             _logger.LogInformation(
-                "SendCode request received. Email: {Email}, NormalizedEmail: {NormalizedEmail}, IP: {IP}",
+                "SendCode request received. Email={Email}, IP={IP}",
                 email,
-                normalizedEmail,
-                HttpContext.Connection.RemoteIpAddress
+                ip
             );
 
-            var existingConfirmedUser = await _userManager.Users
+            var user = await _userManager.Users
                 .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail && u.Confirmed);
 
-            if (existingConfirmedUser == null)
+            if (user == null)
             {
                 _logger.LogWarning(
-                    "SendCode: no confirmed user found for email {Email}. IP: {IP}",
+                    "SendCode failed: no confirmed user. Email={Email}, IP={IP}",
                     normalizedEmail,
-                    HttpContext.Connection.RemoteIpAddress
+                    ip
                 );
                 return BadRequest("No confirmed user found with this email.");
             }
 
-            // Generate new confirmation code
-            string confirmationCode = new CodeGenerator().GenerateCode();
-            existingConfirmedUser.ConfirmationCode = confirmationCode;
+            var confirmationCode = new CodeGenerator().GenerateCode();
+            user.ConfirmationCode = confirmationCode;
 
-            var updateResult = await _userManager.UpdateAsync(existingConfirmedUser);
+            var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
                 _logger.LogError(
-                    "SendCode: failed to update user {UserId}. Errors: {Errors}",
-                    existingConfirmedUser.Id,
-                    string.Join(", ", updateResult.Errors.Select(e => e.Description))
+                    "SendCode failed updating user {UserId}",
+                    user.Id
                 );
-                return StatusCode(500, "Failed to generate code. Try again later.");
+                return StatusCode(500, "Failed to generate code.");
             }
 
-            // Fire-and-forget email sending via DI
+            // capture ONLY primitives / strings
+            var userEmail = user.Email!;
+            var userName = user.UserName ?? string.Empty;
+            var userId = user.Id;
+
             _ = Task.Run(async () =>
             {
                 try
                 {
                     await _emailSender.SendConfirmationEmail(
-                        existingConfirmedUser.Email!,
+                        userEmail,
                         confirmationCode,
-                        existingConfirmedUser.UserName ?? string.Empty
+                        userName
                     );
+
                     _logger.LogInformation(
-                        "SendCode email sent successfully to {Email}, UserId={UserId}, IP={IP}",
-                        existingConfirmedUser.Email,
-                        existingConfirmedUser.Id,
-                        HttpContext.Connection.RemoteIpAddress
+                        "SendCode email sent. UserId={UserId}, IP={IP}",
+                        userId,
+                        ip
                     );
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(
                         ex,
-                        "SendCode email failed for {Email}, UserId={UserId}, IP={IP}",
-                        existingConfirmedUser.Email,
-                        existingConfirmedUser.Id,
-                        HttpContext.Connection.RemoteIpAddress
+                        "SendCode email failed. UserId={UserId}, IP={IP}",
+                        userId,
+                        ip
                     );
                 }
             });
 
-            return Ok("Confirmation code sent.");
+            // return Ok("Confirmation code sent.");
+            return Ok(new { message = "Confirmation code sent." });
+
         }
 
 
@@ -716,7 +716,7 @@ namespace API.Controllers
             return new string(id);
         }
 
-        private void SendConfirmationEmailSafe(AppUser user)
+        private void SendConfirmationEmailSafe(AppUser user) // HELPER FOR REGISTER ENDPOINT
         {
             _ = Task.Run(async () =>
             {

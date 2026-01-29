@@ -36,6 +36,8 @@ namespace ParrotsAPI2.Helpers
             var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<RateLimitAttribute>>();
 
             var ip = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+            var deviceId = context.HttpContext.Request.Headers["X-Device-Id"].FirstOrDefault() ?? "unknown";
+
             string userIdentifier = null;
 
             if (_perUser)
@@ -58,27 +60,27 @@ namespace ParrotsAPI2.Helpers
                 }
             }
 
-            // Key combines IP + optional user/email
+            // ✅ Key now includes IP + DeviceId (+ user if enabled)
             string key = _perUser && userIdentifier != null
-                ? $"{context.ActionDescriptor.DisplayName}-{ip}-{userIdentifier}"
-                : $"{context.ActionDescriptor.DisplayName}-{ip}";
+                ? $"{context.ActionDescriptor.DisplayName}-{ip}-{deviceId}-{userIdentifier}"
+                : $"{context.ActionDescriptor.DisplayName}-{ip}-{deviceId}";
 
             var now = DateTime.UtcNow;
+
             if (!memoryCache.TryGetValue(key, out List<DateTime> timestamps))
             {
-                timestamps = new List<DateTime> { now };
-                memoryCache.Set(key, timestamps, _window);
+                memoryCache.Set(key, new List<DateTime> { now }, _window);
                 return;
             }
 
-            // Remove timestamps outside the sliding window
             timestamps = timestamps.Where(t => t > now - _window).ToList();
 
             if (timestamps.Count >= _limit)
             {
                 logger.LogWarning(
-                    "Rate limit exceeded. IP={IP}, User={User}, Endpoint={Endpoint}",
+                    "Rate limit exceeded | IP={IP} | Device={DeviceId} | User={User} | Endpoint={Endpoint}",
                     ip,
+                    deviceId,
                     userIdentifier ?? "N/A",
                     context.ActionDescriptor.DisplayName
                 );
@@ -94,5 +96,7 @@ namespace ParrotsAPI2.Helpers
             timestamps.Add(now);
             memoryCache.Set(key, timestamps, _window);
         }
+
+
     }
 }

@@ -14,6 +14,7 @@
         public string UserId { get; set; } = string.Empty;
         public string? UserProfileImage { get; set; } = null;
         public string? UserName { get; set; } = null;
+        public string? UserPublicId { get; set; } = null;
 
     }
 }
