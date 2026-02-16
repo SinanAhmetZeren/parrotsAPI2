@@ -49,6 +49,8 @@ namespace ParrotsAPI2.Hubs
                 }
             }
             await base.OnConnectedAsync();
+            await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
+
         }
 
 
