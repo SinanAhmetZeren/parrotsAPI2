@@ -31,6 +31,7 @@ using System.Security.Cryptography;
 
 using Newtonsoft.Json;
 using ParrotsAPI2.Services.EmailSender;
+using ParrotsAPI2.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,6 +98,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Services
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<ConnectionManager>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
@@ -107,7 +109,7 @@ builder.Services.AddScoped<IBidService, BidService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<ChatHub>();
+// builder.Services.AddScoped<ChatHub>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddScoped<IBlobService>(sp =>
 {

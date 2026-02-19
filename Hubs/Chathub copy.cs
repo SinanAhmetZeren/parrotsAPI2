@@ -10,55 +10,132 @@ using ParrotsAPI2.Helpers;
 
 namespace ParrotsAPI2.Hubs
 {
-    public class ChatHub : Hub
+    public class ChatHub2 : Hub
     {
         private readonly ILogger<ChatHub> _logger;
-        private readonly IServiceScopeFactory _scopeFactory;
+        private readonly DataContext _dbContext;
+        private readonly UserManager<AppUser> _userManager;
 
-        private readonly ConnectionManager _connectionManager;
-
-        public ChatHub(
+        public ChatHub2(
             ILogger<ChatHub> logger,
-            IServiceScopeFactory scopeFactory,
-            ConnectionManager connectionManager
-        )
+            DataContext dbContext,
+            UserManager<AppUser> userManager
+            )
         {
             _logger = logger;
-            _scopeFactory = scopeFactory;
-            _connectionManager = connectionManager;
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _logger.LogInformation($"--> ChatHub initialized at {DateTime.UtcNow}");
         }
 
 
         public override async Task OnConnectedAsync()
         {
-            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? "";
-            if (!string.IsNullOrEmpty(userId))
+            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
+            _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}, UserId={userId}");
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
             {
-                _connectionManager.Add(userId, Context.ConnectionId);
+                user.ConnectionId = Context.ConnectionId;
+                try
+                {
+                    await _userManager.UpdateAsync(user);
+                    await _dbContext.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error updating user connectionId: {ex.Message}");
+                }
             }
             await base.OnConnectedAsync();
             await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
+
         }
+
+
+
+        /*
+                public override async Task OnDisconnectedAsync(Exception? exception)
+                {
+
+                    var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
+                    _logger.LogInformation($"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}");
+                    var user = await _userManager.FindByIdAsync(userId);
+                    if (user != null)
+                    {
+                        user.ConnectionId = null;
+                        try
+                        {
+                            await _userManager.UpdateAsync(user);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError($"Error updating user connectionId on disconnect: {ex.Message}");
+                        }
+                    }
+                    await base.OnDisconnectedAsync(exception);
+                }
+        */
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? "";
-            if (!string.IsNullOrEmpty(userId))
+            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
+
+            _logger.LogInformation(
+                $"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}"
+            );
+
+            if (string.IsNullOrEmpty(userId))
             {
-                _connectionManager.Remove(userId, Context.ConnectionId);
+                await base.OnDisconnectedAsync(exception);
+                return;
             }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                await base.OnDisconnectedAsync(exception);
+                return;
+            }
+
+            // Prevent duplicate disconnect updates
+            if (user.ConnectionId == null)
+            {
+                await base.OnDisconnectedAsync(exception);
+                return;
+            }
+
+            try
+            {
+                user.ConnectionId = null;
+                await _userManager.UpdateAsync(user); // ✅ THIS IS ENOUGH
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Error updating user connectionId on disconnect. UserId={UserId}",
+                    userId
+                );
+            }
+
             await base.OnDisconnectedAsync(exception);
         }
+
+
+
 
 
         public async Task SendMessage(string senderId, string receiverId, string content)
         {
             var newTime = DateTime.UtcNow;
-            using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<DataContext>();
-            var sender = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
-            var receiver = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
+
+            // 1️⃣ Get sender and receiver encryption keys
+            var sender = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
+            var receiver = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
 
             if (sender == null || string.IsNullOrEmpty(sender.EncryptionKey))
                 throw new Exception("Sender or encryption key not found.");
@@ -84,42 +161,37 @@ namespace ParrotsAPI2.Hubs
                 ReadByReceiver = false
             };
 
-            dbContext.Messages.Add(message);
-            await dbContext.SaveChangesAsync();
+            _dbContext.Messages.Add(message);
+            await _dbContext.SaveChangesAsync();
 
             // 4️⃣ Prepare sender metadata
             var senderProfileUrl = sender?.ProfileImageUrl ?? string.Empty;
             var senderUsername = sender?.UserName ?? string.Empty;
-            var connections = _connectionManager.GetConnections(receiverId);
 
-            foreach (var connectionId in connections)
+            // 5️⃣ Send the message via SignalR (original content)
+            var receiverConnectionId = await GetConnectionIdForUser(receiverId);
+            if (receiverConnectionId != null)
             {
-                await Clients.Client(connectionId)
+                await Clients.Client(receiverConnectionId)
                     .SendAsync("ReceiveMessage", senderId, content, newTime, senderProfileUrl, senderUsername);
 
-                await Clients.Client(connectionId)
+                await Clients.Client(receiverConnectionId)
                     .SendAsync("ReceiveMessageRefetch");
             }
-
         }
 
 
         public async Task GetMessages(string userId)
         {
-            using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<DataContext>();
-            // var currentUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);❌ OLD
-
             // 1️⃣ Get the current user's encryption key
-            var currentUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var currentUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (currentUser == null || string.IsNullOrEmpty(currentUser.EncryptionKey))
                 throw new Exception("User or encryption key not found.");
 
             var currentUserKeyBytes = EncryptionHelper.KeyFromBase64(currentUser.EncryptionKey);
 
             // 2️⃣ Fetch messages where user is sender or receiver
-            var messages = await dbContext.Messages
+            var messages = await _dbContext.Messages
                 .Where(m => m.SenderId == userId || m.ReceiverId == userId)
                 .OrderBy(m => m.DateTime)
                 .ToListAsync();
@@ -146,11 +218,9 @@ namespace ParrotsAPI2.Hubs
 
         public async Task WriteMessageToDb(string senderId, string receiverId, string content)
         {
-            using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<DataContext>();
-            var sender = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
-            var receiver = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
+            // 1️⃣ Get sender and receiver
+            var sender = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
+            var receiver = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
 
             if (sender == null || string.IsNullOrEmpty(sender.EncryptionKey))
                 throw new Exception("Sender or encryption key not found.");
@@ -176,9 +246,22 @@ namespace ParrotsAPI2.Hubs
                 ReadByReceiver = false
             };
 
-            dbContext.Messages.Add(message);
-            await dbContext.SaveChangesAsync();
+            _dbContext.Messages.Add(message);
+            await _dbContext.SaveChangesAsync();
         }
+
+
+        private async Task<string?> GetConnectionIdForUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var connectionId = user.ConnectionId;
+                return connectionId;
+            }
+            return null;
+        }
+
     }
 }
 
