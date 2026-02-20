@@ -248,12 +248,8 @@ app.UseAuthorization();
 app.MapHub<ChatHub>("/chathub/11");
 app.MapControllers();
 
-// // Serve static files
-// app.UseStaticFiles(new StaticFileOptions
-// {
-//     FileProvider = new PhysicalFileProvider(
-//         Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
-//     RequestPath = "/Uploads"
-// });
+// Use the Azure-assigned port or default to 5000
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Add($"http://*:{port}");
 
 app.Run();
