@@ -689,7 +689,9 @@ namespace API.Controllers
                 Email = user.Email ?? string.Empty,
                 UserId = user.Id,
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
-                RefreshToken = user.RefreshToken ?? string.Empty
+                RefreshToken = user.RefreshToken ?? string.Empty,
+                UnreadMessages = user.UnseenMessages ? "true" : "false"
+
             };
         }
 
