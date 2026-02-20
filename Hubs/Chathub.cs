@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ParrotsAPI2.Models;
-using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using ParrotsAPI2.Helpers;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ParrotsAPI2.Hubs
 {
@@ -14,28 +13,21 @@ namespace ParrotsAPI2.Hubs
     {
         private readonly ILogger<ChatHub> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
-
-        private readonly ConnectionManager _connectionManager;
+        private readonly ConversationPageTracker _tracker;
 
         public ChatHub(
             ILogger<ChatHub> logger,
             IServiceScopeFactory scopeFactory,
-            ConnectionManager connectionManager
+            ConversationPageTracker tracker
         )
         {
             _logger = logger;
             _scopeFactory = scopeFactory;
-            _connectionManager = connectionManager;
+            _tracker = tracker;
         }
-
 
         public override async Task OnConnectedAsync()
         {
-            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? "";
-            if (!string.IsNullOrEmpty(userId))
-            {
-                _connectionManager.Add(userId, Context.ConnectionId);
-            }
             await base.OnConnectedAsync();
             await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
         }
@@ -45,18 +37,31 @@ namespace ParrotsAPI2.Hubs
             var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? "";
             if (!string.IsNullOrEmpty(userId))
             {
-                _connectionManager.Remove(userId, Context.ConnectionId);
+                _tracker.LeaveMessagesScreen(userId);
+                _tracker.LeaveConversation(userId);
             }
             await base.OnDisconnectedAsync(exception);
         }
 
+        public async Task MarkMessagesAsSeen(string userId)
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+            var user = await dbContext.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.UnseenMessages = false;
+                await dbContext.SaveChangesAsync();
+            }
+        }
 
         public async Task SendMessage(string senderId, string receiverId, string content)
         {
             var newTime = DateTime.UtcNow;
+
             using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<DataContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
             var sender = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
             var receiver = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
 
@@ -68,11 +73,11 @@ namespace ParrotsAPI2.Hubs
             var senderKeyBytes = EncryptionHelper.KeyFromBase64(sender.EncryptionKey);
             var receiverKeyBytes = EncryptionHelper.KeyFromBase64(receiver.EncryptionKey);
 
-            // 2️⃣ Encrypt content for both sender and receiver
+            // Encrypt content
             var encryptedForSender = EncryptionHelper.EncryptString(content, senderKeyBytes);
             var encryptedForReceiver = EncryptionHelper.EncryptString(content, receiverKeyBytes);
 
-            // 3️⃣ Create and save the message
+            // Save message
             var message = new Message
             {
                 SenderId = senderId,
@@ -83,112 +88,55 @@ namespace ParrotsAPI2.Hubs
                 Rendered = false,
                 ReadByReceiver = false
             };
-
             dbContext.Messages.Add(message);
-            await dbContext.SaveChangesAsync();
-
-            // 4️⃣ Prepare sender metadata
-            var senderProfileUrl = sender?.ProfileImageUrl ?? string.Empty;
-            var senderUsername = sender?.UserName ?? string.Empty;
-            var connections = _connectionManager.GetConnections(receiverId);
-
-            foreach (var connectionId in connections)
+            if (!_tracker.IsOnMessagesScreen(receiverId) &&
+            !_tracker.IsViewingConversation(receiverId, senderId))
             {
-                await Clients.Client(connectionId)
-                    .SendAsync("ReceiveMessage", senderId, content, newTime, senderProfileUrl, senderUsername);
-
-                await Clients.Client(connectionId)
-                    .SendAsync("ReceiveMessageRefetch");
+                receiver.UnseenMessages = true;
             }
-
-        }
-
-
-        public async Task GetMessages(string userId)
-        {
-            using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<DataContext>();
-            // var currentUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);❌ OLD
-
-            // 1️⃣ Get the current user's encryption key
-            var currentUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            if (currentUser == null || string.IsNullOrEmpty(currentUser.EncryptionKey))
-                throw new Exception("User or encryption key not found.");
-
-            var currentUserKeyBytes = EncryptionHelper.KeyFromBase64(currentUser.EncryptionKey);
-
-            // 2️⃣ Fetch messages where user is sender or receiver
-            var messages = await dbContext.Messages
-                .Where(m => m.SenderId == userId || m.ReceiverId == userId)
-                .OrderBy(m => m.DateTime)
-                .ToListAsync();
-
-            // 3️⃣ Decrypt each message for this user
-            var decryptedMessages = messages.Select(m => new
-            {
-                Id = m.Id,
-                SenderId = m.SenderId,
-                ReceiverId = m.ReceiverId,
-                Text = m.SenderId == userId
-                    ? EncryptionHelper.DecryptString(m.TextSenderEncrypted, currentUserKeyBytes)
-                    : EncryptionHelper.DecryptString(m.TextReceiverEncrypted, currentUserKeyBytes),
-                DateTime = m.DateTime,
-                Rendered = m.Rendered,
-                ReadByReceiver = m.ReadByReceiver
-            }).ToList();
-
-            // 4️⃣ Send decrypted messages to client
-            await Clients.Caller.SendAsync("ReceiveMessages", decryptedMessages);
-        }
-
-
-
-        public async Task WriteMessageToDb(string senderId, string receiverId, string content)
-        {
-            using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider
-                .GetRequiredService<DataContext>();
-            var sender = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
-            var receiver = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
-
-            if (sender == null || string.IsNullOrEmpty(sender.EncryptionKey))
-                throw new Exception("Sender or encryption key not found.");
-            if (receiver == null || string.IsNullOrEmpty(receiver.EncryptionKey))
-                throw new Exception("Receiver or encryption key not found.");
-
-            var senderKeyBytes = EncryptionHelper.KeyFromBase64(sender.EncryptionKey);
-            var receiverKeyBytes = EncryptionHelper.KeyFromBase64(receiver.EncryptionKey);
-
-            // 2️⃣ Encrypt content for both sender and receiver
-            var encryptedForSender = EncryptionHelper.EncryptString(content, senderKeyBytes);
-            var encryptedForReceiver = EncryptionHelper.EncryptString(content, receiverKeyBytes);
-
-            // 3️⃣ Create and save message
-            var message = new Message
-            {
-                SenderId = senderId,
-                ReceiverId = receiverId,
-                TextSenderEncrypted = encryptedForSender,
-                TextReceiverEncrypted = encryptedForReceiver,
-                DateTime = DateTime.UtcNow,
-                Rendered = false,
-                ReadByReceiver = false
-            };
-
-            dbContext.Messages.Add(message);
             await dbContext.SaveChangesAsync();
+            await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, content, newTime,
+                sender.ProfileImageUrl ?? string.Empty, sender.UserName ?? string.Empty);
+
+            await Clients.User(receiverId).SendAsync("ReceiveMessageRefetch");
         }
+
+        public Task EnterConversationPage(string userId, string partnerId)
+        {
+            _tracker.EnterConversation(userId, partnerId);
+            _logger.LogInformation($"User {userId} entered conversation with {partnerId}");
+            return Task.CompletedTask;
+        }
+
+        public Task LeaveConversationPage(string userId)
+        {
+            _tracker.LeaveConversation(userId);
+            _logger.LogInformation($"User {userId} left conversation");
+            return Task.CompletedTask;
+        }
+
+        public async Task EnterMessagesScreen(string userId)
+        {
+            _tracker.EnterMessagesScreen(userId);
+            using var scope = _scopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+            var user = await dbContext.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.UnseenMessages = false;
+                await dbContext.SaveChangesAsync();
+            }
+            _logger.LogInformation($"User {userId} entered messages screen → marked all as read");
+        }
+
+        public Task LeaveMessagesScreen(string userId)
+        {
+            _tracker.LeaveMessagesScreen(userId);
+            _logger.LogInformation($"User {userId} left messages screen");
+            return Task.CompletedTask;
+        }
+
+
+
     }
 }
-
-/*
-start connection:
-{ "protocol":"json","version":1}
-
-WriteMessageToDb:
-{ "arguments":["1","2","hello from signalR"],"invocationId":"0","target":"WriteMessageToDb","type":1}
-
-two arguments:
-{ "arguments":["arg1!","arg2!!"],"invocationId":"0","target":"SendMessage2","type":1}
-*/

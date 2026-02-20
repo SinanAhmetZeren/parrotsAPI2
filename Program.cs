@@ -98,7 +98,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Services
 builder.Services.AddSignalR();
-builder.Services.AddSingleton<ConnectionManager>();
+builder.Services.AddSingleton<ConversationPageTracker>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
@@ -110,6 +110,7 @@ builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<TokenService>();
 // builder.Services.AddScoped<ChatHub>();
+builder.Services.AddSingleton<ConversationPageTracker>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddScoped<IBlobService>(sp =>
 {
@@ -182,14 +183,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<DeviceRateLimitMiddleware>();
 
 
-// endpoints
-app.MapGet("/robots.txt", () =>
-{
-    return Results.Text(
-        "User-agent: *\nDisallow:",
-        "text/plain"
-    );
-});
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -244,12 +238,11 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map Hub and Controllers
+
+// --- Map endpoints ---
 app.MapHub<ChatHub>("/chathub/11");
 app.MapControllers();
+app.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow:", "text/plain"));
 
-// Use the Azure-assigned port or default to 5000
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-app.Urls.Add($"http://*:{port}");
 
 app.Run();
