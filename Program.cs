@@ -98,7 +98,6 @@ builder.Services.AddSwaggerGen(c =>
 
 // Services
 builder.Services.AddSignalR();
-builder.Services.AddSingleton<ConversationPageTracker>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
