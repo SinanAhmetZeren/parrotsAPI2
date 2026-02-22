@@ -19,7 +19,7 @@ namespace ParrotsAPI2.Models
         public string? ProfileImageUrl { get; set; }
         public string? BackgroundImageUrl { get; set; }
         public bool UnseenMessages { get; set; } = false;
-        public bool EmailVisible { get; set; } = true;
+        public bool EmailVisible { get; set; } = false;
         public string? ConnectionId { get; set; }
         public List<Vehicle>? Vehicles { get; set; }
         public List<Voyage>? Voyages { get; set; }
@@ -31,7 +31,6 @@ namespace ParrotsAPI2.Models
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
         public string? EncryptionKey { get; set; }
         public string PublicId { get; set; } = string.Empty;
 

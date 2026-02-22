@@ -119,6 +119,19 @@ namespace ParrotsAPI2.Data
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ✅ FIX decimal precision warnings
+            modelBuilder.Entity<Bid>()
+                .Property(b => b.OfferPrice)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Voyage>()
+                .Property(v => v.MinPrice)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Voyage>()
+                .Property(v => v.MaxPrice)
+                .HasPrecision(18, 2);
+
 
             // Seed default vehicles ("walk" and "run") with UserId = "1"
             /*
