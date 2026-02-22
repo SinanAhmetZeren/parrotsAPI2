@@ -15,6 +15,7 @@ namespace ParrotsAPI2.Models
         public DateTime LastBidDate { get; set; }
         public decimal MinPrice { get; set; }
         public decimal MaxPrice { get; set; }
+        public string Currency { get; set; } = string.Empty;
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
@@ -24,7 +25,7 @@ namespace ParrotsAPI2.Models
         public AppUser? User { get; set; }
         public int? VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
-        public string? VehicleImage { get; set; }         
+        public string? VehicleImage { get; set; }
         public string? VehicleName { get; set; }
         public VehicleType VehicleType { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -32,6 +33,6 @@ namespace ParrotsAPI2.Models
         public bool IsDeleted { get; set; } = false;
 
     }
-    
+
 
 }

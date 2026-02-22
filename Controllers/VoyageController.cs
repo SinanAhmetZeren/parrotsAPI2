@@ -17,13 +17,7 @@ namespace ParrotsAPI2.Controllers
             _voyageService = voyageService;
         }
 
-        /*
-        [HttpGet("GetAllVoyages")]
-        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> Get()
-        {
-            return Ok(await _voyageService.GetAllVoyages());
-        }
-        */
+
 
         [HttpGet("GetVoyageById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingle(int id)
@@ -38,13 +32,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _voyageService.GetVoyagesByUserId(userId));
         }
 
-        /*
-        [HttpGet("GetVoyageByVehicleId/{vehicleId}")]
-        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByVehicleId(int vehicleId)
-        {
-            return Ok(await _voyageService.GetVoyagesByVehicleId(vehicleId));
-        }
-        */
+
 
         [HttpPost("AddVoyage")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> AddVoyage(AddVoyageDto newVoyage)
@@ -103,18 +91,6 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        /*
-                [HttpPut("UpdateVoyage")]
-                public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
-                {
-                    var response = await _voyageService.UpdateVoyage(updatedVoyage);
-                    if (response.Data == null)
-                    {
-                        return NotFound(response);
-                    }
-                    return Ok(response);
-                }
-        */
 
 
         [HttpPatch("PatchVoyage/{voyageId}")]

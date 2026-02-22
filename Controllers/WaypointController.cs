@@ -115,19 +115,6 @@ namespace ParrotsAPI2.Controllers
 
         }
 
-        /*
-        [HttpGet("getWaypointsByCoords")]
-        public async Task<IActionResult> GetWaypointsByCoords(double lat1, double lon1, double lat2, double lon2)
-        {
-            var serviceResponse = await _waypointService.GetWaypointsByCoords(lat1, lon1, lat2, lon2);
 
-            if (serviceResponse.Success)
-            {
-                return Ok(serviceResponse.Data);
-            }
-
-            return BadRequest(serviceResponse.Message);
-        }
-        */
     }
 }
