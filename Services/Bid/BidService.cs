@@ -54,7 +54,7 @@ namespace ParrotsAPI2.Services.Bid
                     PersonCount = newBid.PersonCount,
                     Message = newBid.Message,
                     OfferPrice = newBid.OfferPrice,
-                    Currency = newBid.Currency,
+                    // Currency = newBid.Currency,
                     DateTime = newBid.DateTime,
                     VoyageId = newBid.VoyageId,
                     UserId = newBid.UserId
@@ -66,7 +66,7 @@ namespace ParrotsAPI2.Services.Bid
                     PersonCount = bidEntity.PersonCount,
                     Message = bidEntity.Message,
                     OfferPrice = bidEntity.OfferPrice,
-                    Currency = bidEntity.Currency,
+                    // Currency = bidEntity.Currency,
                     DateTime = bidEntity.DateTime,
                     VoyageId = bidEntity.VoyageId,
                     UserId = bidEntity.UserId
@@ -101,7 +101,7 @@ namespace ParrotsAPI2.Services.Bid
                         PersonCount = bidEntity.PersonCount,
                         Message = bidEntity.Message,
                         OfferPrice = bidEntity.OfferPrice,
-                        Currency = bidEntity.Currency,
+                        // Currency = bidEntity.Currency,
                         DateTime = bidEntity.DateTime,
                         VoyageId = bidEntity.VoyageId,
                         UserId = bidEntity.UserId,
@@ -154,12 +154,12 @@ namespace ParrotsAPI2.Services.Bid
                         PersonCount = combined.Bid.PersonCount,
                         Message = combined.Bid.Message,
                         OfferPrice = combined.Bid.OfferPrice,
-                        Currency = combined.Bid.Currency,
+                        // Currency = combined.Bid.Currency,
                         DateTime = combined.Bid.DateTime,
                         VoyageId = combined.Bid.VoyageId,
                         UserId = combined.Bid.UserId,
                         VoyageImageUrl = combined.Voyage != null ? combined.Voyage.ProfileImage : string.Empty,
-                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl  : string.Empty,
+                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl : string.Empty,
                         UserName = (combined.User != null && combined.User.UserName != null) ? combined.User.UserName : string.Empty,
                         VoyageName = combined.Voyage != null ? combined.Voyage.Name : string.Empty
                     })
@@ -201,12 +201,12 @@ namespace ParrotsAPI2.Services.Bid
                         PersonCount = combined.Bid.PersonCount,
                         Message = combined.Bid.Message,
                         OfferPrice = combined.Bid.OfferPrice,
-                        Currency = combined.Bid.Currency,
+                        // Currency = combined.Bid.Currency,
                         DateTime = combined.Bid.DateTime,
                         VoyageId = combined.Bid.VoyageId,
                         UserId = combined.Bid.UserId,
                         VoyageImageUrl = combined.Voyage.ProfileImage,
-                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl  : string.Empty,
+                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl : string.Empty,
                         UserName = (combined.User != null && combined.User.UserName != null) ? combined.User.UserName : string.Empty,
                         VoyageName = combined.Voyage.Name
                     })
@@ -240,19 +240,19 @@ namespace ParrotsAPI2.Services.Bid
                 var voyage = await _context.Voyages
                         .FirstOrDefaultAsync(v => v.Id == bid.VoyageId);
 
-                    if (voyage == null)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = $"Voyage with ID {bid.VoyageId} not found";
-                        return serviceResponse;
-                    }
+                if (voyage == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Voyage with ID {bid.VoyageId} not found";
+                    return serviceResponse;
+                }
 
-                    if (voyage.UserId != voyageOwnerId)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = "Unauthorized: You are not the owner of this voyage.";
-                        return serviceResponse;
-                    }
+                if (voyage.UserId != voyageOwnerId)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Unauthorized: You are not the owner of this voyage.";
+                    return serviceResponse;
+                }
 
                 _context.Bids.Remove(bid);
                 await _context.SaveChangesAsync();
@@ -284,19 +284,19 @@ namespace ParrotsAPI2.Services.Bid
                 var voyage = await _context.Voyages
                         .FirstOrDefaultAsync(v => v.Id == bidEntity.VoyageId);
 
-                    if (voyage == null)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = $"Voyage with ID {bidEntity.VoyageId} not found";
-                        return serviceResponse;
-                    }
+                if (voyage == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Voyage with ID {bidEntity.VoyageId} not found";
+                    return serviceResponse;
+                }
 
-                    if (voyage.UserId != voyageOwnerId)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = "Unauthorized: You are not the owner of this voyage.";
-                        return serviceResponse;
-                    }
+                if (voyage.UserId != voyageOwnerId)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Unauthorized: You are not the owner of this voyage.";
+                    return serviceResponse;
+                }
 
                 bidEntity.Accepted = true;
                 await _context.SaveChangesAsync();

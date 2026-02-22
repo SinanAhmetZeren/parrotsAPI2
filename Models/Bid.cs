@@ -9,7 +9,7 @@ namespace ParrotsAPI2.Models
         public int PersonCount { get; set; }
         public string Message { get; set; } = string.Empty;
         public decimal OfferPrice { get; set; }
-        public string Currency { get; set; } = string.Empty;
+        // public string Currency { get; set; } = string.Empty;
         public DateTime DateTime { get; set; }
         public bool Accepted { get; set; }
         public int VoyageId { get; set; }
