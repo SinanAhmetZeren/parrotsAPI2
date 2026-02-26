@@ -14,6 +14,7 @@ namespace ParrotsAPI2.Data
         public DbSet<VoyageImage> VoyageImages { get; set; }
         public DbSet<Waypoint> Waypoints { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -118,6 +119,14 @@ namespace ParrotsAPI2.Data
                 .WithMany(u => u.ReceivedMessages)
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasIndex(m => new { m.ConversationKey, m.DateTime })
+                .HasDatabaseName("IX_Messages_ConversationKey_DateTime");
+
+            modelBuilder.Entity<Conversation>()
+                .HasIndex(x => x.ConversationKey)
+                .IsUnique();
 
             // ✅ FIX decimal precision warnings
             modelBuilder.Entity<Bid>()

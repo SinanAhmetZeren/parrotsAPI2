@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParrotsAPI2.Data;
 
@@ -11,9 +12,11 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260224224036_ConversationModel")]
+    partial class ConversationModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,41 +24,6 @@ namespace ParrotsAPI2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Conversation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ConversationKey")
-                        .IsRequired()
-                        .HasMaxLength(73)
-                        .HasColumnType("nvarchar(73)");
-
-                    b.Property<DateTime?>("LastMessageDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("User1Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("User2Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConversationKey")
-                        .IsUnique();
-
-                    b.ToTable("Conversations");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -358,6 +326,50 @@ namespace ParrotsAPI2.Migrations
                     b.HasIndex("VoyageId");
 
                     b.ToTable("Bids");
+                });
+
+            modelBuilder.Entity("ParrotsAPI2.Models.Conversation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConversationKey")
+                        .IsRequired()
+                        .HasMaxLength(73)
+                        .HasColumnType("nvarchar(73)");
+
+                    b.Property<DateTime>("LastMessageDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastMessageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastMessagePreview")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("LastMessageSenderId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LastMessageId");
+
+                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("ParrotsAPI2.Models.Favorite", b =>
@@ -733,6 +745,15 @@ namespace ParrotsAPI2.Migrations
                     b.Navigation("User");
 
                     b.Navigation("Voyage");
+                });
+
+            modelBuilder.Entity("ParrotsAPI2.Models.Conversation", b =>
+                {
+                    b.HasOne("ParrotsAPI2.Models.Message", "LastMessage")
+                        .WithMany()
+                        .HasForeignKey("LastMessageId");
+
+                    b.Navigation("LastMessage");
                 });
 
             modelBuilder.Entity("ParrotsAPI2.Models.Message", b =>

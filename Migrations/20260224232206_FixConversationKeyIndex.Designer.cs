@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParrotsAPI2.Data;
 
@@ -11,9 +12,11 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260224232206_FixConversationKeyIndex")]
+    partial class FixConversationKeyIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,21 +35,27 @@ namespace ParrotsAPI2.Migrations
 
                     b.Property<string>("ConversationKey")
                         .IsRequired()
-                        .HasMaxLength(73)
-                        .HasColumnType("nvarchar(73)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("LastMessageDate")
+                    b.Property<DateTime>("LastMessageDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("LastMessageId")
                         .HasColumnType("int");
 
-                    b.Property<string>("User1Id")
+                    b.Property<string>("ReceiverId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("User2Id")
+                    b.Property<string>("SenderId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TextReceiverEncrypted")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TextSenderEncrypted")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

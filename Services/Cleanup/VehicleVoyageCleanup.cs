@@ -8,8 +8,8 @@ namespace ParrotsAPI2.Services.Cleanup
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<VehicleVoyageCleanupService> _logger;
 
-        private const double ThresholdTimeInMinutes= 48*60;
-        private const double TimerIntervalInMinutes = 60;
+        private const double ThresholdTimeInMinutes = 48 * 60;
+        private const double TimerIntervalInMinutes = 60 * 24 * 7;
 
 
         public VehicleVoyageCleanupService(IServiceScopeFactory scopeFactory, ILogger<VehicleVoyageCleanupService> logger)
@@ -30,7 +30,7 @@ namespace ParrotsAPI2.Services.Cleanup
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();
             var thresholdTime = DateTime.UtcNow.AddMinutes(-TimerIntervalInMinutes);
-            var outputText = new StringBuilder(); 
+            var outputText = new StringBuilder();
             outputText.AppendLine($"Checking for vehicles older than {thresholdTime} and not confirmed.");
             var vehiclesToDelete = await context.Vehicles
                 .Where(v => !v.Confirmed && v.CreatedAt <= thresholdTime)

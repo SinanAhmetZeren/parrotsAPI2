@@ -1,5 +1,6 @@
 ﻿using ParrotsAPI2.Models;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace ParrotsAPI2.Models
 {
@@ -13,6 +14,9 @@ namespace ParrotsAPI2.Models
         public bool ReadByReceiver { get; set; }
         public string SenderId { get; set; } = string.Empty;
         public string ReceiverId { get; set; } = string.Empty;
+
+        [MaxLength(73)]
+        public string? ConversationKey { get; set; }
 
     }
 }

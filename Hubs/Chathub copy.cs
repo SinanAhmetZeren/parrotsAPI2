@@ -7,153 +7,214 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ParrotsAPI2.Helpers;
+using System.Collections.Concurrent;
 
 namespace ParrotsAPI2.Hubs
 {
     public class ChatHub2 : Hub
     {
         private readonly ILogger<ChatHub> _logger;
-        private readonly DataContext _dbContext;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IServiceScopeFactory _scopeFactory;
+        private readonly ConversationPageTracker _tracker;
+
+        // The "Magic" Dictionary: Maps UserId -> ConnectionId in RAM
+        private static readonly ConcurrentDictionary<string, string> _userConnections = new();
 
         public ChatHub2(
             ILogger<ChatHub> logger,
-            DataContext dbContext,
-            UserManager<AppUser> userManager
+            IServiceScopeFactory scopeFactory,
+            ConversationPageTracker tracker
             )
         {
             _logger = logger;
-            _dbContext = dbContext;
-            _userManager = userManager;
+            _scopeFactory = scopeFactory;
+            _tracker = tracker;
         }
 
         public override async Task OnConnectedAsync()
         {
             var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
-            _logger.LogInformation($"User connected: ConnectionId={Context.ConnectionId}, UserId={userId}");
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user != null)
+            using (var scope = _scopeFactory.CreateScope())
             {
-                user.ConnectionId = Context.ConnectionId;
-                try
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var user = await userManager.FindByIdAsync(userId);
+                if (user != null)
                 {
-                    await _userManager.UpdateAsync(user);
-                    await _dbContext.SaveChangesAsync();
-
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"Error updating user connectionId: {ex.Message}");
+                    user.ConnectionId = Context.ConnectionId;
+                    try
+                    {
+                        await userManager.UpdateAsync(user);
+                        await dbContext.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"Error updating user connectionId: {ex.Message}");
+                    }
                 }
             }
             await base.OnConnectedAsync();
             await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
         }
 
+
+
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
-            _logger.LogInformation($"User disconnected: ConnectionId={Context.ConnectionId}, UserId={userId}");
-
-            if (string.IsNullOrEmpty(userId))
+            if (!string.IsNullOrEmpty(userId))
             {
-                await base.OnDisconnectedAsync(exception);
-                return;
+                using (var scope = _scopeFactory.CreateScope())
+                {
+                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                    var user = await userManager.FindByIdAsync(userId);
+                    if (user != null && user.ConnectionId == Context.ConnectionId)
+                    {
+                        try
+                        {
+                            user.ConnectionId = null;
+                            await userManager.UpdateAsync(user);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(
+                                ex,
+                                "Error updating user connectionId on disconnect. UserId={UserId}",
+                                userId
+                            );
+                        }
+                    }
+                }
             }
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                await base.OnDisconnectedAsync(exception);
-                return;
-            }
-
-            // Prevent duplicate disconnect updates
-            if (user.ConnectionId == null)
-            {
-                await base.OnDisconnectedAsync(exception);
-                return;
-            }
-
-            try
-            {
-                user.ConnectionId = null;
-                await _userManager.UpdateAsync(user); // ✅ THIS IS ENOUGH
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    ex,
-                    "Error updating user connectionId on disconnect. UserId={UserId}",
-                    userId
-                );
-            }
-
             await base.OnDisconnectedAsync(exception);
         }
-
         public async Task SendMessage(string senderId, string receiverId, string content)
         {
             var newTime = DateTime.UtcNow;
-
-            // 1️⃣ Get sender and receiver encryption keys
-            var sender = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
-            var receiver = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
-
-            if (sender == null || string.IsNullOrEmpty(sender.EncryptionKey))
-                throw new Exception("Sender or encryption key not found.");
-            if (receiver == null || string.IsNullOrEmpty(receiver.EncryptionKey))
-                throw new Exception("Receiver or encryption key not found.");
-
-            var senderKeyBytes = EncryptionHelper.KeyFromBase64(sender.EncryptionKey);
-            var receiverKeyBytes = EncryptionHelper.KeyFromBase64(receiver.EncryptionKey);
-
-            // 2️⃣ Encrypt content for both sender and receiver
-            var encryptedForSender = EncryptionHelper.EncryptString(content, senderKeyBytes);
-            var encryptedForReceiver = EncryptionHelper.EncryptString(content, receiverKeyBytes);
-
-            // 3️⃣ Create and save the message
-            var message = new Message
+            using (var scope = _scopeFactory.CreateScope())
             {
-                SenderId = senderId,
-                ReceiverId = receiverId,
-                TextSenderEncrypted = encryptedForSender,
-                TextReceiverEncrypted = encryptedForReceiver,
-                DateTime = newTime,
-                Rendered = false,
-                ReadByReceiver = false
-            };
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var sender = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == senderId);
+                var receiver = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == receiverId);
+                if (sender == null || string.IsNullOrEmpty(sender.EncryptionKey))
+                    throw new HubException("Sender or encryption key not found.");
+                if (receiver == null || string.IsNullOrEmpty(receiver.EncryptionKey))
+                    throw new HubException("Receiver or encryption key not found.");
+                var senderKeyBytes = EncryptionHelper.KeyFromBase64(sender.EncryptionKey);
+                var receiverKeyBytes = EncryptionHelper.KeyFromBase64(receiver.EncryptionKey);
+                // 2️⃣ Encrypt content for both sender and receiver
+                var encryptedForSender = EncryptionHelper.EncryptString(content, senderKeyBytes);
+                var encryptedForReceiver = EncryptionHelper.EncryptString(content, receiverKeyBytes);
+                // 3️⃣ Create and save the message
+                var message = new Message
+                {
+                    SenderId = senderId,
+                    ReceiverId = receiverId,
+                    TextSenderEncrypted = encryptedForSender,
+                    TextReceiverEncrypted = encryptedForReceiver,
+                    DateTime = newTime,
+                    Rendered = false,
+                    ReadByReceiver = false
+                };
 
-            _dbContext.Messages.Add(message);
-            await _dbContext.SaveChangesAsync();
+                dbContext.Messages.Add(message);
 
-            // 4️⃣ Prepare sender metadata
-            var senderProfileUrl = sender?.ProfileImageUrl ?? string.Empty;
-            var senderUsername = sender?.UserName ?? string.Empty;
+                // --- Logic for UnseenMessages Flag ---
+                bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
+                bool isReceiverOnMessagesScreen = _tracker.IsOnMessagesScreen(receiverId);
 
-            // 5️⃣ Send the message via SignalR (original content)
-            var receiverConnectionId = await GetConnectionIdForUser(receiverId);
-            if (receiverConnectionId != null)
-            {
-                await Clients.Client(receiverConnectionId)
-                    .SendAsync("ReceiveMessage", senderId, content, newTime, senderProfileUrl, senderUsername);
+                // If NOT in the specific chat AND NOT on the messages list, flag as true
+                if (!isReceiverViewingChat && !isReceiverOnMessagesScreen)
+                {
+                    receiver.UnseenMessages = true;
+                    // Notify the client in real-time about the new unread status
+                    if (!string.IsNullOrEmpty(receiver.ConnectionId))
+                    {
+                        await Clients.Client(receiver.ConnectionId).SendAsync("ReceiveUnreadNotification");
+                        var x = 0;
+                    }
+                }
 
-                await Clients.Client(receiverConnectionId)
-                    .SendAsync("ReceiveMessageRefetch");
+                await dbContext.SaveChangesAsync();
+
+                // 4️⃣ Prepare sender metadata for the SignalR call
+                var senderProfileUrl = sender.ProfileImageUrl ?? string.Empty;
+                var senderUsername = sender.UserName ?? string.Empty;
+                var receiverConnectionId = receiver.ConnectionId; // Optimization: Use the ID we just fetched
+                // 5️⃣ Send the message via SignalR
+                if (!string.IsNullOrEmpty(receiverConnectionId))
+                {
+                    await Clients.Client(receiverConnectionId)
+                        .SendAsync("ReceiveMessage", senderId, content, newTime, senderProfileUrl, senderUsername);
+
+                    await Clients.Client(receiverConnectionId)
+                        .SendAsync("ReceiveMessageRefetch");
+                }
             }
         }
-
-        private async Task<string?> GetConnectionIdForUser(string userId)
+        public async Task<bool> CheckUnreadMessages(string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            // this is for app launch only
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var user = await dbContext.Users.FindAsync(userId);
+                return user?.UnseenMessages ?? false;
+            }
+        }
+        public async Task MarkMessagesAsSeen(string userId)
+        {
+            using (var scope = _scopeFactory.CreateScope())
+            {
+
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var user = await dbContext.Users.FindAsync(userId);
+                if (user != null)
+                {
+                    user.UnseenMessages = false;
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+        }
+        public async Task EnterConversationPage(string userId, string partnerId)
+        {
+            _tracker.EnterConversation(userId, partnerId);
+            _logger.LogInformation($"->>> User entered conversation");
+            await MarkMessagesAsSeen(userId);
+        }
+        public async Task LeaveConversationPage(string userId)
+        {
+            _tracker.LeaveConversation(userId);
+            _logger.LogInformation($"User left conversation");
+
+        }
+        public async Task EnterMessagesScreen(string userId)
+        {
+            _tracker.EnterMessagesScreen(userId);
+            using var scope = _scopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+            var user = await dbContext.Users.FindAsync(userId);
             if (user != null)
             {
-                var connectionId = user.ConnectionId;
-                return connectionId;
+                user.UnseenMessages = false;
+                await dbContext.SaveChangesAsync();
             }
-            return null;
+
+            var allUsers = _tracker.GetAllUsersOnMessagesScreen();
+            _logger.LogInformation("All users on Messages Screen: {Users}", string.Join(", ", allUsers));
+            _logger.LogInformation($"User entered messages screen");
         }
+        public async Task LeaveMessagesScreen(string userId)
+        {
+            _tracker.LeaveMessagesScreen(userId);
+            _logger.LogInformation($"User left messages screen");
+
+            var allUsers = _tracker.GetAllUsersOnMessagesScreen();
+            _logger.LogInformation("All users on Messages Screen: {Users}", string.Join(", ", allUsers));
+
+
+        }
+
 
     }
 }
