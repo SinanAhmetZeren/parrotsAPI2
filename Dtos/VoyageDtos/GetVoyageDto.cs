@@ -19,6 +19,7 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public string Currency { get; set; } = string.Empty;
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
+        public bool PublicOnMap { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
         public VehicleType VehicleType { get; set; }
         public List<GetWaypointDto>? Waypoints { get; set; }

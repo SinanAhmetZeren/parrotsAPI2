@@ -14,6 +14,7 @@
         public string Currency { get; set; } = string.Empty;
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
+        public bool PublicOnMap { get; set; }
         public IFormFile? ImageFile { get; set; }
         public string UserId { get; set; } = string.Empty;
         public int? VehicleId { get; set; }

@@ -8,8 +8,8 @@ namespace ParrotsAPI2.Services.Cleanup
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<VehicleVoyageCleanupService> _logger;
 
-        private const double ThresholdTimeInMinutes = 48 * 60;
-        private const double TimerIntervalInMinutes = 60 * 24 * 7;
+        private const double ThresholdTimeInMinutes = 60 * 24 * 2; // 48 hours in minutes
+        private const double TimerIntervalInMinutes = 60 * 24 * 7; // 7 days in minutes
 
 
         public VehicleVoyageCleanupService(IServiceScopeFactory scopeFactory, ILogger<VehicleVoyageCleanupService> logger)
@@ -25,57 +25,55 @@ namespace ParrotsAPI2.Services.Cleanup
             return Task.CompletedTask;
         }
 
+
         private async void DoVehicleVoyageCleanup(object? state)
         {
-            using var scope = _scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-            var thresholdTime = DateTime.UtcNow.AddMinutes(-TimerIntervalInMinutes);
-            var outputText = new StringBuilder();
-            outputText.AppendLine($"Checking for vehicles older than {thresholdTime} and not confirmed.");
-            var vehiclesToDelete = await context.Vehicles
-                .Where(v => !v.Confirmed && v.CreatedAt <= thresholdTime)
-                .ToListAsync();
+            try
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var thresholdTime = DateTime.UtcNow.AddMinutes(-ThresholdTimeInMinutes);
 
-            if (vehiclesToDelete.Any())
-            {
-                outputText.AppendLine($"Found {vehiclesToDelete.Count} unconfirmed vehicles older than {thresholdTime} hours. Deleting...");
-                foreach (var vehicle in vehiclesToDelete)
-                {
-                    outputText.AppendLine($"Deleting Vehicle ID: {vehicle.Id}, Created At: {vehicle.CreatedAt}");
-                }
-                context.Vehicles.RemoveRange(vehiclesToDelete);
-                await context.SaveChangesAsync();
-                outputText.AppendLine("Vehicle cleanup completed successfully.");
-            }
-            else
-            {
-                outputText.AppendLine("No vehicles found to delete.");
-            }
-            outputText.AppendLine("-------");
-            var voyagesToDelete = await context.Voyages
-                .Where(v => !v.Confirmed && v.CreatedAt <= thresholdTime)
-                .ToListAsync();
+                var outputText = new StringBuilder();
+                outputText.AppendLine($"[Weekly Cleanup] Threshold Date: {thresholdTime}");
 
-            if (voyagesToDelete.Any())
-            {
-                outputText.AppendLine($"Found {voyagesToDelete.Count} unconfirmed voyages older than {thresholdTime} hours. Deleting...");
-                foreach (var voyage in voyagesToDelete)
+                // Handle Vehicles
+                var vehiclesToDelete = await context.Vehicles
+                    .Where(v => !v.Confirmed && v.CreatedAt <= thresholdTime)
+                    .ToListAsync();
+
+                if (vehiclesToDelete.Any())
                 {
-                    outputText.AppendLine($"Deleting Voyage ID: {voyage.Id}, Created At: {voyage.CreatedAt}");
+                    outputText.AppendLine($"Deleting {vehiclesToDelete.Count} unconfirmed vehicles.");
+                    context.Vehicles.RemoveRange(vehiclesToDelete);
                 }
-                context.Voyages.RemoveRange(voyagesToDelete);
-                await context.SaveChangesAsync();
-                outputText.AppendLine("Voyage cleanup completed successfully.");
+
+                // Handle Voyages
+                var voyagesToDelete = await context.Voyages
+                    .Where(v => !v.Confirmed && v.CreatedAt <= thresholdTime)
+                    .ToListAsync();
+
+                if (voyagesToDelete.Any())
+                {
+                    outputText.AppendLine($"Deleting {voyagesToDelete.Count} unconfirmed voyages.");
+                    context.Voyages.RemoveRange(voyagesToDelete);
+                }
+
+                // Save all changes in one single DB transaction to save costs
+                if (vehiclesToDelete.Any() || voyagesToDelete.Any())
+                {
+                    await context.SaveChangesAsync();
+                    outputText.AppendLine("Database updated successfully.");
+                }
+
+                _logger.LogInformation(outputText.ToString());
             }
-            else
+            catch (Exception ex)
             {
-                outputText.AppendLine("No voyages found to delete.");
+                // Vital: Prevents the background service from crashing the whole API
+                _logger.LogError(ex, "Error occurred during weekly VehicleVoyageCleanup.");
             }
-            outputText.AppendLine("-------");
-            _logger.LogInformation(outputText.ToString());
         }
-
-
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Vehicle Voyage Cleanup Service stopped.");

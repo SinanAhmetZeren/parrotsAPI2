@@ -14,6 +14,7 @@
         public decimal MaxPrice { get; set; }
         public bool FixedPrice { get; set; }
         public bool Auction { get; set; }
+        public bool PublicOnMap { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
         public int? VehicleId { get; set; }
         public string? VehicleImage { get; set; }

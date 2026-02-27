@@ -569,6 +569,7 @@ namespace ParrotsAPI2.Services.Voyage
                 voyage.MaxPrice = updatedVoyage.MaxPrice;
                 voyage.FixedPrice = updatedVoyage.FixedPrice;
                 voyage.Auction = updatedVoyage.Auction;
+                voyage.PublicOnMap = updatedVoyage.PublicOnMap;
                 voyage.ProfileImage = updatedVoyage.ProfileImage;
 
 
@@ -632,6 +633,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Where(v =>
                         v.Confirmed &&
                         !v.IsDeleted &&
+                        v.PublicOnMap &&
                         v.Waypoints != null &&
                         v.Waypoints.Any(w =>
                             w.Order == 1 &&
@@ -680,6 +682,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Where(v =>
                         v.Confirmed == true &&
                         v.IsDeleted == false &&
+                        v.PublicOnMap == true &&
                         v.Waypoints != null &&
                         v.Waypoints.Any(w =>
                             w.Order == 1 &&
@@ -761,7 +764,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.LastBidDate >= DateTime.Today)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
                     .AsQueryable();
 
                 // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
