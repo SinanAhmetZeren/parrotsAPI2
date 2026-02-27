@@ -28,10 +28,19 @@ public class ChatHub : Hub
     public override async Task OnConnectedAsync()
     {
         var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
-
         if (!string.IsNullOrEmpty(userId))
         {
             _userConnections[userId] = Context.ConnectionId;
+            // Only initialize if not already present
+            if (!_unreadCache.ContainsKey(userId))
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var user = await dbContext.Users.FindAsync(userId);
+
+                // Initialize in-memory unread state from DB
+                _unreadCache[userId] = user?.UnseenMessages ?? false;
+            }
         }
         await base.OnConnectedAsync();
         await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
@@ -41,12 +50,30 @@ public class ChatHub : Hub
     {
         // Find the user by connection ID in our RAM dictionary
         var entry = _userConnections.FirstOrDefault(x => x.Value == Context.ConnectionId);
-
-        if (!string.IsNullOrEmpty(entry.Key))
+        var userId = entry.Key;
+        if (!string.IsNullOrEmpty(userId))
         {
-            _userConnections.TryRemove(entry.Key, out _);
-            _tracker.LeaveMessagesScreen(entry.Key);
-            _tracker.LeaveConversation(entry.Key);
+            // Remove connection
+            _userConnections.TryRemove(userId, out _);
+            // Leave tracking pages
+            _tracker.LeaveMessagesScreen(userId);
+            _tracker.LeaveConversation(userId);
+            // Persist unread status to DB if it exists in cache
+            if (_unreadCache.TryGetValue(userId, out bool hasUnread))
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var user = await dbContext.Users.FindAsync(userId);
+
+                if (user != null)
+                {
+                    user.UnseenMessages = hasUnread;
+                    await dbContext.SaveChangesAsync();
+                }
+
+                // Remove from in-memory cache
+                _unreadCache.TryRemove(userId, out _);
+            }
         }
 
         await base.OnDisconnectedAsync(exception);
@@ -68,7 +95,6 @@ public class ChatHub : Hub
             ? senderId + "_" + receiverId
             : receiverId + "_" + senderId;
 
-
         // Create message object
         var message = new Message
         {
@@ -81,7 +107,6 @@ public class ChatHub : Hub
             ReadByReceiver = false,
             ConversationKey = conversationKey
         };
-
 
         // Add message first
         dbContext.Messages.Add(message);
@@ -105,27 +130,37 @@ public class ChatHub : Hub
         // Update conversation with last message info
         conversation.LastMessageId = message.Id;
         conversation.LastMessageDate = message.DateTime;
-
         await dbContext.SaveChangesAsync();
 
         // Update receiver notifications
         bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
         bool isReceiverOnMessagesScreen = _tracker.IsOnMessagesScreen(receiverId);
+        bool isReceiverOnline = _userConnections.ContainsKey(receiverId);
 
-        if (!isReceiverViewingChat && !isReceiverOnMessagesScreen)
+        //   mark UNREAD if user is NOT actively viewing 
+        if (!(isReceiverViewingChat || isReceiverOnMessagesScreen))
         {
-            receiver.UnseenMessages = true;
-            if (_userConnections.TryGetValue(receiverId, out var connId))
+            if (isReceiverOnline)
             {
-                await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
+                // User is online → keep in memory & send "ReceiveUnreadNotification"
+                _unreadCache[receiverId] = true;
+                if (_userConnections.TryGetValue(receiverId, out var connectId))
+                {
+                    await Clients.Client(connectId).SendAsync("ReceiveUnreadNotification");
+                }
+            }
+            else
+            {
+                // User is offline → persist immediately
+                receiver.UnseenMessages = true;
+                await dbContext.SaveChangesAsync();
             }
         }
 
         // Notify receiver
         if (_userConnections.TryGetValue(receiverId, out var receiverConnId))
         {
-            await Clients.Client(receiverConnId).SendAsync(
-                "ReceiveMessage",
+            await Clients.Client(receiverConnId).SendAsync("ReceiveMessage",
                 senderId,
                 content,
                 message.DateTime,
@@ -137,37 +172,9 @@ public class ChatHub : Hub
         }
     }
 
-
-    public async Task MarkMessagesAsSeen(string userId)
-    {
-        using (var scope = _scopeFactory.CreateScope())
-        {
-            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-            var user = await dbContext.Users.FindAsync(userId);
-            if (user != null && user.UnseenMessages == true)
-            {
-                user.UnseenMessages = false;
-                try
-                {
-                    await dbContext.SaveChangesAsync();
-                    // _logger.LogInformation($"Database Updated: UnseenMessages set to false for {userId}");
-                }
-                catch (Exception ex)
-                {
-                    // _logger.LogError(ex, "Error saving UnseenMessages state for {UserId}", userId);
-                }
-            }
-            else
-            {
-                // _logger.LogInformation($"No DB Write needed: {userId} had no unseen messages.");
-            }
-        }
-    }
-
     public async Task EnterConversationPage(string userId, string partnerId)
     {
         _tracker.EnterConversation(userId, partnerId);
-        await MarkMessagesAsSeen(userId); // DB write only when actually needed
     }
 
     public async Task LeaveConversationPage(string userId)
@@ -178,11 +185,41 @@ public class ChatHub : Hub
     public async Task EnterMessagesScreen(string userId)
     {
         _tracker.EnterMessagesScreen(userId);
-        await MarkMessagesAsSeen(userId);
+        // Clear in-memory unread state
+        _unreadCache[userId] = false;
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+        var user = await dbContext.Users.FindAsync(userId);
+        if (user?.UnseenMessages == true)
+        {
+            user.UnseenMessages = false;
+            await dbContext.SaveChangesAsync();
+        }
     }
 
     public async Task LeaveMessagesScreen(string userId)
     {
         _tracker.LeaveMessagesScreen(userId);
     }
+
+    public async Task<bool> CheckUnreadMessages(string userId)
+    {
+        _unreadCache.TryGetValue(userId, out var isUnread);
+        return await Task.FromResult(isUnread);
+    }
+
 }
+
+
+
+
+/*
+start connection:
+{ "protocol":"json","version":1}
+
+WriteMessageToDb:
+{ "arguments":["1","2","hello from signalR"],"invocationId":"0","target":"WriteMessageToDb","type":1}
+
+two arguments:
+{ "arguments":["arg1!","arg2!!"],"invocationId":"0","target":"SendMessage2","type":1}
+*/

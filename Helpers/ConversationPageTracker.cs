@@ -21,4 +21,5 @@ public class ConversationPageTracker
     {
         return _messagesScreenOpen.Keys;
     }
+
 }
