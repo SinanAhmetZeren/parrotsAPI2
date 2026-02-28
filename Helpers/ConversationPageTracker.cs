@@ -2,24 +2,20 @@ using System.Collections.Concurrent;
 
 public class ConversationPageTracker
 {
-    // user is on Messages screen
-    private readonly ConcurrentDictionary<string, bool> _messagesScreenOpen = new();
 
-    // user is viewing specific conversationuserId -> partnerId
-    private readonly ConcurrentDictionary<string, string> _activeConversation = new();
-    public void EnterMessagesScreen(string userId) { _messagesScreenOpen[userId] = true; }
-    public void LeaveMessagesScreen(string userId) { _messagesScreenOpen.TryRemove(userId, out _); }
-    public bool IsOnMessagesScreen(string userId) { return _messagesScreenOpen.ContainsKey(userId); }
-    public void EnterConversation(string userId, string partnerId) { _activeConversation[userId] = partnerId; }
-    public void LeaveConversation(string userId) { _activeConversation.TryRemove(userId, out _); }
-    public bool IsViewingConversation(string userId, string partnerId) { return _activeConversation.TryGetValue(userId, out var activePartner) && activePartner == partnerId; }
+    private readonly ConcurrentDictionary<string, string> _messagesScreenOpen = new(); // connectionId -> userId
+    private readonly ConcurrentDictionary<string, (string UserId, string PartnerId)> _activeConversation = new();// connectionId -> (userId, partnerId)
 
+    public void EnterMessagesScreen(string userId, string connectionId) => _messagesScreenOpen[connectionId] = userId;
+    public void LeaveMessagesScreen(string connectionId) => _messagesScreenOpen.TryRemove(connectionId, out _);
+    public bool IsOnMessagesScreen(string userId) => _messagesScreenOpen.Values.Any(uid => uid == userId);
+    public void EnterConversation(string userId, string connectionId, string partnerId) => _activeConversation[connectionId] = (userId, partnerId);
+    public void LeaveConversation(string connectionId) => _activeConversation.TryRemove(connectionId, out _);
+    public bool IsViewingConversation(string userId, string partnerId) => _activeConversation.Values.Any(x => x.UserId == userId && x.PartnerId == partnerId);
 
-
-
-    public IEnumerable<string> GetAllUsersOnMessagesScreen()
+    public void RemoveConnection(string connectionId)
     {
-        return _messagesScreenOpen.Keys;
+        _messagesScreenOpen.TryRemove(connectionId, out _);
+        _activeConversation.TryRemove(connectionId, out _);
     }
-
 }
