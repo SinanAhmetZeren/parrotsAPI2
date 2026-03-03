@@ -15,6 +15,8 @@ namespace ParrotsAPI2.Data
         public DbSet<Waypoint> Waypoints { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<CoinPurchase> CoinPurchases { get; set; }
+        public DbSet<CoinTransaction> CoinTransactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +49,20 @@ namespace ParrotsAPI2.Data
                 .WithOne(b => b.User)
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.CoinPurchases)
+                .WithOne(cp => cp.User)
+                .HasForeignKey(cp => cp.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.CoinTransactions)
+                .WithOne(ct => ct.User)
+                .HasForeignKey(ct => ct.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Message>()
                 .HasOne<AppUser>()
@@ -141,6 +157,9 @@ namespace ParrotsAPI2.Data
                 .Property(v => v.MaxPrice)
                 .HasPrecision(18, 2);
 
+            modelBuilder.Entity<CoinPurchase>()
+                .Property(cp => cp.UsdAmount)
+                .HasPrecision(10, 2);
 
             // Seed default vehicles ("walk" and "run") with UserId = "1"
             /*

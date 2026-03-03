@@ -48,7 +48,7 @@ namespace ParrotsAPI2.Services.Voyage
 
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage, string userId)
+        public async Task<ServiceResponse<GetVoyageDto>> AddVoyage1(AddVoyageDto newVoyage, string userId)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             string voyageProfileImage = "";
@@ -104,6 +104,105 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+
+        public async Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage, string userId)
+        {
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            string voyageProfileImage = "";
+
+            var strategy = _context.Database.CreateExecutionStrategy();
+
+            await strategy.ExecuteAsync(async () =>
+            {
+                // This ensures all operations inside are retriable as a single unit
+                using var transaction = await _context.Database.BeginTransactionAsync();
+
+                try
+                {
+                    // Upload image first (outside DB logic is fine)
+                    if (newVoyage.ImageFile is not null && newVoyage.ImageFile.Length > 0)
+                    {
+                        var prefix = $"voyage-images/{userId}";
+                        voyageProfileImage = await UploadImageToBlobAsync(newVoyage.ImageFile, prefix);
+                    }
+
+                    // 🔒 Get user (tracked)
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                    if (user == null)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "User not found.";
+                        return;
+                    }
+
+                    // Calculate required coins (example: days until start)
+                    int requiredCoins = (newVoyage.StartDate - DateTime.UtcNow).Days;
+                    if (requiredCoins < 0)
+                        requiredCoins = 0;
+
+                    // ❌ Not enough coins
+                    if (user.ParrotCoinBalance < requiredCoins)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Not enough ParrotCoins.";
+                        return;
+                    }
+
+                    // Validate vehicle
+                    var vehicle = await _context.Vehicles.FindAsync(newVoyage.VehicleId);
+                    if (vehicle == null)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Vehicle not found.";
+                        return;
+                    }
+
+                    // 🚢 Create voyage first
+                    var voyage = _mapper.Map<Models.Voyage>(newVoyage);
+                    voyage.User = user;
+                    voyage.Vehicle = vehicle;
+                    voyage.VehicleImage = vehicle.ProfileImageUrl;
+                    voyage.ProfileImage = voyageProfileImage;
+                    voyage.VehicleType = vehicle.Type;
+                    voyage.VehicleName = vehicle.Name;
+                    voyage.CreatedAt = DateTime.UtcNow;
+
+                    _context.Voyages.Add(voyage);
+                    await _context.SaveChangesAsync(); // Voyage.Id is now available
+
+                    // 💰 Deduct coins
+                    user.ParrotCoinBalance -= requiredCoins;
+
+                    // 🧾 Create ledger entry
+                    var coinTransaction = new CoinTransaction
+                    {
+                        UserId = user.Id,
+                        Amount = -requiredCoins,
+                        Type = "voyage_cost",
+                        Description = $"Voyage {voyage.Id} creation",
+                        VoyageId = voyage.Id, // optional: link to voyage
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    _context.CoinTransactions.Add(coinTransaction);
+
+                    // Save everything
+                    await _context.SaveChangesAsync();
+
+                    // Commit transaction
+                    await transaction.CommitAsync();
+
+                    serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Error adding voyage: {ex.Message}";
+                }
+            });
+
+            return serviceResponse;
+        }
 
         public async Task<ServiceResponse<string>> AddVoyageImage(int voyageId, IFormFile imageFile, string userId)
         {

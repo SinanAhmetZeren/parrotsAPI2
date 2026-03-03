@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParrotsAPI2.Data;
 
@@ -11,9 +12,11 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260303084832_ParrotCoinTransactions")]
+    partial class ParrotCoinTransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,80 +364,6 @@ namespace ParrotsAPI2.Migrations
                     b.HasIndex("VoyageId");
 
                     b.ToTable("Bids");
-                });
-
-            modelBuilder.Entity("ParrotsAPI2.Models.CoinPurchase", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CoinsAmount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentProviderId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("UsdAmount")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CoinPurchases");
-                });
-
-            modelBuilder.Entity("ParrotsAPI2.Models.CoinTransaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("VoyageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CoinTransactions");
                 });
 
             modelBuilder.Entity("ParrotsAPI2.Models.Favorite", b =>
@@ -815,28 +744,6 @@ namespace ParrotsAPI2.Migrations
                     b.Navigation("Voyage");
                 });
 
-            modelBuilder.Entity("ParrotsAPI2.Models.CoinPurchase", b =>
-                {
-                    b.HasOne("ParrotsAPI2.Models.AppUser", "User")
-                        .WithMany("CoinPurchases")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ParrotsAPI2.Models.CoinTransaction", b =>
-                {
-                    b.HasOne("ParrotsAPI2.Models.AppUser", "User")
-                        .WithMany("CoinTransactions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ParrotsAPI2.Models.Message", b =>
                 {
                     b.HasOne("ParrotsAPI2.Models.AppUser", null)
@@ -917,10 +824,6 @@ namespace ParrotsAPI2.Migrations
             modelBuilder.Entity("ParrotsAPI2.Models.AppUser", b =>
                 {
                     b.Navigation("Bids");
-
-                    b.Navigation("CoinPurchases");
-
-                    b.Navigation("CoinTransactions");
 
                     b.Navigation("ReceivedMessages");
 

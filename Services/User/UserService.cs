@@ -589,5 +589,80 @@ namespace ParrotsAPI2.Services.User
         }
 
 
+        public async Task<ServiceResponse<int>> DepositCoinsAndRecordPurchase(string userId, int coins, decimal usdAmount, string PaymentProviderId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return new ServiceResponse<int>
+                {
+                    Success = false,
+                    Message = "User not found."
+                };
+            }
+            // 1️⃣ Add coins to user balance
+            user.ParrotCoinBalance += coins;
+            // 2️⃣ Create CoinPurchase record
+            var purchase = new CoinPurchase
+            {
+                UserId = userId,
+                CoinsAmount = coins,
+                UsdAmount = usdAmount,
+                Status = "completed", // change if payment is async
+                CreatedAt = DateTime.UtcNow,
+                PaymentProviderId = PaymentProviderId
+            };
+            _context.CoinPurchases.Add(purchase);
+            await _context.SaveChangesAsync();
+            return new ServiceResponse<int>
+            {
+                Data = user.ParrotCoinBalance, // return the new balance
+                Success = true,
+                Message = $"{coins} coins deposited successfully and purchase recorded."
+            };
+        }
+
+
+        public async Task<ServiceResponse<ParrotCoinSummaryDto>> GetParrotCoinBalanceAndPurchases(string userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.CoinPurchases) // load related purchases
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return new ServiceResponse<ParrotCoinSummaryDto>
+                {
+                    Success = false,
+                    Message = "User not found."
+                };
+            }
+
+            var dto = new ParrotCoinSummaryDto
+            {
+                Balance = user.ParrotCoinBalance,
+                Purchases = (user.CoinPurchases ?? Enumerable.Empty<CoinPurchase>())
+                    .OrderByDescending(p => p.CreatedAt)
+                    .Select(p => new CoinPurchaseDto
+                    {
+                        Id = p.Id,
+                        UsdAmount = p.UsdAmount,
+                        CoinsAmount = p.CoinsAmount,
+                        Status = p.Status ?? string.Empty,
+                        PaymentProviderId = p.PaymentProviderId,
+                        CreatedAt = p.CreatedAt
+                    })
+                    .ToList()
+            };
+
+            return new ServiceResponse<ParrotCoinSummaryDto>
+            {
+                Data = dto,
+                Success = true,
+                Message = "Balance and purchases retrieved successfully."
+            };
+        }
+
+
     }
 }

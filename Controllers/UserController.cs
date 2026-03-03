@@ -108,8 +108,6 @@ namespace ParrotsAPI2.Controllers
                 }
         */
 
-
-
         [HttpPatch("PatchUser/{userId}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUser(
             string userId, JsonPatchDocument<UpdateUserDto> patchDoc)
@@ -140,10 +138,6 @@ namespace ParrotsAPI2.Controllers
 
             return Ok(response);
         }
-
-
-
-
 
         [Consumes("multipart/form-data")]
         [HttpPost("{userId}/updateProfileImage")]
@@ -215,6 +209,70 @@ namespace ParrotsAPI2.Controllers
         {
             return Ok(await _userService.GetUsersByUsername(username));
         }
+
+
+        [HttpPost("DepositCoins")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DepositCoins(UserDepositCoinsDto deposit)
+        {
+            // Get user ID from JWT token
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            // Ensure the request is for the current user
+            if (requestUserId != deposit.UserId)
+            {
+                return Forbid();
+            }
+
+            // Call service to add coins and create CoinPurchase record
+            var response = await _userService.DepositCoinsAndRecordPurchase(
+                deposit.UserId,
+                deposit.Coins,
+                deposit.UsdAmount,
+                deposit.PaymentProviderId
+                );
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+
+        [HttpGet("parrotCoinBalance/{userId}")]
+        public async Task<ActionResult<ServiceResponse<int>>> GetParrotCoinBalanceAndPurchases(string userId)
+        {
+
+            // Get user ID from JWT token
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            // Ensure the request is for the current user
+            if (requestUserId != userId)
+            {
+                return Forbid();
+            }
+
+            return Ok(await _userService.GetParrotCoinBalanceAndPurchases(userId));
+        }
+
+
 
     }
 }
