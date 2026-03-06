@@ -623,6 +623,65 @@ namespace ParrotsAPI2.Services.User
         }
 
 
+
+        public async Task<ServiceResponse<int>> SendParrotCoins(string userId, string receiverId, int coins)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            var receiver = await _context.Users.FindAsync(receiverId);
+            if (user == null || receiver == null)
+            {
+                return new ServiceResponse<int>
+                {
+                    Success = false,
+                    Message = "User or receiver not found."
+                };
+            }
+
+            if (user.ParrotCoinBalance < coins)
+            {
+                return new ServiceResponse<int>
+                {
+                    Success = false,
+                    Message = "Insufficient balance."
+                };
+            }
+
+            user.ParrotCoinBalance -= coins;
+            receiver.ParrotCoinBalance += coins;
+
+            var coinTransactionUser = new CoinTransaction
+            {
+                UserId = userId,
+                Amount = -coins,
+                Type = "send_parrotCoins",
+                Description = $"Sent to  {receiverId}",
+                VoyageId = 0, // no related voyage
+                CreatedAt = DateTime.UtcNow
+            };
+            var coinTransactionReceiver = new CoinTransaction
+            {
+                UserId = receiverId,
+                Amount = coins,
+                Type = "receive_parrotCoins",
+                Description = $"Received from {userId}",
+                VoyageId = 0, // no related voyage
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.CoinTransactions.Add(coinTransactionUser);
+            _context.CoinTransactions.Add(coinTransactionReceiver);
+
+            await _context.SaveChangesAsync();
+            return new ServiceResponse<int>
+            {
+                Data = user.ParrotCoinBalance, // return the new balance
+                Success = true,
+                Message = $"{coins} coins sent successfully and recorded."
+            };
+        }
+
+
+
         public async Task<ServiceResponse<ParrotCoinSummaryDto>> GetParrotCoinBalanceAndPurchases(string userId)
         {
             var user = await _context.Users

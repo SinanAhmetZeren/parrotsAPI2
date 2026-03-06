@@ -235,10 +235,31 @@ public class ChatHub : Hub
         return Task.CompletedTask;
     }
 
-    public Task<bool> CheckUnreadMessages(string userId)
+    // public Task<bool> CheckUnreadMessages(string userId)
+    // {
+    //     var isUnread = _unreadCache.TryGetValue(userId, out var value) && value;
+    //     return Task.FromResult(isUnread);
+    // }
+
+    public async Task<bool> CheckUnreadMessages(string userId)
     {
-        var isUnread = _unreadCache.TryGetValue(userId, out var value) && value;
-        return Task.FromResult(isUnread);
+        // 1️⃣ Try cache first
+        if (_unreadCache.TryGetValue(userId, out var hasUnread))
+        {
+            return hasUnread;
+        }
+
+        // 2️⃣ Cache miss → load from DB
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+        var user = await dbContext.Users.FindAsync(userId);
+
+        bool dbValue = user?.UnseenMessages ?? false;
+
+        // 3️⃣ Populate cache
+        _unreadCache[userId] = dbValue;
+
+        return dbValue;
     }
 
 }

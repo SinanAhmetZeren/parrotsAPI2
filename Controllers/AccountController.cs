@@ -224,7 +224,7 @@ namespace API.Controllers
                 existingUser.RefreshToken = _tokenService.GenerateRefreshToken();
                 existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
                 existingUser.EncryptionKey = GenerateBase64Key();
-                existingUser.PublicId = GeneratePublicId();
+                existingUser.PublicId = await GenerateUniquePublicId();
 
                 var updateResult = await _userManager.UpdateAsync(existingUser);
                 if (!updateResult.Succeeded)
@@ -269,7 +269,7 @@ namespace API.Controllers
                 NormalizedEmail = normalizedEmail,
                 NormalizedUserName = normalizedUserName,
                 EncryptionKey = GenerateBase64Key(),
-                PublicId = GeneratePublicId(),
+                PublicId = await GenerateUniquePublicId(),
                 Title = "Wanderer",
                 Bio = "Exploring new journeys."
             };
@@ -702,21 +702,27 @@ namespace API.Controllers
             return Convert.ToBase64String(key);
         }
 
-        private static string GeneratePublicId(int length = 8)
+        private async Task<string> GenerateUniquePublicId()
         {
+            int length = 10;
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            char[] id = new char[length];
-            byte[] randomBytes = new byte[length];
-
-            RandomNumberGenerator.Fill(randomBytes); // cryptographically secure
-
-            for (int i = 0; i < length; i++)
+            while (true)
             {
-                id[i] = chars[randomBytes[i] % chars.Length];
+                char[] id = new char[length];
+                byte[] randomBytes = new byte[length];
+                RandomNumberGenerator.Fill(randomBytes);
+                for (int i = 0; i < length; i++)
+                {
+                    id[i] = chars[randomBytes[i] % chars.Length];
+                }
+                string publicId = new string(id);
+                var exists = await _userManager.Users
+                    .AnyAsync(u => u.PublicId == publicId);
+                if (!exists)
+                    return publicId;
             }
-
-            return new string(id);
         }
+
 
         private void SendConfirmationEmailSafe(AppUser user) // HELPER FOR REGISTER ENDPOINT
         {

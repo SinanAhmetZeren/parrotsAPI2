@@ -247,6 +247,43 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
+        [HttpPost("SendParrotCoins")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> SendParrotCoins(UserSendCoinsDto deposit)
+        {
+            // Get user ID from JWT token
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            // Ensure the request is for the current user
+            if (requestUserId != deposit.UserId)
+            {
+                return Forbid();
+            }
+
+            // Call service to add coins and create CoinPurchase record
+            var response = await _userService.SendParrotCoins(
+                deposit.UserId,
+                deposit.ReceiverId,
+                deposit.Coins
+                );
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+
+
 
         [HttpGet("parrotCoinBalance/{userId}")]
         public async Task<ActionResult<ServiceResponse<int>>> GetParrotCoinBalanceAndPurchases(string userId)

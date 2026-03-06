@@ -4,6 +4,7 @@ using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Models
 {
+    [Index(nameof(PublicId), IsUnique = true)]
     public class AppUser : IdentityUser
     {
         public string? Title { get; set; }

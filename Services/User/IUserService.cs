@@ -17,6 +17,7 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile);
         Task<ServiceResponse<GetUserDto>> UpdateUserBackgroundImage(string userId, IFormFile imageFile);
         Task<ServiceResponse<int>> DepositCoinsAndRecordPurchase(string userId, int coins, decimal usdAmount, string PaymentProviderId);
+        Task<ServiceResponse<int>> SendParrotCoins(string userId, string receiverId, int coins);
         Task<ServiceResponse<ParrotCoinSummaryDto>> GetParrotCoinBalanceAndPurchases(string userId);
 
 
