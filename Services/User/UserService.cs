@@ -589,7 +589,7 @@ namespace ParrotsAPI2.Services.User
         }
 
 
-        public async Task<ServiceResponse<int>> DepositCoinsAndRecordPurchase(string userId, int coins, decimal usdAmount, string PaymentProviderId)
+        public async Task<ServiceResponse<int>> PurchaseCoins(string userId, int coins, decimal usdAmount, string PaymentProviderId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -654,7 +654,7 @@ namespace ParrotsAPI2.Services.User
                 UserId = userId,
                 Amount = -coins,
                 Type = "send_parrotCoins",
-                Description = $"Sent to  {receiverId}",
+                Description = $"Sent to  {receiver.UserName}",
                 VoyageId = 0, // no related voyage
                 CreatedAt = DateTime.UtcNow
             };
@@ -663,7 +663,7 @@ namespace ParrotsAPI2.Services.User
                 UserId = receiverId,
                 Amount = coins,
                 Type = "receive_parrotCoins",
-                Description = $"Received from {userId}",
+                Description = $"Received from {user.UserName}",
                 VoyageId = 0, // no related voyage
                 CreatedAt = DateTime.UtcNow
             };
@@ -685,7 +685,8 @@ namespace ParrotsAPI2.Services.User
         public async Task<ServiceResponse<ParrotCoinSummaryDto>> GetParrotCoinBalanceAndPurchases(string userId)
         {
             var user = await _context.Users
-                .Include(u => u.CoinPurchases) // load related purchases
+                .Include(u => u.CoinPurchases)
+                .Include(u => u.CoinTransactions)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
@@ -711,9 +712,19 @@ namespace ParrotsAPI2.Services.User
                         PaymentProviderId = p.PaymentProviderId,
                         CreatedAt = p.CreatedAt
                     })
+                    .ToList(),
+                Transactions = (user.CoinTransactions ?? Enumerable.Empty<CoinTransaction>())
+                    .OrderByDescending(p => p.CreatedAt)
+                    .Select(p => new CoinTransactionDto
+                    {
+                        Id = p.Id,
+                        CoinsAmount = p.Amount,
+                        Description = p.Description,
+                        CreatedAt = p.CreatedAt
+                    })
                     .ToList()
             };
-
+            var a = 0;
             return new ServiceResponse<ParrotCoinSummaryDto>
             {
                 Data = dto,

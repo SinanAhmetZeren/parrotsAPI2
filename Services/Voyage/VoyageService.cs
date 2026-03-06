@@ -179,7 +179,7 @@ namespace ParrotsAPI2.Services.Voyage
                         UserId = user.Id,
                         Amount = -requiredCoins,
                         Type = "voyage_cost",
-                        Description = $"Voyage {voyage.Id} creation",
+                        Description = $"Created Voyage {voyage.Name}, (Id: {voyage.Id}) ",
                         VoyageId = voyage.Id, // optional: link to voyage
                         CreatedAt = DateTime.UtcNow
                     };

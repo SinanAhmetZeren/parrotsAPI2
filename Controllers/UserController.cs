@@ -211,8 +211,8 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [HttpPost("DepositCoins")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DepositCoins(UserDepositCoinsDto deposit)
+        [HttpPost("PurchaseCoins")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> PurchaseCoins(UserDepositCoinsDto deposit)
         {
             // Get user ID from JWT token
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -232,7 +232,7 @@ namespace ParrotsAPI2.Controllers
             }
 
             // Call service to add coins and create CoinPurchase record
-            var response = await _userService.DepositCoinsAndRecordPurchase(
+            var response = await _userService.PurchaseCoins(
                 deposit.UserId,
                 deposit.Coins,
                 deposit.UsdAmount,
@@ -286,7 +286,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpGet("parrotCoinBalance/{userId}")]
-        public async Task<ActionResult<ServiceResponse<int>>> GetParrotCoinBalanceAndPurchases(string userId)
+        public async Task<ActionResult<ServiceResponse<ParrotCoinSummaryDto>>> GetParrotCoinBalanceAndPurchases(string userId)
         {
 
             // Get user ID from JWT token
