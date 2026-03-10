@@ -256,6 +256,128 @@ namespace ParrotsAPI2.Services.User
         }
 
 
+        public async Task<ServiceResponse<GetUserDto>> GetSingleUserByUsername(string username)
+        {
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            // Validate input id early
+            if (string.IsNullOrEmpty(username) || username == "null")
+            {
+                serviceResponse.Data = null;
+                serviceResponse.Message = "username is null or invalid";
+                stopwatch.Stop();
+                _logger.LogInformation($"GetSingleUserByUsername request took {stopwatch.ElapsedMilliseconds} ms");
+                return serviceResponse;
+            }
+
+            // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
+            var user = await _context.Users
+                .AsNoTracking()
+                .Include(u => u.SentMessages)
+                .Include(u => u.ReceivedMessages)
+                .Include(u => u.Vehicles)
+                .Include(u => u.Voyages)
+                .Include(u => u.Bids)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(c => c.UserName == username);
+
+            stopwatch.Stop();
+
+            if (user == null)
+            {
+                serviceResponse.Message = "User not found";
+                _logger.LogInformation($"GetSingleUserByUsername request took {stopwatch.ElapsedMilliseconds} ms");
+                return serviceResponse;
+            }
+
+            var confirmedVehicles = (user?.Vehicles != null)
+            ? user.Vehicles.Where(v => v.Confirmed && !v.IsDeleted).ToList()
+            : new List<Models.Vehicle>();
+
+            var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
+
+            var confirmedVoyages = (user?.Voyages != null)
+                ? user.Voyages.Where(v => v.Confirmed && !v.IsDeleted).ToList()
+                : new List<Models.Voyage>();
+
+            var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
+
+            // Create DTO explicitly instead of AutoMapper for this part - can also be mapped if preferred
+            var userDto = new GetUserDto
+            {
+                Id = user?.Id ?? string.Empty,
+                PublicId = user?.PublicId ?? string.Empty,
+                UserName = user?.UserName ?? string.Empty,
+                Title = user?.Title ?? string.Empty,
+                Bio = user?.Bio ?? string.Empty,
+                Email = user?.Email ?? string.Empty,
+                DisplayEmail = user?.DisplayEmail ?? string.Empty,
+                Instagram = user?.Instagram ?? string.Empty,
+                Twitter = user?.Twitter ?? string.Empty,
+                Tiktok = user?.Tiktok ?? string.Empty,
+                Linkedin = user?.Linkedin ?? string.Empty,
+                Facebook = user?.Facebook ?? string.Empty,
+                PhoneNumber = user?.PhoneNumber ?? string.Empty,
+                Youtube = user?.Youtube ?? string.Empty,
+                ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
+                BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
+                ImageFile = default!,
+                UnseenMessages = user != null ? user.UnseenMessages : false,
+                UsersVehicles = vehicleDtos,
+                UsersVoyages = voyageDtos,
+                // EmailVisible = user!= null ? user.EmailVisible : false,
+                EmailVisible = true,
+            };
+
+            serviceResponse.Data = userDto;
+            _logger.LogInformation($"GetSingleUserByUsername request took {stopwatch.ElapsedMilliseconds} ms");
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<UserDto>> GetSingleUserByUsername2(string username)
+        {
+            var serviceResponse = new ServiceResponse<UserDto>();
+
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Username is null or empty";
+                serviceResponse.Data = null;
+                return serviceResponse;
+            }
+
+            // Find the first matching user (exclude "admin")
+            var user = await _context.Users
+                .Where(u => u.UserName != null
+                            && u.UserName.Contains(username)
+                            && u.UserName.ToLower() != "admin")
+                .FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                serviceResponse.Data = new UserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName ?? string.Empty,
+                    ProfileImageUrl = user.ProfileImageUrl,
+                    PublicId = user.PublicId
+                };
+                serviceResponse.Success = true;
+            }
+            else
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "No user found with the specified username";
+                serviceResponse.Data = null;
+            }
+
+            return serviceResponse;
+        }
+
+
+
         public async Task<ServiceResponse<GetUserDto>> GetUserByPublicId(string publicId)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
@@ -587,7 +709,6 @@ namespace ParrotsAPI2.Services.User
 
             return serviceResponse;
         }
-
 
         public async Task<ServiceResponse<int>> PurchaseCoins(string userId, int coins, decimal usdAmount, string PaymentProviderId)
         {

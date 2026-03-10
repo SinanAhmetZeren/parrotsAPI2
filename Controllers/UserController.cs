@@ -210,6 +210,12 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _userService.GetUsersByUsername(username));
         }
 
+        [HttpGet("singleUserByUsername/{username}")]
+        public async Task<ActionResult<ServiceResponse<UserDto>>> GetSingleUserByUserName(string username)
+        {
+            return Ok(await _userService.GetSingleUserByUsername(username));
+        }
+
 
         [HttpPost("PurchaseCoins")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> PurchaseCoins(UserDepositCoinsDto deposit)
