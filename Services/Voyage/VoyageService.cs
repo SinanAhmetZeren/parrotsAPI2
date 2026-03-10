@@ -437,6 +437,78 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
+
+
+        public async Task<ServiceResponse<GetVoyageAdminDto>> GetVoyageByIdAdmin(int id)
+        {
+            var serviceResponse = new ServiceResponse<GetVoyageAdminDto>();
+            var voyage = await _context.Voyages
+                .Include(v => v.User)
+                .Include(v => v.VoyageImages)
+                .Include(v => v.Vehicle)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (voyage == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Voyage not found";
+                return serviceResponse;
+            }
+
+            // Map related entities to their DTOs
+            var userDto = _mapper.Map<UserDto>(voyage.User);
+            var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages);
+            var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
+
+            // Improved bid query with async and projection
+            var bidDtos = await _context.Bids
+                .Where(bid => bid.VoyageId == id)
+                .Select(bid => new VoyageBidDto
+                {
+                    Accepted = bid.Accepted,
+                    Id = bid.Id,
+                    Message = bid.Message,
+                    OfferPrice = bid.OfferPrice,
+                    // Currency = bid.Currency,
+                    DateTime = bid.DateTime,
+                    VoyageId = bid.VoyageId,
+                    UserId = bid.UserId,
+                    PersonCount = bid.PersonCount,
+                    UserName = _context.Users
+                        .Where(u => u.Id == bid.UserId)
+                        .Select(u => u.UserName)
+                        .FirstOrDefault(),
+                    UserProfileImage = _context.Users
+                        .Where(u => u.Id == bid.UserId)
+                        .Select(u => u.ProfileImageUrl)
+                        .FirstOrDefault(),
+                    UserPublicId = _context.Users
+                        .Where(u => u.Id == bid.UserId)
+                        .Select(u => u.PublicId)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            // Map voyage entity to DTO
+            var voyageDto = _mapper.Map<GetVoyageAdminDto>(voyage);
+
+            // Get waypoints asynchronously
+            var waypointDtos = await _context.Waypoints
+                .Where(w => w.VoyageId == id)
+                .Select(w => _mapper.Map<GetWaypointDto>(w))
+                .ToListAsync();
+
+            // Assign related DTOs
+            voyageDto.User = userDto;
+            voyageDto.VoyageImages = voyageImageDtos;
+            voyageDto.Vehicle = vehicleDto;
+            voyageDto.Bids = bidDtos;
+            voyageDto.Waypoints = waypointDtos;
+
+            serviceResponse.Data = voyageDto;
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<GetVoyageDto>> GetUnconfirmedVoyageById(int id)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
@@ -639,50 +711,51 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
-        {
-            var serviceResponse = new ServiceResponse<GetVoyageDto>();
-            try
-            {
-
-                if (updatedVoyage == null)
+        /*
+                public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage)
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Updated voyage data is null";
+                    var serviceResponse = new ServiceResponse<GetVoyageDto>();
+                    try
+                    {
+
+                        if (updatedVoyage == null)
+                        {
+                            serviceResponse.Success = false;
+                            serviceResponse.Message = "Updated voyage data is null";
+                            return serviceResponse;
+                        }
+
+                        var voyage = await _context.Voyages.FindAsync(updatedVoyage.Id);
+                        if (voyage == null)
+                        {
+                            throw new Exception($"Voyage with ID `{updatedVoyage.Id}` not found");
+                        }
+                        voyage.Name = updatedVoyage.Name;
+                        voyage.Brief = updatedVoyage.Brief;
+                        voyage.Description = updatedVoyage.Description;
+                        voyage.Vacancy = updatedVoyage.Vacancy;
+                        voyage.StartDate = updatedVoyage.StartDate;
+                        voyage.EndDate = updatedVoyage.EndDate;
+                        voyage.LastBidDate = updatedVoyage.LastBidDate;
+                        voyage.MinPrice = updatedVoyage.MinPrice;
+                        voyage.MaxPrice = updatedVoyage.MaxPrice;
+                        voyage.FixedPrice = updatedVoyage.FixedPrice;
+                        voyage.Auction = updatedVoyage.Auction;
+                        voyage.PublicOnMap = updatedVoyage.PublicOnMap;
+                        voyage.ProfileImage = updatedVoyage.ProfileImage;
+
+
+                        await _context.SaveChangesAsync();
+                        serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
+                    }
+                    catch (Exception ex)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = ex.Message;
+                    }
                     return serviceResponse;
                 }
-
-                var voyage = await _context.Voyages.FindAsync(updatedVoyage.Id);
-                if (voyage == null)
-                {
-                    throw new Exception($"Voyage with ID `{updatedVoyage.Id}` not found");
-                }
-                voyage.Name = updatedVoyage.Name;
-                voyage.Brief = updatedVoyage.Brief;
-                voyage.Description = updatedVoyage.Description;
-                voyage.Vacancy = updatedVoyage.Vacancy;
-                voyage.StartDate = updatedVoyage.StartDate;
-                voyage.EndDate = updatedVoyage.EndDate;
-                voyage.LastBidDate = updatedVoyage.LastBidDate;
-                voyage.MinPrice = updatedVoyage.MinPrice;
-                voyage.MaxPrice = updatedVoyage.MaxPrice;
-                voyage.FixedPrice = updatedVoyage.FixedPrice;
-                voyage.Auction = updatedVoyage.Auction;
-                voyage.PublicOnMap = updatedVoyage.PublicOnMap;
-                voyage.ProfileImage = updatedVoyage.ProfileImage;
-
-
-                await _context.SaveChangesAsync();
-                serviceResponse.Data = _mapper.Map<GetVoyageDto>(voyage);
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
-            }
-            return serviceResponse;
-        }
-
+        */
         public async Task<ServiceResponse<GetVoyageDto>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile, string userId)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();

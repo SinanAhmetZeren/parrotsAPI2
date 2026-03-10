@@ -25,6 +25,13 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _voyageService.GetVoyageById(id));
         }
 
+        [HttpGet("GetVoyageByIdAdmin/{id}")]
+        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingleAdmin(int id)
+        {
+            return Ok(await _voyageService.GetVoyageByIdAdmin(id));
+        }
+
+
 
         [HttpGet("GetVoyageByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByUserId(string userId)
@@ -97,8 +104,6 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> PatchVoyage(
             int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc)
         {
-
-
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
@@ -109,7 +114,7 @@ namespace ParrotsAPI2.Controllers
                 });
             }
 
-            var voyageResponse = await _voyageService.GetVoyageById(voyageId);
+            var voyageResponse = await _voyageService.GetVoyageByIdAdmin(voyageId);
             if (voyageResponse.Data == null)
             {
                 return NotFound(voyageResponse);

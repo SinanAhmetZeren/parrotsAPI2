@@ -13,7 +13,7 @@ namespace ParrotsAPI2
     {
         public AutoMapperProfile()
         {
-            
+
             CreateMap<AppUser, GetUserDto>();
             CreateMap<AddUserDto, AppUser>();
             CreateMap<AppUser, UpdateUserDto>();
@@ -32,7 +32,7 @@ namespace ParrotsAPI2
             CreateMap<VehicleDto, Vehicle>();
             CreateMap<GetUsersVehiclesDto, Vehicle>();
             CreateMap<Vehicle, GetUsersVehiclesDto>();
-            
+
             CreateMap<VehicleImage, VehicleImageDto>();
             CreateMap<VehicleImageDto, VehicleImage>();
 
@@ -40,6 +40,7 @@ namespace ParrotsAPI2
             CreateMap<VoyageImageDto, VoyageImage>();
 
             CreateMap<Voyage, GetVoyageDto>();
+            CreateMap<Voyage, GetVoyageAdminDto>();
             CreateMap<Voyage, VoyageDto>();
             CreateMap<AddVoyageDto, Voyage>();
             CreateMap<Voyage, UpdateVoyageDto>();

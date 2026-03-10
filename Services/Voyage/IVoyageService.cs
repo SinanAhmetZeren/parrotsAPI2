@@ -7,11 +7,12 @@ namespace ParrotsAPI2.Services.Voyage
     {
         Task<ServiceResponse<List<GetVoyageDto>>> GetAllVoyages();
         Task<ServiceResponse<GetVoyageDto>> GetVoyageById(int id);
+        Task<ServiceResponse<GetVoyageAdminDto>> GetVoyageByIdAdmin(int id);
         Task<ServiceResponse<GetVoyageDto>> GetUnconfirmedVoyageById(int id);
         Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(string userId);
         Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByVehicleId(int vehicleId);
         Task<ServiceResponse<GetVoyageDto>> AddVoyage(AddVoyageDto newVoyage, string userId);
-        Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage);
+        // Task<ServiceResponse<GetVoyageDto>> UpdateVoyage(UpdateVoyageDto updatedVoyage);
         Task<ServiceResponse<string>> DeleteVoyage(int id);
         Task<ServiceResponse<List<GetVoyageDto>>> CheckAndDeleteVoyage(int id);
         Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState);
