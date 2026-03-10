@@ -37,6 +37,8 @@ namespace ParrotsAPI2.Models
         public int ParrotCoinBalance { get; set; }
         public ICollection<CoinPurchase>? CoinPurchases { get; set; }
         public ICollection<CoinTransaction>? CoinTransactions { get; set; }
+        public bool IsAdmin { get; set; } = false;
+
 
     }
 }

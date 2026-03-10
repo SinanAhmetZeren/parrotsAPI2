@@ -1,4 +1,5 @@
-﻿using ParrotsAPI2.Dtos.BidDtos;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ParrotsAPI2.Dtos.BidDtos;
 
 namespace ParrotsAPI2.Services.Bid
 {
@@ -12,5 +13,7 @@ namespace ParrotsAPI2.Services.Bid
         Task<ServiceResponse<GetBidDto>> ChangeBid(ChangeBidDto changedBid);
         Task<ServiceResponse<string>> AcceptBid(int bidId, string voyageOwnerId);
         Task<ServiceResponse<string>> DeleteBid(int bidId, string voyageOwnerId);
+        Task<ServiceResponse<GetBidDto>> PatchBid(int bidId, JsonPatchDocument<ChangeBidDto> patchDoc, ModelStateDictionary modelState);
+
     }
 }

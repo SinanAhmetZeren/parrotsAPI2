@@ -35,7 +35,7 @@ namespace ParrotsAPI2.Controllers
             }
             if (newBid.UserId != voyageOwnerId)
             {
-                return Forbid(); 
+                return Forbid();
             }
 
             var serviceResponse = await _bidService.CreateBid(newBid);
@@ -83,7 +83,7 @@ namespace ParrotsAPI2.Controllers
                     Message = "User identity not found."
                 });
             }
- 
+
             var existingBidResponse = await _bidService.GetBidById(changedBid.Id);
             if (!existingBidResponse.Success || existingBidResponse.Data == null)
             {
@@ -128,51 +128,66 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        /*
-        [HttpGet("bidId/{bidId}")]
-        public async Task<ActionResult<ServiceResponse<BidDto>>> GetBidById(int bidId)
-        {
-            var serviceResponse = await _bidService.GetBidById(bidId);
 
-            if (serviceResponse.Success)
-            {
-                return Ok(serviceResponse);
-            }
-
-            return NotFound(serviceResponse);
-        }
-        */
-
-        /*
         [HttpGet("userBids/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByUserId(string userId)
         {
             var serviceResponse = await _bidService.GetBidsByUserId(userId);
-
             if (serviceResponse.Success)
             {
                 return Ok(serviceResponse);
             }
-
             return NotFound(serviceResponse);
         }
-        */
 
-        /*
         [HttpGet("voyageBids/{voyageId}")]
         public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByVoyageId(int voyageId)
         {
             var serviceResponse = await _bidService.GetBidsByVoyageId(voyageId);
-
             if (serviceResponse.Success)
             {
                 return Ok(serviceResponse);
             }
-
             return NotFound(serviceResponse);
         }
-        */
 
+
+
+        [HttpPatch("patchBid/{bidId}")]
+        public async Task<ActionResult<ServiceResponse<BidDto>>> PatchBid(
+            int bidId,
+            [FromBody] JsonPatchDocument<ChangeBidDto> patchDoc)
+        {
+            var isAdmin = User.IsInRole("Admin");
+            if (!isAdmin)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Only admins can patch bids."
+                });
+            }
+
+            var existingBidResponse = await _bidService.GetBidById(bidId);
+
+            if (!existingBidResponse.Success || existingBidResponse.Data == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Bid not found."
+                });
+            }
+
+            var response = await _bidService.PatchBid(bidId, patchDoc, ModelState);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
 
 
 

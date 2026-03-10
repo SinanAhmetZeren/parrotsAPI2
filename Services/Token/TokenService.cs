@@ -29,6 +29,8 @@ namespace ParrotsAPI2.Services.Token
                 new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+
             };
 
             var tokenKey = _config["TokenKey"] ?? throw new InvalidOperationException("TokenKey is not configured.");
@@ -39,7 +41,7 @@ namespace ParrotsAPI2.Services.Token
             {
                 Subject = new ClaimsIdentity(claims),
                 // Expires = DateTime.UtcNow.AddDays(1),
-                 Expires = DateTime.UtcNow.AddSeconds(5000000000),
+                Expires = DateTime.UtcNow.AddSeconds(5000000000),
                 SigningCredentials = creds
             };
 

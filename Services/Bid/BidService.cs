@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.BidDtos;
 using ParrotsAPI2.Models;
 
@@ -134,6 +136,7 @@ namespace ParrotsAPI2.Services.Bid
             try
             {
                 var bids = await _context.Bids
+                    .AsNoTracking()
                     .Where(b => b.UserId == userId)
                     .Join(
                         _context.Voyages,
@@ -145,7 +148,7 @@ namespace ParrotsAPI2.Services.Bid
                         _context.Users,
                         combined => combined.Bid.UserId,
                         user => user.Id,
-                        (combined, user) => new { Bid = combined.Bid, Voyage = combined.Voyage, User = user }
+                        (combined, user) => new { combined.Bid, combined.Voyage, User = user }
                     )
                     .Select(combined => new GetBidDto
                     {
@@ -182,6 +185,7 @@ namespace ParrotsAPI2.Services.Bid
             try
             {
                 var bids = await _context.Bids
+                    .AsNoTracking()
                     .Where(b => b.VoyageId == voyageId)
                     .Join(
                         _context.Voyages,
@@ -193,7 +197,7 @@ namespace ParrotsAPI2.Services.Bid
                         _context.Users,
                         combined => combined.Bid.UserId,
                         user => user.Id,
-                        (combined, user) => new { Bid = combined.Bid, Voyage = combined.Voyage, User = user }
+                        (combined, user) => new { combined.Bid, combined.Voyage, User = user }
                     )
                     .Select(combined => new GetBidDto
                     {
@@ -202,6 +206,7 @@ namespace ParrotsAPI2.Services.Bid
                         Message = combined.Bid.Message,
                         OfferPrice = combined.Bid.OfferPrice,
                         // Currency = combined.Bid.Currency,
+                        Accepted = combined.Bid.Accepted,
                         DateTime = combined.Bid.DateTime,
                         VoyageId = combined.Bid.VoyageId,
                         UserId = combined.Bid.UserId,
@@ -309,6 +314,58 @@ namespace ParrotsAPI2.Services.Bid
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error accepting bid: {ex.Message}";
             }
+            return serviceResponse;
+        }
+
+
+
+        public async Task<ServiceResponse<GetBidDto>> PatchBid(int bidId, JsonPatchDocument<ChangeBidDto> patchDoc, ModelStateDictionary modelState)
+        {
+            var serviceResponse = new ServiceResponse<GetBidDto>();
+
+            try
+            {
+                var bid = await _context.Bids.FindAsync(bidId);
+                if (bid == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Bid with ID `{bidId}` not found";
+                    return serviceResponse;
+                }
+
+                if (patchDoc == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Patch document is null";
+                    return serviceResponse;
+                }
+
+                var bidDto = _mapper.Map<ChangeBidDto>(bid);
+                patchDoc.ApplyTo(bidDto, modelState);
+
+                if (!modelState.IsValid)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid model state after patch operations";
+                    return serviceResponse;
+                }
+
+                _mapper.Map(bidDto, bid);
+                _context.Bids.Update(bid);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = _mapper.Map<GetBidDto>(bid);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error patching voyage: {ex.Message}";
+                if (ex.InnerException != null)
+                {
+                    serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
+                }
+            }
+
             return serviceResponse;
         }
 
