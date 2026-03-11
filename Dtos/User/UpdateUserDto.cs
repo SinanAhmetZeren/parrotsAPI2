@@ -7,7 +7,7 @@
         public string Title { get; set; } = string.Empty;
         public string Bio { get; set; } = string.Empty;
         // public string Email { get; set; } = string.Empty;
-        public string DisplayEmail { get; set; }= string.Empty;
+        public string DisplayEmail { get; set; } = string.Empty;
 
         public string Tiktok { get; set; } = string.Empty;
         public string Twitter { get; set; } = string.Empty;
@@ -20,6 +20,8 @@
         public string ProfileImageUrl { get; set; } = string.Empty;
         public string BackgroundImageUrl { get; set; } = string.Empty;
         public IFormFile? ImageFile { get; set; }
+        public int ParrotCoinBalance { get; set; }
+
 
     }
 }

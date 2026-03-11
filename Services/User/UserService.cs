@@ -248,6 +248,7 @@ namespace ParrotsAPI2.Services.User
                 UsersVoyages = voyageDtos,
                 // EmailVisible = user!= null ? user.EmailVisible : false,
                 EmailVisible = true,
+                ParrotCoinBalance = user?.ParrotCoinBalance ?? 0,
             };
 
             serviceResponse.Data = userDto;
@@ -329,6 +330,8 @@ namespace ParrotsAPI2.Services.User
                 UsersVoyages = voyageDtos,
                 // EmailVisible = user!= null ? user.EmailVisible : false,
                 EmailVisible = true,
+                ParrotCoinBalance = user?.ParrotCoinBalance ?? 0,
+
             };
 
             serviceResponse.Data = userDto;
@@ -561,9 +564,6 @@ namespace ParrotsAPI2.Services.User
             [FromBody] JsonPatchDocument<UpdateUserDto> patchDoc,
             ModelStateDictionary modelState)
         {
-
-
-
             var serviceResponse = new ServiceResponse<GetUserDto>();
             try
             {

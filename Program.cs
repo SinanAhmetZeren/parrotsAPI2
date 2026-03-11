@@ -106,6 +106,7 @@ builder.Services.AddScoped<IWaypointService, WaypointService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IBidService, BidService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IMetricsService, MetricsService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<TokenService>();
 // builder.Services.AddScoped<ChatHub>();

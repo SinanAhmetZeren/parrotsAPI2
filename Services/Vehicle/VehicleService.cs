@@ -298,7 +298,7 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
 
-            if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run)
+            if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run || vehicle.Type == VehicleType.Train)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Run or walk cant be fetched.";
@@ -339,7 +339,7 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
 
-            if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run)
+            if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run || vehicle.Type == VehicleType.Train)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Run or walk cant be fetched.";

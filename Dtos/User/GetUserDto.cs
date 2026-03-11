@@ -27,6 +27,7 @@
         public List<Message>? SentMessages { get; set; }
         public List<Message>? ReceivedMessages { get; set; }
         public string PublicId { get; set; } = string.Empty;
+        public int ParrotCoinBalance { get; set; }
 
     }
 }
