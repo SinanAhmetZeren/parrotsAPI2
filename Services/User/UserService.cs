@@ -555,6 +555,71 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
+
+        public async Task<ServiceResponse<GetUserDto>> PatchUserAdmin(
+            string userId,
+            [FromBody] JsonPatchDocument<UpdateUserDto> patchDoc,
+            ModelStateDictionary modelState)
+        {
+
+
+
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            try
+            {
+                // ✅ Check if patchDoc is null before proceeding
+                if (patchDoc == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Patch document cannot be null.";
+                    return serviceResponse;
+                }
+
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null)
+                {
+                    // ✅ Clean error message when user not found
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"User with ID `{userId}` not found.";
+                    return serviceResponse;
+                }
+
+                // ✅ Map AppUser → UpdateUserDto
+                var userDto = _mapper.Map<UpdateUserDto>(user);
+
+                // ✅ Apply patch and pass ModelState for validation feedback
+                patchDoc.ApplyTo(userDto, modelState);
+
+                // ✅ Use ModelStateDictionary to catch validation errors
+                if (!modelState.IsValid)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid model state after applying patch operations.";
+                    return serviceResponse;
+                }
+
+                // ✅ Map patched DTO back to entity
+                _mapper.Map(userDto, user);
+
+                // ✅ Mark entity as modified and persist changes
+                _context.Users.Attach(user);
+                _context.Entry(user).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+                // ✅ Map result to GetUserDto for response
+                serviceResponse.Data = _mapper.Map<GetUserDto>(user);
+            }
+            catch (Exception ex)
+            {
+                // ✅ Clean exception handling with message
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error while patching user: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();

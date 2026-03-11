@@ -321,6 +321,48 @@ namespace ParrotsAPI2.Services.Vehicle
 
         }
 
+
+
+        public async Task<ServiceResponse<GetVehicleDto>> GetVehicleByIdAdmin(int id)
+        {
+            var serviceResponse = new ServiceResponse<GetVehicleDto>();
+            var vehicle = await _context.Vehicles
+                .Include(v => v.User)
+                .Include(v => v.VehicleImages)
+                .Include(v => v.Voyages)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (vehicle == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Vehicle not found";
+                return serviceResponse;
+            }
+
+            if (vehicle.Type == VehicleType.Walk || vehicle.Type == VehicleType.Run)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Run or walk cant be fetched.";
+                return serviceResponse;
+            }
+
+            var userDto = _mapper.Map<UserDto>(vehicle?.User);
+            var vehicleImageDtos = _mapper.Map<List<VehicleImageDto>>(vehicle?.VehicleImages);
+            var voyageDtos = _mapper.Map<List<VoyageDto>>(vehicle?.Voyages);
+
+            var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
+
+            vehicleDto.User = userDto;
+            vehicleDto.VehicleImages = vehicleImageDtos;
+            vehicleDto.Voyages = voyageDtos;
+            serviceResponse.Data = vehicleDto;
+
+            // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+            return serviceResponse;
+
+        }
+
+
         public async Task<ServiceResponse<GetVehicleDto>> GetUnconfirmedVehicleById(int id)
         {
             var serviceResponse = new ServiceResponse<GetVehicleDto>();
@@ -514,6 +556,79 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             return serviceResponse;
         }
+
+
+        public async Task<ServiceResponse<GetVehicleDto>> PatchVehicleAdmin(int vehicleId, [FromBody] JsonPatchDocument<UpdateVehicleDto> patchDoc, ModelStateDictionary modelState)
+        {
+            var serviceResponse = new ServiceResponse<GetVehicleDto>();
+            try
+            {
+                var vehicle = await _context.Vehicles.FindAsync(vehicleId);
+                if (vehicle == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Vehicle with ID `{vehicleId}` not found.";
+                    return serviceResponse;
+                }
+                // var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
+                var vehicleDto = _mapper.Map<UpdateVehicleDto>(vehicle);
+                // if patchdoc vheicle type is walk or run, return error
+                if (vehicleDto.Type == VehicleType.Walk || vehicleDto.Type == VehicleType.Run)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Walk and Run vehicles cannot be patched.";
+                    return serviceResponse;
+                }
+
+                // Check if patchDoc tries to modify "userId"
+                var userIdOp = patchDoc.Operations
+                                        .FirstOrDefault(op => op.path.Trim('/').Equals("userId", StringComparison.OrdinalIgnoreCase));
+
+                if (userIdOp != null)
+                {
+                    string? newUserId = userIdOp.value?.ToString();
+                    if (string.IsNullOrWhiteSpace(newUserId))
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "userId cannot be empty.";
+                        return serviceResponse;
+                    }
+
+                    bool userExists = await _context.Users.AnyAsync(u => u.Id == newUserId);
+                    if (!userExists)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = $"User with ID `{newUserId}` does not exist.";
+                        return serviceResponse;
+                    }
+                }
+                // --- End validation ---
+
+
+                patchDoc.ApplyTo(vehicleDto, modelState);
+                if (!modelState.IsValid)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid model state after applying patch.";
+                    return serviceResponse;
+                }
+                _mapper.Map(vehicleDto, vehicle);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error updating vehicle: {ex.Message}";
+                if (ex.InnerException != null)
+                {
+                    serviceResponse.Message += $" Inner Exception: {ex.InnerException.Message}";
+                }
+            }
+            return serviceResponse;
+        }
+
+
 
         public async Task<ServiceResponse<GetVehicleDto>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile, string userId)
         {

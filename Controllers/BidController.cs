@@ -164,7 +164,7 @@ namespace ParrotsAPI2.Controllers
                 return Unauthorized(new ServiceResponse<string>
                 {
                     Success = false,
-                    Message = "Only admins can patch bids."
+                    Message = "Only admins can patch bids from here."
                 });
             }
 

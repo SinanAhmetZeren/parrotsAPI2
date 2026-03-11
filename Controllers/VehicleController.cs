@@ -33,6 +33,12 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _vehicleService.GetVehicleById(id));
         }
 
+        [HttpGet("GetVehicleByIdAdmin/{id}")]
+        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingleAdmin(int id)
+        {
+            return Ok(await _vehicleService.GetVehicleByIdAdmin(id));
+        }
+
         [HttpGet("GetVehiclesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> GetVehiclesByUserId(string userId)
         {
@@ -152,6 +158,50 @@ namespace ParrotsAPI2.Controllers
 
             return Ok(response);
         }
+
+
+        [HttpPatch("PatchVehicleAdmin/{vehicleId}")]
+        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> PatchVehicleAdmin(
+                 int vehicleId, JsonPatchDocument<UpdateVehicleDto> patchDoc)
+        {
+
+            var isAdmin = User.IsInRole("Admin");
+            if (!isAdmin)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Only admins can patch vehicles from here."
+                });
+            }
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+            var vehicle = await _vehicleService.GetVehicleByIdAdmin(vehicleId);
+            if (vehicle == null)
+            {
+                return NotFound(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Vehicle not found."
+                });
+            }
+            var response = await _vehicleService.PatchVehicleAdmin(vehicleId, patchDoc, ModelState);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+
+
 
         [HttpDelete("DeleteVehicle/{id}")]
         public async Task<ActionResult<ServiceResponse<string>>> DeleteVehicle(int id)

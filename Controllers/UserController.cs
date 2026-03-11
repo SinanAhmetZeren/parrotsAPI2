@@ -139,6 +139,50 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
+
+        [HttpPatch("PatchUserAdmin/{userId}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUserAdmin(
+            string userId, JsonPatchDocument<UpdateUserDto> patchDoc)
+        {
+
+            var isAdmin = User.IsInRole("Admin");
+            if (!isAdmin)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Only admins can patch users from here."
+                });
+            }
+
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
+
+            var response = await _userService.PatchUser(userId, patchDoc, ModelState);
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+
+
+
+
+
+
+
+
         [Consumes("multipart/form-data")]
         [HttpPost("{userId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateProfileImage(string userId, IFormFile imageFile)

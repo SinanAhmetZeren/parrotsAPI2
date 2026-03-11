@@ -661,7 +661,7 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> PatchVoyage(int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState)
+        public async Task<ServiceResponse<GetVoyageDto>> PatchVoyageAdmin(int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc, ModelStateDictionary modelState)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
 

@@ -100,7 +100,7 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [HttpPatch("PatchVoyage/{voyageId}")]
+        [HttpPatch("PatchVoyageAdmin/{voyageId}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> PatchVoyage(
             int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc)
         {
@@ -124,7 +124,7 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            var response = await _voyageService.PatchVoyage(voyageId, patchDoc, ModelState);
+            var response = await _voyageService.PatchVoyageAdmin(voyageId, patchDoc, ModelState);
 
             if (response.Data == null)
             {
