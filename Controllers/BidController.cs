@@ -129,9 +129,13 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [HttpGet("userBids/{userId}")]
-        public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByUserId(string userId)
+        [HttpGet("userBids/{userId}")]  // admin check
+        [Authorize(Roles = "Admin")]
+
+        public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByUserIdAdmin(string userId)
         {
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+
             var serviceResponse = await _bidService.GetBidsByUserId(userId);
             if (serviceResponse.Success)
             {
@@ -141,8 +145,13 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpGet("voyageBids/{voyageId}")]
-        public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByVoyageId(int voyageId)
+        [Authorize(Roles = "Admin")]
+
+        public async Task<ActionResult<ServiceResponse<List<BidDto>>>> GetBidsByVoyageIdAdmin(int voyageId)
         {
+
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+
             var serviceResponse = await _bidService.GetBidsByVoyageId(voyageId);
             if (serviceResponse.Success)
             {
@@ -154,22 +163,14 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPatch("patchBid/{bidId}")]
-        public async Task<ActionResult<ServiceResponse<BidDto>>> PatchBid(
+        [Authorize(Roles = "Admin")]
+
+        public async Task<ActionResult<ServiceResponse<BidDto>>> PatchBidAdmin(
             int bidId,
             [FromBody] JsonPatchDocument<ChangeBidDto> patchDoc)
         {
-            var isAdmin = User.IsInRole("Admin");
-            if (!isAdmin)
-            {
-                return Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "Only admins can patch bids from here."
-                });
-            }
-
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
             var existingBidResponse = await _bidService.GetBidById(bidId);
-
             if (!existingBidResponse.Success || existingBidResponse.Data == null)
             {
                 return NotFound(new ServiceResponse<string>
@@ -189,7 +190,20 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-
+        private bool CheckAdmin(out ActionResult result)
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                result = Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Only admins can access this endpoint."
+                });
+                return false;
+            }
+            result = null;
+            return true;
+        }
 
     }
 }

@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Services;
 using ParrotsAPI2.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize] // optional, enable if you want admin-only access
+    [Authorize(Roles = "Admin")]
     public class MetricsController : ControllerBase
     {
         private readonly IMetricsService _metricsService;
@@ -35,8 +36,8 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("weeklyPurchases")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyPurchaseDto>>>> GetWeeklyPurchases()
         {
-            if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
-
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+            // APPLIED ADMIN TO THE CONTROLLER
             var response = await _metricsService.GetWeeklyPurchases();
             if (!response.Success)
                 return BadRequest(response);
@@ -46,8 +47,9 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("weeklyTransactions")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyTransactionsDto>>>> GetWeeklyTransactions()
         {
-            if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
 
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+            // APPLIED ADMIN TO THE CONTROLLER
             var response = await _metricsService.GetWeeklyTransactions();
             if (!response.Success)
                 return BadRequest(response);

@@ -26,8 +26,11 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpGet("GetVoyageByIdAdmin/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingleAdmin(int id)
         {
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+
             return Ok(await _voyageService.GetVoyageByIdAdmin(id));
         }
 
@@ -101,27 +104,18 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPatch("PatchVoyageAdmin/{voyageId}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> PatchVoyage(
             int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc)
         {
-            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (requestUserId == null)
-            {
-                return Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "User identity not found."
-                });
-            }
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+
 
             var voyageResponse = await _voyageService.GetVoyageByIdAdmin(voyageId);
             if (voyageResponse.Data == null)
             {
                 return NotFound(voyageResponse);
-            }
-            if (requestUserId != voyageResponse.Data.UserId)
-            {
-                return Forbid();
             }
 
             var response = await _voyageService.PatchVoyageAdmin(voyageId, patchDoc, ModelState);
@@ -357,6 +351,23 @@ namespace ParrotsAPI2.Controllers
                 return BadRequest($"Error: {ex.Message}");
             }
         }
+
+
+        private bool CheckAdmin(out ActionResult result)
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                result = Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Only admins can access this endpoint."
+                });
+                return false;
+            }
+            result = null;
+            return true;
+        }
+
 
     }
 }

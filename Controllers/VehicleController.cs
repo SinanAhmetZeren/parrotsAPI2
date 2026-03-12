@@ -34,8 +34,11 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpGet("GetVehicleByIdAdmin/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingleAdmin(int id)
         {
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+
             return Ok(await _vehicleService.GetVehicleByIdAdmin(id));
         }
 
@@ -161,20 +164,12 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPatch("PatchVehicleAdmin/{vehicleId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> PatchVehicleAdmin(
                  int vehicleId, JsonPatchDocument<UpdateVehicleDto> patchDoc)
         {
 
-            var isAdmin = User.IsInRole("Admin");
-            if (!isAdmin)
-            {
-                return Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "Only admins can patch vehicles from here."
-                });
-            }
-
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
@@ -394,6 +389,23 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
 
         }
+
+
+        private bool CheckAdmin(out ActionResult result)
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                result = Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Only admins can access this endpoint."
+                });
+                return false;
+            }
+            result = null;
+            return true;
+        }
+
 
     }
 }

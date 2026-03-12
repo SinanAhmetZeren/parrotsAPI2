@@ -259,7 +259,7 @@ namespace ParrotsAPI2.Services.User
 
         public async Task<ServiceResponse<GetUserDto>> GetSingleUserByUsername(string username)
         {
-            var serviceResponse = new ServiceResponse<GetUserDto>();
+            var serviceResponse = new ServiceResponse<GetUserDto>(); //xxxxxxx
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 

@@ -8,7 +8,7 @@ namespace ParrotsAPI2.Controllers
     [Route("api/[controller]")]
     [ApiController]
     // [Authorize]
-    [AllowAnonymous] // Uncomment this line to allow anonymous access
+    //[AllowAnonymous] // Uncomment this line to allow anonymous access
 
     public class UserController : ControllerBase
     {
@@ -141,20 +141,12 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPatch("PatchUserAdmin/{userId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUserAdmin(
             string userId, JsonPatchDocument<UpdateUserDto> patchDoc)
         {
 
-            var isAdmin = User.IsInRole("Admin");
-            if (!isAdmin)
-            {
-                return Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "Only admins can patch users from here."
-                });
-            }
-
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
@@ -174,13 +166,6 @@ namespace ParrotsAPI2.Controllers
 
             return Ok(response);
         }
-
-
-
-
-
-
-
 
 
         [Consumes("multipart/form-data")]
@@ -248,15 +233,24 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("searchUsers/{username}")]
         public async Task<ActionResult<ServiceResponse<List<UserDto>>>> GetUsersByUsername(string username)
         {
             return Ok(await _userService.GetUsersByUsername(username));
         }
 
+
+
         [HttpGet("singleUserByUsername/{username}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ServiceResponse<UserDto>>> GetSingleUserByUserName(string username)
         {
+
+            // admin check 
+            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
+
             return Ok(await _userService.GetSingleUserByUsername(username));
         }
 
@@ -358,7 +352,20 @@ namespace ParrotsAPI2.Controllers
 
             return Ok(await _userService.GetParrotCoinBalanceAndPurchases(userId));
         }
-
+        private bool CheckAdmin(out ActionResult result)
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                result = Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Only admins can access this endpoint."
+                });
+                return false;
+            }
+            result = null;
+            return true;
+        }
 
 
     }
