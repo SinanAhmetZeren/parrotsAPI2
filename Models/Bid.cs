@@ -12,6 +12,7 @@ namespace ParrotsAPI2.Models
         // public string Currency { get; set; } = string.Empty;
         public DateTime DateTime { get; set; }
         public bool Accepted { get; set; }
+        public DateTime? AcceptedAt { get; set; }   // add this
         public int VoyageId { get; set; }
         public Voyage? Voyage { get; set; }
         public string UserId { get; set; } = string.Empty;

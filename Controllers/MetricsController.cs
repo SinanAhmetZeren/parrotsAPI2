@@ -18,20 +18,7 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        private bool CheckAdmin(out ActionResult result)
-        {
-            if (!User.IsInRole("Admin"))
-            {
-                result = Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "Only admins can access this endpoint."
-                });
-                return false;
-            }
-            result = null;
-            return true;
-        }
+
 
         [HttpGet("weeklyPurchases")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyPurchaseDto>>>> GetWeeklyPurchases()
@@ -56,6 +43,66 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
+        [HttpGet("weeklyVoyages")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ServiceResponse<List<WeeklyVoyagesDto>>>> GetWeeklyVoyages()
+        {
+            var response = await _metricsService.GetWeeklyVoyagesCreated();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+
+        [HttpGet("weeklyVehicles")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ServiceResponse<List<WeeklyVehiclesDto>>>> GetWeeklyVehicles()
+        {
+            var response = await _metricsService.GetWeeklyVehiclesCreated();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("weeklyUsers")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ServiceResponse<List<WeeklyVehiclesDto>>>> GetWeeklyUsers()
+        {
+            var response = await _metricsService.GetWeeklyUsersCreated();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("weeklyBids")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ServiceResponse<List<WeeklyBidsDto>>>> GetWeeklyBids()
+        {
+            var response = await _metricsService.GetWeeklyBids();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+
+        [HttpGet("weeklyMessages")]
+        public async Task<ActionResult<ServiceResponse<List<WeeklyMessagesDto>>>> GetWeeklyMessages()
+        {
+            var response = await _metricsService.GetWeeklyMessages();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
 
     }
 }

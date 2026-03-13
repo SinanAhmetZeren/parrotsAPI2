@@ -304,6 +304,7 @@ namespace ParrotsAPI2.Services.Bid
                 }
 
                 bidEntity.Accepted = true;
+                bidEntity.AcceptedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
 
                 serviceResponse.Success = true;

@@ -8,5 +8,10 @@ namespace ParrotsAPI2.Services.Message
     {
         Task<ServiceResponse<List<WeeklyPurchaseDto>>> GetWeeklyPurchases();
         Task<ServiceResponse<List<WeeklyTransactionsDto>>> GetWeeklyTransactions();
+        Task<ServiceResponse<List<WeeklyVoyagesDto>>> GetWeeklyVoyagesCreated();
+        Task<ServiceResponse<List<WeeklyVehiclesDto>>> GetWeeklyVehiclesCreated();
+        Task<ServiceResponse<List<WeeklyUsersDto>>> GetWeeklyUsersCreated();
+        Task<ServiceResponse<List<WeeklyBidsDto>>> GetWeeklyBids();
+        Task<ServiceResponse<List<WeeklyMessagesDto>>> GetWeeklyMessages();
     }
 }
