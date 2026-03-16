@@ -690,7 +690,8 @@ namespace API.Controllers
                 UserId = user.Id,
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty,
-                UnreadMessages = user.UnseenMessages ? "true" : "false"
+                UnreadMessages = user.UnseenMessages ? "true" : "false",
+                IsAdmin = user.IsAdmin
 
             };
         }

@@ -243,9 +243,14 @@ public class ChatHub : Hub
 
     public async Task<bool> CheckUnreadMessages(string userId)
     {
-        // 1️⃣ Try cache first
+        /*/ 1️⃣ Try cache first
         if (_unreadCache.TryGetValue(userId, out var hasUnread))
         {
+            return hasUnread;
+        }*/
+        if (_unreadCache.TryGetValue(userId, out var cachedValue) && cachedValue is bool hasUnread)
+        {
+            // Only returns if the cached value exists AND is actually a bool
             return hasUnread;
         }
 
@@ -261,6 +266,9 @@ public class ChatHub : Hub
 
         return dbValue;
     }
+
+
+
 
 }
 

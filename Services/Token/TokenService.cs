@@ -30,7 +30,6 @@ namespace ParrotsAPI2.Services.Token
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
                 new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
-
             };
 
             var tokenKey = _config["TokenKey"] ?? throw new InvalidOperationException("TokenKey is not configured.");
