@@ -32,6 +32,7 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using ParrotsAPI2.Services.EmailSender;
 using ParrotsAPI2.Helpers;
+// using ParrotsAPI2.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +47,7 @@ builder.Services.Configure<GoogleAuthOptions>(
 //         sqlOptions => sqlOptions.EnableRetryOnFailure()
 //     ));
 
-
+/*
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(
@@ -57,6 +58,9 @@ builder.Services.AddDbContext<DataContext>(options =>
         });
     options.AddInterceptors(new DbFailureInterceptor());
 });
+*/
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 // Controllers + NewtonsoftJson
@@ -183,8 +187,6 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<DeviceRateLimitMiddleware>();
 
 
-
-
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
@@ -205,25 +207,88 @@ if (app.Environment.IsDevelopment())
     {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
+        AppUser admin = null;
+
         if (!await userManager.Users.AnyAsync())
         {
-            var admin = new AppUser
+            admin = new AppUser
             {
                 UserName = "admin",
-                Email = "admin@example.com"
+                Email = "admin@example.com",
+                EncryptionKey = "3423423425324562622ofofofofoffoo",
+                IsAdmin = true,
+
             };
 
             await userManager.CreateAsync(admin, "Admin123!");
         }
+        else
+        {
+            admin = await userManager.Users.FirstAsync(u => u.UserName == "admin");
+        }
+
+        // Seed Vehicles
+        var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+        var existingVehicles = await context.Vehicles
+            .Where(v => v.UserId == admin.Id)
+            .ToListAsync();
+
+        if (!existingVehicles.Any())
+        {
+            var now = DateTime.UtcNow;
+
+            var vehicles = new List<Vehicle>
+            {
+                new Vehicle
+                {
+                    Name = "Walk",
+                    ProfileImageUrl = "Walk",
+                    Type = VehicleType.Walk,
+                    Capacity = 999999999,
+                    Description = "Walk",
+                    UserId = admin.Id,
+                    Confirmed = true,
+                    CreatedAt = now,
+                    IsDeleted = false
+                },
+                new Vehicle
+                {
+                    Name = "Train",
+                    ProfileImageUrl = "Train",
+                    Type = VehicleType.Train,
+                    Capacity = 999999999,
+                    Description = "Train",
+                    UserId = admin.Id,
+                    Confirmed = true,
+                    CreatedAt = now,
+                    IsDeleted = false
+                },
+                new Vehicle
+                {
+                    Name = "Run",
+                    ProfileImageUrl = "Run",
+                    Type = VehicleType.Run,
+                    Capacity = 999999999,
+                    Description = "Run",
+                    UserId = admin.Id,
+                    Confirmed = true,
+                    CreatedAt = now,
+                    IsDeleted = false
+                }
+            };
+
+            context.Vehicles.AddRange(vehicles);
+            await context.SaveChangesAsync();
+        }
     }
+
+
     catch (Exception ex)
     {
-        logger.LogError(ex, "Admin user seeding failed");
+        logger.LogError(ex, "Admin user or vehicle seeding failed");
         // do NOT crash
     }
 }
-
-
 
 // Swagger in Development
 if (app.Environment.IsDevelopment())

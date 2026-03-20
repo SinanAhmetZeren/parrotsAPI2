@@ -813,7 +813,8 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2))
-                    .Where(v => v.LastBidDate >= DateTime.Today)
+                    // .Where(v => v.LastBidDate >= DateTime.Today)
+                    .Where(v => v.LastBidDate >= DateTime.UtcNow.Date)
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
                     .Include(v => v.Waypoints)
@@ -922,7 +923,7 @@ namespace ParrotsAPI2.Services.Voyage
         }
 
 
-        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages2(
             double? lat1, double? lat2, double? lon1, double? lon2,
             int? vacancy, VehicleType? vehicleType,
             DateTime? startDate, DateTime? endDate)
@@ -936,7 +937,8 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
+                    // .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date)
                     .AsQueryable();
 
                 // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
@@ -1000,6 +1002,103 @@ namespace ParrotsAPI2.Services.Voyage
                 }).ToList();
 
                 serviceResponse.Data = filteredVoyages;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error retrieving voyages: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+
+
+        public async Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(
+            double? lat1, double? lat2, double? lon1, double? lon2,
+            int? vacancy, VehicleType? vehicleType,
+            DateTime? startDate, DateTime? endDate)
+        {
+            var serviceResponse = new ServiceResponse<List<GetVoyageDto>>();
+
+            try
+            {
+                // Start building query with confirmed, not deleted, public, and LastBidDate >= today (UTC)
+                var query = _context.Voyages
+                    .Include(v => v.User)
+                    .Include(v => v.VoyageImages)
+                    .Include(v => v.Vehicle)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date)
+                    .AsQueryable();
+
+                // Filter by coordinates if all bounds provided
+                if (lat1.HasValue && lat2.HasValue && lon1.HasValue && lon2.HasValue)
+                {
+                    query = query.Where(v =>
+                        v.Waypoints != null && v.Waypoints.Any(wp =>
+                            wp.Order == 1 &&
+                            wp.Latitude >= lat1.Value && wp.Latitude <= lat2.Value &&
+                            wp.Longitude >= lon1.Value && wp.Longitude <= lon2.Value
+                        )
+                    );
+                }
+
+                // Filter by vacancy
+                if (vacancy.HasValue)
+                    query = query.Where(v => v.Vacancy >= vacancy.Value);
+
+                // Filter by startDate and endDate (convert to UTC to match timestamptz columns)
+                if (startDate.HasValue)
+                {
+                    var startUtc = startDate.Value.Date.ToUniversalTime();
+                    query = query.Where(v => v.StartDate >= startUtc);
+                }
+
+                if (endDate.HasValue)
+                {
+                    var endUtc = endDate.Value.Date.ToUniversalTime();
+                    query = query.Where(v => v.EndDate <= endUtc);
+                }
+
+                // Filter by vehicle type
+                if (vehicleType.HasValue && Enum.IsDefined(vehicleType.Value))
+                    query = query.Where(v => v.Vehicle != null && v.Vehicle.Type == vehicleType.Value);
+
+                var voyages = await query.ToListAsync();
+
+                if (voyages.Count == 0)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "No voyages found matching the filters.";
+                    return serviceResponse;
+                }
+
+                // Map to DTOs
+                var filteredVoyages = voyages.Select(voyage =>
+                {
+                    var userDto = _mapper.Map<UserDto>(voyage.User);
+                    var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage.VoyageImages ?? new List<VoyageImage>());
+                    var vehicleDto = _mapper.Map<VehicleDto>(voyage.Vehicle);
+
+                    var bidDtos = _mapper.Map<List<VoyageBidDto>>(
+                        _context.Bids.Where(b => b.VoyageId == voyage.Id).ToList()
+                    );
+
+                    var waypointDtos = _mapper.Map<List<GetWaypointDto>>(
+                        _context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList()
+                    );
+
+                    var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
+                    voyageDto.User = userDto;
+                    voyageDto.VoyageImages = voyageImageDtos;
+                    voyageDto.Vehicle = vehicleDto;
+                    voyageDto.Bids = bidDtos;
+                    voyageDto.Waypoints = waypointDtos;
+
+                    return voyageDto;
+                }).ToList();
+
+                serviceResponse.Data = filteredVoyages;
+                serviceResponse.Success = true;
             }
             catch (Exception ex)
             {

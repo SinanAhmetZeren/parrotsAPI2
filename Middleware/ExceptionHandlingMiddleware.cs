@@ -1,9 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System.Net.Sockets;
 using System.Text.Json;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
 public class DbUnavailableException : Exception
 {
     public DbUnavailableException(string message, Exception inner) : base(message, inner) { }
@@ -32,7 +30,6 @@ public class ExceptionHandlingMiddleware
         {
             if (context.Response.HasStarted) return;
 
-            // Check if it's our custom exception OR a known infra failure
             if (ex is DbUnavailableException || IsInfrastructureFailure(ex))
             {
                 _logger.LogWarning(ex, "Infrastructure failure - returning 503");
@@ -47,13 +44,16 @@ public class ExceptionHandlingMiddleware
         }
     }
 
+
+
     private static bool IsInfrastructureFailure(Exception? ex)
     {
         while (ex != null)
         {
-            if (ex is SqlException || ex is SocketException || ex is TimeoutException ||
-                ex is RetryLimitExceededException || ex is DbUpdateException)
+            if (ex is PostgresException || ex is SocketException || ex is TimeoutException ||
+                ex is DbUpdateException) // Removed RetryLimitExceededException
                 return true;
+
             ex = ex.InnerException;
         }
         return false;
