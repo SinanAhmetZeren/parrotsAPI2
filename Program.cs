@@ -116,13 +116,14 @@ builder.Services.AddScoped<TokenService>();
 // builder.Services.AddScoped<ChatHub>();
 builder.Services.AddSingleton<ConversationPageTracker>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
-builder.Services.AddScoped<IBlobService>(sp =>
-{
-    var configuration = sp.GetRequiredService<IConfiguration>();
-    var connectionString = configuration.GetValue<string>("AzureStorage:ConnectionString");
-    var containerName = configuration.GetValue<string>("AzureStorage:ContainerName");
-    return new BlobService(connectionString, containerName);
-});
+// builder.Services.AddScoped<IBlobService>(sp =>
+// {
+//     var configuration = sp.GetRequiredService<IConfiguration>();
+//     var connectionString = configuration.GetValue<string>("Azu reStorage:ConnectionString");
+//     var containerName = configuration.GetValue<string>("Azur eStorage:ContainerName");
+//     return new BlobService(connectionString, containerName);
+// });
+builder.Services.AddScoped<IBlobService, BlobService>();
 
 builder.Services.AddMemoryCache();
 

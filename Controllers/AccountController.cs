@@ -165,7 +165,8 @@ namespace API.Controllers
                     u.NormalizedUserName == normalizedUserName
                 );
 
-            string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+            // string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+            string baseUrl = "https://nbg1.your-objectstorage.com/parrotsstorage/";
             string[] images =
             {
                     $"{baseUrl}parrot-looks.jpg",
@@ -576,7 +577,9 @@ namespace API.Controllers
 
                 if (user == null)
                 {
-                    string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+                    // string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
+                    string baseUrl = "https://nbg1.your-objectstorage.com/parrotsstorage/";
+
                     string[] images =
                     {
                 $"{baseUrl}parrot-looks.jpg",

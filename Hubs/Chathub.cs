@@ -58,17 +58,74 @@ public class ChatHub : Hub
         await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
     }
 
+
+    /*
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var connectionId = Context.ConnectionId;
+            // Find the user that owns this connection
+            var userEntry = _userConnections
+                .FirstOrDefault(kvp => kvp.Value.Contains(connectionId));
+            var userId = userEntry.Key;
+            if (!string.IsNullOrEmpty(userId) &&
+                _userConnections.TryGetValue(userId, out var connections))
+            {
+                bool removeUserCompletely = false;
+                lock (connections)
+                {
+                    connections.Remove(connectionId);
+                    if (connections.Count == 0)
+                    {
+                        removeUserCompletely = true;
+                    }
+                }
+                if (removeUserCompletely)
+                {
+                    _userConnections.TryRemove(userId, out _);
+                    // Persist unread status to DB (only when LAST device disconnects)
+                    if (_unreadCache.TryGetValue(userId, out bool hasUnread))
+                    {
+                        using var scope = _scopeFactory.CreateScope();
+                        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                        var user = await dbContext.Users.FindAsync(userId);
+                        if (user != null)
+                        {
+                            user.UnseenMessages = hasUnread;
+                            await dbContext.SaveChangesAsync();
+                        }
+                        _unreadCache.TryRemove(userId, out _);
+                    }
+                }
+            }
+            // IMPORTANT: remove tracking only for THIS connection
+            _tracker.LeaveMessagesScreen(connectionId);
+            _tracker.LeaveConversation(connectionId);
+            await base.OnDisconnectedAsync(exception);
+        }
+    */
+
+
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         var connectionId = Context.ConnectionId;
-        // Find the user that owns this connection
-        var userEntry = _userConnections
-            .FirstOrDefault(kvp => kvp.Value.Contains(connectionId));
-        var userId = userEntry.Key;
+        string? userId = null;
+
+        // 1️⃣ Find the user that owns this connection
+        foreach (var kvp in _userConnections)
+        {
+            if (kvp.Value.Contains(connectionId))
+            {
+                userId = kvp.Key;
+                break;
+            }
+        }
+
         if (!string.IsNullOrEmpty(userId) &&
             _userConnections.TryGetValue(userId, out var connections))
         {
             bool removeUserCompletely = false;
+
+            // 2️⃣ Remove this connection (thread-safe)
             lock (connections)
             {
                 connections.Remove(connectionId);
@@ -77,27 +134,41 @@ public class ChatHub : Hub
                     removeUserCompletely = true;
                 }
             }
+
+            // 3️⃣ If last connection → persist unread state
             if (removeUserCompletely)
             {
                 _userConnections.TryRemove(userId, out _);
-                // Persist unread status to DB (only when LAST device disconnects)
+
                 if (_unreadCache.TryGetValue(userId, out bool hasUnread))
                 {
-                    using var scope = _scopeFactory.CreateScope();
-                    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-                    var user = await dbContext.Users.FindAsync(userId);
-                    if (user != null)
+                    try
                     {
-                        user.UnseenMessages = hasUnread;
-                        await dbContext.SaveChangesAsync();
+                        await using var scope = _scopeFactory.CreateAsyncScope();
+                        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+                        var user = await dbContext.Users.FindAsync(userId);
+                        if (user != null)
+                        {
+                            user.UnseenMessages = hasUnread;
+                            await dbContext.SaveChangesAsync();
+                        }
+
+                        _unreadCache.TryRemove(userId, out _);
                     }
-                    _unreadCache.TryRemove(userId, out _);
+                    catch (Exception ex)
+                    {
+                        // Log but NEVER crash SignalR
+                        _logger.LogError(ex, "Failed to persist unread status for user {UserId}", userId);
+                    }
                 }
             }
         }
-        // IMPORTANT: remove tracking only for THIS connection
+
+        // 4️⃣ Always clean up trackers
         _tracker.LeaveMessagesScreen(connectionId);
         _tracker.LeaveConversation(connectionId);
+
         await base.OnDisconnectedAsync(exception);
     }
 
@@ -243,11 +314,13 @@ public class ChatHub : Hub
 
     public async Task<bool> CheckUnreadMessages(string userId)
     {
-        /*/ 1️⃣ Try cache first
-        if (_unreadCache.TryGetValue(userId, out var hasUnread))
+        // Try cache first
+        if (string.IsNullOrEmpty(userId))
         {
-            return hasUnread;
-        }*/
+            // Return a default value or throw a controlled exception
+            return false; // or throw new ArgumentException("UserId cannot be null");
+        }
+
         if (_unreadCache.TryGetValue(userId, out var cachedValue) && cachedValue is bool hasUnread)
         {
             // Only returns if the cached value exists AND is actually a bool
