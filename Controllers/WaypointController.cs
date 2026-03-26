@@ -8,8 +8,7 @@ namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
-
+    [Authorize]
     public class WaypointController : ControllerBase
     {
         private readonly IWaypointService _waypointService;
@@ -40,7 +39,7 @@ namespace ParrotsAPI2.Controllers
                 return NotFound(new ServiceResponse<string>
                 {
                     Success = false,
-                    Message = "Image not found."
+                    Message = "Voyage not found."
                 });
             }
             if (voyageResponse.Data?.UserId != requestUserId)
@@ -70,7 +69,7 @@ namespace ParrotsAPI2.Controllers
                 return NotFound(new ServiceResponse<string>
                 {
                     Success = false,
-                    Message = "Image not found."
+                    Message = "Voyage not found."
                 });
             }
             if (voyageResponse.Data?.UserId != requestUserId)
@@ -99,7 +98,7 @@ namespace ParrotsAPI2.Controllers
                 return NotFound(new ServiceResponse<string>
                 {
                     Success = false,
-                    Message = "Image not found."
+                    Message = "Waypoint not found."
                 });
             }
             if (waypointResponse.Data?.UserId != requestUserId)

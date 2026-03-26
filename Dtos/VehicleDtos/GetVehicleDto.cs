@@ -14,9 +14,6 @@ namespace ParrotsAPI2.Dtos.VehicleDtos
         public UserDto? User { get; set; }
         public List<VehicleImageDto>? VehicleImages { get; set; }
         public List<VoyageDto>? Voyages { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public bool Confirmed { get; set; } = false;
-        public bool IsDeleted { get; set; } = false;
 
     }
 }

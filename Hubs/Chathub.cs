@@ -59,52 +59,6 @@ public class ChatHub : Hub
     }
 
 
-    /*
-        public override async Task OnDisconnectedAsync(Exception? exception)
-        {
-            var connectionId = Context.ConnectionId;
-            // Find the user that owns this connection
-            var userEntry = _userConnections
-                .FirstOrDefault(kvp => kvp.Value.Contains(connectionId));
-            var userId = userEntry.Key;
-            if (!string.IsNullOrEmpty(userId) &&
-                _userConnections.TryGetValue(userId, out var connections))
-            {
-                bool removeUserCompletely = false;
-                lock (connections)
-                {
-                    connections.Remove(connectionId);
-                    if (connections.Count == 0)
-                    {
-                        removeUserCompletely = true;
-                    }
-                }
-                if (removeUserCompletely)
-                {
-                    _userConnections.TryRemove(userId, out _);
-                    // Persist unread status to DB (only when LAST device disconnects)
-                    if (_unreadCache.TryGetValue(userId, out bool hasUnread))
-                    {
-                        using var scope = _scopeFactory.CreateScope();
-                        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-                        var user = await dbContext.Users.FindAsync(userId);
-                        if (user != null)
-                        {
-                            user.UnseenMessages = hasUnread;
-                            await dbContext.SaveChangesAsync();
-                        }
-                        _unreadCache.TryRemove(userId, out _);
-                    }
-                }
-            }
-            // IMPORTANT: remove tracking only for THIS connection
-            _tracker.LeaveMessagesScreen(connectionId);
-            _tracker.LeaveConversation(connectionId);
-            await base.OnDisconnectedAsync(exception);
-        }
-    */
-
-
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         var connectionId = Context.ConnectionId;
@@ -196,8 +150,6 @@ public class ChatHub : Hub
             TextSenderEncrypted = encryptedForSender,
             TextReceiverEncrypted = encryptedForReceiver,
             DateTime = DateTime.UtcNow,
-            Rendered = false,
-            ReadByReceiver = false,
             ConversationKey = conversationKey
         };
 
@@ -305,12 +257,6 @@ public class ChatHub : Hub
         _tracker.LeaveMessagesScreen(Context.ConnectionId); // Remove using connectionId
         return Task.CompletedTask;
     }
-
-    // public Task<bool> CheckUnreadMessages(string userId)
-    // {
-    //     var isUnread = _unreadCache.TryGetValue(userId, out var value) && value;
-    //     return Task.FromResult(isUnread);
-    // }
 
     public async Task<bool> CheckUnreadMessages(string userId)
     {

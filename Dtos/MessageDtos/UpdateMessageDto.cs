@@ -3,7 +3,5 @@
     public class UpdateMessageDto
     {
         public int Id { get; set; }
-        public bool Rendered { get; set; }
-        public bool ReadByReceiver { get; set; }
     }
 }

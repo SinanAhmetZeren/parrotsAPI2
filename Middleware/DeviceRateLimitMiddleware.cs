@@ -33,20 +33,8 @@ public class DeviceRateLimitMiddleware
 
         var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
 
-        /*
-                // _logger.LogDebug(
-                _logger.LogWarning(
-                     "Request {Method} {Path} | DeviceId={DeviceId} | IP={IP}",
-                    "Request {Method}  | DeviceId={DeviceId} | IP={IP}",
-                    context.Request.Method,
-                     context.Request.Path,
-                    deviceId,
-                    ip
-                );
-                */
-        Console.WriteLine(
-    $" --->> {context.Request.Method} | DeviceId={deviceId} | IP={ip}"
-);
+        _logger.LogDebug("Request {Method} {Path} | DeviceId={DeviceId} | IP={IP}",
+            context.Request.Method, context.Request.Path, deviceId, ip);
 
 
 

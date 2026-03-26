@@ -23,8 +23,6 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("weeklyPurchases")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyPurchaseDto>>>> GetWeeklyPurchases()
         {
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
-            // APPLIED ADMIN TO THE CONTROLLER
             var response = await _metricsService.GetWeeklyPurchases();
             if (!response.Success)
                 return BadRequest(response);
@@ -34,9 +32,6 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("weeklyTransactions")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyTransactionsDto>>>> GetWeeklyTransactions()
         {
-
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
-            // APPLIED ADMIN TO THE CONTROLLER
             var response = await _metricsService.GetWeeklyTransactions();
             if (!response.Success)
                 return BadRequest(response);
@@ -44,7 +39,6 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpGet("weeklyVoyages")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyVoyagesDto>>>> GetWeeklyVoyages()
         {
             var response = await _metricsService.GetWeeklyVoyagesCreated();
@@ -57,7 +51,6 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpGet("weeklyVehicles")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyVehiclesDto>>>> GetWeeklyVehicles()
         {
             var response = await _metricsService.GetWeeklyVehiclesCreated();
@@ -69,7 +62,6 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpGet("weeklyUsers")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyVehiclesDto>>>> GetWeeklyUsers()
         {
             var response = await _metricsService.GetWeeklyUsersCreated();
@@ -81,7 +73,6 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpGet("weeklyBids")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<List<WeeklyBidsDto>>>> GetWeeklyBids()
         {
             var response = await _metricsService.GetWeeklyBids();

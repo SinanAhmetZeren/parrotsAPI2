@@ -8,8 +8,7 @@ namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
-
+    [Authorize]
     public class FavoriteController : ControllerBase
     {
         private readonly IFavoriteService _favoriteService;

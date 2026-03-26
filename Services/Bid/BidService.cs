@@ -90,8 +90,6 @@ namespace ParrotsAPI2.Services.Bid
             try
             {
                 var bidEntity = await _context.Bids
-                    .Include(b => b.Voyage)
-                    .Include(b => b.User)
                     .FirstOrDefaultAsync(c => c.Id == bidId);
 
                 if (bidEntity != null)
@@ -103,14 +101,9 @@ namespace ParrotsAPI2.Services.Bid
                         PersonCount = bidEntity.PersonCount,
                         Message = bidEntity.Message,
                         OfferPrice = bidEntity.OfferPrice,
-                        // Currency = bidEntity.Currency,
                         DateTime = bidEntity.DateTime,
                         VoyageId = bidEntity.VoyageId,
-                        UserId = bidEntity.UserId,
-                        VoyageImageUrl = bidEntity.Voyage?.ProfileImage ?? string.Empty,
-                        UserImageUrl = bidEntity.User?.ProfileImageUrl ?? string.Empty,
-                        UserName = bidEntity.User?.UserName ?? string.Empty,
-                        VoyageName = bidEntity.Voyage?.Name ?? string.Empty
+                        UserId = bidEntity.UserId
                     };
 
                     response.Data = bidDto;
@@ -138,33 +131,16 @@ namespace ParrotsAPI2.Services.Bid
                 var bids = await _context.Bids
                     .AsNoTracking()
                     .Where(b => b.UserId == userId)
-                    .Join(
-                        _context.Voyages,
-                        bid => bid.VoyageId,
-                        voyage => voyage.Id,
-                        (bid, voyage) => new { Bid = bid, Voyage = voyage }
-                    )
-                    .Join(
-                        _context.Users,
-                        combined => combined.Bid.UserId,
-                        user => user.Id,
-                        (combined, user) => new { combined.Bid, combined.Voyage, User = user }
-                    )
-                    .Select(combined => new GetBidDto
+                    .Select(b => new GetBidDto
                     {
-                        Accepted = combined.Bid.Accepted,
-                        Id = combined.Bid.Id,
-                        PersonCount = combined.Bid.PersonCount,
-                        Message = combined.Bid.Message,
-                        OfferPrice = combined.Bid.OfferPrice,
-                        // Currency = combined.Bid.Currency,
-                        DateTime = combined.Bid.DateTime,
-                        VoyageId = combined.Bid.VoyageId,
-                        UserId = combined.Bid.UserId,
-                        VoyageImageUrl = combined.Voyage != null ? combined.Voyage.ProfileImage : string.Empty,
-                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl : string.Empty,
-                        UserName = (combined.User != null && combined.User.UserName != null) ? combined.User.UserName : string.Empty,
-                        VoyageName = combined.Voyage != null ? combined.Voyage.Name : string.Empty
+                        Accepted = b.Accepted,
+                        Id = b.Id,
+                        PersonCount = b.PersonCount,
+                        Message = b.Message,
+                        OfferPrice = b.OfferPrice,
+                        DateTime = b.DateTime,
+                        VoyageId = b.VoyageId,
+                        UserId = b.UserId
                     })
                     .ToListAsync();
 
@@ -187,33 +163,16 @@ namespace ParrotsAPI2.Services.Bid
                 var bids = await _context.Bids
                     .AsNoTracking()
                     .Where(b => b.VoyageId == voyageId)
-                    .Join(
-                        _context.Voyages,
-                        bid => bid.VoyageId,
-                        voyage => voyage.Id,
-                        (bid, voyage) => new { Bid = bid, Voyage = voyage }
-                    )
-                    .Join(
-                        _context.Users,
-                        combined => combined.Bid.UserId,
-                        user => user.Id,
-                        (combined, user) => new { combined.Bid, combined.Voyage, User = user }
-                    )
-                    .Select(combined => new GetBidDto
+                    .Select(b => new GetBidDto
                     {
-                        Id = combined.Bid.Id,
-                        PersonCount = combined.Bid.PersonCount,
-                        Message = combined.Bid.Message,
-                        OfferPrice = combined.Bid.OfferPrice,
-                        // Currency = combined.Bid.Currency,
-                        Accepted = combined.Bid.Accepted,
-                        DateTime = combined.Bid.DateTime,
-                        VoyageId = combined.Bid.VoyageId,
-                        UserId = combined.Bid.UserId,
-                        VoyageImageUrl = combined.Voyage.ProfileImage,
-                        UserImageUrl = (combined.User != null && combined.User.ProfileImageUrl != null) ? combined.User.ProfileImageUrl : string.Empty,
-                        UserName = (combined.User != null && combined.User.UserName != null) ? combined.User.UserName : string.Empty,
-                        VoyageName = combined.Voyage.Name
+                        Id = b.Id,
+                        PersonCount = b.PersonCount,
+                        Message = b.Message,
+                        OfferPrice = b.OfferPrice,
+                        Accepted = b.Accepted,
+                        DateTime = b.DateTime,
+                        VoyageId = b.VoyageId,
+                        UserId = b.UserId
                     })
                     .ToListAsync();
 

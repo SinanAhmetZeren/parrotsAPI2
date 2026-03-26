@@ -140,7 +140,6 @@ namespace API.Controllers
                     "Register failed: Missing fields. IP: {IP}",
                     HttpContext.Connection.RemoteIpAddress
                 );
-
                 return BadRequest("Missing required fields.");
             }
 
@@ -217,6 +216,7 @@ namespace API.Controllers
                 existingUser.ConfirmationCode = confirmationCode;
                 existingUser.NormalizedUserName = normalizedUserName;
                 existingUser.NormalizedEmail = normalizedEmail;
+                existingUser.EmailVisible = false;
 
                 var passwordHasher = new PasswordHasher<AppUser>();
                 existingUser.PasswordHash =
@@ -272,7 +272,8 @@ namespace API.Controllers
                 EncryptionKey = GenerateBase64Key(),
                 PublicId = await GenerateUniquePublicId(),
                 Title = "Wanderer",
-                Bio = "Exploring new journeys."
+                Bio = "Exploring new journeys.",
+                EmailVisible = false
             };
 
             var createResult = await _userManager.CreateAsync(newUser, registerDto.Password);
@@ -602,7 +603,7 @@ namespace API.Controllers
                         NormalizedUserName = _userManager.NormalizeName(tokenInfo.Email),
                         ProfileImageUrl = selectedImage,
                         BackgroundImageUrl = $"{baseUrl}amazon.jpeg",
-                        EmailVisible = true,
+                        EmailVisible = false,
                     };
 
                     var createResult = await _userManager.CreateAsync(user);
@@ -641,7 +642,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "GoogleLogin exception. IP: {IP}", HttpContext.Connection.RemoteIpAddress);
-                return BadRequest($"Invalid Google token: {ex.Message}");
+                return BadRequest("Google login failed.");
             }
         }
 
@@ -754,332 +755,3 @@ namespace API.Controllers
 
     }
 }
-
-/*
-      [AllowAnonymous]
-        [HttpPost("login")]
-        public async Task<ActionResult<UserResponseDto>> Login(LoginDto loginDto)
-        {
-            var normalizedEmail = _userManager.NormalizeEmail(loginDto.Email);
-            AppUser? user = await _userManager.Users
-                .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
-
-            if (user == null || !user.Confirmed)
-            {
-                return Unauthorized("User not found or not confirmed");
-            }
-            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-            if (result)
-            {
-                var refreshToken = _tokenService.GenerateRefreshToken();
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // refresh token valid for 7 days
-                //user.RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(20); // refresh token valid for 7 days
-                var updatedUser = await _userManager.UpdateAsync(user);
-
-                var userResponse = CreateUserObject(user);
-                userResponse.RefreshToken = refreshToken;  // Add refresh token to response
-                userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
-                return userResponse;
-            }
-            return Unauthorized("Invalid password");
-        }
-
-*/
-
-
-/*
-
- [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
-        {
-
-
-            // 1️⃣ Basic validation
-            if (string.IsNullOrWhiteSpace(registerDto.Email) ||
-                string.IsNullOrWhiteSpace(registerDto.UserName) ||
-                string.IsNullOrWhiteSpace(registerDto.Password))
-            {
-                return BadRequest("Missing required fields.");
-            }
-
-            // 2️⃣ Email blacklist (FAIL FAST)
-            if (EmailBlacklister.IsBlacklisted(registerDto.Email))
-            {
-                _logger.LogWarning("Blocked register attempt: {Email}", registerDto.Email);
-
-                return BadRequest("This email domain is not allowed.");
-            }
-
-            CodeGenerator codeGenerator = new CodeGenerator();
-            var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email?.Trim());
-            var normalizedUserName = _userManager.NormalizeName(registerDto.UserName?.Trim());
-            string confirmationCode = codeGenerator.GenerateCode();
-
-            var existingUser = await _userManager.Users
-                .FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail || u.NormalizedUserName == normalizedUserName);
-
-            string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
-            string[] images =
-            {
-                $"{baseUrl}parrot-looks.jpg",
-                $"{baseUrl}parrot-looks2.jpg",
-                $"{baseUrl}parrot-looks3.jpg",
-                $"{baseUrl}parrot-looks4.jpg",
-                $"{baseUrl}parrot-looks5.jpg",
-            };
-            Random random = new Random();
-            string selectedImage = images[random.Next(0, images.Length)];
-
-            if (existingUser != null)
-            {
-                if (existingUser.Confirmed)
-                {
-                    if (existingUser.NormalizedEmail == normalizedEmail &&
-                        existingUser.NormalizedUserName == normalizedUserName)
-                        ModelState.AddModelError("Email and Username", "Email and Username are already taken");
-                    else if (existingUser.NormalizedEmail == normalizedEmail)
-                        ModelState.AddModelError("Email", "Email is already taken");
-                    else if (existingUser.NormalizedUserName == normalizedUserName)
-                        ModelState.AddModelError("Username", "Username is already taken");
-
-                    return ValidationProblem();
-                }
-
-                // Existing user not confirmed — update
-                existingUser.UserName = registerDto.UserName;
-                existingUser.ProfileImageUrl = selectedImage;
-                existingUser.ConfirmationCode = confirmationCode;
-                existingUser.NormalizedUserName = normalizedUserName;
-                existingUser.NormalizedEmail = normalizedEmail;
-
-                var passwordHasher = new PasswordHasher<AppUser>();
-                existingUser.PasswordHash = passwordHasher.HashPassword(existingUser, registerDto.Password);
-                existingUser.RefreshToken = _tokenService.GenerateRefreshToken();
-                existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-                existingUser.EncryptionKey = GenerateBase64Key();
-                existingUser.PublicId = GeneratePublicId();
-
-                var updateResult = await _userManager.UpdateAsync(existingUser);
-                if (!updateResult.Succeeded)
-                    return StatusCode(500);
-
-                if (IsValidEmail(existingUser.Email))
-                {
-                    _ = Task.Run(() =>
-                        new EmailSender().SendConfirmationEmail(existingUser.Email!, existingUser.ConfirmationCode, existingUser.UserName)
-                    );
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid email skipped: {existingUser.Email}");
-                }
-
-
-                var userResponse = CreateUserObject(existingUser);
-                userResponse.RefreshToken = existingUser.RefreshToken;
-                userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
-                return userResponse;
-            }
-            else
-            {
-                // New user
-                var newUser = new AppUser
-                {
-                    Email = registerDto.Email?.Trim(),
-                    UserName = registerDto.UserName?.Trim(),
-                    ProfileImageUrl = selectedImage,
-                    ConfirmationCode = confirmationCode,
-                    BackgroundImageUrl = $"{baseUrl}amazon.jpeg",
-                    DisplayEmail = registerDto.Email?.Trim(),
-                    EncryptionKey = GenerateBase64Key(),
-                    PublicId = GeneratePublicId(),
-                    EmailConfirmed = true,
-                    NormalizedEmail = normalizedEmail,
-                    NormalizedUserName = normalizedUserName,
-                    Title = "Wanderer",
-                    Bio = "Exploring new journeys."
-                };
-
-                var result = await _userManager.CreateAsync(newUser, registerDto.Password);
-                if (!result.Succeeded) return BadRequest(result.Errors);
-
-                newUser.RefreshToken = _tokenService.GenerateRefreshToken();
-                newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-                await _userManager.UpdateAsync(newUser);
-
-                // Fire-and-forget email
-                if (IsValidEmail(newUser.Email))
-                {
-                    _ = Task.Run(() =>
-                        new EmailSender().SendConfirmationEmail(newUser.Email!, newUser.ConfirmationCode, newUser.UserName)
-                    );
-                }
-
-                var userResponse = CreateUserObject(newUser);
-                userResponse.RefreshToken = newUser.RefreshToken;
-                userResponse.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
-                return userResponse;
-            }
-        }
-
-        */
-
-
-/*
-
-
-        [AllowAnonymous]
-[HttpPost("sendCode/{email}")]
-public async Task<ActionResult<UserResponseDto>> SendCode(string email)
-{
-    Console.WriteLine("email: ", email);
-    var normalizedEmail = _userManager.NormalizeEmail(email);
-    Console.WriteLine("normalizedEmail", normalizedEmail);
-    var existingConfirmedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail && u.Confirmed);
-    Console.WriteLine("existingUser", existingConfirmedUser);
-
-    if (existingConfirmedUser != null)
-    {
-        CodeGenerator codeGenerator = new CodeGenerator();
-        string confirmationCode = codeGenerator.GenerateCode();
-        existingConfirmedUser.ConfirmationCode = confirmationCode;
-        var updateResult = await _userManager.UpdateAsync(existingConfirmedUser);
-
-        if (updateResult.Succeeded)
-        {
-            EmailSender emailSender = new EmailSender();
-            var emailResult = emailSender.SendConfirmationEmail(normalizedEmail, confirmationCode, existingConfirmedUser.UserName ?? string.Empty);
-            return Ok();
-        }
-    }
-    return BadRequest();
-}
-*/
-
-
-/*
-
-
-        // [AllowAnonymous]
-        [HttpPost("google-login")]
-        public async Task<ActionResult<UserResponseDto>> GoogleLogin([FromBody] GoogleLoginDto googleLoginDto)
-        {
-            try
-            {
-                // Validate Google ID token
-                // var payload = await GoogleJsonWebSignature.ValidateAsync(googleLoginDto.AccessToken);
-                var httpClient = new HttpClient();
-                var response = await httpClient.GetAsync($"https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={googleLoginDto.AccessToken}");
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return BadRequest("Invalid access token");
-                }
-                var json = await response.Content.ReadAsStringAsync();
-                var tokenInfo = JsonSerializer.Deserialize<GoogleTokenInfo>(json);
-
-                if (!tokenInfo.VerifiedEmail)
-                {
-                    return BadRequest("Email not verified by Google.");
-                }
-                if (tokenInfo.Audience != _googleClientId && tokenInfo.Audience != _googleAndroidClientId)
-                {
-                    return BadRequest("Token was not issued for this app.");
-                }
-
-                // Check if user already exists by normalized email
-                var normalizedEmail = _userManager.NormalizeEmail(tokenInfo.Email);
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail);
-
-                if (user == null)
-                {
-                    // New user - create it
-                    //string[] images = { "parrot-looks.jpg", "parrot-looks2.jpg", "parrot-looks3.jpg", "parrot-looks4.jpg", "parrot-looks5.jpg" };
-
-                    string baseUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/";
-                    string[] images =
-                    {
-                        $"{baseUrl}parrot-looks.jpg",
-                        $"{baseUrl}parrot-looks2.jpg",
-                        $"{baseUrl}parrot-looks3.jpg",
-                        $"{baseUrl}parrot-looks4.jpg",
-                        $"{baseUrl}parrot-looks5.jpg",
-
-                    };
-
-                    Random random = new Random();
-                    int randomIndex = random.Next(0, images.Length);
-                    string selectedImage = images[randomIndex];
-                    user = new AppUser
-                    {
-                        Email = tokenInfo.Email,
-                        DisplayEmail = tokenInfo.Email,
-                        UserName = tokenInfo.Email.Split('@')[0],
-                        EmailConfirmed = true,
-                        Confirmed = true,
-                        NormalizedEmail = normalizedEmail,
-                        NormalizedUserName = _userManager.NormalizeName(tokenInfo.Email),
-                        ProfileImageUrl = selectedImage,
-                        BackgroundImageUrl = "https://parrotsstorage.blob.core.windows.net/parrotsuploads/amazon.jpeg",
-                        EmailVisible = true,
-                    };
-
-                    var createResult = await _userManager.CreateAsync(user);
-                    if (!createResult.Succeeded)
-                    {
-                        return BadRequest("Failed to create user from Google login");
-                    }
-                }
-                // Generate refresh token and assign it
-                var refreshToken = _tokenService.GenerateRefreshToken();
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-
-                await _userManager.UpdateAsync(user);
-
-                // Return JWT token + refresh token
-                return new UserResponseDto
-                {
-
-                    UserName = user.UserName ?? string.Empty,
-                    Email = user.Email ?? string.Empty,
-                    UserId = user.Id,
-                    ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
-                    Token = _tokenService.CreateToken(user),
-                    RefreshToken = refreshToken,
-                    RefreshTokenExpiryTime = user.RefreshTokenExpiryTime
-
-                };
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Invalid Google token: {ex.Message}");
-            }
-        }
-
-*/
-
-
-
-/* / [Authorize]
-[AllowAnonymous]  // remove later !!!!!!!!
-[HttpGet("getCurrentUser")]
-public async Task<ActionResult<UserResponseDto>> GetCurrentUser()
-{
-
-    var normalizedEmail = User.FindFirstValue(ClaimTypes.Email)?.ToUpper();
-    var user = await _userManager.Users
-        .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
-    if (user != null)
-    {
-        return CreateUserObject(user);
-    }
-    else
-    {
-        return BadRequest("User not found");
-    }
-}*/
-
-

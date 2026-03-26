@@ -8,8 +8,7 @@ namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
-
+    [Authorize]
     public class VehicleController : ControllerBase
     {
         private readonly IVehicleService _vehicleService;
@@ -27,6 +26,7 @@ namespace ParrotsAPI2.Controllers
                 }
         */
 
+        [AllowAnonymous]
         [HttpGet("GetVehicleById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingle(int id)
         {
@@ -42,6 +42,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _vehicleService.GetVehicleByIdAdmin(id));
         }
 
+        [AllowAnonymous]
         [HttpGet("GetVehiclesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> GetVehiclesByUserId(string userId)
         {
@@ -49,6 +50,7 @@ namespace ParrotsAPI2.Controllers
         }
 
 
+        [AllowAnonymous]
         [HttpGet("GetVehiclesImagesByVehicleId/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> GetVehicleImagesByVehicleId(int vehicleId)
         {
@@ -276,6 +278,8 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{vehicleId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> UpdateVehicleProfileImage(int vehicleId, IFormFile imageFile)
         {
+            if (!IsValidImage(imageFile, out var imageError)) return imageError!;
+
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
@@ -316,7 +320,7 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{vehicleId}/addVehicleImage")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> AddVehicleImage(int vehicleId, IFormFile imageFile)
         {
-
+            if (!IsValidImage(imageFile, out var imageError)) return imageError!;
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
@@ -391,18 +395,21 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        private bool CheckAdmin(out ActionResult result)
+        private static readonly string[] AllowedImageTypes = { "image/jpeg", "image/png", "image/gif", "image/webp" };
+
+        private bool IsValidImage(IFormFile file, out ActionResult? error)
         {
-            if (!User.IsInRole("Admin"))
+            if (file == null || file.Length == 0)
             {
-                result = Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "Only admins can access this endpoint."
-                });
+                error = BadRequest(new { message = "No image provided." });
                 return false;
             }
-            result = null;
+            if (!AllowedImageTypes.Contains(file.ContentType.ToLower()))
+            {
+                error = BadRequest(new { message = "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed." });
+                return false;
+            }
+            error = null;
             return true;
         }
 

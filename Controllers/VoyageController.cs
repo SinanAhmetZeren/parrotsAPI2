@@ -7,18 +7,21 @@ namespace ParrotsAPI2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
+    [Authorize]
     public class VoyageController : ControllerBase
     {
         private readonly IVoyageService _voyageService;
+        private readonly ILogger<VoyageController> _logger;
 
-        public VoyageController(IVoyageService voyageService)
+        public VoyageController(IVoyageService voyageService, ILogger<VoyageController> logger)
         {
             _voyageService = voyageService;
+            _logger = logger;
         }
 
 
 
+        [AllowAnonymous]
         [HttpGet("GetVoyageById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingle(int id)
         {
@@ -36,6 +39,7 @@ namespace ParrotsAPI2.Controllers
 
 
 
+        [AllowAnonymous]
         [HttpGet("GetVoyageByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByUserId(string userId)
         {
@@ -200,7 +204,7 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{voyageId}/updateProfileImage")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> UpdateVoyageProfileImage(int voyageId, IFormFile imageFile)
         {
-
+            if (!IsValidImage(imageFile, out var imageError)) return imageError!;
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
@@ -238,7 +242,7 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("{voyageId}/addVoyageImage")]
         public async Task<ActionResult<ServiceResponse<string>>> AddVoyageImage(int voyageId, IFormFile imageFile)
         {
-
+            if (!IsValidImage(imageFile, out var imageError)) return imageError!;
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
@@ -318,18 +322,21 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("GetVoyagesByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByCoordinates(double lat1, double lat2, double lon1, double lon2)
         {
             return Ok(await _voyageService.GetVoyagesByCoordinates(lat1, lat2, lon1, lon2));
         }
 
+        [AllowAnonymous]
         [HttpGet("GetVoyageIdsByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyageIdsByCoordinates(double lat1, double lat2, double lon1, double lon2)
         {
             return Ok(await _voyageService.GetVoyageIdsByCoordinates(lat1, lat2, lon1, lon2));
         }
 
+        [AllowAnonymous]
         [HttpGet("GetFilteredVoyages")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetFilteredVoyages(
             [FromQuery] double? lat1,
@@ -348,23 +355,27 @@ namespace ParrotsAPI2.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                _logger.LogError(ex, "GetFilteredVoyages failed");
+                return BadRequest("An error occurred while filtering voyages.");
             }
         }
 
 
-        private bool CheckAdmin(out ActionResult result)
+        private static readonly string[] AllowedImageTypes = { "image/jpeg", "image/png", "image/gif", "image/webp" };
+
+        private bool IsValidImage(IFormFile file, out ActionResult? error)
         {
-            if (!User.IsInRole("Admin"))
+            if (file == null || file.Length == 0)
             {
-                result = Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "Only admins can access this endpoint."
-                });
+                error = BadRequest(new { message = "No image provided." });
                 return false;
             }
-            result = null;
+            if (!AllowedImageTypes.Contains(file.ContentType.ToLower()))
+            {
+                error = BadRequest(new { message = "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed." });
+                return false;
+            }
+            error = null;
             return true;
         }
 

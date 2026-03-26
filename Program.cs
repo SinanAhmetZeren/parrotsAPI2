@@ -41,24 +41,6 @@ builder.Services.Configure<GoogleAuthOptions>(
     builder.Configuration.GetSection("Google")
 );
 
-// Add DbContext with Azure SQL connection string
-// builder.Services.AddDbContext<DataContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-//         sqlOptions => sqlOptions.EnableRetryOnFailure()
-//     ));
-
-/*
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions =>
-        {
-            sqlOptions.EnableRetryOnFailure();
-        });
-    options.AddInterceptors(new DbFailureInterceptor());
-});
-*/
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -113,16 +95,8 @@ builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IMetricsService, MetricsService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<TokenService>();
-// builder.Services.AddScoped<ChatHub>();
 builder.Services.AddSingleton<ConversationPageTracker>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
-// builder.Services.AddScoped<IBlobService>(sp =>
-// {
-//     var configuration = sp.GetRequiredService<IConfiguration>();
-//     var connectionString = configuration.GetValue<string>("Azu reStorage:ConnectionString");
-//     var containerName = configuration.GetValue<string>("Azur eStorage:ContainerName");
-//     return new BlobService(connectionString, containerName);
-// });
 builder.Services.AddScoped<IBlobService, BlobService>();
 
 builder.Services.AddMemoryCache();

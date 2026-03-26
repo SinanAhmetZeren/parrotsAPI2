@@ -51,60 +51,6 @@ namespace ParrotsAPI2.Services.User
             return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
         }
 
-        /*
-                public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
-                {
-                    var serviceResponse = new ServiceResponse<List<GetUserDto>>();
-
-                    try
-                    {
-                        // Check if username or email already exists
-                        var existingUser = await _context.Users
-                            .FirstOrDefaultAsync(u => u.UserName == newUser.UserName || u.Email == newUser.Email);
-
-                        if (existingUser != null)
-                        {
-                            serviceResponse.Success = false;
-                            serviceResponse.Message = "Username or email already exists.";
-                            return serviceResponse;
-                        }
-
-                        // Handle image upload using BlobService helper
-                        if (newUser.ImageFile != null && newUser.ImageFile.Length > 0)
-                        {
-                            try
-                            {
-                                var prefix = $"user-images";
-                                newUser.ProfileImageUrl = await UploadImageToBlobAsync(newUser.ImageFile, prefix);
-                            }
-                            catch (Exception ex)
-                            {
-                                serviceResponse.Success = false;
-                                serviceResponse.Message = $"Error uploading image: {ex.Message}";
-                                return serviceResponse;
-                            }
-                        }
-
-                        // Map and add new user
-                        var user = _mapper.Map<AppUser>(newUser);
-                        user.DisplayEmail = newUser.Email;
-                        _context.Users.Add(user);
-                        await _context.SaveChangesAsync();
-
-                        // Return updated user list
-                        var updatedUsers = await _context.Users.ToListAsync();
-                        serviceResponse.Data = updatedUsers.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
-                    }
-                    catch (Exception ex)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = $"Error adding user: {ex.Message}";
-                    }
-
-                    return serviceResponse;
-                }
-
-        */
         public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
@@ -194,8 +140,8 @@ namespace ParrotsAPI2.Services.User
             // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
             var user = await _context.Users
                 .AsNoTracking()
-                .Include(u => u.SentMessages)
-                .Include(u => u.ReceivedMessages)
+                // .Include(u => u.SentMessages)
+                // .Include(u => u.ReceivedMessages)
                 .Include(u => u.Vehicles)
                 .Include(u => u.Voyages)
                 .Include(u => u.Bids)
@@ -242,12 +188,12 @@ namespace ParrotsAPI2.Services.User
                 Youtube = user?.Youtube ?? string.Empty,
                 ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
                 BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
-                ImageFile = default!,
+                // ImageFile = default!,
                 UnseenMessages = user != null ? user.UnseenMessages : false,
                 UsersVehicles = vehicleDtos,
                 UsersVoyages = voyageDtos,
-                // EmailVisible = user!= null ? user.EmailVisible : false,
-                EmailVisible = true,
+                EmailVisible = user != null ? user.EmailVisible : false,
+                // EmailVisible = user?.EmailVisible ?? false,
                 ParrotCoinBalance = user?.ParrotCoinBalance ?? 0,
             };
 
@@ -276,8 +222,8 @@ namespace ParrotsAPI2.Services.User
             // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
             var user = await _context.Users
                 .AsNoTracking()
-                .Include(u => u.SentMessages)
-                .Include(u => u.ReceivedMessages)
+                // .Include(u => u.SentMessages)
+                // .Include(u => u.ReceivedMessages)
                 .Include(u => u.Vehicles)
                 .Include(u => u.Voyages)
                 .Include(u => u.Bids)
@@ -324,12 +270,12 @@ namespace ParrotsAPI2.Services.User
                 Youtube = user?.Youtube ?? string.Empty,
                 ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
                 BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
-                ImageFile = default!,
+                // ImageFile = default!,
                 UnseenMessages = user != null ? user.UnseenMessages : false,
                 UsersVehicles = vehicleDtos,
                 UsersVoyages = voyageDtos,
-                // EmailVisible = user!= null ? user.EmailVisible : false,
-                EmailVisible = true,
+                EmailVisible = user != null ? user.EmailVisible : false,
+                //EmailVisible = true,
                 ParrotCoinBalance = user?.ParrotCoinBalance ?? 0,
 
             };
@@ -400,8 +346,8 @@ namespace ParrotsAPI2.Services.User
             // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
             var user = await _context.Users
                 .AsNoTracking()
-                .Include(u => u.SentMessages)
-                .Include(u => u.ReceivedMessages)
+                // .Include(u => u.SentMessages)
+                // .Include(u => u.ReceivedMessages)
                 .Include(u => u.Vehicles)
                 .Include(u => u.Voyages)
                 .Include(u => u.Bids)
@@ -448,11 +394,13 @@ namespace ParrotsAPI2.Services.User
                 Youtube = user?.Youtube ?? string.Empty,
                 ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
                 BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
-                ImageFile = default!,
+                // ImageFile = default!,
                 UnseenMessages = user != null ? user.UnseenMessages : false,
                 UsersVehicles = vehicleDtos,
                 UsersVoyages = voyageDtos,
-                EmailVisible = true,
+                // EmailVisible = true,
+                EmailVisible = user != null ? user.EmailVisible : false,
+
             };
 
             serviceResponse.Data = userDto;

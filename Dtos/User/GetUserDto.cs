@@ -18,7 +18,7 @@
         public string Youtube { get; set; } = string.Empty;
         public string ProfileImageUrl { get; set; } = string.Empty;
         public string BackgroundImageUrl { get; set; } = string.Empty;
-        public IFormFile? ImageFile { get; set; }
+        // public IFormFile? ImageFile { get; set; }
         public bool UnseenMessages { get; set; }
         public bool EmailVisible { get; set; }
         public List<GetUsersVehiclesDto>? UsersVehicles { get; set; }
