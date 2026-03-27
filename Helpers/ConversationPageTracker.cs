@@ -13,9 +13,4 @@ public class ConversationPageTracker
     public void LeaveConversation(string connectionId) => _activeConversation.TryRemove(connectionId, out _);
     public bool IsViewingConversation(string userId, string partnerId) => _activeConversation.Values.Any(x => x.UserId == userId && x.PartnerId == partnerId);
 
-    public void RemoveConnection(string connectionId)
-    {
-        _messagesScreenOpen.TryRemove(connectionId, out _);
-        _activeConversation.TryRemove(connectionId, out _);
-    }
 }

@@ -30,7 +30,7 @@ public class ExceptionHandlingMiddleware
         {
             if (context.Response.HasStarted) return;
 
-            if (ex is DbUnavailableException || IsInfrastructureFailure(ex))
+            if (IsInfrastructureFailure(ex))
             {
                 _logger.LogWarning(ex, "Infrastructure failure - returning 503");
                 await WriteResponse(context, StatusCodes.Status503ServiceUnavailable, "Service temporarily unavailable");
