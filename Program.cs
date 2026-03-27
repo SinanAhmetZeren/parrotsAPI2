@@ -34,6 +34,8 @@ using ParrotsAPI2.Services.EmailSender;
 using ParrotsAPI2.Helpers;
 // using ParrotsAPI2.Migrations;
 
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Bind Google settings from appsettings.json

@@ -44,7 +44,10 @@ publish/
 # Environment files
 # =========================
 .env
-.env.*
+.env.local
+.env.production
+.env.staging
+!.env.example
 
 # =========================
 # Temporary files
