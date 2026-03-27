@@ -9,7 +9,13 @@ public class DeviceRateLimitMiddleware
 
     private const int LIMIT = 100; // requests
     private static readonly TimeSpan WINDOW = TimeSpan.FromMinutes(1);
-    //private static readonly TimeSpan WINDOW = TimeSpan.FromSeconds(1);
+    private static readonly TimeSpan IDLE_EXPIRY = TimeSpan.FromMinutes(30);
+
+    private static readonly Timer _cleanupTimer = new Timer(
+        _ => Cleanup(),
+        null,
+        TimeSpan.FromMinutes(10),
+        TimeSpan.FromMinutes(10));
 
     public DeviceRateLimitMiddleware(RequestDelegate next, ILogger<DeviceRateLimitMiddleware> logger)
     {
@@ -36,8 +42,6 @@ public class DeviceRateLimitMiddleware
         _logger.LogDebug("Request {Method} {Path} | DeviceId={DeviceId} | IP={IP}",
             context.Request.Method, context.Request.Path, deviceId, ip);
 
-
-
         var now = DateTime.UtcNow;
 
         var entry = _store.AddOrUpdate(
@@ -45,17 +49,18 @@ public class DeviceRateLimitMiddleware
             _ => new RateLimitEntry
             {
                 Count = 1,
-                WindowStart = now
+                WindowStart = now,
+                LastSeen = now
             },
             (_, existing) =>
             {
+                existing.LastSeen = now;
+
                 if (now - existing.WindowStart >= WINDOW)
                 {
-                    return new RateLimitEntry
-                    {
-                        Count = 1,
-                        WindowStart = now
-                    };
+                    existing.Count = 1;
+                    existing.WindowStart = now;
+                    return existing;
                 }
 
                 existing.Count++;
@@ -75,9 +80,21 @@ public class DeviceRateLimitMiddleware
         await _next(context);
     }
 
+    // Evict entries that haven't made a request in 30 minutes
+    private static void Cleanup()
+    {
+        var cutoff = DateTime.UtcNow - IDLE_EXPIRY;
+        foreach (var key in _store.Keys)
+        {
+            if (_store.TryGetValue(key, out var entry) && entry.LastSeen < cutoff)
+                _store.TryRemove(key, out _);
+        }
+    }
+
     private class RateLimitEntry
     {
         public int Count;
         public DateTime WindowStart;
+        public DateTime LastSeen;
     }
 }
