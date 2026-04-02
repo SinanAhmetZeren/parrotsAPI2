@@ -38,6 +38,8 @@ namespace ParrotsAPI2.Models
         public ICollection<CoinPurchase>? CoinPurchases { get; set; }
         public ICollection<CoinTransaction>? CoinTransactions { get; set; }
         public bool IsAdmin { get; set; } = false;
+        public DateTime? TermsAcceptedAt { get; set; }
+        public string? TermsVersion { get; set; }
 
 
     }

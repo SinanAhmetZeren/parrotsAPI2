@@ -16,6 +16,7 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using ParrotsAPI2.Services.EmailSender;
 using Microsoft.Extensions.Caching.Memory;
+using ParrotsAPI2.Helpers;
 
 
 
@@ -121,6 +122,7 @@ namespace API.Controllers
             var userResponse = CreateUserObject(user);
             userResponse.RefreshToken = refreshToken;
             userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
+            userResponse.RequiresTermsAcceptance = user.TermsVersion != TermsConfig.CurrentVersion;
 
             return userResponse;
         }
@@ -226,6 +228,8 @@ namespace API.Controllers
                 existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
                 existingUser.EncryptionKey = GenerateBase64Key();
                 existingUser.PublicId = await GenerateUniquePublicId();
+                existingUser.TermsAcceptedAt = DateTime.UtcNow;
+                existingUser.TermsVersion = registerDto.TermsVersion;
 
                 var updateResult = await _userManager.UpdateAsync(existingUser);
                 if (!updateResult.Succeeded)
@@ -273,7 +277,9 @@ namespace API.Controllers
                 PublicId = await GenerateUniquePublicId(),
                 Title = "Wanderer",
                 Bio = "Exploring new journeys.",
-                EmailVisible = false
+                EmailVisible = false,
+                TermsAcceptedAt = DateTime.UtcNow,
+                TermsVersion = registerDto.TermsVersion
             };
 
             var createResult = await _userManager.CreateAsync(newUser, registerDto.Password);
@@ -681,6 +687,23 @@ namespace API.Controllers
                 HttpContext.Connection.RemoteIpAddress
             );
 
+            return userResponse;
+        }
+
+        [Authorize]
+        [HttpPost("accept-terms")]
+        public async Task<ActionResult<UserResponseDto>> AcceptTerms()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId!);
+            if (user == null) return Unauthorized();
+
+            user.TermsAcceptedAt = DateTime.UtcNow;
+            user.TermsVersion = TermsConfig.CurrentVersion;
+            await _userManager.UpdateAsync(user);
+
+            var userResponse = CreateUserObject(user);
+            userResponse.RequiresTermsAcceptance = false;
             return userResponse;
         }
 

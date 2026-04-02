@@ -17,6 +17,7 @@ namespace ParrotsAPI2.Data
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<CoinPurchase> CoinPurchases { get; set; }
         public DbSet<CoinTransaction> CoinTransactions { get; set; }
+        public DbSet<TermsVersion> TermsVersions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
