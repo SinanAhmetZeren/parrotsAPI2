@@ -51,7 +51,7 @@ public class ExceptionHandlingMiddleware
         while (ex != null)
         {
             if (ex is PostgresException || ex is SocketException || ex is TimeoutException ||
-                ex is DbUpdateException) // Removed RetryLimitExceededException
+                ex is DbUpdateException || ex is Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException)
                 return true;
 
             ex = ex.InnerException;
