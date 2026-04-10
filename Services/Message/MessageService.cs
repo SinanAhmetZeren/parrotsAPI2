@@ -85,10 +85,12 @@ namespace ParrotsAPI2.Services.Message
                             ReceiverId = lastMessage.ReceiverId,
 
                             SenderProfileUrl = users.GetValueOrDefault(lastMessage.SenderId)?.ProfileImageUrl ?? "",
+                            SenderProfileThumbnailUrl = users.GetValueOrDefault(lastMessage.SenderId)?.ProfileImageThumbnailUrl ?? "",
                             SenderUsername = users.GetValueOrDefault(lastMessage.SenderId)?.UserName ?? "",
                             SenderPublicId = users.GetValueOrDefault(lastMessage.SenderId)?.PublicId ?? "",
 
                             ReceiverProfileUrl = users.GetValueOrDefault(lastMessage.ReceiverId)?.ProfileImageUrl ?? "",
+                            ReceiverProfileThumbnailUrl = users.GetValueOrDefault(lastMessage.ReceiverId)?.ProfileImageThumbnailUrl ?? "",
                             ReceiverUsername = users.GetValueOrDefault(lastMessage.ReceiverId)?.UserName ?? "",
                             ReceiverPublicId = users.GetValueOrDefault(lastMessage.ReceiverId)?.PublicId ?? ""
                         };

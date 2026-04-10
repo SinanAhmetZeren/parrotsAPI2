@@ -7,6 +7,7 @@ using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Dtos.VoyageImageDtos;
 using ParrotsAPI2.Dtos.WaypointDtos;
 using ParrotsAPI2.Models;
+using ParrotsAPI2.Services;
 using System.Globalization;
 
 namespace ParrotsAPI2.Services.Voyage
@@ -28,7 +29,7 @@ namespace ParrotsAPI2.Services.Voyage
             _blobService = blobService;
         }
 
-        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
+        private async Task<(string fullPath, string thumbPath)> ProcessAndUploadAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -38,20 +39,23 @@ namespace ParrotsAPI2.Services.Voyage
             if (file.Length > MaxFileSize)
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var guid = Guid.NewGuid().ToString();
+            var fullKey = $"{prefix.TrimEnd('/')}/{guid}.webp";
+            var thumbKey = $"{prefix.TrimEnd('/')}/{guid}_thumb.webp";
 
-            var blobPath = string.IsNullOrEmpty(prefix)
-                ? fileName
-                : $"{prefix.TrimEnd('/')}/{fileName}";
+            var (fullStream, thumbStream) = await ImageProcessor.ProcessAsync(file.OpenReadStream());
 
-            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
+            var fullPath = await _blobService.UploadAsync(fullStream, fullKey, "image/webp");
+            var thumbPath = await _blobService.UploadAsync(thumbStream, thumbKey, "image/webp");
 
+            return (fullPath, thumbPath);
         }
 
         public async Task<ServiceResponse<GetVoyageDto>> AddVoyage1(AddVoyageDto newVoyage, string userId)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             string voyageProfileImage = "";
+            string voyageProfileImageThumb = "";
 
             try
             {
@@ -59,7 +63,7 @@ namespace ParrotsAPI2.Services.Voyage
                 if (newVoyage.ImageFile is not null && newVoyage.ImageFile.Length > 0)
                 {
                     var prefix = $"voyage-images/{userId}";
-                    voyageProfileImage = await UploadImageToBlobAsync(newVoyage.ImageFile, prefix);
+                    (voyageProfileImage, voyageProfileImageThumb) = await ProcessAndUploadAsync(newVoyage.ImageFile, prefix);
                 }
 
                 // Validate user
@@ -86,6 +90,7 @@ namespace ParrotsAPI2.Services.Voyage
                 voyage.Vehicle = vehicle;
                 voyage.VehicleImage = vehicle.ProfileImageUrl;
                 voyage.ProfileImage = voyageProfileImage;
+                voyage.ProfileImageThumbnail = voyageProfileImageThumb;
                 voyage.VehicleType = vehicle.Type;
                 voyage.VehicleName = vehicle.Name;
                 voyage.CreatedAt = DateTime.UtcNow;
@@ -109,6 +114,7 @@ namespace ParrotsAPI2.Services.Voyage
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             string voyageProfileImage = "";
+            string voyageProfileImageThumb = "";
 
             var strategy = _context.Database.CreateExecutionStrategy();
 
@@ -123,7 +129,7 @@ namespace ParrotsAPI2.Services.Voyage
                     if (newVoyage.ImageFile is not null && newVoyage.ImageFile.Length > 0)
                     {
                         var prefix = $"voyage-images/{userId}";
-                        voyageProfileImage = await UploadImageToBlobAsync(newVoyage.ImageFile, prefix);
+                        (voyageProfileImage, voyageProfileImageThumb) = await ProcessAndUploadAsync(newVoyage.ImageFile, prefix);
                     }
 
                     // 🔒 Get user (tracked)
@@ -163,6 +169,7 @@ namespace ParrotsAPI2.Services.Voyage
                     voyage.Vehicle = vehicle;
                     voyage.VehicleImage = vehicle.ProfileImageUrl;
                     voyage.ProfileImage = voyageProfileImage;
+                    voyage.ProfileImageThumbnail = voyageProfileImageThumb;
                     voyage.VehicleType = vehicle.Type;
                     voyage.VehicleName = vehicle.Name;
                     voyage.CreatedAt = DateTime.UtcNow;
@@ -228,13 +235,12 @@ namespace ParrotsAPI2.Services.Voyage
                     return serviceResponse;
                 }
 
-                // Upload image using the helper method
                 var prefix = $"voyage-images/{userId}";
-                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
+                var (fullPath, _) = await ProcessAndUploadAsync(imageFile, prefix);
 
                 var newVoyageImage = new VoyageImage
                 {
-                    VoyageImagePath = fileName,
+                    VoyageImagePath = fullPath,
                     UserId = userId
                 };
 
@@ -777,11 +783,10 @@ namespace ParrotsAPI2.Services.Voyage
                     return serviceResponse;
                 }
 
-                // Upload image using helper method
                 var prefix = $"voyage-images/{userId}";
-                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
+                var (fullPath, _) = await ProcessAndUploadAsync(imageFile, prefix);
 
-                voyage.ProfileImage = fileName; // Blob URL or filename depending on your BlobService
+                voyage.ProfileImage = fullPath;
                 await _context.SaveChangesAsync();
 
                 serviceResponse.Success = true;
@@ -901,11 +906,8 @@ namespace ParrotsAPI2.Services.Voyage
                     return serviceResponse;
                 }
 
-                // Delete image from blob storage if using blob URLs
                 if (!string.IsNullOrEmpty(voyageImage.VoyageImagePath))
-                {
                     await _blobService.DeleteAsync(voyageImage.VoyageImagePath);
-                }
 
                 _context.VoyageImages.Remove(voyageImage);
                 await _context.SaveChangesAsync();

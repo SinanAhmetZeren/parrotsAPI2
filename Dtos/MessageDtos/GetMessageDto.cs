@@ -7,10 +7,12 @@
         public DateTime DateTime { get; set; }
         public string SenderId { get; set; } = string.Empty;
         public string SenderProfileUrl { get; set; } = string.Empty;
+        public string SenderProfileThumbnailUrl { get; set; } = string.Empty;
         public string SenderUsername { get; set; } = string.Empty;
         public string SenderPublicId { get; set; } = string.Empty;
         public string ReceiverId { get; set; } = string.Empty;
         public string ReceiverProfileUrl { get; set; } = string.Empty;
+        public string ReceiverProfileThumbnailUrl { get; set; } = string.Empty;
         public string ReceiverUsername { get; set; } = string.Empty;
         public string ReceiverPublicId { get; set; } = string.Empty;
 

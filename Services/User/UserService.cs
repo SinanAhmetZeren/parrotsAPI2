@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.User;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Models;
+using ParrotsAPI2.Services;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging; // Ensure you have a logger
 
@@ -31,8 +32,8 @@ namespace ParrotsAPI2.Services.User
         }
 
 
-        // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
+        // 🔹 Helper: process image and upload full + thumbnail versions
+        private async Task<(string fullPath, string thumbPath)> ProcessAndUploadAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -42,13 +43,16 @@ namespace ParrotsAPI2.Services.User
             if (file.Length > MaxFileSize)
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var guid = Guid.NewGuid().ToString();
+            var fullKey = $"{prefix.TrimEnd('/')}/{guid}.webp";
+            var thumbKey = $"{prefix.TrimEnd('/')}/{guid}_thumb.webp";
 
-            var blobPath = string.IsNullOrEmpty(prefix)
-                ? fileName
-                : $"{prefix.TrimEnd('/')}/{fileName}";
+            var (fullStream, thumbStream) = await ImageProcessor.ProcessAsync(file.OpenReadStream());
 
-            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
+            var fullPath = await _blobService.UploadAsync(fullStream, fullKey, "image/webp");
+            var thumbPath = await _blobService.UploadAsync(thumbStream, thumbKey, "image/webp");
+
+            return (fullPath, thumbPath);
         }
 
         public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
@@ -81,10 +85,10 @@ namespace ParrotsAPI2.Services.User
                     try
                     {
                         var prefix = $"user-images/{user.Id}";
-                        var uploadedFileName = await UploadImageToBlobAsync(newUser.ImageFile, prefix);
+                        var (fullPath, thumbPath) = await ProcessAndUploadAsync(newUser.ImageFile, prefix);
 
-                        // Update user with profile image URL
-                        user.ProfileImageUrl = uploadedFileName;
+                        user.ProfileImageUrl = fullPath;
+                        user.ProfileImageThumbnailUrl = thumbPath;
                         await _context.SaveChangesAsync();
                     }
                     catch (Exception ex)
@@ -187,6 +191,7 @@ namespace ParrotsAPI2.Services.User
                 PhoneNumber = user?.PhoneNumber ?? string.Empty,
                 Youtube = user?.Youtube ?? string.Empty,
                 ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user?.ProfileImageThumbnailUrl ?? string.Empty,
                 BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
                 // ImageFile = default!,
                 UnseenMessages = user != null ? user.UnseenMessages : false,
@@ -269,6 +274,7 @@ namespace ParrotsAPI2.Services.User
                 PhoneNumber = user?.PhoneNumber ?? string.Empty,
                 Youtube = user?.Youtube ?? string.Empty,
                 ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user?.ProfileImageThumbnailUrl ?? string.Empty,
                 BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
                 // ImageFile = default!,
                 UnseenMessages = user != null ? user.UnseenMessages : false,
@@ -311,6 +317,7 @@ namespace ParrotsAPI2.Services.User
                     Id = user.Id,
                     UserName = user.UserName ?? string.Empty,
                     ProfileImageUrl = user.ProfileImageUrl,
+                    ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl,
                     PublicId = user.PublicId
                 };
                 serviceResponse.Success = true;
@@ -393,6 +400,7 @@ namespace ParrotsAPI2.Services.User
                 PhoneNumber = user?.PhoneNumber ?? string.Empty,
                 Youtube = user?.Youtube ?? string.Empty,
                 ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user?.ProfileImageThumbnailUrl ?? string.Empty,
                 BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
                 // ImageFile = default!,
                 UnseenMessages = user != null ? user.UnseenMessages : false,
@@ -599,10 +607,10 @@ namespace ParrotsAPI2.Services.User
 
             try
             {
-                // Upload image to Blob storage
                 var prefix = $"user-images/{userId}";
-                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
-                user.ProfileImageUrl = fileName;
+                var (fullPath, thumbPath) = await ProcessAndUploadAsync(imageFile, prefix);
+                user.ProfileImageUrl = fullPath;
+                user.ProfileImageThumbnailUrl = thumbPath;
 
                 await _context.SaveChangesAsync();
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
@@ -631,9 +639,8 @@ namespace ParrotsAPI2.Services.User
 
             try
             {
-                // Use helper function to handle upload and validation
                 var prefix = $"user-images/{userId}";
-                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
+                var (fullPath, _) = await ProcessAndUploadAsync(imageFile, prefix);
 
                 var user = await _context.Users.FindAsync(userId);
                 if (user == null)
@@ -643,7 +650,7 @@ namespace ParrotsAPI2.Services.User
                     return serviceResponse;
                 }
 
-                user.BackgroundImageUrl = fileName;
+                user.BackgroundImageUrl = fullPath;
                 await _context.SaveChangesAsync();
 
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
@@ -697,7 +704,7 @@ namespace ParrotsAPI2.Services.User
 
             var searchUsers = await _context.Users
                  .Where(u => u.UserName != null
-                             && u.UserName.Contains(username)
+                             && EF.Functions.ILike(u.UserName, $"%{username}%")
                              && u.UserName.ToLower() != "admin") // exclude "admin"
                  .ToListAsync();
 
@@ -708,6 +715,7 @@ namespace ParrotsAPI2.Services.User
                     Id = user.Id,
                     UserName = user.UserName ?? string.Empty,
                     ProfileImageUrl = user.ProfileImageUrl,
+                    ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl,
                     PublicId = user.PublicId
                 }).ToList();
 

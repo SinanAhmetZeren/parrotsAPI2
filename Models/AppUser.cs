@@ -18,6 +18,7 @@ namespace ParrotsAPI2.Models
         public string? Twitter { get; set; }
         public string? Linkedin { get; set; }
         public string? ProfileImageUrl { get; set; }
+        public string? ProfileImageThumbnailUrl { get; set; }
         public string? BackgroundImageUrl { get; set; }
         public bool UnseenMessages { get; set; } = false;
         public bool EmailVisible { get; set; } = false;

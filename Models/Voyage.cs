@@ -20,6 +20,7 @@ namespace ParrotsAPI2.Models
         public bool Auction { get; set; }
         public bool PublicOnMap { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
+        public string ProfileImageThumbnail { get; set; } = string.Empty;
         public List<Waypoint>? Waypoints { get; set; }
         public List<VoyageImage>? VoyageImages { get; set; }
         public string UserId { get; set; } = string.Empty;

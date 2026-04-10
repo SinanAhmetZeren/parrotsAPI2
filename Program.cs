@@ -176,7 +176,8 @@ if (app.Environment.IsDevelopment())
     try
     {
         var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-        context.Database.Migrate();
+
+
     }
     catch (Exception ex)
     {
@@ -289,6 +290,5 @@ app.UseAuthorization();
 app.MapHub<ChatHub>("/chathub/11");
 app.MapControllers();
 app.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow:", "text/plain"));
-
 
 app.Run();

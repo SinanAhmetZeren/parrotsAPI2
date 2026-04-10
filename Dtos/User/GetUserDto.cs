@@ -17,6 +17,7 @@
         public string PhoneNumber { get; set; } = string.Empty;
         public string Youtube { get; set; } = string.Empty;
         public string ProfileImageUrl { get; set; } = string.Empty;
+        public string ProfileImageThumbnailUrl { get; set; } = string.Empty;
         public string BackgroundImageUrl { get; set; } = string.Empty;
         // public IFormFile? ImageFile { get; set; }
         public bool UnseenMessages { get; set; }

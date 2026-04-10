@@ -21,6 +21,7 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public bool Auction { get; set; }
         public bool PublicOnMap { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
+        public string ProfileImageThumbnail { get; set; } = string.Empty;
         public VehicleType VehicleType { get; set; }
         public List<GetWaypointDto>? Waypoints { get; set; }
         public List<VoyageImageDto>? VoyageImages { get; set; }

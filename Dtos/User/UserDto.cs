@@ -6,5 +6,6 @@
         public string UserName { get; set; } = string.Empty;
         public string PublicId { get; set; } = string.Empty;
         public string? ProfileImageUrl { get; set; }
+        public string? ProfileImageThumbnailUrl { get; set; }
     }
 }

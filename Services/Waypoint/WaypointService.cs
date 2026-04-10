@@ -3,6 +3,7 @@ using ParrotsAPI2.Dtos.BidDtos;
 using ParrotsAPI2.Dtos.VoyageImageDtos;
 using ParrotsAPI2.Dtos.WaypointDtos;
 using ParrotsAPI2.Models;
+using ParrotsAPI2.Services;
 
 namespace ParrotsAPI2.Services.Waypoint
 {
@@ -23,8 +24,8 @@ namespace ParrotsAPI2.Services.Waypoint
             _blobService = blobService;
         }
 
-        // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
+        // 🔹 Helper method: resize to 1920px, convert to WebP, upload
+        private async Task<string> ProcessAndUploadAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -34,14 +35,12 @@ namespace ParrotsAPI2.Services.Waypoint
             if (file.Length > MaxFileSize)
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var guid = Guid.NewGuid().ToString();
+            var blobPath = $"{prefix.TrimEnd('/')}/{guid}.webp";
 
-            var blobPath = string.IsNullOrEmpty(prefix)
-                ? fileName
-                : $"{prefix.TrimEnd('/')}/{fileName}";
+            var (fullStream, _) = await ImageProcessor.ProcessAsync(file.OpenReadStream());
 
-            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
-
+            return await _blobService.UploadAsync(fullStream, blobPath, "image/webp");
         }
 
         public async Task<ServiceResponse<int>> AddWaypoint(AddWaypointDto newWaypoint, string userId)
@@ -57,9 +56,9 @@ namespace ParrotsAPI2.Services.Waypoint
                 }
                 // Add a folder-like prefix for organization
                 var prefix = $"waypoint-images/{userId}";
-                var uploadedFileName = await UploadImageToBlobAsync(newWaypoint.ImageFile, prefix);
+                var uploadedFileName = await ProcessAndUploadAsync(newWaypoint.ImageFile, prefix);
                 var waypoint = _mapper.Map<Models.Waypoint>(newWaypoint);
-                waypoint.ProfileImage = uploadedFileName; // Use uploaded file name / blob URL
+                waypoint.ProfileImage = uploadedFileName;
                 waypoint.UserId = userId;
                 _context.Waypoints.Add(waypoint);
                 await _context.SaveChangesAsync();

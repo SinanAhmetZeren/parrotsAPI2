@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.VehicleDtos;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Models;
+using ParrotsAPI2.Services;
 
 namespace ParrotsAPI2.Services.Vehicle
 {
@@ -25,8 +26,8 @@ namespace ParrotsAPI2.Services.Vehicle
             _blobService = blobService;
         }
 
-        // 🔹 Helper method for uploading images
-        private async Task<string> UploadImageToBlobAsync(IFormFile file, string prefix)
+        // 🔹 Helper method: process image and upload full + thumbnail versions
+        private async Task<(string fullPath, string thumbPath)> ProcessAndUploadAsync(IFormFile file, string prefix)
         {
             const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
@@ -36,13 +37,16 @@ namespace ParrotsAPI2.Services.Vehicle
             if (file.Length > MaxFileSize)
                 throw new ArgumentException("Image size exceeds 5MB limit");
 
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var guid = Guid.NewGuid().ToString();
+            var fullKey = $"{prefix.TrimEnd('/')}/{guid}.webp";
+            var thumbKey = $"{prefix.TrimEnd('/')}/{guid}_thumb.webp";
 
-            var blobPath = string.IsNullOrEmpty(prefix)
-                ? fileName
-                : $"{prefix.TrimEnd('/')}/{fileName}";
+            var (fullStream, thumbStream) = await ImageProcessor.ProcessAsync(file.OpenReadStream());
 
-            return await _blobService.UploadAsync(file.OpenReadStream(), blobPath);
+            var fullPath = await _blobService.UploadAsync(fullStream, fullKey, "image/webp");
+            var thumbPath = await _blobService.UploadAsync(thumbStream, thumbKey, "image/webp");
+
+            return (fullPath, thumbPath);
         }
 
         public async Task<ServiceResponse<GetVehicleDto>> AddVehicle(AddVehicleDto newVehicle, string userId)
@@ -56,14 +60,14 @@ namespace ParrotsAPI2.Services.Vehicle
             }
 
             string profileImageUrl = string.Empty;
+            string profileImageThumbnailUrl = string.Empty;
 
             if (newVehicle.ImageFile != null && newVehicle.ImageFile.Length > 0)
             {
                 try
                 {
-                    // Use helper method to handle file upload and validation
                     var prefix = $"vehicle-images/{userId}";
-                    profileImageUrl = await UploadImageToBlobAsync(newVehicle.ImageFile, prefix);
+                    (profileImageUrl, profileImageThumbnailUrl) = await ProcessAndUploadAsync(newVehicle.ImageFile, prefix);
                 }
                 catch (Exception ex)
                 {
@@ -75,6 +79,7 @@ namespace ParrotsAPI2.Services.Vehicle
 
             var vehicle = _mapper.Map<Models.Vehicle>(newVehicle);
             vehicle.ProfileImageUrl = profileImageUrl;
+            vehicle.ProfileImageThumbnailUrl = profileImageThumbnailUrl;
             vehicle.CreatedAt = DateTime.UtcNow;
 
             var currentUser = await _context.Users.FirstOrDefaultAsync(c => c.Id == newVehicle.UserId);
@@ -118,13 +123,12 @@ namespace ParrotsAPI2.Services.Vehicle
 
             try
             {
-                // Upload using helper
                 var prefix = $"vehicle-images/{userId}";
-                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
+                var (fullPath, _) = await ProcessAndUploadAsync(imageFile, prefix);
 
                 var newVehicleImage = new VehicleImage
                 {
-                    VehicleImagePath = fileName,
+                    VehicleImagePath = fullPath,
                     VehicleId = vehicleId,
                     UserId = userId
                 };
@@ -651,12 +655,11 @@ namespace ParrotsAPI2.Services.Vehicle
 
             try
             {
-                // Use the helper method to upload the image
                 var prefix = $"vehicle-images/{userId}";
-                var fileName = await UploadImageToBlobAsync(imageFile, prefix);
+                var (fullPath, thumbPath) = await ProcessAndUploadAsync(imageFile, prefix);
 
-                // Update the vehicle profile image URL
-                vehicle.ProfileImageUrl = fileName;
+                vehicle.ProfileImageUrl = fullPath;
+                vehicle.ProfileImageThumbnailUrl = thumbPath;
                 await _context.SaveChangesAsync();
 
                 serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
@@ -684,17 +687,10 @@ namespace ParrotsAPI2.Services.Vehicle
                     return response;
                 }
 
-                // Delete image from Blob Storage if it exists
                 if (!string.IsNullOrEmpty(vehicleImage.VehicleImagePath))
                 {
-                    try
-                    {
-                        await _blobService.DeleteAsync(vehicleImage.VehicleImagePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning($"Failed to delete image from blob: {ex.Message}");
-                    }
+                    try { await _blobService.DeleteAsync(vehicleImage.VehicleImagePath); }
+                    catch (Exception ex) { _logger.LogWarning($"Failed to delete image from blob: {ex.Message}"); }
                 }
 
                 // Remove the record from database

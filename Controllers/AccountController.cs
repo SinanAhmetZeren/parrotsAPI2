@@ -458,6 +458,7 @@ namespace API.Controllers
                 UserName = existingUser.UserName ?? string.Empty,
                 UserId = existingUser.Id,
                 ProfileImageUrl = existingUser.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = existingUser.ProfileImageThumbnailUrl ?? string.Empty,
                 Token = _tokenService.CreateToken(existingUser),
                 RefreshToken = refreshToken,
                 RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime
@@ -545,6 +546,7 @@ namespace API.Controllers
                 Email = user.Email ?? string.Empty,
                 UserId = user.Id,
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
             };
         }
 
@@ -640,6 +642,7 @@ namespace API.Controllers
                     Email = user.Email ?? string.Empty,
                     UserId = user.Id,
                     ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                    ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
                     Token = _tokenService.CreateToken(user),
                     RefreshToken = refreshToken,
                     RefreshTokenExpiryTime = user.RefreshTokenExpiryTime
@@ -716,6 +719,7 @@ namespace API.Controllers
                 Email = user.Email ?? string.Empty,
                 UserId = user.Id,
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty,
                 UnreadMessages = user.UnseenMessages ? "true" : "false",
                 IsAdmin = user.IsAdmin
