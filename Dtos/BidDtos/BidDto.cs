@@ -2,6 +2,7 @@
 {
     public class BidDto
     {
+        public int Id { get; set; }
         public bool Accepted { get; set; }
         public int PersonCount { get; set; }
         public string Message { get; set; } = string.Empty;
@@ -12,6 +13,7 @@
         public string UserId { get; set; } = string.Empty;
         public string? UserProfileImage { get; set; } = null;
         public string? UserName { get; set; } = null;
+        public string? VoyageName { get; set; } = null;
 
     }
 }

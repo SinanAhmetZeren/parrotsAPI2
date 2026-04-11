@@ -93,6 +93,7 @@ namespace ParrotsAPI2.Services.User
                     }
                     catch (Exception ex)
                     {
+                        _logger.LogError(ex, "Error uploading image for new user {UserId}", user.Id);
                         serviceResponse.Success = false;
                         serviceResponse.Message = $"Error uploading image: {ex.Message}";
                         return serviceResponse;
@@ -105,6 +106,7 @@ namespace ParrotsAPI2.Services.User
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error adding user");
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error adding user: {ex.Message}";
             }
@@ -446,6 +448,7 @@ namespace ParrotsAPI2.Services.User
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating user {UserId}", updatedUser.Id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
             }
@@ -506,6 +509,7 @@ namespace ParrotsAPI2.Services.User
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error patching user {UserId}", userId);
                 // ✅ Clean exception handling with message
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error while patching user: {ex.Message}";
@@ -568,6 +572,7 @@ namespace ParrotsAPI2.Services.User
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error patching user {UserId} (admin)", userId);
                 // ✅ Clean exception handling with message
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error while patching user: {ex.Message}";
@@ -618,6 +623,7 @@ namespace ParrotsAPI2.Services.User
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error uploading profile image for user {UserId}", userId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Image upload failed: {ex.Message}";
             }
@@ -657,6 +663,7 @@ namespace ParrotsAPI2.Services.User
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error uploading background image for user {UserId}", userId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Image upload failed: {ex.Message}";
             }
@@ -684,6 +691,7 @@ namespace ParrotsAPI2.Services.User
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating unseen messages for user {UserId}", updatedUser.Id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error updating user unseen messages: {ex.Message}";
             }

@@ -12,6 +12,9 @@ namespace ParrotsAPI2.Dtos.VehicleDtos
         public int Capacity { get; set; }
         public string Description { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
+        public bool Confirmed { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime CreatedAt { get; set; }
         public UserDto? User { get; set; }
         public List<VehicleImageDto>? VehicleImages { get; set; }
         public List<VoyageDto>? Voyages { get; set; }

@@ -16,7 +16,6 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using ParrotsAPI2.Services.EmailSender;
 using Microsoft.Extensions.Caching.Memory;
-using ParrotsAPI2.Helpers;
 
 
 
@@ -34,13 +33,15 @@ namespace API.Controllers
         private readonly string _googleAndroidClientId;
         private readonly ILogger<AccountController> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly DataContext _context;
 
         public AccountController(
             UserManager<AppUser> userManager,
             TokenService tokenService,
             IOptions<GoogleAuthOptions> googleOptions,
             ILogger<AccountController> logger,
-            IEmailSender emailSender
+            IEmailSender emailSender,
+            DataContext context
         )
         {
             _tokenService = tokenService;
@@ -49,6 +50,7 @@ namespace API.Controllers
             _googleAndroidClientId = googleOptions.Value.AndroidClientId;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -122,7 +124,11 @@ namespace API.Controllers
             var userResponse = CreateUserObject(user);
             userResponse.RefreshToken = refreshToken;
             userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
-            userResponse.RequiresTermsAcceptance = user.TermsVersion != TermsConfig.CurrentVersion;
+            var currentTermsVersion = await _context.TermsVersions
+                .Where(t => t.IsCurrent)
+                .Select(t => t.Version)
+                .FirstOrDefaultAsync() ?? "2025-01";
+            userResponse.RequiresTermsAcceptance = user.TermsVersion != currentTermsVersion;
 
             return userResponse;
         }
@@ -701,13 +707,134 @@ namespace API.Controllers
             var user = await _userManager.FindByIdAsync(userId!);
             if (user == null) return Unauthorized();
 
+            var currentTermsVersion = await _context.TermsVersions
+                .Where(t => t.IsCurrent)
+                .Select(t => t.Version)
+                .FirstOrDefaultAsync() ?? "2025-01";
             user.TermsAcceptedAt = DateTime.UtcNow;
-            user.TermsVersion = TermsConfig.CurrentVersion;
+            user.TermsVersion = currentTermsVersion;
             await _userManager.UpdateAsync(user);
 
             var userResponse = CreateUserObject(user);
             userResponse.RequiresTermsAcceptance = false;
             return userResponse;
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin/logs")]
+        public IActionResult GetLogs([FromQuery] string? from, [FromQuery] string? to, [FromQuery] string? level)
+        {
+            var fromDt = string.IsNullOrWhiteSpace(from)
+                ? DateTime.UtcNow.Date
+                : DateTime.Parse(from, null, System.Globalization.DateTimeStyles.RoundtripKind);
+
+            var toDt = string.IsNullOrWhiteSpace(to)
+                ? fromDt.Date.AddDays(1).AddTicks(-1)
+                : DateTime.Parse(to, null, System.Globalization.DateTimeStyles.RoundtripKind);
+
+            if (toDt < fromDt)
+                return BadRequest(new { message = "\"to\" must be after \"from\"." });
+
+            var logsDir = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+            var allLines = new List<string>();
+            bool anyFileFound = false;
+
+            for (var d = fromDt.Date; d <= toDt.Date; d = d.AddDays(1))
+            {
+                var fullPath = Path.Combine(logsDir, $"log-{d:yyyyMMdd}.txt");
+                if (!System.IO.File.Exists(fullPath)) continue;
+                anyFileFound = true;
+                allLines.AddRange(System.IO.File.ReadLines(fullPath));
+            }
+
+            if (!anyFileFound)
+                return NotFound(new { message = $"No log files found for the selected range." });
+
+            var levelFilter = string.IsNullOrWhiteSpace(level) || level == "ALL" ? null : level.ToUpper();
+
+            // Group into entries: header line + continuation lines
+            var groups = new List<(string? Level, List<string> Lines)>();
+            foreach (var line in allLines)
+            {
+                var lvl = line.Contains(" INF]") ? "INF"
+                        : line.Contains(" WRN]") ? "WRN"
+                        : line.Contains(" ERR]") ? "ERR"
+                        : line.Contains(" FTL]") ? "FTL"
+                        : null;
+
+                if (lvl != null)
+                    groups.Add((lvl, new List<string> { line }));
+                else if (groups.Count > 0)
+                    groups[^1].Lines.Add(line);
+            }
+
+            var result = groups
+                .Where(g => levelFilter == null || g.Level == levelFilter)
+                .SelectMany(g =>
+                {
+                    if (g.Lines.Count == 1) return g.Lines;
+
+                    // Find the innermost ---> exception (last one = root cause)
+                    var innermostArrow = g.Lines
+                        .Skip(1)
+                        .LastOrDefault(l => l.TrimStart().StartsWith("--->"));
+
+                    // Also find first app frame for location context
+                    var appFrame = g.Lines
+                        .Skip(1)
+                        .FirstOrDefault(l =>
+                            l.TrimStart().StartsWith("at ParrotsAPI2.") ||
+                            l.TrimStart().StartsWith("at API."));
+
+                    var result = new List<string> { g.Lines[0] };
+
+                    if (innermostArrow != null)
+                        result.Add("  " + innermostArrow.TrimStart().Replace("--->", "→").Trim());
+
+                    if (appFrame != null)
+                        result.Add("  " + appFrame.Trim());
+
+                    return result;
+                })
+                .ToList();
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("admin/update-terms")]
+        public async Task<IActionResult> UpdateTerms([FromBody] UpdateTermsDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Version) || string.IsNullOrWhiteSpace(dto.Content))
+                return BadRequest("Version and content are required.");
+
+            var existing = await _context.TermsVersions.FirstOrDefaultAsync(t => t.Version == dto.Version);
+            if (existing != null)
+                return BadRequest("A terms version with that name already exists.");
+
+            await _context.TermsVersions
+                .Where(t => t.IsCurrent)
+                .ExecuteUpdateAsync(s => s.SetProperty(t => t.IsCurrent, false));
+
+            _context.TermsVersions.Add(new TermsVersion
+            {
+                Version = dto.Version,
+                Content = dto.Content,
+                PublishedAt = DateTime.UtcNow,
+                IsCurrent = true
+            });
+
+            await _context.SaveChangesAsync();
+            return Ok(new { version = dto.Version });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin/current-terms")]
+        public async Task<IActionResult> GetCurrentTerms()
+        {
+            var terms = await _context.TermsVersions.FirstOrDefaultAsync(t => t.IsCurrent);
+            if (terms == null) return NotFound();
+            return Ok(new { terms.Version, terms.Content, terms.PublishedAt });
         }
 
         private UserResponseDto CreateUserObject(AppUser user)

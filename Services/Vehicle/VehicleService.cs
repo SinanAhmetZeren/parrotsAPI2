@@ -71,6 +71,7 @@ namespace ParrotsAPI2.Services.Vehicle
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Image upload failed for user {UserId}", userId);
                     serviceResponse.Success = false;
                     serviceResponse.Message = $"Image upload failed: {ex.Message}";
                     return serviceResponse;
@@ -142,6 +143,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error saving vehicle image for vehicle {VehicleId}", vehicleId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error saving vehicle image: {ex.Message}";
                 if (ex.InnerException != null)
@@ -201,6 +203,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting vehicle {VehicleId}", id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
             }
@@ -271,6 +274,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error in CheckAndDeleteVehicle for vehicle {VehicleId}", id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
             }
@@ -437,6 +441,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving images for vehicle {VehicleId}", vehicleId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"An error occurred while retrieving vehicle images: {ex.Message}";
             }
@@ -474,6 +479,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving vehicle image {VehicleImageId}", vehicleImageId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"An error occurred while retrieving the vehicle image: {ex.Message}";
             }
@@ -510,6 +516,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error fetching vehicles for user {UserId}", userId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"An error occurred while fetching vehicles: {ex.Message}";
             }
@@ -551,6 +558,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error patching vehicle {VehicleId}", vehicleId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error updating vehicle: {ex.Message}";
                 if (ex.InnerException != null)
@@ -622,6 +630,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error patching vehicle {VehicleId} (admin)", vehicleId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error updating vehicle: {ex.Message}";
                 if (ex.InnerException != null)
@@ -667,6 +676,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error uploading profile image for vehicle {VehicleId}", vehicleId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error uploading image: {ex.Message}";
             }
@@ -703,6 +713,7 @@ namespace ParrotsAPI2.Services.Vehicle
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting vehicle image {VehicleImageId}", vehicleImageId);
                 response.Success = false;
                 response.Message = $"Error deleting vehicle image: {ex.Message}";
             }

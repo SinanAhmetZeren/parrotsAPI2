@@ -66,6 +66,7 @@ namespace ParrotsAPI2.Services.Waypoint
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error adding waypoint for user {UserId}", userId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error adding waypoint: {ex.Message}";
             }
@@ -95,6 +96,7 @@ namespace ParrotsAPI2.Services.Waypoint
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error adding waypoint (no image) for user {UserId}", userId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error adding waypoint: {ex.Message}";
             }
@@ -138,6 +140,7 @@ namespace ParrotsAPI2.Services.Waypoint
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting waypoint {WaypointId}", id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error deleting waypoint: {ex.Message}";
             }
@@ -222,6 +225,7 @@ namespace ParrotsAPI2.Services.Waypoint
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving waypoints by coordinates");
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving waypoints: {ex.Message}";
             }

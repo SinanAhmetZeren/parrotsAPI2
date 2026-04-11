@@ -11,5 +11,7 @@
         public DateTime DateTime { get; set; }
         public int VoyageId { get; set; }
         public string UserId { get; set; } = string.Empty;
+        public string? UserName { get; set; } = null;
+        public string? VoyageName { get; set; } = null;
     }
 }

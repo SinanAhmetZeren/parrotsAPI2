@@ -102,6 +102,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error adding voyage for user {UserId}", userId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error adding voyage: {ex.Message}";
             }
@@ -203,6 +204,7 @@ namespace ParrotsAPI2.Services.Voyage
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
+                    _logger.LogError(ex, "Error adding voyage for user {UserId} (transaction rolled back)", userId);
                     serviceResponse.Success = false;
                     serviceResponse.Message = $"Error adding voyage: {ex.Message}";
                 }
@@ -253,6 +255,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error adding voyage image for voyage {VoyageId}", voyageId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error adding voyage image: {ex.Message}";
             }
@@ -294,6 +297,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error soft deleting voyage {VoyageId}", id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error soft deleting voyage: {ex.Message}";
                 if (ex.InnerException != null)
@@ -355,6 +359,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error in CheckAndDeleteVoyage for voyage {VoyageId}", id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error soft deleting voyage: {ex.Message}";
                 if (ex.InnerException != null)
@@ -706,6 +711,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error patching voyage {VoyageId}", voyageId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error patching voyage: {ex.Message}";
                 if (ex.InnerException != null)
@@ -794,6 +800,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating profile image for voyage {VoyageId}", voyageId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error updating voyage image: {ex.Message}";
             }
@@ -844,6 +851,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving voyages by coordinates");
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving voyages: {ex.Message}";
             }
@@ -883,6 +891,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving voyage IDs by coordinates");
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving voyage IDs: {ex.Message}";
             }
@@ -917,6 +926,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting voyage image {VoyageImageId}", voyageImageId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error deleting voyage image: {ex.Message}";
             }
@@ -1007,6 +1017,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving filtered voyages (v2)");
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving voyages: {ex.Message}";
             }
@@ -1104,6 +1115,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving filtered voyages");
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving voyages: {ex.Message}";
             }
@@ -1176,6 +1188,7 @@ namespace ParrotsAPI2.Services.Voyage
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving voyage image {VoyageImageId}", voyageImageId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"An error occurred while retrieving the voyage image: {ex.Message}";
             }

@@ -11,11 +11,13 @@ namespace ParrotsAPI2.Services.Bid
 
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly ILogger<BidService> _logger;
 
-        public BidService(IMapper mapper, DataContext context)
+        public BidService(IMapper mapper, DataContext context, ILogger<BidService> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<ServiceResponse<GetBidDto>> ChangeBid(ChangeBidDto changedBid)
@@ -39,6 +41,7 @@ namespace ParrotsAPI2.Services.Bid
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error changing bid {BidId}", changedBid.Id);
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
             }
@@ -78,6 +81,7 @@ namespace ParrotsAPI2.Services.Bid
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error creating bid for voyage {VoyageId}", newBid.VoyageId);
                 response.Success = false;
                 response.Message = "Error creating bid: " + ex.Message;
             }
@@ -117,6 +121,7 @@ namespace ParrotsAPI2.Services.Bid
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving bid {BidId}", bidId);
                 response.Success = false;
                 response.Message = "Error retrieving bid: " + ex.Message;
             }
@@ -133,8 +138,8 @@ namespace ParrotsAPI2.Services.Bid
                     .Where(b => b.UserId == userId)
                     .Select(b => new GetBidDto
                     {
-                        Accepted = b.Accepted,
                         Id = b.Id,
+                        Accepted = b.Accepted,
                         PersonCount = b.PersonCount,
                         Message = b.Message,
                         OfferPrice = b.OfferPrice,
@@ -144,11 +149,21 @@ namespace ParrotsAPI2.Services.Bid
                     })
                     .ToListAsync();
 
+                var userIds = bids.Select(b => b.UserId).Distinct().ToList();
+                var userNames = await _context.Users
+                    .Where(u => userIds.Contains(u.Id))
+                    .Select(u => new { u.Id, u.UserName })
+                    .ToListAsync();
+                var userNameMap = userNames.ToDictionary(u => u.Id, u => u.UserName);
+                foreach (var bid in bids)
+                    bid.UserName = userNameMap.GetValueOrDefault(bid.UserId);
+
                 response.Data = bids;
                 response.Message = "Bids retrieved successfully";
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving bids for user {UserId}", userId);
                 response.Success = false;
                 response.Message = "Error retrieving bids: " + ex.Message;
             }
@@ -166,15 +181,24 @@ namespace ParrotsAPI2.Services.Bid
                     .Select(b => new GetBidDto
                     {
                         Id = b.Id,
+                        Accepted = b.Accepted,
                         PersonCount = b.PersonCount,
                         Message = b.Message,
                         OfferPrice = b.OfferPrice,
-                        Accepted = b.Accepted,
                         DateTime = b.DateTime,
                         VoyageId = b.VoyageId,
                         UserId = b.UserId
                     })
                     .ToListAsync();
+
+                var userIds = bids.Select(b => b.UserId).Distinct().ToList();
+                var userNames = await _context.Users
+                    .Where(u => userIds.Contains(u.Id))
+                    .Select(u => new { u.Id, u.UserName })
+                    .ToListAsync();
+                var userNameMap = userNames.ToDictionary(u => u.Id, u => u.UserName);
+                foreach (var bid in bids)
+                    bid.UserName = userNameMap.GetValueOrDefault(bid.UserId);
 
 
                 response.Data = bids;
@@ -182,6 +206,7 @@ namespace ParrotsAPI2.Services.Bid
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving bids for voyage {VoyageId}", voyageId);
                 response.Success = false;
                 response.Message = "Error retrieving bids: " + ex.Message;
             }
@@ -225,6 +250,7 @@ namespace ParrotsAPI2.Services.Bid
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting bid {BidId}", bidId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error deleting bid: {ex.Message}";
             }
@@ -271,6 +297,7 @@ namespace ParrotsAPI2.Services.Bid
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error accepting bid {BidId}", bidId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error accepting bid: {ex.Message}";
             }
@@ -318,6 +345,7 @@ namespace ParrotsAPI2.Services.Bid
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error patching bid {BidId}", bidId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error patching voyage: {ex.Message}";
                 if (ex.InnerException != null)

@@ -8,9 +8,12 @@ namespace ParrotsAPI2.Services.Message
     {
 
         private readonly DataContext _context;
-        public MessageService(DataContext context)
+        private readonly ILogger<MessageService> _logger;
+
+        public MessageService(DataContext context, ILogger<MessageService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
 
@@ -103,6 +106,7 @@ namespace ParrotsAPI2.Services.Message
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving messages for user {UserId}", userId);
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
             }
@@ -173,6 +177,7 @@ namespace ParrotsAPI2.Services.Message
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving messages between users {UserId1} and {UserId2}", userId1, userId2);
                 serviceResponse.Success = false;
                 serviceResponse.Message = $"Error retrieving messages: {ex.Message}";
             }

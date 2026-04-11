@@ -31,12 +31,35 @@ using System.Security.Cryptography;
 
 using Newtonsoft.Json;
 using ParrotsAPI2.Services.EmailSender;
+using ParrotsAPI2.Services.Alert;
 using ParrotsAPI2.Helpers;
+using Serilog;
 // using ParrotsAPI2.Migrations;
 
 DotNetEnv.Env.TraversePath().Load();
 
+var alertSink = new AlertEmailSink(
+    smtpUser: Environment.GetEnvironmentVariable("Email__SmtpUser") ?? "",
+    smtpPass: Environment.GetEnvironmentVariable("Email__SmtpPass") ?? "",
+    adminEmail: Environment.GetEnvironmentVariable("Email__AdminAddress") ?? ""
+);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.File(
+        path: "logs/log-.txt",
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 14,
+        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.Sink(alertSink)
+    .CreateLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 // Bind Google settings from appsettings.json
 builder.Services.Configure<GoogleAuthOptions>(
@@ -112,11 +135,11 @@ builder.Services.AddMemoryCache();
 // Identity
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 3;
+    options.Password.RequiredLength = 8;
     options.Password.RequiredUniqueChars = 1;
 
     options.User.AllowedUserNameCharacters =
