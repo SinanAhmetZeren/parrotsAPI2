@@ -380,5 +380,13 @@ namespace ParrotsAPI2.Controllers
         }
 
 
+        [HttpPost("AddPlace")]
+        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> AddPlace([FromBody] AddPlaceDto newPlace)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            return Ok(await _voyageService.AddPlace(newPlace, userId));
+        }
+
+
     }
 }

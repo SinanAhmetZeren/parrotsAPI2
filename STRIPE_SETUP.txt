@@ -1,0 +1,59 @@
+STRIPE INTEGRATION — SETUP STEPS
+==================================
+
+1. STRIPE ACCOUNT
+   - Create account at stripe.com
+   - Complete business verification
+   - Link bank account for payouts (Stripe dashboard > Settings > Payouts)
+   - Get API keys: Dashboard > Developers > API keys
+     - Test secret key:  sk_test_...
+     - Live secret key:  sk_live_...
+
+2. BACKEND — Install & Configure
+   - Install NuGet: Stripe.net
+   - Add to appsettings.json:
+       "Stripe": {
+         "SecretKey": "sk_test_...",
+         "WebhookSecret": "whsec_..."
+       }
+   - Register in Program.cs:
+       StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+3. BACKEND — Create Payment Intent Endpoint
+   - POST /api/User/CreatePaymentIntent
+   - Accepts: { userId, coins, eurAmount }
+   - Calls Stripe PaymentIntents.CreateAsync()
+   - Returns: { clientSecret }
+
+4. BACKEND — Webhook Endpoint
+   - POST /api/stripe/webhook
+   - Verifies Stripe signature using WebhookSecret
+   - Listens for event: payment_intent.succeeded
+   - On success: calls PurchaseCoins() to credit user
+   - IMPORTANT: Never credit coins from frontend — only from this webhook
+
+5. FRONTEND — Install Stripe
+   - npm install @stripe/stripe-js @stripe/react-stripe-js
+   - Add publishable key to .env:
+       REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_...
+
+6. FRONTEND — Replace Purchase Flow
+   - Wrap app (or coin page) with <Elements stripe={stripePromise}>
+   - On "Confirm Purchase": call CreatePaymentIntent endpoint to get clientSecret
+   - Show Stripe's CardElement for card input
+   - Call stripe.confirmCardPayment(clientSecret)
+   - On success: show confirmation, refetch balance (balance updated via webhook)
+
+7. GO LIVE
+   - Switch to live API keys in Stripe dashboard and appsettings
+   - Register webhook URL in Stripe dashboard:
+       https://api.parrotsvoyages.com/api/stripe/webhook
+   - Enable events: payment_intent.succeeded
+   - Re-verify bank account in live mode if needed
+   - Test with a real card before launch
+
+==================================
+Notes:
+- Stripe takes ~2.9% + €0.30 per transaction (EU cards may vary)
+- Payouts to bank account take 2-7 business days initially, then daily
+- Keep test and live keys strictly separate

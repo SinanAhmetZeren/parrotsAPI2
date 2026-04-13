@@ -594,7 +594,7 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
                 //.Where(v => v.UserId == userId)
-                .Where(v => v.UserId == userId && v.Confirmed == true && v.IsDeleted == false)
+                .Where(v => v.UserId == userId && v.Confirmed == true && v.IsDeleted == false && !v.IsPlace)
                 .ToListAsync();
 
             if (voyages == null || voyages.Count == 0)
@@ -815,7 +815,6 @@ namespace ParrotsAPI2.Services.Voyage
             {
                 var voyages = await _context.Voyages
                     .Where(v =>
-                        v.Confirmed &&
                         !v.IsDeleted &&
                         v.PublicOnMap &&
                         v.Waypoints != null &&
@@ -824,9 +823,8 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude >= lat1 &&
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
-                            w.Longitude <= lon2))
-                    // .Where(v => v.LastBidDate >= DateTime.Today)
-                    .Where(v => v.LastBidDate >= DateTime.UtcNow.Date)
+                            w.Longitude <= lon2) &&
+                        (v.IsPlace || (v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
                     .Include(v => v.Waypoints)
@@ -866,16 +864,16 @@ namespace ParrotsAPI2.Services.Voyage
             {
                 var voyageIds = await _context.Voyages
                     .Where(v =>
-                        v.Confirmed == true &&
-                        v.IsDeleted == false &&
-                        v.PublicOnMap == true &&
+                        !v.IsDeleted &&
+                        v.PublicOnMap &&
                         v.Waypoints != null &&
                         v.Waypoints.Any(w =>
                             w.Order == 1 &&
                             w.Latitude >= lat1 &&
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
-                            w.Longitude <= lon2))
+                            w.Longitude <= lon2) &&
+                        (v.IsPlace || (v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
                     .Select(v => v.Id)
                     .ToListAsync();
 
@@ -950,7 +948,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
                     // .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && !v.IsPlace)
                     .AsQueryable();
 
                 // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
@@ -978,7 +976,23 @@ namespace ParrotsAPI2.Services.Voyage
                 if (vehicleType.HasValue && Enum.IsDefined(vehicleType.Value))
                     query = query.Where(v => v.Vehicle != null && v.Vehicle.Type == vehicleType.Value);
 
-                var queryResult = await query.ToListAsync();
+                // ✅ Fetch places — only filter by coordinates, bypass all voyage filters
+                var placesQuery = _context.Voyages
+                    .Include(v => v.User)
+                    .Where(v => v.IsPlace && !v.IsDeleted);
+
+                if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue)
+                {
+                    placesQuery = placesQuery.Where(v =>
+                        v.Waypoints != null && v.Waypoints.Any(wp =>
+                            wp.Order == 1 &&
+                            wp.Latitude >= lat1.Value && wp.Latitude <= lat2.Value &&
+                            wp.Longitude >= lon1.Value && wp.Longitude <= lon2.Value
+                        )
+                    );
+                }
+
+                var queryResult = (await query.ToListAsync()).Concat(await placesQuery.ToListAsync()).ToList();
 
                 // ✅ Return clear message if no voyages match
                 if (queryResult == null || queryResult.Count == 0)
@@ -1040,7 +1054,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && !v.IsPlace)
                     .AsQueryable();
 
                 // Filter by coordinates if all bounds provided
@@ -1076,7 +1090,23 @@ namespace ParrotsAPI2.Services.Voyage
                 if (vehicleType.HasValue && Enum.IsDefined(vehicleType.Value))
                     query = query.Where(v => v.Vehicle != null && v.Vehicle.Type == vehicleType.Value);
 
-                var voyages = await query.ToListAsync();
+                // Fetch places — only filter by coordinates, bypass all voyage filters
+                var placesQuery = _context.Voyages
+                    .Include(v => v.User)
+                    .Where(v => v.IsPlace && !v.IsDeleted);
+
+                if (lat1.HasValue && lat2.HasValue && lon1.HasValue && lon2.HasValue)
+                {
+                    placesQuery = placesQuery.Where(v =>
+                        v.Waypoints != null && v.Waypoints.Any(wp =>
+                            wp.Order == 1 &&
+                            wp.Latitude >= lat1.Value && wp.Latitude <= lat2.Value &&
+                            wp.Longitude >= lon1.Value && wp.Longitude <= lon2.Value
+                        )
+                    );
+                }
+
+                var voyages = (await query.ToListAsync()).Concat(await placesQuery.ToListAsync()).ToList();
 
                 if (voyages.Count == 0)
                 {
@@ -1193,6 +1223,48 @@ namespace ParrotsAPI2.Services.Voyage
                 serviceResponse.Message = $"An error occurred while retrieving the voyage image: {ex.Message}";
             }
 
+            return serviceResponse;
+        }
+
+
+        public async Task<ServiceResponse<GetVoyageDto>> AddPlace(AddPlaceDto newPlace, string userId)
+        {
+            var serviceResponse = new ServiceResponse<GetVoyageDto>();
+            try
+            {
+                var place = new Models.Voyage
+                {
+                    Name = newPlace.Name,
+                    Brief = newPlace.Brief,
+                    Description = newPlace.Description,
+                    PublicOnMap = true,
+                    IsPlace = true,
+                    Confirmed = true,
+                    UserId = userId,
+                    CreatedAt = DateTime.UtcNow,
+                    Waypoints = new List<Models.Waypoint>
+                    {
+                        new Models.Waypoint
+                        {
+                            Latitude = newPlace.Latitude,
+                            Longitude = newPlace.Longitude,
+                            Order = 1,
+                            UserId = userId
+                        }
+                    }
+                };
+
+                _context.Voyages.Add(place);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = _mapper.Map<GetVoyageDto>(place);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding place");
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Error adding place: {ex.Message}";
+            }
             return serviceResponse;
         }
 

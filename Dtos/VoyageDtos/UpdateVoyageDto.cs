@@ -19,7 +19,7 @@
         public bool IsDeleted { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
         public VehicleType VehicleType { get; set; }
-        public int VehicleId { get; set; }
+        public int? VehicleId { get; set; }
 
     }
 }

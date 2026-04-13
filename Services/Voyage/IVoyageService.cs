@@ -24,6 +24,7 @@ namespace ParrotsAPI2.Services.Voyage
         Task<ServiceResponse<List<GetVoyageDto>>> GetFilteredVoyages(double? lat1, double? lat2, double? lon1, double? lon2, int? vacancy, VehicleType? vehicleType, DateTime? startDate, DateTime? endDate);
         Task<ServiceResponse<string>> ConfirmVoyage(int voyageId);
         Task<ServiceResponse<VoyageImageDto>> GetVoyageImageById(int voyageImageId);
+        Task<ServiceResponse<GetVoyageDto>> AddPlace(AddPlaceDto newPlace, string userId);
 
     }
 }
