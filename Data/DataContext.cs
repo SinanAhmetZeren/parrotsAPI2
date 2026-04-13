@@ -159,7 +159,7 @@ namespace ParrotsAPI2.Data
                 .HasPrecision(18, 2);
 
             modelBuilder.Entity<CoinPurchase>()
-                .Property(cp => cp.UsdAmount)
+                .Property(cp => cp.EurAmount)
                 .HasPrecision(10, 2);
 
             // Seed default vehicles ("walk" and "run") with UserId = "1"

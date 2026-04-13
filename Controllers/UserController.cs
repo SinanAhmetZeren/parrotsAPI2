@@ -233,7 +233,7 @@ namespace ParrotsAPI2.Controllers
             var response = await _userService.PurchaseCoins(
                 deposit.UserId,
                 deposit.Coins,
-                deposit.UsdAmount,
+                deposit.EurAmount,
                 deposit.PaymentProviderId
                 );
 
@@ -242,6 +242,22 @@ namespace ParrotsAPI2.Controllers
                 return NotFound(response);
             }
 
+            return Ok(response);
+        }
+
+        [HttpPost("ClaimFreeCoins")]
+        public async Task<ActionResult<ServiceResponse<int>>> ClaimFreeCoins()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized(new ServiceResponse<string> { Success = false, Message = "User identity not found." });
+            }
+            var response = await _userService.ClaimFreeCoins(userId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
         }
 

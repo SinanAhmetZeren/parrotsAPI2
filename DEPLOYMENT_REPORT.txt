@@ -1,0 +1,235 @@
+================================================================================
+PARROTSVOYAGES.COM — DEPLOYMENT REPORT
+Date: 2026-04-11
+Server: Hetzner CX23 — 168.119.119.25
+================================================================================
+
+
+OVERVIEW
+--------
+First production deployment of parrotsAPI2 (ASP.NET Core / .NET 10) and
+parrotsWeb (React / CRA) to a Hetzner Cloud VPS running Ubuntu 24.04.
+Domain: parrotsvoyages.com (registered on GoDaddy, DNS managed on Cloudflare).
+
+
+--------------------------------------------------------------------------------
+STEP 1 — DNS MIGRATION (Cloudflare)
+--------------------------------------------------------------------------------
+Problem:
+  - Domain was pointing to old Azure IPs (20.166.225.229 and 20.107.224.27)
+  - GoDaddy DNS editor was disabled because nameservers were set to Cloudflare
+    (guy.ns.cloudflare.com / uma.ns.cloudflare.com)
+  - Existing records: 2x A records (Azure), CNAME api → Azure backend,
+    CNAME www → Azure frontend
+
+Actions taken in Cloudflare dashboard:
+  - Deleted both old A records pointing to Azure
+  - Deleted CNAME api (pointed to Azure backend)
+  - Deleted CNAME www (pointed to Azure frontend)
+  - Added 3 new A records pointing to Hetzner server:
+
+      Type  Name   Content          Proxy status
+      A     @      168.119.119.25   DNS only (grey cloud)
+      A     www    168.119.119.25   DNS only (grey cloud)
+      A     api    168.119.119.25   DNS only (grey cloud)
+
+  - Kept _domainconnect CNAME and asuid TXT record untouched
+
+Why DNS only (not Proxied):
+  - Proxied (orange cloud) hides real IP behind Cloudflare servers
+  - DNS only lets traffic reach the server directly
+  - Required for Let's Encrypt certificate issuance (needs direct port 80 access)
+  - Avoids potential SignalR/WebSocket interference from Cloudflare proxy
+
+Verified with:
+  dig parrotsvoyages.com +short @1.1.1.1     → 168.119.119.25 ✓
+  dig api.parrotsvoyages.com +short @1.1.1.1 → 168.119.119.25 ✓
+
+
+--------------------------------------------------------------------------------
+STEP 2 — SERVER SETUP
+--------------------------------------------------------------------------------
+Server: Hetzner CX23, Ubuntu 24.04 LTS
+SSH access confirmed: ssh root@168.119.119.25
+
+Packages installed:
+  apt update && apt upgrade   — 18 packages upgraded (including systemd, udev)
+  nginx                       — 1.24.0
+  certbot                     — 2.9.0
+  python3-certbot-nginx       — 2.9.0
+  aspnetcore-runtime-10.0     — 10.0.5 (includes dotnet-runtime-10.0)
+
+Note: .NET 9 is not available for Ubuntu 24.04 via Microsoft package feed.
+The project targets net10.0, so aspnetcore-runtime-10.0 was installed instead.
+
+Runtime verified:
+  dotnet --list-runtimes
+  → Microsoft.AspNetCore.App 10.0.5
+  → Microsoft.NETCore.App 10.0.5
+
+
+--------------------------------------------------------------------------------
+STEP 3 — BACKEND DEPLOYMENT
+--------------------------------------------------------------------------------
+Build (on Mac):
+  dotnet publish -c Release -r linux-x64 --no-self-contained -o ./publish
+  → Output: parrotsAPI2/publish/
+  → Build: 0 errors, 35 warnings (all pre-existing)
+
+Files copied to server:
+  rsync -avz ./publish/ root@168.119.119.25:/var/www/parrotsapi/
+  → ~13MB transferred
+
+Environment file copied:
+  scp .env root@168.119.119.25:/var/www/parrotsapi/.env
+  Keys present in .env:
+    - ConnectionStrings__DefaultConnection  (Hetzner PostgreSQL)
+    - ConnectionStrings__DefaultConnection2
+    - S3__AccessKey / S3__SecretKey         (Hetzner Object Storage)
+    - Email__SmtpUser / Email__SmtpPass
+    - Google__ClientId / AndroidClientId / ClientSecret
+    - TokenKey
+
+Systemd service created at /etc/systemd/system/parrotsapi.service:
+  WorkingDirectory: /var/www/parrotsapi
+  ExecStart:        /usr/bin/dotnet /var/www/parrotsapi/ParrotsAPI2.dll
+  User:             www-data
+  Restart:          always (RestartSec=10)
+  ASPNETCORE_ENVIRONMENT=Production
+  ASPNETCORE_URLS=http://localhost:5000
+
+Service enabled and started:
+  systemctl daemon-reload
+  systemctl enable parrotsapi
+  systemctl start parrotsapi
+
+Status confirmed: active (running)
+  → "Now listening on: http://localhost:5000"
+  → "Hosting environment: Production"
+  → Vehicle Voyage Cleanup Service started
+
+
+--------------------------------------------------------------------------------
+STEP 4 — FRONTEND DEPLOYMENT
+--------------------------------------------------------------------------------
+Changes made before build:
+
+  parrotsWeb/.env:
+    REACT_APP_API_URL changed from ngrok URL to:
+    REACT_APP_API_URL=https://api.parrotsvoyages.com
+
+  parrotsWeb/src/api/apiSlice.js:
+    Hardcoded ngrok URL replaced with:
+    const API_URL = process.env.REACT_APP_API_URL || "https://api.parrotsvoyages.com"
+    (previously ignored the env variable entirely)
+
+  Note: signalRHub.js was already using process.env.REACT_APP_API_URL correctly.
+
+Build (on Mac):
+  cd parrotsWeb && npm run build
+  → Output: parrotsWeb/build/  (CRA static build, no Node process needed at runtime)
+
+Files copied to server:
+  rsync -avz ./build/ root@168.119.119.25:/var/www/parrotsweb/
+  → ~9.5MB transferred
+
+
+--------------------------------------------------------------------------------
+STEP 5 — NGINX CONFIGURATION
+--------------------------------------------------------------------------------
+Config file created at /etc/nginx/sites-available/parrotsvoyages
+
+  Frontend server block:
+    - Listens on port 80 (later upgraded to 443 by certbot)
+    - server_name: parrotsvoyages.com www.parrotsvoyages.com
+    - root: /var/www/parrotsweb
+    - try_files $uri $uri/ /index.html  (handles React client-side routing)
+
+  API server block:
+    - Listens on port 80 (later upgraded to 443 by certbot)
+    - server_name: api.parrotsvoyages.com
+    - Reverse proxy to http://localhost:5000
+    - Headers set: Upgrade, Connection, Host, X-Real-IP, X-Forwarded-For,
+                   X-Forwarded-Proto, X-Cache-Bypass
+    - proxy_read_timeout 86400  (required for SignalR WebSocket connections)
+
+Enabled and default site removed:
+  ln -sf /etc/nginx/sites-available/parrotsvoyages /etc/nginx/sites-enabled/
+  rm /etc/nginx/sites-enabled/default
+  nginx -t        → configuration test: OK
+  systemctl reload nginx
+
+
+--------------------------------------------------------------------------------
+STEP 6 — SSL CERTIFICATES (Let's Encrypt)
+--------------------------------------------------------------------------------
+Command:
+  certbot --nginx
+    -d parrotsvoyages.com
+    -d www.parrotsvoyages.com
+    -d api.parrotsvoyages.com
+    --non-interactive --agree-tos -m admin@parrotsvoyages.com
+
+Result:
+  ✓ Certificate issued for all 3 domains
+  ✓ Certificate saved at: /etc/letsencrypt/live/parrotsvoyages.com/
+  ✓ Expires: 2026-07-10 (auto-renews via certbot.timer systemd timer)
+  ✓ Certbot automatically updated nginx config with HTTPS blocks
+  ✓ HTTP → HTTPS redirect added automatically
+
+
+--------------------------------------------------------------------------------
+FINAL VERIFICATION
+--------------------------------------------------------------------------------
+  https://parrotsvoyages.com              → HTTP 200 ✓  (frontend live)
+  https://www.parrotsvoyages.com          → HTTP 200 ✓  (frontend live)
+  https://api.parrotsvoyages.com (route)  → HTTP 429 ✓  (API live, rate limiter
+                                                          responding correctly)
+
+
+--------------------------------------------------------------------------------
+PENDING / POST-DEPLOYMENT TODO
+--------------------------------------------------------------------------------
+1. Google OAuth Console update (REQUIRED for Google login to work)
+   Go to: console.cloud.google.com → APIs & Services → Credentials → OAuth client
+   Add to Authorized JavaScript origins:
+     https://parrotsvoyages.com
+   Add to Authorized redirect URIs:
+     https://parrotsvoyages.com
+     https://parrotsvoyages.com/auth/callback (if applicable)
+
+2. Data Protection key persistence (low priority)
+   On startup the API logs:
+     "Using an in-memory repository. Keys will not be persisted to storage."
+   This means ASP.NET Core Data Protection keys are regenerated on every restart,
+   which invalidates existing auth cookies/tokens. Not critical for JWT-based auth
+   but should be fixed by configuring PersistKeysToFileSystem.
+
+3. Server reboot (recommended)
+   A kernel upgrade is pending (6.8.0-90 → 6.8.0-107). Reboot the server during
+   a low-traffic window. The parrotsapi service is set to auto-start on boot.
+     ssh root@168.119.119.25 "reboot"
+
+4. Firewall (optional hardening)
+   Consider restricting inbound ports to only 22, 80, 443 via Hetzner firewall
+   rules or ufw on the server.
+
+5. Hetzner firewall
+   Confirm ports 80 and 443 are open inbound in the Hetzner Cloud firewall panel.
+
+
+--------------------------------------------------------------------------------
+ARCHITECTURE SUMMARY
+--------------------------------------------------------------------------------
+  parrotsvoyages.com / www  →  Cloudflare DNS  →  nginx  →  /var/www/parrotsweb
+  api.parrotsvoyages.com    →  Cloudflare DNS  →  nginx  →  localhost:5000
+                                                          →  parrotsapi.service
+                                                          →  Hetzner PostgreSQL
+
+  SSL: Let's Encrypt (auto-renewing)
+  Process manager: systemd (parrotsapi.service)
+  Log location: /var/www/parrotsapi/logs/log-YYYYMMDD.txt (Serilog rolling file)
+
+================================================================================
+END OF REPORT
+================================================================================

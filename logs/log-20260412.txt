@@ -1,0 +1,344 @@
+[2026-04-12 00:23:22 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 00:23:22 ERR] Failed executing DbCommand (367ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT s."Id", s."Auction", s."Brief", s."Confirmed", s."CreatedAt", s."Currency", s."Description", s."EndDate", s."FixedPrice", s."IsDeleted", s."LastBidDate", s."MaxPrice", s."MinPrice", s."Name", s."ProfileImage", s."ProfileImageThumbnail", s."PublicOnMap", s."StartDate", s."UserId", s."Vacancy", s."VehicleId", s."VehicleImage", s."VehicleName", s."VehicleType", s."Id0", s."AccessFailedCount", s."BackgroundImageUrl", s."Bio", s."ConcurrencyStamp", s."ConfirmationCode", s."Confirmed0", s."ConnectionId", s."CreatedAt0", s."DisplayEmail", s."Email", s."EmailConfirmed", s."EmailVisible", s."EncryptionKey", s."Facebook", s."Instagram", s."IsAdmin", s."Linkedin", s."LockoutEnabled", s."LockoutEnd", s."NormalizedEmail", s."NormalizedUserName", s."ParrotCoinBalance", s."PasswordHash", s."PhoneNumber", s."PhoneNumberConfirmed", s."ProfileImageThumbnailUrl", s."ProfileImageUrl", s."PublicId", s."RefreshToken", s."RefreshTokenExpiryTime", s."SecurityStamp", s."TermsAcceptedAt", s."TermsVersion", s."Tiktok", s."Title", s."Twitter", s."TwoFactorEnabled", s."UnseenMessages", s."UserName", s."Youtube", s."Id1", v1."Id", v1."UserId", v1."VoyageId", v1."VoyageImagePath", s."Capacity", s."Confirmed1", s."CreatedAt1", s."Description0", s."IsDeleted0", s."Name0", s."ProfileImageThumbnailUrl0", s."ProfileImageUrl0", s."Type", s."UserId0"
+FROM (
+    SELECT v."Id", v."Auction", v."Brief", v."Confirmed", v."CreatedAt", v."Currency", v."Description", v."EndDate", v."FixedPrice", v."IsDeleted", v."LastBidDate", v."MaxPrice", v."MinPrice", v."Name", v."ProfileImage", v."ProfileImageThumbnail", v."PublicOnMap", v."StartDate", v."UserId", v."Vacancy", v."VehicleId", v."VehicleImage", v."VehicleName", v."VehicleType", a."Id" AS "Id0", a."AccessFailedCount", a."BackgroundImageUrl", a."Bio", a."ConcurrencyStamp", a."ConfirmationCode", a."Confirmed" AS "Confirmed0", a."ConnectionId", a."CreatedAt" AS "CreatedAt0", a."DisplayEmail", a."Email", a."EmailConfirmed", a."EmailVisible", a."EncryptionKey", a."Facebook", a."Instagram", a."IsAdmin", a."Linkedin", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."ParrotCoinBalance", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."ProfileImageThumbnailUrl", a."ProfileImageUrl", a."PublicId", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TermsAcceptedAt", a."TermsVersion", a."Tiktok", a."Title", a."Twitter", a."TwoFactorEnabled", a."UnseenMessages", a."UserName", a."Youtube", v0."Id" AS "Id1", v0."Capacity", v0."Confirmed" AS "Confirmed1", v0."CreatedAt" AS "CreatedAt1", v0."Description" AS "Description0", v0."IsDeleted" AS "IsDeleted0", v0."Name" AS "Name0", v0."ProfileImageThumbnailUrl" AS "ProfileImageThumbnailUrl0", v0."ProfileImageUrl" AS "ProfileImageUrl0", v0."Type", v0."UserId" AS "UserId0"
+    FROM "Voyages" AS v
+    INNER JOIN "AspNetUsers" AS a ON v."UserId" = a."Id"
+    LEFT JOIN "Vehicles" AS v0 ON v."VehicleId" = v0."Id"
+    WHERE v."Id" = @id AND v."Confirmed" AND NOT (v."IsDeleted")
+    LIMIT 1
+) AS s
+LEFT JOIN "VoyageImages" AS v1 ON s."Id" = v1."VoyageId"
+ORDER BY s."Id", s."Id0", s."Id1"
+[2026-04-12 00:23:22 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 00:23:22 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 00:23:23 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 00:23:23 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 00:23:26 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 00:23:26 ERR] An exception occurred while iterating over the results of a query for context type 'ParrotsAPI2.Data.DataContext'.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2026-04-12 00:28:42 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-12 00:28:42 INF] [Weekly Cleanup] Threshold Date: 9.04.2026 21:28:42
+
+[2026-04-12 00:28:42 INF] Now listening on: https://localhost:7151
+[2026-04-12 00:28:42 INF] Now listening on: http://localhost:5094
+[2026-04-12 00:28:42 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-12 00:28:42 INF] Hosting environment: Development
+[2026-04-12 00:28:42 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-12 00:31:22 INF] GetUserById request took 1110 ms
+[2026-04-12 00:31:23 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-12 00:31:39 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-12 00:31:46 INF] GetUserById request took 667 ms
+[2026-04-12 01:02:08 INF] GetUserById request took 385 ms
+[2026-04-12 01:02:20 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2026-04-12 01:13:13 INF] GetUserById request took 1086 ms
+[2026-04-12 01:13:20 INF] GetUserById request took 1136 ms
+[2026-04-12 01:17:30 INF] GetUserById request took 1356 ms
+[2026-04-12 01:17:53 INF] GetUserById request took 421 ms
+[2026-04-12 01:46:08 INF] GetUserById request took 5078 ms
+[2026-04-12 01:46:38 INF] GetUserById request took 1550 ms
+[2026-04-12 01:52:36 INF] GetUserById request took 1296 ms
+[2026-04-12 01:53:30 INF] GetUserById request took 399 ms
+[2026-04-12 01:54:13 INF] GetUserById request took 5119 ms
+[2026-04-12 01:56:23 INF] GetUserById request took 6663 ms
+[2026-04-12 01:56:29 INF] GetUserById request took 414 ms
+[2026-04-12 01:58:42 INF] GetUserById request took 389 ms
+[2026-04-12 01:59:26 INF] GetUserById request took 361 ms
+[2026-04-12 02:00:30 INF] GetUserById request took 399 ms
+[2026-04-12 02:01:25 INF] GetUserById request took 523 ms
+[2026-04-12 02:02:37 INF] GetUserById request took 3755 ms
+[2026-04-12 02:03:57 INF] GetUserById request took 5602 ms
+[2026-04-12 02:04:03 INF] GetUserById request took 420 ms
+[2026-04-12 02:04:15 INF] GetUserById request took 677 ms
+[2026-04-12 02:04:28 INF] GetUserById request took 940 ms
+[2026-04-12 02:04:33 INF] GetUserByPublicId request took 705 ms
+[2026-04-12 02:06:13 INF] GetUserById request took 370 ms
+[2026-04-12 02:14:35 INF] GetUserById request took 1592 ms
+[2026-04-12 02:24:07 INF] GetUserById request took 458 ms
+[2026-04-12 02:37:51 INF] GetUserById request took 418 ms
+[2026-04-12 02:38:10 INF] GetUserById request took 415 ms
+[2026-04-12 02:40:05 INF] GetUserById request took 472 ms
+[2026-04-12 02:52:06 INF] GetUserById request took 423 ms
+[2026-04-12 02:52:11 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2026-04-12 02:53:06 INF] GetUserById request took 446 ms
+[2026-04-12 02:53:11 INF] GetUserById request took 434 ms
+[2026-04-12 02:53:16 INF] GetUserById request took 477 ms
+[2026-04-12 02:53:34 INF] GetUserById request took 370 ms
+[2026-04-12 02:53:49 INF] GetUserById request took 466 ms
+[2026-04-12 02:59:23 INF] GetUserById request took 454 ms
+[2026-04-12 03:00:31 INF] GetUserById request took 470 ms
+[2026-04-12 03:06:00 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2026-04-12 03:11:34 INF] GetUserById request took 462 ms
+[2026-04-12 03:11:48 INF] GetUserById request took 803 ms
+[2026-04-12 03:14:43 INF] GetUserById request took 440 ms
+[2026-04-12 03:14:50 INF] GetUserById request took 436 ms
+[2026-04-12 03:18:16 INF] GetUserById request took 460 ms
+[2026-04-12 03:20:57 INF] GetUserById request took 458 ms
+[2026-04-12 03:21:50 INF] GetUserByPublicId request took 506 ms
+[2026-04-12 03:26:03 INF] GetUserById request took 1232 ms
+[2026-04-12 03:26:12 INF] GetUserById request took 474 ms
+[2026-04-12 03:26:14 INF] GetUserByPublicId request took 401 ms
+[2026-04-12 10:01:31 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 10:01:31 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 10:01:31 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 10:01:31 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 10:01:31 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 10:01:31 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 10:01:34 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 10:01:34 ERR] An exception occurred while iterating over the results of a query for context type 'ParrotsAPI2.Data.DataContext'.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2026-04-12 10:01:52 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-12 10:01:52 INF] [Weekly Cleanup] Threshold Date: 10.04.2026 07:01:52
+
+[2026-04-12 10:01:52 INF] Now listening on: https://localhost:7151
+[2026-04-12 10:01:52 INF] Now listening on: http://localhost:5094
+[2026-04-12 10:01:52 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-12 10:01:52 INF] Hosting environment: Development
+[2026-04-12 10:01:52 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-12 10:04:17 INF] GetUserById request took 1655 ms
+[2026-04-12 10:04:17 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-12 10:04:18 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-12 10:12:09 INF] GetUserById request took 1147 ms
+[2026-04-12 10:13:28 INF] GetUserById request took 537 ms
+[2026-04-12 15:38:02 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 15:38:02 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 15:38:02 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 15:38:02 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 15:38:03 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 15:38:03 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 15:38:06 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 15:38:06 ERR] An exception occurred while iterating over the results of a query for context type 'ParrotsAPI2.Data.DataContext'.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2026-04-12 20:37:04 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 20:37:04 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 20:37:05 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 20:37:08 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-12 20:37:08 ERR] An exception occurred while iterating over the results of a query for context type 'ParrotsAPI2.Data.DataContext'.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2026-04-12 20:37:39 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-12 20:37:39 INF] [Weekly Cleanup] Threshold Date: 10.04.2026 17:37:39
+
+[2026-04-12 20:37:39 INF] Now listening on: https://localhost:7151
+[2026-04-12 20:37:39 INF] Now listening on: http://localhost:5094
+[2026-04-12 20:37:39 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-12 20:37:39 INF] Hosting environment: Development
+[2026-04-12 20:37:39 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-12 20:41:04 INF] GetUserById request took 607 ms
+[2026-04-12 20:41:05 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-12 20:41:41 INF] GetUserById request took 529 ms
+[2026-04-12 20:42:43 INF] GetUserById request took 448 ms
+[2026-04-12 20:42:50 INF] GetUserById request took 489 ms
+[2026-04-12 20:43:34 INF] GetUserById request took 396 ms
+[2026-04-12 20:48:30 INF] GetUserById request took 434 ms
+[2026-04-12 20:48:37 INF] GetUserById request took 515 ms
+[2026-04-12 20:48:53 INF] GetUserByPublicId request took 494 ms
+[2026-04-12 21:05:38 INF] GetUserById request took 446 ms
+[2026-04-12 21:05:39 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+[2026-04-12 21:05:43 INF] GetUserById request took 492 ms
+[2026-04-12 21:05:48 INF] GetUserById request took 423 ms
+[2026-04-12 21:05:53 INF] GetUserById request took 400 ms
+[2026-04-12 21:07:12 INF] GetUserByPublicId request took 484 ms
+[2026-04-12 21:07:57 INF] GetUserById request took 362 ms
+[2026-04-12 21:08:06 INF] GetUserById request took 2074 ms
+[2026-04-12 21:10:16 INF] GetUserById request took 5963 ms
+[2026-04-12 21:12:45 INF] GetUserById request took 376 ms
+[2026-04-12 21:14:52 INF] GetUserById request took 4269 ms
+[2026-04-12 21:18:47 INF] GetUserById request took 474 ms
+[2026-04-12 21:22:19 INF] GetUserById request took 7249 ms

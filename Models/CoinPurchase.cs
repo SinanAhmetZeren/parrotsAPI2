@@ -18,7 +18,7 @@ namespace ParrotsAPI2.Models
 
         [Required]
         [Column(TypeName = "decimal(10,2)")]
-        public decimal UsdAmount { get; set; }  // e.g., 10.00
+        public decimal EurAmount { get; set; }  // e.g., 10.00
 
         [Required]
         public int CoinsAmount { get; set; }  // e.g., 100000

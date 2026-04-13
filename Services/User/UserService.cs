@@ -739,7 +739,7 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<int>> PurchaseCoins(string userId, int coins, decimal usdAmount, string PaymentProviderId)
+        public async Task<ServiceResponse<int>> PurchaseCoins(string userId, int coins, decimal eurAmount, string PaymentProviderId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -750,15 +750,13 @@ namespace ParrotsAPI2.Services.User
                     Message = "User not found."
                 };
             }
-            // 1️⃣ Add coins to user balance
             user.ParrotCoinBalance += coins;
-            // 2️⃣ Create CoinPurchase record
             var purchase = new CoinPurchase
             {
                 UserId = userId,
                 CoinsAmount = coins,
-                UsdAmount = usdAmount,
-                Status = "completed", // change if payment is async
+                EurAmount = eurAmount,
+                Status = "completed",
                 CreatedAt = DateTime.UtcNow,
                 PaymentProviderId = PaymentProviderId
             };
@@ -766,9 +764,40 @@ namespace ParrotsAPI2.Services.User
             await _context.SaveChangesAsync();
             return new ServiceResponse<int>
             {
-                Data = user.ParrotCoinBalance, // return the new balance
+                Data = user.ParrotCoinBalance,
                 Success = true,
                 Message = $"{coins} coins deposited successfully and purchase recorded."
+            };
+        }
+
+        public async Task<ServiceResponse<int>> ClaimFreeCoins(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return new ServiceResponse<int> { Success = false, Message = "User not found." };
+            }
+            if (user.ParrotCoinBalance >= 500)
+            {
+                return new ServiceResponse<int> { Success = false, Message = "Balance must be below 500 to claim free coins." };
+            }
+            user.ParrotCoinBalance += 100;
+            var purchase = new CoinPurchase
+            {
+                UserId = userId,
+                CoinsAmount = 100,
+                EurAmount = 0,
+                Status = "completed",
+                CreatedAt = DateTime.UtcNow,
+                PaymentProviderId = "free_claim"
+            };
+            _context.CoinPurchases.Add(purchase);
+            await _context.SaveChangesAsync();
+            return new ServiceResponse<int>
+            {
+                Data = user.ParrotCoinBalance,
+                Success = true,
+                Message = "100 free coins claimed successfully."
             };
         }
 
@@ -856,7 +885,7 @@ namespace ParrotsAPI2.Services.User
                     .Select(p => new CoinPurchaseDto
                     {
                         Id = p.Id,
-                        UsdAmount = p.UsdAmount,
+                        EurAmount = p.EurAmount,
                         CoinsAmount = p.CoinsAmount,
                         Status = p.Status ?? string.Empty,
                         PaymentProviderId = p.PaymentProviderId,

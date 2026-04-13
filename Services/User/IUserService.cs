@@ -18,7 +18,8 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<GetUserDto>> PatchUserAdmin(string userId, JsonPatchDocument<UpdateUserDto> patchDoc, ModelStateDictionary modelState);
         Task<ServiceResponse<GetUserDto>> UpdateUserProfileImage(string userId, IFormFile imageFile);
         Task<ServiceResponse<GetUserDto>> UpdateUserBackgroundImage(string userId, IFormFile imageFile);
-        Task<ServiceResponse<int>> PurchaseCoins(string userId, int coins, decimal usdAmount, string PaymentProviderId);
+        Task<ServiceResponse<int>> PurchaseCoins(string userId, int coins, decimal eurAmount, string PaymentProviderId);
+        Task<ServiceResponse<int>> ClaimFreeCoins(string userId);
         Task<ServiceResponse<int>> SendParrotCoins(string userId, string receiverId, int coins);
         Task<ServiceResponse<ParrotCoinSummaryDto>> GetParrotCoinBalanceAndPurchases(string userId);
 
