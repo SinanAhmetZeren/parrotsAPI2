@@ -1232,6 +1232,16 @@ namespace ParrotsAPI2.Services.Voyage
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             try
             {
+                var callerUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                if (callerUser == null || !callerUser.IsAdmin)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Unauthorized.";
+                    return serviceResponse;
+                }
+
+                var placeUserId = userId;
+
                 var place = new Models.Voyage
                 {
                     Name = newPlace.Name,
@@ -1240,7 +1250,7 @@ namespace ParrotsAPI2.Services.Voyage
                     PublicOnMap = true,
                     IsPlace = true,
                     Confirmed = true,
-                    UserId = userId,
+                    UserId = placeUserId,
                     CreatedAt = DateTime.UtcNow,
                     Waypoints = new List<Models.Waypoint>
                     {
@@ -1249,7 +1259,7 @@ namespace ParrotsAPI2.Services.Voyage
                             Latitude = newPlace.Latitude,
                             Longitude = newPlace.Longitude,
                             Order = 1,
-                            UserId = userId
+                            UserId = placeUserId
                         }
                     }
                 };
