@@ -790,9 +790,10 @@ namespace ParrotsAPI2.Services.Voyage
                 }
 
                 var prefix = $"voyage-images/{userId}";
-                var (fullPath, _) = await ProcessAndUploadAsync(imageFile, prefix);
+                var (fullPath, thumbPath) = await ProcessAndUploadAsync(imageFile, prefix);
 
                 voyage.ProfileImage = fullPath;
+                voyage.ProfileImageThumbnail = thumbPath;
                 await _context.SaveChangesAsync();
 
                 serviceResponse.Success = true;
