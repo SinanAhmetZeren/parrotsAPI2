@@ -41,6 +41,7 @@ namespace ParrotsAPI2.Models
         public bool IsAdmin { get; set; } = false;
         public DateTime? TermsAcceptedAt { get; set; }
         public string? TermsVersion { get; set; }
+        public bool HasAcknowledgedPublicProfile { get; set; } = false;
 
 
     }

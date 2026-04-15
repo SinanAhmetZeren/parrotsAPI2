@@ -13,6 +13,7 @@
         public string UnreadMessages { get; set; } = "false";
         public bool IsAdmin { get; set; } = false;
         public bool RequiresTermsAcceptance { get; set; } = false;
+        public bool HasAcknowledgedPublicProfile { get; set; } = false;
 
     }
 }

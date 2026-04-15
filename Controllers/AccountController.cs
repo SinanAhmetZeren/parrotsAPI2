@@ -720,6 +720,19 @@ namespace API.Controllers
             return userResponse;
         }
 
+        [Authorize]
+        [HttpPost("acknowledge-public-profile")]
+        public async Task<IActionResult> AcknowledgePublicProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId!);
+            if (user == null) return Unauthorized();
+
+            user.HasAcknowledgedPublicProfile = true;
+            await _userManager.UpdateAsync(user);
+            return Ok();
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("admin/logs")]
         public IActionResult GetLogs([FromQuery] string? from, [FromQuery] string? to, [FromQuery] string? level)
@@ -849,7 +862,8 @@ namespace API.Controllers
                 ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty,
                 UnreadMessages = user.UnseenMessages ? "true" : "false",
-                IsAdmin = user.IsAdmin
+                IsAdmin = user.IsAdmin,
+                HasAcknowledgedPublicProfile = user.HasAcknowledgedPublicProfile,
 
             };
         }
