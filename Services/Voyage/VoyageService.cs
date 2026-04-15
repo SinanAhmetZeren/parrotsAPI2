@@ -594,7 +594,7 @@ namespace ParrotsAPI2.Services.Voyage
                 .Include(v => v.VoyageImages)
                 .Include(v => v.Vehicle)
                 //.Where(v => v.UserId == userId)
-                .Where(v => v.UserId == userId && v.Confirmed == true && v.IsDeleted == false && !v.IsPlace)
+                .Where(v => v.UserId == userId && v.Confirmed == true && v.IsDeleted == false && v.PlaceType == 0)
                 .ToListAsync();
 
             if (voyages == null || voyages.Count == 0)
@@ -704,6 +704,10 @@ namespace ParrotsAPI2.Services.Voyage
                 }
 
                 _mapper.Map(voyageDto, voyage);
+                if (voyage.StartDate.Kind == DateTimeKind.Unspecified)
+                    voyage.StartDate = DateTime.SpecifyKind(voyage.StartDate, DateTimeKind.Utc);
+                if (voyage.EndDate.Kind == DateTimeKind.Unspecified)
+                    voyage.EndDate = DateTime.SpecifyKind(voyage.EndDate, DateTimeKind.Utc);
                 _context.Voyages.Update(voyage);
                 await _context.SaveChangesAsync();
 
@@ -825,7 +829,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2) &&
-                        (v.IsPlace || (v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
+                        (v.PlaceType > 0 && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow || (v.PlaceType == 0 && v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
                     .Include(v => v.Waypoints)
@@ -874,7 +878,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2) &&
-                        (v.IsPlace || (v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
+                        (v.PlaceType > 0 && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow || (v.PlaceType == 0 && v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
                     .Select(v => v.Id)
                     .ToListAsync();
 
@@ -949,7 +953,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
                     // .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && !v.IsPlace)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && v.PlaceType == 0)
                     .AsQueryable();
 
                 // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
@@ -980,7 +984,7 @@ namespace ParrotsAPI2.Services.Voyage
                 // ✅ Fetch places — only filter by coordinates, bypass all voyage filters
                 var placesQuery = _context.Voyages
                     .Include(v => v.User)
-                    .Where(v => v.IsPlace && !v.IsDeleted);
+                    .Where(v => v.PlaceType > 0 && !v.IsDeleted && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow);
 
                 if (lat1.HasValue && lon1.HasValue && lat2.HasValue && lon2.HasValue)
                 {
@@ -1055,7 +1059,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && !v.IsPlace)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && v.PlaceType == 0)
                     .AsQueryable();
 
                 // Filter by coordinates if all bounds provided
@@ -1094,7 +1098,7 @@ namespace ParrotsAPI2.Services.Voyage
                 // Fetch places — only filter by coordinates, bypass all voyage filters
                 var placesQuery = _context.Voyages
                     .Include(v => v.User)
-                    .Where(v => v.IsPlace && !v.IsDeleted);
+                    .Where(v => v.PlaceType > 0 && !v.IsDeleted && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow);
 
                 if (lat1.HasValue && lat2.HasValue && lon1.HasValue && lon2.HasValue)
                 {
@@ -1249,7 +1253,9 @@ namespace ParrotsAPI2.Services.Voyage
                     Brief = newPlace.Brief,
                     Description = newPlace.Description,
                     PublicOnMap = true,
-                    IsPlace = true,
+                    PlaceType = newPlace.PlaceType,
+                    StartDate = newPlace.StartDate.HasValue ? DateTime.SpecifyKind(newPlace.StartDate.Value, DateTimeKind.Utc) : DateTime.UtcNow,
+                    EndDate = newPlace.EndDate.HasValue ? DateTime.SpecifyKind(newPlace.EndDate.Value, DateTimeKind.Utc) : DateTime.UtcNow.AddYears(10),
                     Confirmed = true,
                     UserId = placeUserId,
                     CreatedAt = DateTime.UtcNow,

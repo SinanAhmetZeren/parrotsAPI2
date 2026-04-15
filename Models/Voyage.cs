@@ -33,7 +33,7 @@ namespace ParrotsAPI2.Models
         public DateTime CreatedAt { get; set; }
         public bool Confirmed { get; set; } = false;
         public bool IsDeleted { get; set; } = false;
-        public bool IsPlace { get; set; } = false;
+        public int PlaceType { get; set; } = 0;
 
     }
 

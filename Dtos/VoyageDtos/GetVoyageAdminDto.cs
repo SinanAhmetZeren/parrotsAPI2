@@ -22,7 +22,7 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public bool PublicOnMap { get; set; }
         public bool IsDeleted { get; set; }
         public bool Confirmed { get; set; }
-        public bool IsPlace { get; set; }
+        public int PlaceType { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
         public VehicleType VehicleType { get; set; }
         public List<GetWaypointDto>? Waypoints { get; set; }

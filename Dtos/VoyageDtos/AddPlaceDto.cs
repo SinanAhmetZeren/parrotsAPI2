@@ -8,5 +8,8 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public bool PublicOnMap { get; set; } = true;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public int PlaceType { get; set; } = 1;
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }
