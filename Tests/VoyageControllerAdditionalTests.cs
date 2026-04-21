@@ -106,6 +106,22 @@ public class VoyageControllerAdditionalTests : IClassFixture<ParrotsWebApplicati
     }
 
     [Fact]
+    public async Task AddPlace_Admin_ReturnsSuccessTrue()
+    {
+        var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
+        _factory.GiveAdminRole(userId);
+        var authedClient = _factory.CreateClient();
+        ApiTestHelper.SetBearer(authedClient, token);
+
+        var payload = new { Name = "Admin Place", Brief = "Brief", Description = "Desc", PublicOnMap = true, Latitude = 41.0, Longitude = 29.0, PlaceType = 1, StartDate = DateTime.UtcNow, EndDate = DateTime.UtcNow.AddDays(30) };
+        var response = await authedClient.PostAsJsonAsync("/api/Voyage/AddPlace", payload);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var body = await ApiTestHelper.DeserializeAsync<ServiceResponse<GetVoyageDto>>(response);
+        Assert.True(body!.Success);
+    }
+
+    [Fact]
     public async Task AddPlace_NonAdmin_Returns403()
     {
         var (token, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);

@@ -220,6 +220,18 @@ public class ParrotsWebApplicationFactory : WebApplicationFactory<Program>
         return db.Vehicles.First(v => v.Name == "TestBoat").Id;
     }
 
+    public void GiveAdminRole(string userId)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+        var user = db.Users.Find(userId);
+        if (user != null)
+        {
+            user.IsAdmin = true;
+            db.SaveChanges();
+        }
+    }
+
     public void ConfirmUser(string email)
     {
         using var scope = Services.CreateScope();
