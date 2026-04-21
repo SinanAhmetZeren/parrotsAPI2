@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ParrotsAPI2.Data;
 using ParrotsAPI2.Dtos.RegisterLoginDtos;
 using ParrotsAPI2.Models;
+using ParrotsAPI2.Services.EmailSender;
 
 namespace parrotsAPI2.Tests;
 
@@ -151,6 +152,13 @@ public class ParrotsWebApplicationFactory : WebApplicationFactory<Program>
                 ["ConnectionStrings:DefaultConnection"] = Environment.GetEnvironmentVariable("TEST_DB_CONNECTION")!,
             });
         });
+
+        builder.ConfigureServices(services =>
+        {
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IEmailSender));
+            if (descriptor != null) services.Remove(descriptor);
+            services.AddScoped<IEmailSender, NoOpEmailSender>();
+        });
     }
 
     public new HttpClient CreateClient()
@@ -244,4 +252,10 @@ public class ParrotsWebApplicationFactory : WebApplicationFactory<Program>
             db.SaveChanges();
         }
     }
+}
+
+public class NoOpEmailSender : IEmailSender
+{
+    public Task SendConfirmationEmail(string recipientEmail, string confirmationCode, string username)
+        => Task.CompletedTask;
 }
