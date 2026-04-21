@@ -825,38 +825,55 @@ namespace ParrotsAPI2.Services.User
                 };
             }
 
-            user.ParrotCoinBalance -= coins;
-            receiver.ParrotCoinBalance += coins;
-
-            var coinTransactionUser = new CoinTransaction
+            var result = new ServiceResponse<int>();
+            var strategy = _context.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
             {
-                UserId = userId,
-                Amount = -coins,
-                Type = "send_parrotCoins",
-                Description = $"Sent to  {receiver.UserName}",
-                VoyageId = 0, // no related voyage
-                CreatedAt = DateTime.UtcNow
-            };
-            var coinTransactionReceiver = new CoinTransaction
-            {
-                UserId = receiverId,
-                Amount = coins,
-                Type = "receive_parrotCoins",
-                Description = $"Received from {user.UserName}",
-                VoyageId = 0, // no related voyage
-                CreatedAt = DateTime.UtcNow
-            };
+                await using var transaction = await _context.Database.BeginTransactionAsync();
 
-            _context.CoinTransactions.Add(coinTransactionUser);
-            _context.CoinTransactions.Add(coinTransactionReceiver);
+                // Re-fetch inside transaction to get latest balance and prevent race conditions
+                _context.ChangeTracker.Clear();
+                var sender = await _context.Users.FindAsync(userId);
+                var recv = await _context.Users.FindAsync(receiverId);
 
-            await _context.SaveChangesAsync();
-            return new ServiceResponse<int>
-            {
-                Data = user.ParrotCoinBalance, // return the new balance
-                Success = true,
-                Message = $"{coins} coins sent successfully and recorded."
-            };
+                if (sender == null || recv == null || sender.ParrotCoinBalance < coins)
+                {
+                    result.Success = false;
+                    result.Message = "Insufficient balance.";
+                    return;
+                }
+
+                sender.ParrotCoinBalance -= coins;
+                recv.ParrotCoinBalance += coins;
+
+                _context.CoinTransactions.Add(new CoinTransaction
+                {
+                    UserId = userId,
+                    Amount = -coins,
+                    Type = "send_parrotCoins",
+                    Description = $"Sent to {recv.UserName}",
+                    VoyageId = 0,
+                    CreatedAt = DateTime.UtcNow
+                });
+                _context.CoinTransactions.Add(new CoinTransaction
+                {
+                    UserId = receiverId,
+                    Amount = coins,
+                    Type = "receive_parrotCoins",
+                    Description = $"Received from {sender.UserName}",
+                    VoyageId = 0,
+                    CreatedAt = DateTime.UtcNow
+                });
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                result.Data = sender.ParrotCoinBalance;
+                result.Success = true;
+                result.Message = $"{coins} coins sent successfully and recorded.";
+            });
+
+            return result;
         }
 
 

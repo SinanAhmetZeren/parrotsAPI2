@@ -37,7 +37,6 @@ namespace ParrotsAPI2.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingleAdmin(int id)
         {
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
 
             return Ok(await _vehicleService.GetVehicleByIdAdmin(id));
         }
@@ -171,7 +170,6 @@ namespace ParrotsAPI2.Controllers
                  int vehicleId, JsonPatchDocument<UpdateVehicleDto> patchDoc)
         {
 
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {

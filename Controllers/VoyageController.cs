@@ -32,7 +32,6 @@ namespace ParrotsAPI2.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingleAdmin(int id)
         {
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
 
             return Ok(await _voyageService.GetVoyageByIdAdmin(id));
         }
@@ -113,7 +112,6 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> PatchVoyage(
             int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc)
         {
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
 
 
             var voyageResponse = await _voyageService.GetVoyageByIdAdmin(voyageId);
@@ -383,7 +381,15 @@ namespace ParrotsAPI2.Controllers
         [HttpPost("AddPlace")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> AddPlace([FromBody] AddPlaceDto newPlace)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized(new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "User identity not found."
+                });
+            }
             return Ok(await _voyageService.AddPlace(newPlace, userId));
         }
 

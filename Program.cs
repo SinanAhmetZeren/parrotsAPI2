@@ -315,3 +315,5 @@ app.MapControllers();
 app.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow:", "text/plain"));
 
 app.Run();
+
+public partial class Program { }

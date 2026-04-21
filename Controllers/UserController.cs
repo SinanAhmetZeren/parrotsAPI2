@@ -99,7 +99,6 @@ namespace ParrotsAPI2.Controllers
             string userId, JsonPatchDocument<UpdateUserDto> patchDoc)
         {
 
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)
             {
@@ -203,7 +202,6 @@ namespace ParrotsAPI2.Controllers
         {
 
             // admin check 
-            // if (!CheckAdmin(out var unauthorizedResult)) return unauthorizedResult;
 
             return Ok(await _userService.GetSingleUserByUsername(username));
         }
@@ -288,9 +286,9 @@ namespace ParrotsAPI2.Controllers
                 deposit.Coins
                 );
 
-            if (response.Data == null)
+            if (!response.Success)
             {
-                return NotFound(response);
+                return BadRequest(response);
             }
 
             return Ok(response);

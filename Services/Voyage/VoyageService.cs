@@ -829,7 +829,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2) &&
-                        (v.PlaceType > 0 && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow || (v.PlaceType == 0 && v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
+                        (v.PlaceType > 0 && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow || (v.PlaceType == 0 && v.Confirmed && v.EndDate.Date >= DateTime.UtcNow.Date)))
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
                     .Include(v => v.Waypoints)
@@ -878,7 +878,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Latitude <= lat2 &&
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2) &&
-                        (v.PlaceType > 0 && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow || (v.PlaceType == 0 && v.Confirmed && v.LastBidDate >= DateTime.UtcNow.Date)))
+                        (v.PlaceType > 0 && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow || (v.PlaceType == 0 && v.Confirmed && v.EndDate.Date >= DateTime.UtcNow.Date)))
                     .Select(v => v.Id)
                     .ToListAsync();
 
@@ -953,7 +953,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
                     // .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && v.PlaceType == 0)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
                     .AsQueryable();
 
                 // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
@@ -1059,7 +1059,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.UtcNow.Date && v.PlaceType == 0)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
                     .AsQueryable();
 
                 // Filter by coordinates if all bounds provided
@@ -1170,6 +1170,13 @@ namespace ParrotsAPI2.Services.Voyage
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Voyage not found.";
+                return serviceResponse;
+            }
+
+            if (voyage.Confirmed)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Voyage is already confirmed.";
                 return serviceResponse;
             }
 

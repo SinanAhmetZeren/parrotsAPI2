@@ -1,0 +1,221 @@
+================================================================================
+PARROTS API - TEST SUITE OVERVIEW
+Total: 171 tests — All passing
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+INTEGRATION TESTS (hit real PostgreSQL via WebApplicationFactory)
+────────────────────────────────────────────────────────────────────────────────
+
+[Auth]
+  Register_ValidPayload_Returns200WithToken         - Register with valid email/password returns token
+  Register_DuplicateEmail_ReturnsBadRequest         - Registering same email twice is rejected
+  Login_CorrectCredentials_Returns200WithToken      - Login returns JWT token
+  Login_WrongPassword_Returns401                   - Wrong password is rejected
+  Login_NonExistentUser_Returns401                 - Login for unknown email is rejected
+  ProtectedEndpoint_WithoutToken_Returns401        - Unauthenticated request to protected route
+  ProtectedEndpoint_WithValidToken_IsNotRejectedAs401 - Valid JWT passes auth middleware
+
+[Account (password reset, terms, refresh)]
+  AcceptTerms_WithoutToken_Returns401              - Terms endpoint requires auth
+  AcceptTerms_WithToken_Returns200                 - Accepting terms succeeds when authenticated
+  AcknowledgePublicProfile_WithoutToken_Returns401 - Acknowledge endpoint requires auth
+  AcknowledgePublicProfile_WithToken_Returns200    - Acknowledging public profile succeeds
+  SendCode_UnknownEmail_ReturnsBadRequest          - Sending reset code to unknown email fails
+  SendCode_KnownConfirmedUser_Returns200           - Sending reset code to known user succeeds
+  ConfirmCode_WrongCode_ReturnsBadRequest          - Wrong confirmation code is rejected
+  ConfirmCode_CorrectCode_Returns200               - Correct confirmation code is accepted
+  ResetPassword_WrongCode_ReturnsValidationProblem - Reset with wrong code fails validation
+  ResetPassword_CorrectCode_Returns200             - Reset with correct code succeeds
+  RefreshToken_InvalidToken_Returns401             - Expired/invalid refresh token is rejected
+  RefreshToken_ValidToken_Returns200               - Valid refresh token returns new JWT
+
+[User Controller]
+  GetUserById_WithoutToken_Returns401              - Getting user by ID requires auth
+  GetUserById_WithToken_Returns200                 - Authenticated user can fetch a user by ID
+  SearchUsers_Anonymous_Returns200                 - User search is public
+  PatchUser_WithoutToken_Returns401                - Patching user requires auth
+  PatchUser_WrongUser_Returns403                   - Cannot patch another user's profile
+  ClaimFreeCoins_WithoutToken_Returns401           - Claiming coins requires auth
+  ClaimFreeCoins_WithToken_Returns200              - Authenticated user can claim free coins
+  SendParrotCoins_InsufficientBalance_ReturnsBadRequest - Transfer fails if sender has no coins
+  SendParrotCoins_WrongUser_Returns403             - Cannot send coins on behalf of another user
+  SendParrotCoins_WithSufficientBalance_Returns200 - Valid coin transfer succeeds
+  ParrotCoinBalance_OtherUser_Returns403           - Cannot check another user's balance
+  ParrotCoinBalance_OwnUser_Returns200             - Can check own coin balance
+  GetUserByPublicId_WithToken_Returns200           - Fetch user by public ID when authenticated
+  GetUserByPublicId_WithoutToken_Returns401        - Fetch by public ID requires auth
+  UpdateUser_WithoutToken_Returns401               - PUT update requires auth
+  UpdateUser_WrongUser_Returns403                  - Cannot update another user
+  UpdateUser_OwnUser_Returns200                    - Can update own profile
+  PurchaseCoins_WithoutToken_Returns401            - Purchasing coins requires auth
+  PurchaseCoins_WrongUser_Returns403               - Cannot purchase coins for another user
+  PurchaseCoins_OwnUser_Returns200                 - Authenticated user can purchase coins
+
+[Vehicle Controller]
+  GetVehicleById_Anonymous_Returns200              - Vehicle detail is public
+  GetVehiclesByUserId_Anonymous_Returns200         - Vehicle list by user is public
+  AddVehicle_WithoutToken_Returns401               - Adding vehicle requires auth
+  AddVehicle_WrongUserId_Returns403                - Cannot add vehicle for another user
+  AddVehicle_ValidPayload_Returns200               - Authenticated user can create a vehicle
+  ConfirmVehicle_NotOwner_Returns403               - Non-owner cannot confirm vehicle
+  ConfirmVehicle_Owner_Returns200                  - Owner can confirm own vehicle
+  DeleteVehicle_NotOwner_Returns403                - Non-owner cannot delete vehicle
+  DeleteVehicle_Owner_Returns200                   - Owner can delete own vehicle
+
+[Voyage Controller]
+  GetVoyageById_NonExistent_ReturnsOkWithNullData  - Fetching unknown voyage returns 200 with null data
+  AddVoyage_WithoutToken_Returns401                - Adding voyage requires auth
+  AddVoyage_WrongUserId_Returns403                 - Cannot add voyage for another user
+  AddVoyage_ValidPayload_Returns200                - Authenticated user with coins can create voyage
+  ConfirmVoyage_NotOwner_Returns403                - Non-owner cannot confirm voyage
+  ConfirmVoyage_Owner_Returns200                   - Owner can confirm own voyage
+  ConfirmVoyage_AlreadyConfirmed_ReturnsBadRequest - Double-confirming a voyage is rejected
+  DeleteVoyage_NotOwner_Returns403                 - Non-owner cannot delete voyage
+  DeleteVoyage_Owner_Returns200                    - Owner can delete own voyage
+  GetVoyageByUserId_Anonymous_Returns200           - Voyage list by user is public
+  GetFilteredVoyages_Anonymous_Returns200          - Filtered voyage search is public
+  CheckAndDeleteVoyage_WithoutToken_Returns401     - checkAndDelete requires auth
+  CheckAndDeleteVoyage_NotOwner_Returns403         - Non-owner cannot checkAndDelete voyage
+  CheckAndDeleteVoyage_Owner_Returns200            - Owner can checkAndDelete own voyage
+  GetVoyagesByCoords_WithoutToken_Returns401       - Coord-based voyage search requires auth
+  GetVoyagesByCoords_AnonymousAllowed_Returns200   - Coord-based voyage search is public (AllowAnonymous)
+  GetVoyageIdsByCoords_AnonymousAllowed_Returns200 - Coord ID search is public (AllowAnonymous)
+  AddPlace_WithoutToken_Returns401                 - AddPlace requires auth
+  AddPlace_NonAdmin_Returns200WithFailure          - Non-admin gets 200 with Success=false (admin check is in service)
+
+[Bid Controller]
+  CreateBid_WithoutToken_Returns401                - Creating bid requires auth
+  CreateBid_WrongUserId_Returns403                 - Cannot create bid on behalf of another user
+  CreateBid_ValidPayload_Returns200                - Authenticated user can create a bid
+  ChangeBid_NotBidOwner_Returns403                 - Non-owner cannot modify a bid
+  ChangeBid_BidOwner_Returns200                    - Bid owner can update their bid
+  AcceptBid_NotVoyageOwner_ReturnsBadRequest       - Non-voyage-owner cannot accept a bid
+  AcceptBid_VoyageOwner_Returns200                 - Voyage owner can accept a bid
+  DeleteBid_NotVoyageOwner_ReturnsBadRequest       - Non-voyage-owner cannot delete a bid
+  DeleteBid_VoyageOwner_Returns200                 - Voyage owner can delete a bid
+
+[Waypoint Controller]
+  AddWaypointNoImage_WithoutToken_Returns401       - Adding waypoint requires auth
+  AddWaypointNoImage_NotVoyageOwner_Returns403     - Non-owner cannot add waypoints to a voyage
+  AddWaypointNoImage_Owner_Returns200              - Voyage owner can add a waypoint
+  DeleteWaypoint_NotOwner_Returns403               - Non-owner cannot delete a waypoint
+  DeleteWaypoint_Owner_Returns200                  - Owner can delete their waypoint
+
+[Favorite Controller]
+  AddFavorite_WithoutToken_Returns401              - Adding favorite requires auth
+  AddFavorite_Vehicle_Returns200                   - Authenticated user can favorite a vehicle
+  GetFavoriteVehicleIds_WithoutToken_Returns401    - Getting favorites requires auth
+  GetFavoriteVehicleIds_OwnUser_Returns200         - User can retrieve own favorited vehicle IDs
+  DeleteFavoriteVehicle_WithoutToken_Returns401    - Deleting favorite requires auth
+  DeleteFavoriteVehicle_AfterAdding_Returns200     - User can remove a vehicle from favorites
+
+[Message Controller]
+  GetMessagesByUserId_WithoutToken_Returns401      - Message list requires auth
+  GetMessagesByUserId_WrongUser_Returns403         - Cannot read another user's message list
+  GetMessagesByUserId_OwnUser_Returns200           - User can read own message list
+  GetMessagesBetweenUsers_WithoutToken_Returns401  - Conversation requires auth
+  GetMessagesBetweenUsers_NotInConversation_Returns403 - Third party cannot read a conversation
+  GetMessagesBetweenUsers_AsUser1_Returns200       - Sender can read conversation
+  GetMessagesBetweenUsers_AsUser2_Returns200       - Receiver can read conversation
+
+[Health & Metrics]
+  Health_Anonymous_Returns200                      - /health endpoint is public and returns 200
+  MetricsEndpoint_WithoutToken_Returns401 (x7)     - All 7 metrics endpoints require auth
+    weeklyUsers, weeklyPurchases, weeklyMessages,
+    weeklyVoyages, weeklyBids, weeklyVehicles, weeklyActiveVoyages
+
+
+────────────────────────────────────────────────────────────────────────────────
+UNIT TESTS (in-memory EF Core, no network)
+────────────────────────────────────────────────────────────────────────────────
+
+[UserService]
+  PurchaseCoins_UserNotFound_ReturnsFailure        - Purchase fails for unknown user
+  PurchaseCoins_AddsCoinsAndCreatesRecord          - Purchase credits balance and logs transaction
+  ClaimFreeCoins_UserNotFound_ReturnsFailure       - Claim fails for unknown user
+  ClaimFreeCoins_BalanceAbove500_ReturnsFailure    - Claim blocked when balance >= 500
+  ClaimFreeCoins_LowBalance_Adds100CoinsAndCreatesRecord - Claim adds 100 coins and logs transaction
+  SendParrotCoins_UserNotFound_ReturnsFailure      - Transfer fails if sender not found
+  SendParrotCoins_InsufficientBalance_ReturnsFailure - Transfer fails if balance too low
+  SendParrotCoins_ValidTransfer_UpdatesBalancesAndCreatesTransactions - Transfer debits sender and credits receiver
+
+[VehicleService]
+  AddVehicle_UserNotFound_ReturnsFailure           - Add fails if user doesn't exist
+  AddVehicle_ValidData_CreatesVehicle              - Vehicle is saved with correct owner
+  DeleteVehicle_NotFound_ReturnsFailure            - Delete fails for non-existent vehicle
+  DeleteVehicle_SoftDeletesVehicleAndRelatedVoyages - Vehicle and its voyages are soft-deleted
+  DeleteVehicle_RemovesVehicleFavorites            - Favorites for deleted vehicle are removed
+  CheckAndDeleteVehicle_HasImages_ReturnsFailure   - Vehicle with images cannot be auto-deleted
+  CheckAndDeleteVehicle_NoImages_SoftDeletes       - Vehicle without images is soft-deleted
+  ConfirmVehicle_NotFound_ReturnsFailure           - Confirm fails for non-existent vehicle
+  ConfirmVehicle_SetsConfirmedTrue                 - Confirm sets Confirmed flag to true
+
+[VoyageService]
+  AddVoyage_UserNotFound_ReturnsFailure            - Add fails if user doesn't exist
+  AddVoyage_VehicleNotFound_ReturnsFailure         - Add fails if vehicle doesn't exist
+  AddVoyage_NotEnoughCoins_ReturnsFailure          - Add fails if user lacks sufficient coins
+  AddVoyage_HappyPath_DeductsCoinsAndCreatesTransaction - Voyage created, coins deducted, transaction logged
+  GetFilteredVoyages_WithinBounds_ReturnsMatchingVoyages - Filter returns voyages within lat/lon bounds
+  GetFilteredVoyages_ExcludesDeletedAndUnconfirmed - Soft-deleted and unconfirmed voyages are excluded
+
+[BidService]
+  CreateBid_ValidData_ReturnsBidWithSuccessTrue    - Bid is saved and returned with success
+  ChangeBid_BidNotFound_ReturnsFailure             - Change fails for unknown bid
+  ChangeBid_ExistingBid_UpdatesFields              - Person count, price, message are updated
+  AcceptBid_BidNotFound_ReturnsFailure             - Accept fails for unknown bid
+  AcceptBid_NotVoyageOwner_ReturnsUnauthorized     - Only voyage owner can accept bids
+  AcceptBid_ValidOwner_SetsBidAcceptedAndTimestamp - Accepted flag and timestamp are set
+  DeleteBid_NotVoyageOwner_ReturnsUnauthorized     - Only voyage owner can delete bids
+  DeleteBid_ValidOwner_RemovesBid                  - Bid is removed from DB
+
+[FavoriteService]
+  AddFavorite_NullInput_ReturnsFailure             - Null DTO is rejected
+  AddFavorite_MissingUserId_ReturnsFailure         - Empty UserId is rejected
+  AddFavorite_InvalidItemId_ReturnsFailure         - Zero ItemId is rejected
+  AddFavorite_ValidData_CreatesFavorite            - Valid favorite is persisted
+  AddFavorite_Duplicate_ReturnsFailure             - Adding same favorite twice is rejected
+  DeleteFavoriteVehicle_NotFound_ReturnsFailure    - Delete fails if vehicle favorite doesn't exist
+  DeleteFavoriteVehicle_Exists_RemovesRecord       - Vehicle favorite is deleted
+  DeleteFavoriteVoyage_NotFound_ReturnsFailure     - Delete fails if voyage favorite doesn't exist
+  DeleteFavoriteVoyage_Exists_RemovesRecord        - Voyage favorite is deleted
+  GetFavoriteVehicleIds_ReturnsOnlyVehicleIds      - Only vehicle-type favorites are returned
+
+[WaypointService]
+  AddWaypointNoImage_ValidData_CreatesWaypoint     - Waypoint is saved with correct voyageId
+  DeleteWaypoint_NotFound_ReturnsFailure           - Delete fails for unknown waypoint
+  DeleteWaypoint_Exists_RemovesWaypoint            - Waypoint is removed from DB
+  DeleteWaypoint_Order1_PromotesNextWaypointToOrder1 - Deleting order-1 waypoint promotes order-2 to order-1
+  DeleteWaypoint_NonOrder1_DoesNotChangeOtherOrders  - Deleting non-first waypoint leaves others unchanged
+
+[MessageService]
+  GetMessagesByUserId_UserNotFound_ReturnsFailure  - Returns failure for unknown user
+  GetMessagesByUserId_NoConversations_ReturnsFailure - Returns failure if user has no conversations
+  GetMessagesByUserId_WithConversation_ReturnsDtos - Returns decrypted latest message per conversation
+  GetMessagesBetweenUsers_NoMessages_ReturnsFailure - Returns failure if no messages exist between users
+  GetMessagesBetweenUsers_WithMessages_ReturnsDecryptedDtos - Messages are decrypted and returned
+  GetMessagesBetweenUsers_BothDirections_ReturnsAll - Messages sent in both directions are returned
+
+[EncryptionHelper]
+  EncryptThenDecrypt_ReturnsOriginalText           - Encrypt + decrypt roundtrip yields original string
+  Encrypt_ProducesDifferentCiphertextEachTime      - Random IV means same plaintext encrypts differently
+  Encrypt_ProducesBase64Output                     - Ciphertext is valid base64
+  KeyFromBase64_RoundTrips                         - Key serialization roundtrip is lossless
+  Decrypt_WithWrongKey_ThrowsOrReturnsGarbage      - Decrypting with wrong key throws exception
+  Encrypt_EmptyString_EncryptsAndDecryptsCorrectly - Empty string is handled correctly
+
+[DeviceRateLimitMiddleware]
+  Options_Request_PassesThrough                    - CORS preflight (OPTIONS) bypasses rate limiting
+  Testing_Environment_BypassesRateLimit            - Rate limiting is disabled in Testing environment
+  SingleRequest_BelowLimit_PassesThrough           - First request under the limit passes through
+  ExceedingDeviceLimit_Returns429                  - 101st request from same device gets 429
+  NoDeviceHeader_UsesIpAsFallback_PassesThrough    - Falls back to IP when X-Device-Id header absent
+
+[RateLimitAttribute]
+  Testing_Environment_DoesNotBlock                 - Attribute skips limiting in Testing environment
+  FirstRequest_IsAllowed                           - First request within window is always allowed
+  ExceedingLimit_Returns429                        - Requests beyond limit return 429
+  PerUser_DifferentEmails_TrackedSeparately        - Per-user rate limits are keyed by email, not shared
+
+================================================================================

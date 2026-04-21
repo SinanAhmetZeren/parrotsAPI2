@@ -68,6 +68,7 @@ namespace ParrotsAPI2.Services.Bid
                 await _context.SaveChangesAsync();
                 var createdBidDto = new GetBidDto
                 {
+                    Id = bidEntity.Id,
                     PersonCount = bidEntity.PersonCount,
                     Message = bidEntity.Message,
                     OfferPrice = bidEntity.OfferPrice,

@@ -34,6 +34,14 @@ public class DeviceRateLimitMiddleware
             return;
         }
 
+        // Skip rate limiting in test environment
+        var env = context.RequestServices.GetRequiredService<IWebHostEnvironment>();
+        if (env.EnvironmentName == "Testing")
+        {
+            await _next(context);
+            return;
+        }
+
         var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
         var deviceId = context.Request.Headers["X-Device-Id"].FirstOrDefault() ?? ip;
 

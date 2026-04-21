@@ -32,6 +32,9 @@ namespace ParrotsAPI2.Helpers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            var env = context.HttpContext.RequestServices.GetRequiredService<IWebHostEnvironment>();
+            if (env.EnvironmentName == "Testing") return;
+
             var memoryCache = context.HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
             var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<RateLimitAttribute>>();
 
