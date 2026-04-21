@@ -38,13 +38,9 @@ using Serilog;
 
 DotNetEnv.Env.TraversePath().Load();
 
-var alertSink = new AlertEmailSink(
-    smtpUser: Environment.GetEnvironmentVariable("Email__SmtpUser") ?? "",
-    smtpPass: Environment.GetEnvironmentVariable("Email__SmtpPass") ?? "",
-    adminEmail: Environment.GetEnvironmentVariable("Email__AdminAddress") ?? ""
-);
+var isTesting = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing";
 
-Log.Logger = new LoggerConfiguration()
+var logConfig = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
@@ -54,9 +50,19 @@ Log.Logger = new LoggerConfiguration()
         path: "logs/log-.txt",
         rollingInterval: RollingInterval.Day,
         retainedFileCountLimit: 14,
-        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
-    .WriteTo.Sink(alertSink)
-    .CreateLogger();
+        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+
+if (!isTesting)
+{
+    var alertSink = new AlertEmailSink(
+        smtpUser: Environment.GetEnvironmentVariable("Email__SmtpUser") ?? "",
+        smtpPass: Environment.GetEnvironmentVariable("Email__SmtpPass") ?? "",
+        adminEmail: Environment.GetEnvironmentVariable("Email__AdminAddress") ?? ""
+    );
+    logConfig = logConfig.WriteTo.Sink(alertSink);
+}
+
+Log.Logger = logConfig.CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
