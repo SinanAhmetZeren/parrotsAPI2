@@ -38,9 +38,7 @@ using Serilog;
 
 DotNetEnv.Env.TraversePath().Load();
 
-var isTesting = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing";
-
-var logConfig = new LoggerConfiguration()
+Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
@@ -50,21 +48,33 @@ var logConfig = new LoggerConfiguration()
         path: "logs/log-.txt",
         rollingInterval: RollingInterval.Day,
         retainedFileCountLimit: 14,
-        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .CreateLogger();
 
-if (!isTesting)
+var builder = WebApplication.CreateBuilder(args);
+
+if (!builder.Environment.IsEnvironment("Testing"))
 {
     var alertSink = new AlertEmailSink(
         smtpUser: Environment.GetEnvironmentVariable("Email__SmtpUser") ?? "",
         smtpPass: Environment.GetEnvironmentVariable("Email__SmtpPass") ?? "",
         adminEmail: Environment.GetEnvironmentVariable("Email__AdminAddress") ?? ""
     );
-    logConfig = logConfig.WriteTo.Sink(alertSink);
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+        .WriteTo.File(
+            path: "logs/log-.txt",
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: 14,
+            outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+        .WriteTo.Sink(alertSink)
+        .CreateLogger();
 }
 
-Log.Logger = logConfig.CreateLogger();
-
-var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
 // Bind Google settings from appsettings.json
