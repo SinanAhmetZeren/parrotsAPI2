@@ -148,7 +148,7 @@ public class ParrotsWebApplicationFactory : WebApplicationFactory<Program>
                 ["TokenKey"] = "super-secret-test-key-that-is-long-enough-for-hmac-sha512-algorithm-at-least-64-bytes!!",
                 ["Google:ClientId"] = "test-client-id",
                 ["Google:ClientSecret"] = "test-client-secret",
-                ["ConnectionStrings:DefaultConnection"] = "Host=127.0.0.1;Port=5432;Database=parrotstestdb;Username=parrotsadmin;Password=ParrotsAdmin1981**",
+                ["ConnectionStrings:DefaultConnection"] = Environment.GetEnvironmentVariable("TEST_DB_CONNECTION")!,
             });
         });
     }
