@@ -1,4 +1,13 @@
 services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   api:
     build: .
     restart: unless-stopped
@@ -7,3 +16,8 @@ services:
     volumes:
       - ./Uploads:/app/Uploads
       - ./logs:/app/logs
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
