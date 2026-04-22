@@ -145,6 +145,9 @@ namespace ParrotsAPI2.Services.User
 
             var user = await _context.Users
                 .AsNoTracking()
+                .Include(u => u.Vehicles)
+                .Include(u => u.Voyages)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             stopwatch.Stop();
@@ -155,6 +158,9 @@ namespace ParrotsAPI2.Services.User
                 _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
+
+            var confirmedVehicles = user.Vehicles?.Where(v => v.Confirmed && !v.IsDeleted).ToList() ?? new List<Models.Vehicle>();
+            var confirmedVoyages = user.Voyages?.Where(v => v.Confirmed && !v.IsDeleted && v.PlaceType == 0).ToList() ?? new List<Models.Voyage>();
 
             var userDto = new GetUserDto
             {
@@ -178,6 +184,8 @@ namespace ParrotsAPI2.Services.User
                 UnseenMessages = user.UnseenMessages,
                 EmailVisible = user.EmailVisible,
                 ParrotCoinBalance = user.ParrotCoinBalance,
+                UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
+                UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
 
             serviceResponse.Data = userDto;
@@ -204,6 +212,9 @@ namespace ParrotsAPI2.Services.User
 
             var user = await _context.Users
                 .AsNoTracking()
+                .Include(u => u.Vehicles)
+                .Include(u => u.Voyages)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.UserName == username);
 
             stopwatch.Stop();
@@ -214,6 +225,9 @@ namespace ParrotsAPI2.Services.User
                 _logger.LogInformation($"GetSingleUserByUsername request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
+
+            var confirmedVehicles = user.Vehicles?.Where(v => v.Confirmed && !v.IsDeleted).ToList() ?? new List<Models.Vehicle>();
+            var confirmedVoyages = user.Voyages?.Where(v => v.Confirmed && !v.IsDeleted && v.PlaceType == 0).ToList() ?? new List<Models.Voyage>();
 
             var userDto = new GetUserDto
             {
@@ -237,6 +251,8 @@ namespace ParrotsAPI2.Services.User
                 UnseenMessages = user.UnseenMessages,
                 EmailVisible = user.EmailVisible,
                 ParrotCoinBalance = user.ParrotCoinBalance,
+                UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
+                UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
 
             serviceResponse.Data = userDto;
@@ -305,6 +321,9 @@ namespace ParrotsAPI2.Services.User
 
             var user = await _context.Users
                 .AsNoTracking()
+                .Include(u => u.Vehicles)
+                .Include(u => u.Voyages)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.PublicId == publicId);
 
             stopwatch.Stop();
@@ -315,6 +334,9 @@ namespace ParrotsAPI2.Services.User
                 _logger.LogInformation($"GetUserByPublicId request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
+
+            var confirmedVehicles = user.Vehicles?.Where(v => v.Confirmed && !v.IsDeleted).ToList() ?? new List<Models.Vehicle>();
+            var confirmedVoyages = user.Voyages?.Where(v => v.Confirmed && !v.IsDeleted && v.PlaceType == 0).ToList() ?? new List<Models.Voyage>();
 
             var userDto = new GetUserDto
             {
@@ -338,6 +360,8 @@ namespace ParrotsAPI2.Services.User
                 UnseenMessages = user.UnseenMessages,
                 EmailVisible = user.EmailVisible,
                 ParrotCoinBalance = user.ParrotCoinBalance,
+                UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
+                UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
 
             serviceResponse.Data = userDto;
