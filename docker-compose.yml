@@ -4,8 +4,7 @@ services:
     container_name: parrots-db
     restart: unless-stopped
     network_mode: host
-    environment:
-      POSTGRES_PASSWORD: postgres
+    env_file: .env
     volumes:
       - pgdata:/var/lib/postgresql/data
 
