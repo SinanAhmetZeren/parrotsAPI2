@@ -7,8 +7,9 @@ PARROTS API - TODO / SECURITY & HOUSEKEEPING
     - Stayed on 12.0.1 to avoid breaking AutoMapper.Extensions.Microsoft.DependencyInjection
     - https://github.com/advisories/GHSA-rvv3-g6hj-g44x
 
-[ ] Confirm HTTPS is enforced at nginx/server level
-    - Not enforced in application code, needs to be handled upstream
+[x] Confirm HTTPS is enforced at nginx/server level
+    - Added UseHsts() to Program.cs (UseHttpsRedirection was already present)
+    - nginx-level redirect should still be verified on the server
 
 [x] Verify .env is in .gitignore and never committed
     - Confirmed: .env is gitignored and has no commit history
