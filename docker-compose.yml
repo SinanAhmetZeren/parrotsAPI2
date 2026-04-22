@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:16
+    container_name: parrots-db
     restart: unless-stopped
     network_mode: host
     environment:
@@ -10,6 +11,7 @@ services:
 
   api:
     build: .
+    container_name: parrots-api
     restart: unless-stopped
     env_file: .env
     network_mode: host
