@@ -25,7 +25,9 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("GetVoyageById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingle(int id)
         {
-            return Ok(await _voyageService.GetVoyageById(id));
+            var response = await _voyageService.GetVoyageById(id);
+            if (!response.Success) return NotFound(response);
+            return Ok(response);
         }
 
         [HttpGet("GetVoyageByIdAdmin/{id}")]
