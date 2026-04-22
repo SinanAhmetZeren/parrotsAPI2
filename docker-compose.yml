@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    network_mode: host
+    volumes:
+      - ./Uploads:/app/Uploads
+      - ./logs:/app/logs
