@@ -1,0 +1,25 @@
+[2026-04-17 16:09:29 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-17 16:09:30 INF] [Weekly Cleanup] Threshold Date: 15.04.2026 13:09:29
+
+[2026-04-17 16:09:30 INF] Now listening on: https://localhost:7151
+[2026-04-17 16:09:30 INF] Now listening on: http://localhost:5094
+[2026-04-17 16:09:30 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-17 16:09:30 INF] Hosting environment: Development
+[2026-04-17 16:09:30 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-17 16:09:34 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-17 16:54:13 ERR] Failed executing DbCommand (8,161ms) [Parameters=[@p='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."BackgroundImageUrl", a."Bio", a."ConcurrencyStamp", a."ConfirmationCode", a."Confirmed", a."ConnectionId", a."CreatedAt", a."DisplayEmail", a."Email", a."EmailConfirmed", a."EmailVisible", a."EncryptionKey", a."Facebook", a."HasAcknowledgedPublicProfile", a."Instagram", a."IsAdmin", a."Linkedin", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."ParrotCoinBalance", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."ProfileImageThumbnailUrl", a."ProfileImageUrl", a."PublicId", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TermsAcceptedAt", a."TermsVersion", a."Tiktok", a."Title", a."Twitter", a."TwoFactorEnabled", a."UnseenMessages", a."UserName", a."Youtube"
+FROM "AspNetUsers" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[2026-04-17 16:54:13 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-17 18:09:47 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-17 18:09:47 INF] [Weekly Cleanup] Threshold Date: 15.04.2026 15:09:47
+
+[2026-04-17 18:09:48 INF] Now listening on: https://localhost:7151
+[2026-04-17 18:09:48 INF] Now listening on: http://localhost:5094
+[2026-04-17 18:09:48 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-17 18:09:48 INF] Hosting environment: Development
+[2026-04-17 18:09:48 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-17 18:57:22 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-17 21:13:57 INF] GetUserById request took 1330 ms

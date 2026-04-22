@@ -48,7 +48,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPost("AddVoyage")]
-        public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> AddVoyage(AddVoyageDto newVoyage)
+        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> AddVoyage(AddVoyageDto newVoyage)
         {
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -308,11 +308,7 @@ namespace ParrotsAPI2.Controllers
             var serviceResponse = await _voyageService.DeleteVoyageImage(voyageImageId);
             if (serviceResponse.Success)
             {
-                return Ok(new
-                {
-                    message = "Voyage image deleted successfully",
-                    voyageDetails = serviceResponse.Data
-                });
+                return Ok(serviceResponse);
             }
             else
             {

@@ -34,7 +34,7 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPut("UpdateUser")]
-        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUser(UpdateUserDto updatedUser)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUser(UpdateUserDto updatedUser)
         {
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

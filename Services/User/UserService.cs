@@ -143,15 +143,8 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
             }
 
-            // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
             var user = await _context.Users
                 .AsNoTracking()
-                // .Include(u => u.SentMessages)
-                // .Include(u => u.ReceivedMessages)
-                .Include(u => u.Vehicles)
-                .Include(u => u.Voyages)
-                .Include(u => u.Bids)
-                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             stopwatch.Stop();
@@ -163,45 +156,28 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
             }
 
-            var confirmedVehicles = (user?.Vehicles != null)
-            ? user.Vehicles.Where(v => v.Confirmed && !v.IsDeleted).ToList()
-            : new List<Models.Vehicle>();
-
-            var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
-
-            var confirmedVoyages = (user?.Voyages != null)
-                ? user.Voyages.Where(v => v.Confirmed && !v.IsDeleted).ToList()
-                : new List<Models.Voyage>();
-
-            var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
-
-            // Create DTO explicitly instead of AutoMapper for this part - can also be mapped if preferred
             var userDto = new GetUserDto
             {
-                Id = user?.Id ?? string.Empty,
-                PublicId = user?.PublicId ?? string.Empty,
-                UserName = user?.UserName ?? string.Empty,
-                Title = user?.Title ?? string.Empty,
-                Bio = user?.Bio ?? string.Empty,
-                Email = user?.Email ?? string.Empty,
-                DisplayEmail = user?.DisplayEmail ?? string.Empty,
-                Instagram = user?.Instagram ?? string.Empty,
-                Twitter = user?.Twitter ?? string.Empty,
-                Tiktok = user?.Tiktok ?? string.Empty,
-                Linkedin = user?.Linkedin ?? string.Empty,
-                Facebook = user?.Facebook ?? string.Empty,
-                PhoneNumber = user?.PhoneNumber ?? string.Empty,
-                Youtube = user?.Youtube ?? string.Empty,
-                ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
-                ProfileImageThumbnailUrl = user?.ProfileImageThumbnailUrl ?? string.Empty,
-                BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
-                // ImageFile = default!,
-                UnseenMessages = user != null ? user.UnseenMessages : false,
-                UsersVehicles = vehicleDtos,
-                UsersVoyages = voyageDtos,
-                EmailVisible = user != null ? user.EmailVisible : false,
-                // EmailVisible = user?.EmailVisible ?? false,
-                ParrotCoinBalance = user?.ParrotCoinBalance ?? 0,
+                Id = user.Id,
+                PublicId = user.PublicId ?? string.Empty,
+                UserName = user.UserName ?? string.Empty,
+                Title = user.Title ?? string.Empty,
+                Bio = user.Bio ?? string.Empty,
+                Email = user.Email ?? string.Empty,
+                DisplayEmail = user.DisplayEmail ?? string.Empty,
+                Instagram = user.Instagram ?? string.Empty,
+                Twitter = user.Twitter ?? string.Empty,
+                Tiktok = user.Tiktok ?? string.Empty,
+                Linkedin = user.Linkedin ?? string.Empty,
+                Facebook = user.Facebook ?? string.Empty,
+                PhoneNumber = user.PhoneNumber ?? string.Empty,
+                Youtube = user.Youtube ?? string.Empty,
+                ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
+                BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
+                UnseenMessages = user.UnseenMessages,
+                EmailVisible = user.EmailVisible,
+                ParrotCoinBalance = user.ParrotCoinBalance,
             };
 
             serviceResponse.Data = userDto;
@@ -226,15 +202,8 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
             }
 
-            // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
             var user = await _context.Users
                 .AsNoTracking()
-                // .Include(u => u.SentMessages)
-                // .Include(u => u.ReceivedMessages)
-                .Include(u => u.Vehicles)
-                .Include(u => u.Voyages)
-                .Include(u => u.Bids)
-                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.UserName == username);
 
             stopwatch.Stop();
@@ -246,46 +215,28 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
             }
 
-            var confirmedVehicles = (user?.Vehicles != null)
-            ? user.Vehicles.Where(v => v.Confirmed && !v.IsDeleted).ToList()
-            : new List<Models.Vehicle>();
-
-            var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
-
-            var confirmedVoyages = (user?.Voyages != null)
-                ? user.Voyages.Where(v => v.Confirmed && !v.IsDeleted).ToList()
-                : new List<Models.Voyage>();
-
-            var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
-
-            // Create DTO explicitly instead of AutoMapper for this part - can also be mapped if preferred
             var userDto = new GetUserDto
             {
-                Id = user?.Id ?? string.Empty,
-                PublicId = user?.PublicId ?? string.Empty,
-                UserName = user?.UserName ?? string.Empty,
-                Title = user?.Title ?? string.Empty,
-                Bio = user?.Bio ?? string.Empty,
-                Email = user?.Email ?? string.Empty,
-                DisplayEmail = user?.DisplayEmail ?? string.Empty,
-                Instagram = user?.Instagram ?? string.Empty,
-                Twitter = user?.Twitter ?? string.Empty,
-                Tiktok = user?.Tiktok ?? string.Empty,
-                Linkedin = user?.Linkedin ?? string.Empty,
-                Facebook = user?.Facebook ?? string.Empty,
-                PhoneNumber = user?.PhoneNumber ?? string.Empty,
-                Youtube = user?.Youtube ?? string.Empty,
-                ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
-                ProfileImageThumbnailUrl = user?.ProfileImageThumbnailUrl ?? string.Empty,
-                BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
-                // ImageFile = default!,
-                UnseenMessages = user != null ? user.UnseenMessages : false,
-                UsersVehicles = vehicleDtos,
-                UsersVoyages = voyageDtos,
-                EmailVisible = user != null ? user.EmailVisible : false,
-                //EmailVisible = true,
-                ParrotCoinBalance = user?.ParrotCoinBalance ?? 0,
-
+                Id = user.Id,
+                PublicId = user.PublicId ?? string.Empty,
+                UserName = user.UserName ?? string.Empty,
+                Title = user.Title ?? string.Empty,
+                Bio = user.Bio ?? string.Empty,
+                Email = user.Email ?? string.Empty,
+                DisplayEmail = user.DisplayEmail ?? string.Empty,
+                Instagram = user.Instagram ?? string.Empty,
+                Twitter = user.Twitter ?? string.Empty,
+                Tiktok = user.Tiktok ?? string.Empty,
+                Linkedin = user.Linkedin ?? string.Empty,
+                Facebook = user.Facebook ?? string.Empty,
+                PhoneNumber = user.PhoneNumber ?? string.Empty,
+                Youtube = user.Youtube ?? string.Empty,
+                ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
+                BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
+                UnseenMessages = user.UnseenMessages,
+                EmailVisible = user.EmailVisible,
+                ParrotCoinBalance = user.ParrotCoinBalance,
             };
 
             serviceResponse.Data = userDto;
@@ -352,15 +303,8 @@ namespace ParrotsAPI2.Services.User
                 return serviceResponse;
             }
 
-            // Fetch user with related entities using AsNoTracking and split query for better performance on multiple Includes
             var user = await _context.Users
                 .AsNoTracking()
-                // .Include(u => u.SentMessages)
-                // .Include(u => u.ReceivedMessages)
-                .Include(u => u.Vehicles)
-                .Include(u => u.Voyages)
-                .Include(u => u.Bids)
-                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.PublicId == publicId);
 
             stopwatch.Stop();
@@ -368,49 +312,32 @@ namespace ParrotsAPI2.Services.User
             if (user == null)
             {
                 serviceResponse.Message = "User not found";
-                _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
+                _logger.LogInformation($"GetUserByPublicId request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
 
-            var confirmedVehicles = (user?.Vehicles != null)
-            ? user.Vehicles.Where(v => v.Confirmed && !v.IsDeleted).ToList()
-            : new List<Models.Vehicle>();
-
-            var vehicleDtos = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles);
-
-            var confirmedVoyages = (user?.Voyages != null)
-                ? user.Voyages.Where(v => v.Confirmed && !v.IsDeleted).ToList()
-                : new List<Models.Voyage>();
-
-            var voyageDtos = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages);
-
-            // Create DTO explicitly instead of AutoMapper for this part - can also be mapped if preferred
             var userDto = new GetUserDto
             {
-                Id = user?.Id ?? string.Empty,
-                PublicId = user?.PublicId ?? string.Empty,
-                UserName = user?.UserName ?? string.Empty,
-                Title = user?.Title ?? string.Empty,
-                Bio = user?.Bio ?? string.Empty,
-                Email = user?.Email ?? string.Empty,
-                DisplayEmail = user?.DisplayEmail ?? string.Empty,
-                Instagram = user?.Instagram ?? string.Empty,
-                Twitter = user?.Twitter ?? string.Empty,
-                Tiktok = user?.Tiktok ?? string.Empty,
-                Linkedin = user?.Linkedin ?? string.Empty,
-                Facebook = user?.Facebook ?? string.Empty,
-                PhoneNumber = user?.PhoneNumber ?? string.Empty,
-                Youtube = user?.Youtube ?? string.Empty,
-                ProfileImageUrl = user?.ProfileImageUrl ?? string.Empty,
-                ProfileImageThumbnailUrl = user?.ProfileImageThumbnailUrl ?? string.Empty,
-                BackgroundImageUrl = user?.BackgroundImageUrl ?? string.Empty,
-                // ImageFile = default!,
-                UnseenMessages = user != null ? user.UnseenMessages : false,
-                UsersVehicles = vehicleDtos,
-                UsersVoyages = voyageDtos,
-                // EmailVisible = true,
-                EmailVisible = user != null ? user.EmailVisible : false,
-
+                Id = user.Id,
+                PublicId = user.PublicId ?? string.Empty,
+                UserName = user.UserName ?? string.Empty,
+                Title = user.Title ?? string.Empty,
+                Bio = user.Bio ?? string.Empty,
+                Email = user.Email ?? string.Empty,
+                DisplayEmail = user.DisplayEmail ?? string.Empty,
+                Instagram = user.Instagram ?? string.Empty,
+                Twitter = user.Twitter ?? string.Empty,
+                Tiktok = user.Tiktok ?? string.Empty,
+                Linkedin = user.Linkedin ?? string.Empty,
+                Facebook = user.Facebook ?? string.Empty,
+                PhoneNumber = user.PhoneNumber ?? string.Empty,
+                Youtube = user.Youtube ?? string.Empty,
+                ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
+                ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
+                BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
+                UnseenMessages = user.UnseenMessages,
+                EmailVisible = user.EmailVisible,
+                ParrotCoinBalance = user.ParrotCoinBalance,
             };
 
             serviceResponse.Data = userDto;

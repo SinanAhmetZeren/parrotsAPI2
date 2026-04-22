@@ -57,7 +57,7 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpPost("addVehicle")]
-        public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> AddVehicle(AddVehicleDto newVehicle)
+        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> AddVehicle(AddVehicleDto newVehicle)
         {
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -77,7 +77,7 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpPost("confirmVehicle/{vehicleId}")]
-        public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> ConfirmVehicle(int vehicleId)
+        public async Task<ActionResult<ServiceResponse<string>>> ConfirmVehicle(int vehicleId)
         {
 
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -356,7 +356,7 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpDelete("DeleteVehicleImage/{imageId}")]
-        public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> DeleteVehicleImage(int imageId)
+        public async Task<ActionResult<ServiceResponse<string>>> DeleteVehicleImage(int imageId)
         {
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null)

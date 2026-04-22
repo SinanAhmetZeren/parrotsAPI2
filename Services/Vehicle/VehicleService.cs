@@ -296,7 +296,6 @@ namespace ParrotsAPI2.Services.Vehicle
             var vehicle = await _context.Vehicles
                 .Include(v => v.User)
                 .Include(v => v.VehicleImages)
-                .Include(v => v.Voyages)
                 .FirstOrDefaultAsync(c => c.Id == id && c.Confirmed == true && c.IsDeleted == false);
 
             if (vehicle == null)
@@ -313,18 +312,10 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
 
-            var userDto = _mapper.Map<UserDto>(vehicle?.User);
-            var vehicleImageDtos = _mapper.Map<List<VehicleImageDto>>(vehicle?.VehicleImages);
-            var voyageDtos = _mapper.Map<List<VoyageDto>>(vehicle?.Voyages);
-
             var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
-
-            vehicleDto.User = userDto;
-            vehicleDto.VehicleImages = vehicleImageDtos;
-            vehicleDto.Voyages = voyageDtos;
+            vehicleDto.User = _mapper.Map<UserDto>(vehicle.User);
+            vehicleDto.VehicleImages = _mapper.Map<List<VehicleImageDto>>(vehicle.VehicleImages);
             serviceResponse.Data = vehicleDto;
-
-            // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
             return serviceResponse;
 
         }
@@ -337,7 +328,6 @@ namespace ParrotsAPI2.Services.Vehicle
             var vehicle = await _context.Vehicles
                 .Include(v => v.User)
                 .Include(v => v.VehicleImages)
-                .Include(v => v.Voyages)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (vehicle == null)
@@ -354,18 +344,10 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
 
-            var userDto = _mapper.Map<UserDto>(vehicle?.User);
-            var vehicleImageDtos = _mapper.Map<List<VehicleImageDto>>(vehicle?.VehicleImages);
-            var voyageDtos = _mapper.Map<List<VoyageDto>>(vehicle?.Voyages);
-
             var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
-
-            vehicleDto.User = userDto;
-            vehicleDto.VehicleImages = vehicleImageDtos;
-            vehicleDto.Voyages = voyageDtos;
+            vehicleDto.User = _mapper.Map<UserDto>(vehicle.User);
+            vehicleDto.VehicleImages = _mapper.Map<List<VehicleImageDto>>(vehicle.VehicleImages);
             serviceResponse.Data = vehicleDto;
-
-            // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
             return serviceResponse;
 
         }
@@ -378,7 +360,6 @@ namespace ParrotsAPI2.Services.Vehicle
             var vehicle = await _context.Vehicles
                 .Include(v => v.User)
                 .Include(v => v.VehicleImages)
-                .Include(v => v.Voyages)
                 .FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
 
             if (vehicle == null)
@@ -395,18 +376,10 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
 
-            var userDto = _mapper.Map<UserDto>(vehicle?.User);
-            var vehicleImageDtos = _mapper.Map<List<VehicleImageDto>>(vehicle?.VehicleImages);
-            var voyageDtos = _mapper.Map<List<VoyageDto>>(vehicle?.Voyages);
-
             var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
-
-            vehicleDto.User = userDto;
-            vehicleDto.VehicleImages = vehicleImageDtos;
-            vehicleDto.Voyages = voyageDtos;
+            vehicleDto.User = _mapper.Map<UserDto>(vehicle.User);
+            vehicleDto.VehicleImages = _mapper.Map<List<VehicleImageDto>>(vehicle.VehicleImages);
             serviceResponse.Data = vehicleDto;
-
-            // serviceResponse.Data = _mapper.Map<GetVehicleDto>(vehicle);
             return serviceResponse;
 
         }

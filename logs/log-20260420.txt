@@ -1,0 +1,8 @@
+[2026-04-20 18:05:44 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-20 18:05:44 INF] [Weekly Cleanup] Threshold Date: 18.04.2026 15:05:44
+
+[2026-04-20 18:05:45 INF] Now listening on: https://localhost:7151
+[2026-04-20 18:05:45 INF] Now listening on: http://localhost:5094
+[2026-04-20 18:05:45 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-20 18:05:45 INF] Hosting environment: Development
+[2026-04-20 18:05:45 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2

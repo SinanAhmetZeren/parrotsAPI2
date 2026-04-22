@@ -1,0 +1,51 @@
+[2026-04-16 00:02:34 INF] GetUserById request took 1328 ms
+[2026-04-16 00:02:35 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-16 00:02:35 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-16 00:20:22 INF] GetUserById request took 1317 ms
+[2026-04-16 00:22:12 INF] GetUserById request took 420 ms
+[2026-04-16 00:27:43 INF] GetUserById request took 1155 ms
+[2026-04-16 00:27:54 INF] GetUserById request took 1984 ms
+[2026-04-16 00:29:01 INF] GetUserById request took 532 ms
+[2026-04-16 00:44:49 INF] GetUserById request took 1161 ms
+[2026-04-16 00:46:15 INF] GetUserById request took 453 ms
+[2026-04-16 00:46:17 INF] GetUserById request took 387 ms
+[2026-04-16 00:46:59 INF] GetUserById request took 1078 ms
+[2026-04-16 00:47:56 INF] GetUserById request took 504 ms
+[2026-04-16 00:48:02 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: e9ddebed-85b5-8e41-eca7-2136c7a4f643
+[2026-04-16 00:48:05 INF] GetUserById request took 420 ms
+[2026-04-16 00:52:19 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: e9ddebed-85b5-8e41-eca7-2136c7a4f643
+[2026-04-16 00:52:21 INF] GetUserById request took 395 ms
+[2026-04-16 00:52:26 INF] GetUserById request took 494 ms
+[2026-04-16 00:52:31 INF] GetUserById request took 483 ms
+[2026-04-16 00:55:42 INF] GetUserById request took 496 ms
+[2026-04-16 01:00:27 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: e9ddebed-85b5-8e41-eca7-2136c7a4f643
+[2026-04-16 01:00:29 INF] GetUserById request took 398 ms
+[2026-04-16 01:12:33 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: bad5ee58-5baa-44c4-8566-2af73ae62b6b
+[2026-04-16 01:12:39 INF] GetUserById request took 506 ms
+[2026-04-16 01:25:04 INF] GetUserById request took 1068 ms
+[2026-04-16 01:26:25 INF] GetUserById request took 483 ms
+[2026-04-16 01:29:18 INF] GetUserById request took 393 ms
+[2026-04-16 01:29:41 INF] GetUserById request took 3882 ms
+[2026-04-16 01:31:11 INF] GetUserById request took 3546 ms
+[2026-04-16 01:31:33 INF] GetUserById request took 1983 ms
+[2026-04-16 01:33:12 INF] GetUserById request took 4693 ms
+[2026-04-16 01:33:49 INF] GetUserById request took 484 ms
+[2026-04-16 01:34:28 INF] GetUserById request took 430 ms
+[2026-04-16 01:34:59 INF] GetUserById request took 4129 ms
+[2026-04-16 01:35:43 INF] GetUserById request took 1040 ms
+[2026-04-16 01:36:09 INF] GetUserById request took 4038 ms
+[2026-04-16 01:36:30 INF] GetUserById request took 384 ms
+[2026-04-16 01:36:53 INF] GetUserById request took 1088 ms
+[2026-04-16 01:36:57 INF] GetUserById request took 424 ms
+[2026-04-16 10:54:14 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-16 10:54:14 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-16 18:03:00 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-16 18:03:00 INF] [Weekly Cleanup] Threshold Date: 14.04.2026 15:03:00
+
+[2026-04-16 18:03:00 INF] Now listening on: https://localhost:7151
+[2026-04-16 18:03:00 INF] Now listening on: http://localhost:5094
+[2026-04-16 18:03:00 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-16 18:03:00 INF] Hosting environment: Development
+[2026-04-16 18:03:00 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-16 21:35:09 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-16 21:35:09 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
