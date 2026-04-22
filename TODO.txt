@@ -2,23 +2,25 @@
 PARROTS API - TODO / SECURITY & HOUSEKEEPING
 ================================================================================
 
-[ ] Upgrade AutoMapper from 12.0.1 to latest
-    - Build warns about a known high-severity vulnerability every time
+[x] Upgrade AutoMapper from 12.0.1 to latest
+    - No patched version exists — vulnerability affects all versions including 13.0.1
+    - Stayed on 12.0.1 to avoid breaking AutoMapper.Extensions.Microsoft.DependencyInjection
     - https://github.com/advisories/GHSA-rvv3-g6hj-g44x
 
 [ ] Confirm HTTPS is enforced at nginx/server level
     - Not enforced in application code, needs to be handled upstream
 
-[ ] Verify .env is in .gitignore and never committed
-    - Contains DB credentials, JWT key, S3 keys, Google secrets
+[x] Verify .env is in .gitignore and never committed
+    - Confirmed: .env is gitignored and has no commit history
 
 [ ] Separate test DB credentials from production
     - parrostestdb currently uses same username/password as parrotsdb
     - Should have its own credentials
 
-[ ] Make AddPlace return 403 for non-admins instead of 200 with Success=false
-    - Admin check is currently in the service layer
-    - Inconsistent with how other admin-only endpoints behave
+[x] Make AddPlace return 403 for non-admins instead of 200 with Success=false
+    - Added [Authorize(Roles = "Admin")] to controller action
+    - Removed redundant admin check from VoyageService
+    - Updated test to assert 403
 
 [ ] Disable SSH root login on server
     - Create a sudo user and disable PermitRootLogin in sshd_config

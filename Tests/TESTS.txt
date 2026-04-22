@@ -83,7 +83,7 @@ INTEGRATION TESTS (hit real PostgreSQL via WebApplicationFactory)
   GetVoyagesByCoords_AnonymousAllowed_Returns200   - Coord-based voyage search is public (AllowAnonymous)
   GetVoyageIdsByCoords_AnonymousAllowed_Returns200 - Coord ID search is public (AllowAnonymous)
   AddPlace_WithoutToken_Returns401                 - AddPlace requires auth
-  AddPlace_NonAdmin_Returns200WithFailure          - Non-admin gets 200 with Success=false (admin check is in service)
+  AddPlace_NonAdmin_Returns403                     - Non-admin gets 403 Forbidden (admin check via [Authorize(Roles="Admin")])
 
 [Bid Controller]
   CreateBid_WithoutToken_Returns401                - Creating bid requires auth

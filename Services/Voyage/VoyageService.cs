@@ -1244,14 +1244,6 @@ namespace ParrotsAPI2.Services.Voyage
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             try
             {
-                var callerUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                if (callerUser == null || !callerUser.IsAdmin)
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Unauthorized.";
-                    return serviceResponse;
-                }
-
                 var placeUserId = userId;
 
                 var place = new Models.Voyage

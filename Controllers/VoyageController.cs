@@ -374,18 +374,12 @@ namespace ParrotsAPI2.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("AddPlace")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> AddPlace([FromBody] AddPlaceDto newPlace)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-            {
-                return Unauthorized(new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "User identity not found."
-                });
-            }
+            if (userId == null) return Unauthorized();
             return Ok(await _voyageService.AddPlace(newPlace, userId));
         }
 

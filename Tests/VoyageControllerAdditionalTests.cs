@@ -130,10 +130,7 @@ public class VoyageControllerAdditionalTests : IClassFixture<ParrotsWebApplicati
 
         var payload = new { Name = "Test Place", PlaceType = 1, StartDate = DateTime.UtcNow, EndDate = DateTime.UtcNow.AddDays(30) };
         var response = await authedClient.PostAsJsonAsync("/api/Voyage/AddPlace", payload);
-        // Admin check is in the service — controller returns 200 with Success=false for non-admins
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var body = await ApiTestHelper.DeserializeAsync<ServiceResponse<GetVoyageDto>>(response);
-        Assert.False(body!.Success);
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     // --- Helpers ---
