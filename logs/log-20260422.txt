@@ -1,0 +1,143 @@
+[2026-04-22 16:01:10 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-22 16:01:10 INF] [Weekly Cleanup] Threshold Date: 20.04.2026 13:01:10
+
+[2026-04-22 16:01:10 INF] Now listening on: https://localhost:7151
+[2026-04-22 16:01:10 INF] Now listening on: http://localhost:5094
+[2026-04-22 16:01:10 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-22 16:01:10 INF] Hosting environment: Development
+[2026-04-22 16:01:10 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-22 16:01:14 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-22 16:01:23 INF] GetUserById request took 287 ms
+[2026-04-22 16:03:07 INF] GetUserById request took 146 ms
+[2026-04-22 16:03:12 INF] GetUserById request took 1046 ms
+[2026-04-22 16:03:34 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-22 16:03:35 INF] [Weekly Cleanup] Threshold Date: 20.04.2026 13:03:34
+
+[2026-04-22 16:03:35 INF] Now listening on: https://localhost:7151
+[2026-04-22 16:03:35 INF] Now listening on: http://localhost:5094
+[2026-04-22 16:03:35 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-22 16:03:35 INF] Hosting environment: Development
+[2026-04-22 16:03:35 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-22 16:03:39 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-22 16:03:41 INF] GetUserById request took 393 ms
+[2026-04-22 16:06:02 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-22 16:06:03 INF] [Weekly Cleanup] Threshold Date: 20.04.2026 13:06:02
+
+[2026-04-22 16:06:03 INF] Now listening on: https://localhost:7151
+[2026-04-22 16:06:03 INF] Now listening on: http://localhost:5094
+[2026-04-22 16:06:03 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-22 16:06:03 INF] Hosting environment: Development
+[2026-04-22 16:06:03 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-22 16:06:55 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-22 16:06:55 INF] [Weekly Cleanup] Threshold Date: 20.04.2026 13:06:55
+
+[2026-04-22 16:06:55 INF] Now listening on: https://localhost:7151
+[2026-04-22 16:06:55 INF] Now listening on: http://localhost:5094
+[2026-04-22 16:06:55 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-22 16:06:55 INF] Hosting environment: Development
+[2026-04-22 16:06:55 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-22 16:07:14 INF] GetUserById request took 426 ms
+[2026-04-22 16:07:28 INF] GetUserById request took 399 ms
+[2026-04-22 16:07:47 INF] GetUserById request took 367 ms
+[2026-04-22 16:08:21 INF] GetUserById request took 417 ms
+[2026-04-22 16:08:27 INF] GetUserById request took 327 ms
+[2026-04-22 16:08:32 INF] GetUserById request took 386 ms
+[2026-04-22 16:08:37 INF] GetUserById request took 405 ms
+[2026-04-22 16:08:53 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-22 16:08:53 INF] [Weekly Cleanup] Threshold Date: 20.04.2026 13:08:53
+
+[2026-04-22 16:08:53 INF] Now listening on: https://localhost:7151
+[2026-04-22 16:08:53 INF] Now listening on: http://localhost:5094
+[2026-04-22 16:08:53 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-22 16:08:53 INF] Hosting environment: Development
+[2026-04-22 16:08:53 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-22 16:08:56 INF] GetUserById request took 438 ms
+[2026-04-22 16:09:01 INF] GetUserById request took 314 ms
+[2026-04-22 16:09:05 INF] GetUserById request took 409 ms
+[2026-04-22 16:09:41 INF] GetUserById request took 437 ms
+[2026-04-22 16:26:28 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-22 16:26:30 INF] GetUserById request took 293 ms
+[2026-04-22 16:26:35 INF] GetUserByPublicId request took 442 ms
+[2026-04-22 16:26:37 INF] GetUserById request took 387 ms
+[2026-04-22 16:26:41 INF] GetUserById request took 415 ms
+[2026-04-22 16:26:44 INF] GetUserById request took 411 ms
+[2026-04-22 16:26:46 INF] GetUserById request took 423 ms
+[2026-04-22 16:26:49 INF] GetUserById request took 391 ms
+[2026-04-22 16:26:51 INF] GetUserById request took 393 ms
+[2026-04-22 16:26:55 INF] GetUserById request took 434 ms
+[2026-04-22 16:27:26 INF] GetUserById request took 420 ms
+[2026-04-22 16:27:58 INF] GetUserById request took 390 ms
+[2026-04-22 16:28:04 INF] GetUserById request took 439 ms
+[2026-04-22 16:28:09 INF] GetUserById request took 321 ms
+[2026-04-22 16:28:26 INF] GetUserById request took 488 ms
+[2026-04-22 16:31:42 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-22 16:31:42 INF] [Weekly Cleanup] Threshold Date: 20.04.2026 13:31:42
+
+[2026-04-22 16:31:42 INF] Now listening on: https://localhost:7151
+[2026-04-22 16:31:42 INF] Now listening on: http://localhost:5094
+[2026-04-22 16:31:42 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-22 16:31:42 INF] Hosting environment: Development
+[2026-04-22 16:31:42 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-22 16:31:52 INF] GetUserById request took 428 ms
+[2026-04-22 16:32:04 INF] GetUserById request took 493 ms
+[2026-04-22 16:32:24 INF] GetUserById request took 452 ms
+[2026-04-22 16:33:14 INF] GetUserById request took 405 ms
+[2026-04-22 16:33:55 INF] GetUserById request took 386 ms
+[2026-04-22 16:34:35 INF] GetUserById request took 401 ms
+[2026-04-22 16:35:16 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-22 16:36:25 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-22 16:36:26 INF] [Weekly Cleanup] Threshold Date: 20.04.2026 13:36:25
+
+[2026-04-22 16:36:26 INF] Now listening on: https://localhost:7151
+[2026-04-22 16:36:26 INF] Now listening on: http://localhost:5094
+[2026-04-22 16:36:26 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-22 16:36:26 INF] Hosting environment: Development
+[2026-04-22 16:36:26 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-22 16:36:49 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-22 16:51:03 INF] GetUserById request took 789 ms
+[2026-04-22 16:54:39 INF] GetUserById request took 436 ms
+[2026-04-22 16:54:55 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-22 16:54:55 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-22 16:55:16 INF] GetUserById request took 383 ms
+[2026-04-22 16:55:34 INF] GetUserById request took 514 ms
+[2026-04-22 16:55:39 INF] GetUserById request took 389 ms
+[2026-04-22 16:55:45 INF] GetUserById request took 394 ms
+[2026-04-22 16:55:50 INF] GetUserById request took 406 ms
+[2026-04-22 16:56:19 INF] GetUserById request took 478 ms
+[2026-04-22 16:58:18 INF] GetUserById request took 348 ms
+[2026-04-22 16:59:17 INF] GetUserById request took 546 ms
+[2026-04-22 16:59:19 INF] GetUserById request took 414 ms
+[2026-04-22 16:59:20 INF] GetUserById request took 352 ms
+[2026-04-22 17:05:48 INF] GetUserById request took 388 ms
+[2026-04-22 17:06:04 INF] GetUserById request took 788 ms
+[2026-04-22 17:07:47 INF] GetUserById request took 401 ms
+[2026-04-22 17:07:57 INF] GetUserById request took 326 ms
+[2026-04-22 17:09:44 INF] GetUserById request took 478 ms
+[2026-04-22 17:20:30 INF] GetUserById request took 596 ms
+[2026-04-22 17:31:56 INF] GetUserById request took 640 ms
+[2026-04-22 17:32:26 INF] GetUserById request took 3083 ms
+[2026-04-22 17:45:55 INF] GetUserById request took 705 ms
+[2026-04-22 17:46:01 INF] GetUserById request took 326 ms
+[2026-04-22 17:46:07 INF] GetUserById request took 421 ms
+[2026-04-22 17:47:13 INF] GetUserById request took 419 ms
+[2026-04-22 17:47:38 INF] GetUserById request took 334 ms
+[2026-04-22 17:48:57 INF] GetUserById request took 324 ms
+[2026-04-22 17:49:40 INF] GetUserById request took 663 ms
+[2026-04-22 17:49:52 INF] GetUserById request took 1098 ms
+[2026-04-22 17:50:00 INF] GetUserById request took 943 ms
+[2026-04-22 17:50:10 INF] GetUserById request took 1065 ms
+[2026-04-22 17:50:27 INF] GetUserById request took 321 ms
+[2026-04-22 17:50:28 INF] GetUserByPublicId request took 465 ms
+[2026-04-22 20:05:46 INF] GetUserById request took 458 ms
+[2026-04-22 20:05:52 INF] GetUserById request took 488 ms
+[2026-04-22 21:42:25 INF] GetUserById request took 389 ms
+[2026-04-22 21:47:34 INF] GetUserById request took 441 ms
+[2026-04-22 22:03:38 INF] GetUserById request took 781 ms
+[2026-04-22 22:04:15 INF] GetUserById request took 3048 ms
+[2026-04-22 22:05:41 INF] GetUserById request took 666 ms
+[2026-04-22 22:05:42 INF] GetUserById request took 588 ms
+[2026-04-22 22:25:17 INF] GetUserById request took 445 ms
+[2026-04-22 22:29:18 INF] GetUserById request took 1135 ms
+[2026-04-22 22:29:23 INF] GetUserById request took 415 ms
+[2026-04-22 22:29:26 INF] GetUserById request took 353 ms
+[2026-04-22 22:29:31 INF] GetUserById request took 422 ms

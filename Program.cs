@@ -327,7 +327,7 @@ app.UseAuthorization();
 
 
 // --- Map endpoints ---
-app.MapHub<ChatHub>("/chathub/11");
+app.MapHub<ChatHub>("/chathub/81");
 app.MapControllers();
 app.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow:", "text/plain"));
 

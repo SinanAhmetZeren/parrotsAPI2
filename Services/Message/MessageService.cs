@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Dtos.MessageDtos;
 using ParrotsAPI2.Helpers;
+using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Message
 {
@@ -31,52 +32,57 @@ namespace ParrotsAPI2.Services.Message
 
                 var currentUserKeyBytes = EncryptionHelper.KeyFromBase64(currentUser.EncryptionKey);
 
-                // Step 1: Get conversations for the user
-                var conversations = await _context.Conversations
+                // Single query: join conversations with their last messages and both users
+                var results = await _context.Conversations
                     .Where(c => c.User1Id == userId || c.User2Id == userId)
+                    .Where(c => c.LastMessageId.HasValue)
                     .OrderByDescending(c => c.LastMessageDate)
+                    .Join(_context.Messages,
+                        c => c.LastMessageId,
+                        m => m.Id,
+                        (c, m) => new { Conversation = c, LastMessage = m })
+                    .Join(_context.Users,
+                        cm => cm.Conversation.User1Id,
+                        u => u.Id,
+                        (cm, u1) => new { cm.Conversation, cm.LastMessage, User1 = u1 })
+                    .Join(_context.Users,
+                        cmu => cmu.Conversation.User2Id,
+                        u => u.Id,
+                        (cmu, u2) => new { cmu.Conversation, cmu.LastMessage, cmu.User1, User2 = u2 })
                     .ToListAsync();
 
-                if (!conversations.Any())
+                if (!results.Any())
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "No messages found.";
                     return serviceResponse;
                 }
 
-                // Step 2: Get last messages for each conversation
-                var lastMessageIds = conversations
-                    .Where(c => c.LastMessageId.HasValue)
-                    .Select(c => c.LastMessageId.Value)
-                    .ToList();
-
-                var lastMessages = await _context.Messages
-                    .Where(m => lastMessageIds.Contains(m.Id))
-                    .ToDictionaryAsync(m => m.Id);
-
-                // Step 3: Get all users involved in these conversations
-                var userIds = conversations
-                    .SelectMany(c => new[] { c.User1Id, c.User2Id })
-                    .Distinct()
-                    .ToList();
-
-                var users = await _context.Users
-                    .Where(u => userIds.Contains(u.Id))
-                    .ToDictionaryAsync(u => u.Id);
-
-                // Step 4: Map DTOs
-                var messageDtos = conversations
-                    .Select(c =>
+                // Map DTOs
+                var messageDtos = results
+                    .Select(r =>
                     {
-                        if (!c.LastMessageId.HasValue || !lastMessages.ContainsKey(c.LastMessageId.Value))
-                            return null;
-
-                        var lastMessage = lastMessages[c.LastMessageId.Value];
+                        var c = r.Conversation;
+                        var lastMessage = r.LastMessage;
+                        var users = new Dictionary<string, AppUser>
+                        {
+                            [r.User1.Id] = r.User1,
+                            [r.User2.Id] = r.User2
+                        };
 
                         // Determine if current user is sender or receiver in this message
-                        var decryptedText = lastMessage.SenderId == userId
-                            ? EncryptionHelper.DecryptString(lastMessage.TextSenderEncrypted, currentUserKeyBytes)
-                            : EncryptionHelper.DecryptString(lastMessage.TextReceiverEncrypted, currentUserKeyBytes);
+                        string decryptedText;
+                        try
+                        {
+                            decryptedText = lastMessage.SenderId == userId
+                                ? EncryptionHelper.DecryptString(lastMessage.TextSenderEncrypted, currentUserKeyBytes)
+                                : EncryptionHelper.DecryptString(lastMessage.TextReceiverEncrypted, currentUserKeyBytes);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Failed to decrypt message {MessageId} for user {UserId}", lastMessage.Id, userId);
+                            decryptedText = string.Empty;
+                        }
 
                         return new GetMessageDto
                         {
@@ -152,9 +158,18 @@ namespace ParrotsAPI2.Services.Message
                 // Step 3: Map to DTOs and decrypt using current user's key
                 var messageDtos = messages.Select(message =>
                 {
-                    var decryptedText = message.SenderId == userId1
-                        ? EncryptionHelper.DecryptString(message.TextSenderEncrypted, currentUserKeyBytes)
-                        : EncryptionHelper.DecryptString(message.TextReceiverEncrypted, currentUserKeyBytes);
+                    string decryptedText;
+                    try
+                    {
+                        decryptedText = message.SenderId == userId1
+                            ? EncryptionHelper.DecryptString(message.TextSenderEncrypted, currentUserKeyBytes)
+                            : EncryptionHelper.DecryptString(message.TextReceiverEncrypted, currentUserKeyBytes);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to decrypt message {MessageId} for user {UserId}", message.Id, userId1);
+                        decryptedText = string.Empty;
+                    }
 
                     return new GetMessageDto
                     {

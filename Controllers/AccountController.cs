@@ -151,7 +151,27 @@ namespace API.Controllers
                 return BadRequest("Missing required fields.");
             }
 
-            // 2️⃣ Email blacklist (FAIL FAST)
+            // 2️⃣ Username length and character validation
+            var trimmedUsername = registerDto.UserName.Trim();
+            if (trimmedUsername.Length < 3 || trimmedUsername.Length > 25)
+            {
+                _logger.LogWarning("Register failed: username length out of range. IP: {IP}", HttpContext.Connection.RemoteIpAddress);
+                return BadRequest("Username must be between 3 and 25 characters.");
+            }
+            if (!Regex.IsMatch(trimmedUsername, @"^[a-zA-Z0-9_]+$"))
+            {
+                _logger.LogWarning("Register failed: username contains invalid characters. IP: {IP}", HttpContext.Connection.RemoteIpAddress);
+                return BadRequest("Username may only contain letters, numbers, and underscores.");
+            }
+
+            // 3️⃣ Email format validation
+            if (!Regex.IsMatch(registerDto.Email.Trim(), @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
+            {
+                _logger.LogWarning("Register failed: invalid email format. IP: {IP}", HttpContext.Connection.RemoteIpAddress);
+                return BadRequest("Invalid email format.");
+            }
+
+            // 4️⃣ Email blacklist (FAIL FAST)
             if (EmailBlacklister.IsBlacklisted(registerDto.Email))
             {
                 _logger.LogWarning(
@@ -432,6 +452,17 @@ namespace API.Controllers
 
                 ModelState.AddModelError("email", "Invalid email or confirmation code");
                 return ValidationProblem();
+            }
+
+            var newPassword = updatePasswordDto.Password;
+            if (newPassword == null ||
+                newPassword.Length < 8 ||
+                !Regex.IsMatch(newPassword, @"[A-Z]") ||
+                !Regex.IsMatch(newPassword, @"[a-z]") ||
+                !Regex.IsMatch(newPassword, @"[0-9]"))
+            {
+                _logger.LogWarning("ResetPassword failed: password does not meet requirements. Email: {Email}, IP: {IP}", normalizedEmail, HttpContext.Connection.RemoteIpAddress);
+                return BadRequest("Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.");
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(existingUser);

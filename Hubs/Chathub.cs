@@ -17,6 +17,12 @@ public class ChatHub : Hub
     private readonly ConversationPageTracker _tracker;
     private static readonly ConcurrentDictionary<string, HashSet<string>> _userConnections = new();
     private static readonly ConcurrentDictionary<string, bool> _unreadCache = new();
+    private static readonly ConcurrentDictionary<string, List<DateTime>> _messageSendTimestamps = new();
+    private static readonly ConcurrentDictionary<string, CachedUserInfo> _userInfoCache = new();
+    private const int MessageRateLimit = 5;
+    private static readonly TimeSpan MessageRateWindow = TimeSpan.FromSeconds(5);
+
+    private record CachedUserInfo(string EncryptionKey, string ProfileImageUrl, string UserName);
 
     public ChatHub(ILogger<ChatHub> logger, IServiceScopeFactory scopeFactory, ConversationPageTracker tracker)
     {
@@ -93,6 +99,8 @@ public class ChatHub : Hub
             if (removeUserCompletely)
             {
                 _userConnections.TryRemove(userId, out _);
+                _messageSendTimestamps.TryRemove(userId, out _);
+                _userInfoCache.TryRemove(userId, out _);
 
                 if (_unreadCache.TryGetValue(userId, out bool hasUnread))
                 {
@@ -128,15 +136,36 @@ public class ChatHub : Hub
 
     public async Task SendMessage(string senderId, string receiverId, string content)
     {
+        if (string.IsNullOrWhiteSpace(content) || content.Length > 500)
+        {
+            _logger.LogWarning("SendMessage rejected: invalid content length. SenderId={SenderId}", senderId);
+            return;
+        }
+
+        // Per-user rate limiting: max 5 messages per 5 seconds
+        var now = DateTime.UtcNow;
+        var timestamps = _messageSendTimestamps.GetOrAdd(senderId, _ => new List<DateTime>());
+        lock (timestamps)
+        {
+            timestamps.RemoveAll(t => t < now - MessageRateWindow);
+            if (timestamps.Count >= MessageRateLimit)
+            {
+                _logger.LogWarning("SendMessage rate limit exceeded. SenderId={SenderId}", senderId);
+                return;
+            }
+            timestamps.Add(now);
+        }
+
         using var scope = _scopeFactory.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-        var sender = await dbContext.Users.FindAsync(senderId);
-        var receiver = await dbContext.Users.FindAsync(receiverId);
-        if (sender == null || receiver == null) return;
+
+        var senderInfo = await GetUserInfoAsync(dbContext, senderId);
+        var receiverInfo = await GetUserInfoAsync(dbContext, receiverId);
+        if (senderInfo == null || receiverInfo == null) return;
 
         // Encrypt message
-        var encryptedForSender = EncryptionHelper.EncryptString(content, EncryptionHelper.KeyFromBase64(sender.EncryptionKey));
-        var encryptedForReceiver = EncryptionHelper.EncryptString(content, EncryptionHelper.KeyFromBase64(receiver.EncryptionKey));
+        var encryptedForSender = EncryptionHelper.EncryptString(content, EncryptionHelper.KeyFromBase64(senderInfo.EncryptionKey));
+        var encryptedForReceiver = EncryptionHelper.EncryptString(content, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey));
 
         var conversationKey = string.CompareOrdinal(senderId, receiverId) < 0
             ? senderId + "_" + receiverId
@@ -156,7 +185,7 @@ public class ChatHub : Hub
         dbContext.Messages.Add(message);
         await dbContext.SaveChangesAsync(); // message.Id now generated
 
-        // Find or create conversation
+        // Find or create conversation and save in same round-trip
         var conversation = await dbContext.Conversations
             .FirstOrDefaultAsync(c => c.ConversationKey == conversationKey);
 
@@ -171,10 +200,9 @@ public class ChatHub : Hub
             dbContext.Conversations.Add(conversation);
         }
 
-        // Update conversation with last message info
         conversation.LastMessageId = message.Id;
         conversation.LastMessageDate = message.DateTime;
-        await dbContext.SaveChangesAsync();
+        // Batched: conversation update + potential offline unread flag together below
 
         // Update receiver notifications
         bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
@@ -200,11 +228,14 @@ public class ChatHub : Hub
             }
             else
             {
-                // User offline → persist unread immediately
-                receiver.UnseenMessages = true;
-                await dbContext.SaveChangesAsync();
+                // User offline → load entity just for flag update
+                var receiverEntity = await dbContext.Users.FindAsync(receiverId);
+                if (receiverEntity != null)
+                    receiverEntity.UnseenMessages = true;
             }
         }
+
+        await dbContext.SaveChangesAsync(); // single batched save for conversation + unread flag
 
         // Notify all receiver connections of new message
         if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
@@ -215,8 +246,8 @@ public class ChatHub : Hub
                     senderId,
                     content,
                     message.DateTime,
-                    sender.ProfileImageUrl ?? string.Empty,
-                    sender.UserName ?? string.Empty
+                    senderInfo.ProfileImageUrl,
+                    senderInfo.UserName
                 );
 
                 await Clients.Client(connId).SendAsync("ReceiveMessageRefetch");
@@ -250,6 +281,24 @@ public class ChatHub : Hub
             user.UnseenMessages = false;
             await dbContext.SaveChangesAsync();
         }
+    }
+
+    private async Task<CachedUserInfo?> GetUserInfoAsync(DataContext dbContext, string userId)
+    {
+        if (_userInfoCache.TryGetValue(userId, out var cached))
+            return cached;
+
+        var user = await dbContext.Users
+            .Where(u => u.Id == userId)
+            .Select(u => new { u.EncryptionKey, u.ProfileImageUrl, u.UserName })
+            .FirstOrDefaultAsync();
+
+        if (user == null || string.IsNullOrEmpty(user.EncryptionKey))
+            return null;
+
+        var info = new CachedUserInfo(user.EncryptionKey, user.ProfileImageUrl ?? string.Empty, user.UserName ?? string.Empty);
+        _userInfoCache[userId] = info;
+        return info;
     }
 
     public Task LeaveMessagesScreen(string userId)
