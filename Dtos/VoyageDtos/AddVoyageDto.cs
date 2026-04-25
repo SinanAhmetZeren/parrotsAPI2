@@ -1,8 +1,12 @@
-﻿namespace ParrotsAPI2.Dtos.VoyageDtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ParrotsAPI2.Dtos.VoyageDtos
 {
     public class AddVoyageDto
     {
+        [MaxLength(30)]
         public string Name { get; set; } = string.Empty;
+        [MaxLength(300)]
         public string Brief { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int Vacancy { get; set; }
