@@ -1,4 +1,5 @@
 ﻿using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Dtos.BookmarkDtos;
 using ParrotsAPI2.Dtos.FavoriteDtos;
 using ParrotsAPI2.Dtos.MessageDtos;
 using ParrotsAPI2.Dtos.VehicleDtos;
@@ -13,6 +14,8 @@ namespace ParrotsAPI2
     {
         public AutoMapperProfile()
         {
+
+            CreateMap<UserBookmark, GetBookmarkDto>();
 
             CreateMap<AppUser, GetUserDto>();
             CreateMap<AddUserDto, AppUser>();
