@@ -682,7 +682,8 @@ namespace API.Controllers
                     ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
                     Token = _tokenService.CreateToken(user),
                     RefreshToken = refreshToken,
-                    RefreshTokenExpiryTime = user.RefreshTokenExpiryTime
+                    RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
+                    UnreadMessages = user.UnseenMessages ? "true" : "false"
                 };
             }
             catch (Exception ex)

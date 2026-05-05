@@ -1,0 +1,92 @@
+================================================================================
+PARROTSVOYAGES.COM — DEPLOYMENT REPORT
+Server: Hetzner CX23 — 168.119.119.25
+================================================================================
+
+
+--------------------------------------------------------------------------------
+LATEST DEPLOYMENT — 2026-05-04
+--------------------------------------------------------------------------------
+Deployed latest API (Docker rebuild) and frontend (React build) to server.
+Also updated Email__SmtpPass in server .env (old app password was revoked).
+
+BACKEND — Commands used:
+  # Sync source files from Mac to server (excludes .env, logs, uploads, build artifacts)
+  sshpass -p '[password]' rsync -avz \
+    --exclude='.git' --exclude='bin' --exclude='obj' \
+    --exclude='Uploads' --exclude='logs' --exclude='publish' \
+    --exclude='.env' --exclude='appsettings.Development.json' \
+    /Users/ahmetzeren/Repos/parrotsAPI2/ \
+    deploy@168.119.119.25:/tmp/parrotsAPI2_sync/
+
+  # Copy to project dir and rebuild Docker
+  ssh deploy@168.119.119.25 (sudo):
+    cp -r /tmp/parrotsAPI2_sync/. /root/parrotsAPI2/
+    cd /root/parrotsAPI2 && docker compose up --build -d
+
+FRONTEND — Commands used:
+  # Build locally (REACT_APP_API_URL=https://api.parrotsvoyages.com in parrotsWeb/.env)
+  cd /Users/ahmetzeren/Repos/parrotsWeb && npm run build
+
+  # Sync build to server
+  sshpass -p '[password]' rsync -avz \
+    /Users/ahmetzeren/Repos/parrotsWeb/build/ \
+    deploy@168.119.119.25:/tmp/parrotsweb_build/
+
+  # Copy to nginx directory
+  ssh deploy@168.119.119.25 (sudo):
+    rm -rf /var/www/parrotsweb/* && cp -r /tmp/parrotsweb_build/. /var/www/parrotsweb/
+
+.ENV UPDATES:
+  - Compare local .env with server's /root/parrotsAPI2/.env before each deploy
+  - Server .env is never overwritten by rsync — update manually if values change
+  - Updated Email__SmtpPass on server (Gmail app passwords revoke when account password changes)
+  - After .env change: docker compose restart api (in /root/parrotsAPI2)
+
+Notes:
+  - Project lives at /root/parrotsAPI2 on the server (not a git repo — files are copied directly)
+  - Frontend lives at /var/www/parrotsweb (served by nginx)
+  - docker-compose uses network_mode: host
+  - deploy user needs sudo + password for docker commands
+
+
+--------------------------------------------------------------------------------
+NEXT DEPLOYMENT STEPS (repeat each time)
+--------------------------------------------------------------------------------
+1. rsync source files to /tmp/parrotsAPI2_sync/ (command above)
+2. ssh in as deploy (with sudo) and run: cp + docker compose up --build -d
+3. Verify containers are running: docker ps
+
+
+--------------------------------------------------------------------------------
+ARCHITECTURE
+--------------------------------------------------------------------------------
+  api.parrotsvoyages.com  →  Cloudflare DNS  →  nginx  →  Docker (parrots-api)  →  Docker (parrots-db / PostgreSQL)
+  parrotsvoyages.com      →  Cloudflare DNS  →  nginx  →  /var/www/parrotsweb (React static build)
+
+  SSL: Let's Encrypt (auto-renewing, expires 2026-07-10)
+  Containers: parrots-api, parrots-db (both restart: unless-stopped)
+  Log location: /root/parrotsAPI2/logs/
+
+
+--------------------------------------------------------------------------------
+PENDING / TODO
+--------------------------------------------------------------------------------
+1. Mobile development build — swap dummy Google button for real one, point API_URL
+   to https://api.parrotsvoyages.com, run eas build --profile development
+
+2. Data Protection key persistence
+   API logs "Using an in-memory repository" on startup — keys regenerate on restart.
+   Fix: configure PersistKeysToFileSystem in Program.cs
+
+3. Server reboot (kernel upgrade pending)
+   ssh deploy@168.119.119.25 → sudo reboot
+   Containers auto-restart (unless-stopped policy).
+
+4. Firewall hardening
+   Restrict inbound to ports 22, 80, 443 via Hetzner firewall panel.
+
+
+================================================================================
+END OF REPORT
+================================================================================
