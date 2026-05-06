@@ -1,0 +1,126 @@
+SERVER GUIDE — PARROTSVOYAGES.COM
+==================================
+Server: Hetzner — 168.119.119.25
+SSH user: deploy (root SSH access is blocked)
+SSH password: L....XXXX** (ask user for actual password — not stored here)
+Backend directory: /root/parrotsAPI2
+Frontend directory: /var/www/parrotsweb
+
+
+================================================================================
+PART 1 — PRE-BUILD / PRE-DEPLOY CHECKLIST
+================================================================================
+
+1. [DATABASE] Verify server .env uses correct DB host
+   - Must be Host=168.119.119.25 in DefaultConnection, NOT 127.0.0.1
+   - 127.0.0.1 only works if an SSH tunnel is running from local machine
+
+2. [.ENV] Verify server .env values at /root/parrotsAPI2/.env
+   - ConnectionStrings__DefaultConnection → points to 168.119.119.25
+   - Email__SmtpPass → matches current Gmail app password
+   - Google__ClientId, Google__ClientSecret, Google__AndroidClientId → present
+   - TokenKey → present
+   - S3 keys → present
+
+3. [EAS / MOBILE BUILD] EAS environment variables for mobile builds
+   - API_URL → set via: eas env:create --name API_URL --value "https://api.parrotsvoyages.com"
+   - GOOGLE_MAPS_API_KEY → set via: eas env:create --name GOOGLE_MAPS_API_KEY --value "..."
+   - Local .env is NOT used by EAS cloud builds
+
+4. [GOOGLE SIGN-IN] Google Sign-In config in mobile app
+   - Only webClientId (and optionally iosClientId) are valid params
+   - Do NOT pass androidClientId to configure() — causes login failure
+
+5. [WEB FRONTEND] Verify parrotsWeb/.env before building
+   - REACT_APP_API_URL=https://api.parrotsvoyages.com
+   - REACT_APP_GOOGLE_CLIENT_ID → must be present
+
+6. [MOBILE BUILD] EAS build commands
+   Android: eas build --platform android --profile production
+   iOS:     eas build --platform ios --profile production
+   Both:    eas build --platform all --profile production
+   - Run from /Users/ahmetzeren/Repos/parrotsapp
+   - Bump version + versionCode in app.config.js before each store submission
+
+
+================================================================================
+PART 2 — BACKEND DEPLOYMENT
+================================================================================
+
+1. [GIT] Commit and push local changes
+   git add .
+   git commit -m "your message"
+   git push
+
+2. [RSYNC] Sync source files to server (excludes .env, logs, uploads, build artifacts)
+   sshpass -p 'L....XXXX**' rsync -avz \
+     --exclude='.git' --exclude='bin' --exclude='obj' \
+     --exclude='Uploads' --exclude='logs' --exclude='publish' \
+     --exclude='.env' --exclude='appsettings.Development.json' \
+     /Users/ahmetzeren/Repos/parrotsAPI2/ \
+     deploy@168.119.119.25:/tmp/parrotsAPI2_sync/
+
+3. [DOCKER] Copy files and rebuild Docker on server
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S bash -c 'cp -r /tmp/parrotsAPI2_sync/. /root/parrotsAPI2/ && cd /root/parrotsAPI2 && docker compose up --build -d'" \
+     <<< 'L....XXXX**'
+
+4. [DOCKER] Verify containers are running
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 "sudo -S docker ps" <<< 'L....XXXX**'
+
+5. [.ENV] Update a single .env value on server (no rebuild needed)
+   Replace KEY and VALUE with actual key and new value:
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S sed -i 's/^KEY=.*/KEY=VALUE/' /root/parrotsAPI2/.env" \
+     <<< 'L....XXXX**'
+
+   Then restart the api container to pick up the change:
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S bash -c 'cd /root/parrotsAPI2 && docker compose restart api'" \
+     <<< 'L....XXXX**'
+
+6. [.ENV] View current .env on server
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S cat /root/parrotsAPI2/.env" <<< 'L....XXXX**'
+
+7. [LOGS] View live API logs
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S docker logs parrots-api --tail 50" <<< 'L....XXXX**'
+
+   Follow logs in real time:
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S docker logs parrots-api -f" <<< 'L....XXXX**'
+
+
+================================================================================
+PART 3 — WEB FRONTEND DEPLOYMENT
+================================================================================
+
+1. [BUILD] Build React app locally
+   cd /Users/ahmetzeren/Repos/parrotsWeb
+   npm run build
+
+2. [RSYNC] Sync build to server
+   sshpass -p 'L....XXXX**' rsync -avz \
+     /Users/ahmetzeren/Repos/parrotsWeb/build/ \
+     deploy@168.119.119.25:/tmp/parrotsweb_build/
+
+3. [NGINX] Copy to nginx directory on server
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S bash -c 'rm -rf /var/www/parrotsweb/* && cp -r /tmp/parrotsweb_build/. /var/www/parrotsweb/'" \
+     <<< 'L....XXXX**'
+
+4. [NGINX] Verify nginx is serving the new build
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S ls /var/www/parrotsweb/" <<< 'L....XXXX**'
+
+5. [LOGS] View nginx error logs
+   sshpass -p 'L....XXXX**' ssh deploy@168.119.119.25 \
+     "sudo -S tail -50 /var/log/nginx/error.log" <<< 'L....XXXX**'
+
+NOTES
+-----
+- [NGINX] No Docker rebuild needed for frontend — nginx serves static files directly
+- [SSL] Let's Encrypt certificate — auto-renewing, expires 2026-07-10
+- [DOCKER] Backend images: parrots-api (API), parrots-db (PostgreSQL)
+- [SERVER .ENV] Never overwritten by rsync — update manually if values change

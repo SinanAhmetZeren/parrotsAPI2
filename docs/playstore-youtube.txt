@@ -1,0 +1,65 @@
+GOOGLE PLAY STORE & YOUTUBE PRESENCE
+=====================================
+
+
+PART 1 — GOOGLE PLAY STORE REGISTRATION
+========================================
+
+1. Create a Google Play Developer account ($25 one-time fee)
+   https://play.google.com/console
+
+2. Upload the APK
+
+3. Fill store listing
+   - App description
+   - Screenshots
+   - Category
+
+4. Set content rating, pricing (free), target countries
+
+5. Submit for review (~3-7 days)
+
+
+PART 2 — YOUTUBE PRESENCE
+==========================
+
+VIDEO 1 — Intro / Overview (2-3 min)
+--------------------------------------
+- Show the app opening, the map, voyages on the map
+- Quick walkthrough: what is Parrots, why it exists
+- End with a call to action (download link)
+
+VIDEO 2 — "I have a boat" (Boat Owner persona, 1-2 min)
+---------------------------------------------------------
+- Create a vehicle
+- Post a voyage
+- Accept a bid
+- Chat with the traveler
+
+VIDEO 3 — "I'm visiting Istanbul" (Tourist persona, 1-2 min)
+-------------------------------------------------------------
+- Search map
+- Find a tour
+- Check the captain's public profile
+- Place a bid
+
+VIDEO 4 — "We want to ride" (Motorcycle Club persona, 1-2 min)
+---------------------------------------------------------------
+- Create an open riding event
+- Members message each other through the app
+
+VIDEO 5 — "Good cause" (Social Good persona, 1-2 min)
+------------------------------------------------------
+- Create a fundraiser voyage
+- Accept top bids
+
+VIDEO 6 — "I own a restaurant" (Restaurant Owner persona, 1-2 min)
+-------------------------------------------------------------------
+- Create a place card that tourists discover on the map
+
+
+FORMAT GUIDELINES
+-----------------
+- Screen recording of the app with voiceover
+- Keep each video under 2 minutes
+- Same intro bumper on every video (Parrots logo + music) for brand consistency

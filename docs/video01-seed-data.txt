@@ -1,0 +1,135 @@
+VIDEO 01 — SEED DATA (Cambridge)
+=================================
+
+
+MAIN USER — "James Fletcher"
+-----------------------------
+Role: PhD student, Department of Engineering, University of Cambridge
+Age: 28
+Bio: "River guide & engineering PhD student. I take people out on the Cam
+      when I'm not in the lab. Cambridge born and raised."
+Avatar: young man, casual, punting pole in hand or college courtyard
+Socials:
+  - Instagram: @jamesontheCam
+  - Twitter/X: @jfletcher_cam
+
+
+SECONDARY USERS
+---------------
+1. Sophie Laurent
+   - French exchange student, Newnham College
+   - Avatar: woman, outdoor cafe background
+   - Interaction: messages James about joining a punting tour
+
+2. Tom Okafor
+   - College staff, King's College porters lodge
+   - Avatar: man, college gate in background
+   - Interaction: bookmarked by James
+
+3. Priya Nair
+   - Visiting tourist from London for a weekend
+   - Avatar: woman, tourist-style photo
+   - Interaction: places a bid on James's voyage
+
+
+JAMES'S VEHICLE(S)
+------------------
+1. Traditional Cambridge Punt
+   - Name: "The Lab Rat"
+   - Type: Boat
+   - Capacity: 6
+   - Description: "Classic flat-bottomed punt, ideal for lazy afternoons on the Cam."
+   - Photo: wooden punt on river
+
+2. (Optional) Vintage Bicycle
+   - Name: "Old Faithful"
+   - Type: Bicycle
+   - Description: "1970s Raleigh. Good for college-to-college tours."
+
+
+JAMES'S VOYAGES
+---------------
+1. Punting Tour — King's to Grantchester
+   - Vehicle: The Lab Rat
+   - Route: King's College → The Backs → Grantchester Meadows
+   - Duration: 2 hours
+   - Slots: 5
+   - Description: "Classic Cam route. I'll point out the colleges and we'll
+                   stop for tea at the Orchard in Grantchester."
+   - Cover photo: sunny river, punts in distance
+
+2. Evening Sunset Punt
+   - Vehicle: The Lab Rat
+   - Route: Magdalene Bridge → Jesus Green → Midsummer Common
+   - Duration: 1.5 hours
+   - Slots: 4
+   - Description: "Golden hour on the river. Bring a blanket."
+
+3. (Optional) College Architecture Bike Tour
+   - Vehicle: Old Faithful (or walking)
+   - Route: King's → Trinity → St John's → Corpus Christi
+   - Duration: 1.5 hours
+   - Slots: 3
+   - Description: "I'll take you through the gates the tourists miss."
+
+
+VOYAGES JAMES HAS FAVORITED
+-----------------------------
+1. A sailing day trip on the Norfolk Broads
+2. A motorcycle tour through the Cotswolds
+3. A kayaking tour on the River Wye
+
+
+VEHICLES JAMES HAS FAVORITED
+------------------------------
+1. A classic wooden sailboat listed by another user
+2. A vintage VW campervan listed in Oxford
+
+
+DUMMY VOYAGES (map population — other users)
+---------------------------------------------
+These just need a title, start marker, and cover photo. No full detail needed.
+
+1. "Punting & Picnic on the Backs"
+   Start: The Backs (52.2043, 0.1149)
+
+2. "Cambridge City Highlights Walk"
+   Start: Market Square (52.2054, 0.1218)
+
+3. "Jesus Green to Midsummer Common River Walk"
+   Start: Jesus Green (52.2134, 0.1241)
+
+4. "Fen Ditton Village Cycle"
+   Start: Fen Ditton (52.2167, 0.1782)
+
+5. "Cambridge to Ely Canal Boat Trip"
+   Start: Quayside, Cambridge (52.2089, 0.1187)
+
+6. "Sunrise Run — Parker's Piece to Coe Fen"
+   Start: Parker's Piece (52.2008, 0.1275)
+
+
+PLACES (egg markers on map)
+---------------------------
+1. Wolfson College Cafeteria
+   Type: College cafeteria
+   Brief: "Relaxed student dining inside Wolfson College. Open to members and guests."
+   Location: Wolfson College, Barton Rd (52.1954, 0.0987)
+
+2. Fitzbillies
+   Type: Cafe
+   Brief: "Cambridge institution since 1920. Famous for chelsea buns and great coffee."
+   Location: Trumpington St (52.2012, 0.1198)
+
+3. The Architect
+   Type: Restaurant
+   Brief: "Modern British dining in the heart of Cambridge. Great for an evening out."
+   Location: (52.2120673501463, 0.11311100052448558)
+
+
+BIDS / INTERACTIONS
+--------------------
+- Priya Nair has placed a bid on "Punting Tour — King's to Grantchester"
+- Sophie Laurent has sent James a message asking about the sunset punt
+- James has accepted Priya's bid
+- Tom Okafor is bookmarked by James
