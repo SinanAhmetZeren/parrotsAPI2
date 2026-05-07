@@ -1,4 +1,5 @@
 ﻿using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Dtos.GroupDtos;
 using ParrotsAPI2.Dtos.BookmarkDtos;
 using ParrotsAPI2.Dtos.FavoriteDtos;
 using ParrotsAPI2.Dtos.MessageDtos;
@@ -79,6 +80,19 @@ namespace ParrotsAPI2
             CreateMap<GetFavoriteDto, Favorite>();
             CreateMap<Favorite, AddFavoriteDto>();
             CreateMap<AddFavoriteDto, Favorite>();
+
+            CreateMap<GroupConversation, GetGroupDto>()
+                .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.Members));
+            CreateMap<GroupMember, GroupMemberDto>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.ProfileImageUrl, opt => opt.MapFrom(src => src.User.ProfileImageUrl))
+                .ForMember(dest => dest.ProfileImageThumbnailUrl, opt => opt.MapFrom(src => src.User.ProfileImageThumbnailUrl))
+                .ForMember(dest => dest.PublicId, opt => opt.MapFrom(src => src.User.PublicId));
+            CreateMap<GroupMessage, GetGroupMessageDto>()
+                .ForMember(dest => dest.SenderUsername, opt => opt.MapFrom(src => src.Sender.UserName))
+                .ForMember(dest => dest.SenderProfileUrl, opt => opt.MapFrom(src => src.Sender.ProfileImageUrl))
+                .ForMember(dest => dest.SenderProfileThumbnailUrl, opt => opt.MapFrom(src => src.Sender.ProfileImageThumbnailUrl))
+                .ForMember(dest => dest.SenderPublicId, opt => opt.MapFrom(src => src.Sender.PublicId));
         }
     }
 }

@@ -307,6 +307,104 @@ public class ChatHub : Hub
         return Task.CompletedTask;
     }
 
+    public async Task SendGroupMessage(string senderId, int groupConversationId, string content)
+    {
+        if (string.IsNullOrWhiteSpace(content) || content.Length > 500)
+        {
+            _logger.LogWarning("SendGroupMessage rejected: invalid content. SenderId={SenderId}", senderId);
+            return;
+        }
+
+        var now = DateTime.UtcNow;
+        var timestamps = _messageSendTimestamps.GetOrAdd(senderId, _ => new List<DateTime>());
+        lock (timestamps)
+        {
+            timestamps.RemoveAll(t => t < now - MessageRateWindow);
+            if (timestamps.Count >= MessageRateLimit)
+            {
+                _logger.LogWarning("SendGroupMessage rate limit exceeded. SenderId={SenderId}", senderId);
+                return;
+            }
+            timestamps.Add(now);
+        }
+
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+        var group = await dbContext.GroupConversations.FindAsync(groupConversationId);
+        if (group == null) return;
+
+        var isMember = await dbContext.GroupMembers
+            .AnyAsync(m => m.GroupConversationId == groupConversationId && m.UserId == senderId);
+        if (!isMember) return;
+
+        var senderInfo = await GetUserInfoAsync(dbContext, senderId);
+        if (senderInfo == null) return;
+
+        var keyBytes = EncryptionHelper.KeyFromBase64(group.EncryptionKey);
+        var encryptedText = EncryptionHelper.EncryptString(content, keyBytes);
+
+        var message = new GroupMessage
+        {
+            GroupConversationId = groupConversationId,
+            SenderId = senderId,
+            Text = encryptedText,
+            DateTime = now
+        };
+
+        dbContext.GroupMessages.Add(message);
+        group.LastMessageDate = now;
+        await dbContext.SaveChangesAsync();
+
+        var memberIds = await dbContext.GroupMembers
+            .Where(m => m.GroupConversationId == groupConversationId)
+            .Select(m => m.UserId)
+            .ToListAsync();
+
+        foreach (var memberId in memberIds)
+        {
+            if (!_userConnections.TryGetValue(memberId, out var connections)) continue;
+
+            bool isOnMessagesScreen = _tracker.IsOnMessagesScreen(memberId);
+
+            if (!(memberId == senderId || isOnMessagesScreen))
+            {
+                _unreadCache[memberId] = true;
+            }
+
+            foreach (var connId in connections)
+            {
+                if (memberId != senderId)
+                {
+                    await Clients.Client(connId).SendAsync("ReceiveMessage",
+                        senderId,
+                        content,
+                        now,
+                        senderInfo.ProfileImageUrl,
+                        senderInfo.UserName
+                    );
+                }
+                await Clients.Client(connId).SendAsync("ReceiveGroupMessageRefetch", groupConversationId);
+                await Clients.Client(connId).SendAsync("ReceiveMessageRefetch");
+            }
+        }
+
+        // Persist unread flag for offline members
+        var offlineUnreadMembers = memberIds
+            .Where(id => id != senderId && !_userConnections.ContainsKey(id))
+            .ToList();
+
+        if (offlineUnreadMembers.Any())
+        {
+            var offlineUsers = await dbContext.Users
+                .Where(u => offlineUnreadMembers.Contains(u.Id))
+                .ToListAsync();
+            foreach (var u in offlineUsers)
+                u.UnseenMessages = true;
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
     public async Task<bool> CheckUnreadMessages(string userId)
     {
         // Try cache first

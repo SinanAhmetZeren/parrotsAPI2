@@ -16,6 +16,7 @@
         public string ReceiverUsername { get; set; } = string.Empty;
         public string ReceiverPublicId { get; set; } = string.Empty;
 
-
+        public int? GroupConversationId { get; set; }
+        public string? GroupName { get; set; }
     }
 }

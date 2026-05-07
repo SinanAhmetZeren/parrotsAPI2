@@ -51,12 +51,7 @@ namespace ParrotsAPI2.Services.Message
                         (cmu, u2) => new { cmu.Conversation, cmu.LastMessage, cmu.User1, User2 = u2 })
                     .ToListAsync();
 
-                if (!results.Any())
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "No messages found.";
-                    return serviceResponse;
-                }
+                // Map DTOs
 
                 // Map DTOs
                 var messageDtos = results
@@ -107,7 +102,19 @@ namespace ParrotsAPI2.Services.Message
                     .Where(dto => dto != null)
                     .ToList()!;
 
-                serviceResponse.Data = messageDtos;
+                // Fetch group previews and merge — failure here must not break DM previews
+                try
+                {
+                    var groupPreviewsResponse = await GetGroupPreviews(userId);
+                    if (groupPreviewsResponse.Success && groupPreviewsResponse.Data?.Any() == true)
+                        messageDtos.AddRange(groupPreviewsResponse.Data);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error fetching group previews for user {UserId} — skipping", userId);
+                }
+
+                serviceResponse.Data = messageDtos.OrderByDescending(m => m.DateTime).ToList();
                 serviceResponse.Success = true;
             }
             catch (Exception ex)
@@ -117,6 +124,81 @@ namespace ParrotsAPI2.Services.Message
                 serviceResponse.Message = ex.Message;
             }
 
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetMessageDto>>> GetGroupPreviews(string userId)
+        {
+            var serviceResponse = new ServiceResponse<List<GetMessageDto>>();
+            try
+            {
+                var groupIds = await _context.GroupMembers
+                    .Where(m => m.UserId == userId)
+                    .Select(m => m.GroupConversationId)
+                    .ToListAsync();
+
+                if (!groupIds.Any())
+                {
+                    serviceResponse.Data = new List<GetMessageDto>();
+                    serviceResponse.Success = true;
+                    return serviceResponse;
+                }
+
+                var groups = await _context.GroupConversations
+                    .Where(g => groupIds.Contains(g.Id))
+                    .ToListAsync();
+
+                var dtos = new List<GetMessageDto>();
+
+                foreach (var group in groups)
+                {
+                    var lastMessage = await _context.GroupMessages
+                        .Where(m => m.GroupConversationId == group.Id)
+                        .OrderByDescending(m => m.DateTime)
+                        .Join(_context.Users, m => m.SenderId, u => u.Id, (m, u) => new { Message = m, Sender = u })
+                        .FirstOrDefaultAsync();
+
+                    if (lastMessage == null)
+                    {
+                        if (group.CreatorId == userId)
+                            dtos.Add(new GetMessageDto
+                            {
+                                GroupConversationId = group.Id,
+                                GroupName = group.Name,
+                                DateTime = group.CreatedAt
+                            });
+                        continue;
+                    }
+
+                    var keyBytes = EncryptionHelper.KeyFromBase64(group.EncryptionKey);
+                    string decrypted;
+                    try { decrypted = EncryptionHelper.DecryptString(lastMessage.Message.Text, keyBytes); }
+                    catch { decrypted = string.Empty; }
+
+                    dtos.Add(new GetMessageDto
+                    {
+                        Id = lastMessage.Message.Id,
+                        Text = decrypted,
+                        DateTime = lastMessage.Message.DateTime,
+                        SenderId = lastMessage.Message.SenderId,
+                        SenderUsername = lastMessage.Sender.UserName ?? string.Empty,
+                        SenderProfileUrl = lastMessage.Sender.ProfileImageUrl ?? string.Empty,
+                        SenderProfileThumbnailUrl = lastMessage.Sender.ProfileImageThumbnailUrl ?? string.Empty,
+                        SenderPublicId = lastMessage.Sender.PublicId ?? string.Empty,
+                        GroupConversationId = group.Id,
+                        GroupName = group.Name
+                    });
+                }
+
+                serviceResponse.Data = dtos;
+                serviceResponse.Success = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving group previews for user {UserId}", userId);
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
             return serviceResponse;
         }
 

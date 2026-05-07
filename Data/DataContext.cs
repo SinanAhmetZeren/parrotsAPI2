@@ -19,6 +19,9 @@ namespace ParrotsAPI2.Data
         public DbSet<CoinTransaction> CoinTransactions { get; set; }
         public DbSet<TermsVersion> TermsVersions { get; set; }
         public DbSet<UserBookmark> UserBookmarks { get; set; }
+        public DbSet<GroupConversation> GroupConversations { get; set; }
+        public DbSet<GroupMember> GroupMembers { get; set; }
+        public DbSet<GroupMessage> GroupMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -162,6 +165,38 @@ namespace ParrotsAPI2.Data
             modelBuilder.Entity<CoinPurchase>()
                 .Property(cp => cp.EurAmount)
                 .HasPrecision(10, 2);
+
+            modelBuilder.Entity<GroupMember>()
+                .HasOne(gm => gm.GroupConversation)
+                .WithMany(gc => gc.Members)
+                .HasForeignKey(gm => gm.GroupConversationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GroupMember>()
+                .HasOne(gm => gm.User)
+                .WithMany()
+                .HasForeignKey(gm => gm.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GroupMember>()
+                .HasIndex(gm => new { gm.GroupConversationId, gm.UserId })
+                .IsUnique();
+
+            modelBuilder.Entity<GroupMessage>()
+                .HasOne(gm => gm.GroupConversation)
+                .WithMany(gc => gc.Messages)
+                .HasForeignKey(gm => gm.GroupConversationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GroupMessage>()
+                .HasOne(gm => gm.Sender)
+                .WithMany()
+                .HasForeignKey(gm => gm.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<GroupMessage>()
+                .HasIndex(gm => new { gm.GroupConversationId, gm.DateTime })
+                .HasDatabaseName("IX_GroupMessages_GroupConversationId_DateTime");
 
             // Seed default vehicles ("walk" and "run") with UserId = "1"
             /*
