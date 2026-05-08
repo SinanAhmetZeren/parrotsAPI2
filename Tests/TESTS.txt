@@ -65,7 +65,7 @@ INTEGRATION TESTS (hit real PostgreSQL via WebApplicationFactory)
   DeleteVehicle_Owner_Returns200                   - Owner can delete own vehicle
 
 [Voyage Controller]
-  GetVoyageById_NonExistent_ReturnsOkWithNullData  - Fetching unknown voyage returns 200 with null data
+  GetVoyageById_NonExistent_ReturnsNotFound        - Fetching unknown voyage returns 404
   AddVoyage_WithoutToken_Returns401                - Adding voyage requires auth
   AddVoyage_WrongUserId_Returns403                 - Cannot add voyage for another user
   AddVoyage_ValidPayload_Returns200                - Authenticated user with coins can create voyage
@@ -221,7 +221,7 @@ UNIT TESTS (in-memory EF Core, no network)
 
 [MessageService]
   GetMessagesByUserId_UserNotFound_ReturnsFailure  - Returns failure for unknown user
-  GetMessagesByUserId_NoConversations_ReturnsFailure - Returns failure if user has no conversations
+  GetMessagesByUserId_NoConversations_ReturnsSuccessWithEmptyList - Returns success with empty list if user has no conversations
   GetMessagesByUserId_WithConversation_ReturnsDtos - Returns decrypted latest message per conversation
   GetMessagesBetweenUsers_NoMessages_ReturnsFailure - Returns failure if no messages exist between users
   GetMessagesBetweenUsers_WithMessages_ReturnsDecryptedDtos - Messages are decrypted and returned

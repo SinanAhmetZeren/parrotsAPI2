@@ -20,10 +20,10 @@ public class VoyageControllerTests : IClassFixture<ParrotsWebApplicationFactory>
     // --- GetVoyageById (anonymous) ---
 
     [Fact]
-    public async Task GetVoyageById_NonExistent_ReturnsOkWithNullData()
+    public async Task GetVoyageById_NonExistent_ReturnsNotFound()
     {
         var response = await _client.GetAsync("/api/Voyage/GetVoyageById/999999");
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
     // --- AddVoyage ---

@@ -38,7 +38,7 @@ public class MessageServiceTests
     }
 
     [Fact]
-    public async Task GetMessagesByUserId_NoConversations_ReturnsFailure()
+    public async Task GetMessagesByUserId_NoConversations_ReturnsSuccessWithEmptyList()
     {
         var context = TestDbContextFactory.Create();
         context.Users.Add(MakeUser("u1", "user1"));
@@ -47,8 +47,8 @@ public class MessageServiceTests
         var service = CreateService(context);
         var result = await service.GetMessagesByUserId("u1");
 
-        Assert.False(result.Success);
-        Assert.Contains("No messages", result.Message);
+        Assert.True(result.Success);
+        Assert.Empty(result.Data!);
     }
 
     [Fact]
