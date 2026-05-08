@@ -256,6 +256,105 @@ public class ChatHub : Hub
     }
 
 
+    public async Task BroadcastMessage(string senderId, string[] recipientIds, string content)
+    {
+        if (string.IsNullOrWhiteSpace(content) || content.Length > 500) return;
+
+        var now = DateTime.UtcNow;
+        var timestamps = _messageSendTimestamps.GetOrAdd(senderId, _ => new List<DateTime>());
+        lock (timestamps)
+        {
+            timestamps.RemoveAll(t => t < now - MessageRateWindow);
+            if (timestamps.Count >= MessageRateLimit)
+            {
+                _logger.LogWarning("BroadcastMessage rate limit exceeded. SenderId={SenderId}", senderId);
+                return;
+            }
+            timestamps.Add(now);
+        }
+
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+        var senderInfo = await GetUserInfoAsync(dbContext, senderId);
+        if (senderInfo == null) return;
+
+        var encryptedForSender = EncryptionHelper.EncryptString(content, EncryptionHelper.KeyFromBase64(senderInfo.EncryptionKey));
+
+        foreach (var receiverId in recipientIds)
+        {
+            if (receiverId == senderId) continue;
+
+            var receiverInfo = await GetUserInfoAsync(dbContext, receiverId);
+            if (receiverInfo == null) continue;
+
+            var encryptedForReceiver = EncryptionHelper.EncryptString(content, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey));
+
+            var conversationKey = string.CompareOrdinal(senderId, receiverId) < 0
+                ? senderId + "_" + receiverId
+                : receiverId + "_" + senderId;
+
+            var message = new Message
+            {
+                SenderId = senderId,
+                ReceiverId = receiverId,
+                TextSenderEncrypted = encryptedForSender,
+                TextReceiverEncrypted = encryptedForReceiver,
+                DateTime = now,
+                ConversationKey = conversationKey
+            };
+
+            dbContext.Messages.Add(message);
+            await dbContext.SaveChangesAsync();
+
+            var conversation = await dbContext.Conversations
+                .FirstOrDefaultAsync(c => c.ConversationKey == conversationKey);
+
+            if (conversation == null)
+            {
+                conversation = new Conversation
+                {
+                    User1Id = senderId,
+                    User2Id = receiverId,
+                    ConversationKey = conversationKey
+                };
+                dbContext.Conversations.Add(conversation);
+            }
+
+            conversation.LastMessageId = message.Id;
+            conversation.LastMessageDate = message.DateTime;
+
+            bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
+            bool isReceiverOnMessagesScreen = _tracker.IsOnMessagesScreen(receiverId);
+            bool isReceiverOnline = _userConnections.ContainsKey(receiverId);
+
+            if (!(isReceiverViewingChat || isReceiverOnMessagesScreen))
+            {
+                if (isReceiverOnline)
+                {
+                    _unreadCache[receiverId] = true;
+                    if (_userConnections.TryGetValue(receiverId, out var connIds))
+                        foreach (var connId in connIds)
+                            await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
+                }
+                else
+                {
+                    var receiverEntity = await dbContext.Users.FindAsync(receiverId);
+                    if (receiverEntity != null) receiverEntity.UnseenMessages = true;
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
+                foreach (var connId in receiverConnections)
+                {
+                    await Clients.Client(connId).SendAsync("ReceiveMessage", senderId, content, message.DateTime, senderInfo.ProfileImageUrl, senderInfo.UserName);
+                    await Clients.Client(connId).SendAsync("ReceiveMessageRefetch");
+                }
+        }
+    }
+
     public Task EnterConversationPage(string userId, string partnerId)
     {
         _tracker.EnterConversation(userId, Context.ConnectionId, partnerId);
