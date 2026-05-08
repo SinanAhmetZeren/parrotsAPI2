@@ -33,6 +33,43 @@ public static class ApiTestHelper
         return (userData!.Token, userData.UserId);
     }
 
+    public static async Task<(string Token, string UserId)> CreateAdminUserAsync(
+        HttpClient client, ParrotsWebApplicationFactory factory, string? emailPrefix = null)
+    {
+        var prefix = emailPrefix ?? "adminuser";
+        var email = $"{prefix}_{Guid.NewGuid()}@test.com";
+        var username = $"u_{Guid.NewGuid():N}".Substring(0, 10);
+
+        await client.PostAsJsonAsync("/api/Account/register", new RegisterDto
+        {
+            Email = email,
+            Password = "Test123!",
+            UserName = username,
+            TermsVersion = "2026-01"
+        });
+
+        factory.ConfirmUser(email);
+
+        var loginResponse = await client.PostAsJsonAsync("/api/Account/login", new LoginDto
+        {
+            Email = email,
+            Password = "Test123!"
+        });
+
+        var userData = await DeserializeAsync<UserResponseDto>(loginResponse);
+        factory.GiveAdminRole(userData!.UserId);
+
+        // Re-login so the token includes the Admin role claim
+        var adminLoginResponse = await client.PostAsJsonAsync("/api/Account/login", new LoginDto
+        {
+            Email = email,
+            Password = "Test123!"
+        });
+
+        var adminData = await DeserializeAsync<UserResponseDto>(adminLoginResponse);
+        return (adminData!.Token, adminData.UserId);
+    }
+
     public static void SetBearer(HttpClient client, string token)
     {
         client.DefaultRequestHeaders.Authorization =

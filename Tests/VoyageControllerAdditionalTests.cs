@@ -108,8 +108,7 @@ public class VoyageControllerAdditionalTests : IClassFixture<ParrotsWebApplicati
     [Fact]
     public async Task AddPlace_Admin_ReturnsSuccessTrue()
     {
-        var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveAdminRole(userId);
+        var (token, _) = await ApiTestHelper.CreateAdminUserAsync(_client, _factory);
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
