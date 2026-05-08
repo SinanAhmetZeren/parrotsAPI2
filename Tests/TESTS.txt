@@ -1,6 +1,6 @@
 ================================================================================
 PARROTS API - TEST SUITE OVERVIEW
-Total: 171 tests — All passing
+Total: 221 tests — All passing
 ================================================================================
 
 
@@ -120,6 +120,36 @@ INTEGRATION TESTS (hit real PostgreSQL via WebApplicationFactory)
   GetMessagesBetweenUsers_AsUser1_Returns200       - Sender can read conversation
   GetMessagesBetweenUsers_AsUser2_Returns200       - Receiver can read conversation
 
+[Bookmark Controller]
+  GetBookmarks_WithoutToken_Returns401              - Getting bookmarks requires auth
+  GetBookmarks_WithToken_Returns200                 - Authenticated user can fetch their bookmarks
+  GetBookmarkedUserIds_WithoutToken_Returns401      - Getting bookmarked user IDs requires auth
+  GetBookmarkedUserIds_WithToken_Returns200         - Authenticated user can fetch bookmarked user IDs
+  AddBookmark_WithoutToken_Returns401               - Adding a bookmark requires auth
+  AddBookmark_OtherUser_Returns200                  - Authenticated user can bookmark another user
+  AddBookmark_Self_Returns200WithFailureInBody      - Bookmarking self returns 200 with failure in body
+  RemoveBookmark_WithoutToken_Returns401            - Removing a bookmark requires auth
+  RemoveBookmark_AfterAdding_Returns200             - User can remove a previously added bookmark
+  RemoveBookmark_NotFound_Returns404                - Removing non-existent bookmark returns 404
+
+[Group Controller]
+  CreateGroup_WithoutToken_Returns401               - Creating a group requires auth
+  CreateGroup_WithToken_Returns200                  - Authenticated user can create a group
+  AddMember_WithoutToken_Returns401                 - Adding a member requires auth
+  AddMember_ByCreator_Returns200                    - Group creator can add a member
+  AddMember_ByNonCreator_Returns400                 - Non-creator cannot add a member
+  RemoveMember_WithoutToken_Returns401              - Removing a member requires auth
+  RemoveMember_ByCreator_Returns200                 - Group creator can remove a member
+  ExitGroup_WithoutToken_Returns401                 - Exiting a group requires auth
+  ExitGroup_AsMember_Returns200                     - Group member can exit the group
+  ExitGroup_NotMember_Returns400                    - Non-member cannot exit a group
+  GetGroupById_WithoutToken_Returns401              - Getting group details requires auth
+  GetGroupById_AsMember_Returns200                  - Group member can fetch group details
+  GetGroupById_AsNonMember_Returns400               - Non-member cannot fetch group details
+  GetGroupMessages_WithoutToken_Returns401          - Getting group messages requires auth
+  GetGroupMessages_AsMember_Returns200              - Group member can fetch group messages
+  GetGroupMessages_AsNonMember_Returns400           - Non-member cannot fetch group messages
+
 [Health & Metrics]
   Health_Anonymous_Returns200                      - /health endpoint is public and returns 200
   MetricsEndpoint_WithoutToken_Returns401 (x7)     - All 7 metrics endpoints require auth
@@ -196,6 +226,34 @@ UNIT TESTS (in-memory EF Core, no network)
   GetMessagesBetweenUsers_NoMessages_ReturnsFailure - Returns failure if no messages exist between users
   GetMessagesBetweenUsers_WithMessages_ReturnsDecryptedDtos - Messages are decrypted and returned
   GetMessagesBetweenUsers_BothDirections_ReturnsAll - Messages sent in both directions are returned
+
+[BookmarkService]
+  AddBookmark_ValidData_CreatesBookmark             - Valid bookmark is persisted
+  AddBookmark_Self_ReturnsFailure                   - Cannot bookmark yourself
+  AddBookmark_UserNotFound_ReturnsFailure           - Fails if target user doesn't exist
+  AddBookmark_Duplicate_ReturnsFailure              - Cannot bookmark the same user twice
+  RemoveBookmark_Exists_RemovesRecord               - Existing bookmark is deleted
+  RemoveBookmark_NotFound_ReturnsFailure            - Delete fails if bookmark doesn't exist
+  GetBookmarks_ReturnsBookmarkedUsers               - Returns list of bookmarked users
+  GetBookmarks_NoBookmarks_ReturnsEmptyList         - Returns empty list when no bookmarks exist
+  GetBookmarkedUserIds_ReturnsOnlyIds               - Returns only user ID strings for all bookmarks
+
+[GroupService]
+  CreateGroup_ValidData_CreatesGroupAndAddsCreatorAsMember - Group is created and creator is auto-added as member
+  CreateGroup_GeneratesEncryptionKey                - New group gets a non-empty encryption key
+  AddMember_ByCreator_AddsMember                    - Creator can add a new member to the group
+  AddMember_ByNonCreator_ReturnsFailure             - Non-creator cannot add members
+  AddMember_AlreadyMember_ReturnsFailure            - Cannot add a user who is already a member
+  AddMember_GroupNotFound_ReturnsFailure            - Add fails if group doesn't exist
+  RemoveMember_ByCreator_RemovesMember              - Creator can remove a member from the group
+  RemoveMember_ByNonCreator_ReturnsFailure          - Non-creator cannot remove members
+  RemoveMember_NotAMember_ReturnsFailure            - Remove fails if user is not a member
+  ExitGroup_AsMember_RemovesSelf                    - Member can remove themselves from the group
+  ExitGroup_NotMember_ReturnsFailure                - Exit fails if user is not a member
+  GetGroupById_AsMember_ReturnsGroup                - Member can fetch group details
+  GetGroupById_AsNonMember_ReturnsFailure           - Non-member cannot fetch group details
+  GetGroupMessages_AsMember_ReturnsMessages         - Member can fetch group messages (empty list)
+  GetGroupMessages_AsNonMember_ReturnsFailure       - Non-member is denied access to group messages
 
 [EncryptionHelper]
   EncryptThenDecrypt_ReturnsOriginalText           - Encrypt + decrypt roundtrip yields original string
