@@ -466,13 +466,18 @@ public class ChatHub : Hub
 
             bool isOnMessagesScreen = _tracker.IsOnMessagesScreen(memberId);
 
-            if (!(memberId == senderId || isOnMessagesScreen))
+            bool shouldNotifyUnread = memberId != senderId && !isOnMessagesScreen;
+            if (shouldNotifyUnread)
             {
                 _unreadCache[memberId] = true;
             }
 
             foreach (var connId in connections)
             {
+                if (shouldNotifyUnread)
+                {
+                    await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
+                }
                 if (memberId != senderId)
                 {
                     await Clients.Client(connId).SendAsync("ReceiveMessage",
