@@ -1,4 +1,5 @@
-﻿using ParrotsAPI2.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using ParrotsAPI2.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ParrotsAPI2.Models
@@ -6,6 +7,7 @@ namespace ParrotsAPI2.Models
     public class Vehicle
     {
         public int Id { get; set; }
+        [MaxLength(35)]
         public string Name { get; set; } = string.Empty;
         public string ProfileImageUrl { get; set; } = string.Empty;
         public string ProfileImageThumbnailUrl { get; set; } = string.Empty;

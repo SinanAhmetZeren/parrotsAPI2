@@ -15,9 +15,12 @@ public class ChatHub : Hub
     private readonly ILogger<ChatHub> _logger;
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ConversationPageTracker _tracker;
+    // userId → set of active SignalR connection IDs (one user can have multiple tabs/devices)
     private static readonly ConcurrentDictionary<string, HashSet<string>> _userConnections = new();
+    // userId → whether the user currently has unread messages (mirrors DB UnseenMessages, avoids repeated DB reads)
     private static readonly ConcurrentDictionary<string, bool> _unreadCache = new();
     private static readonly ConcurrentDictionary<string, List<DateTime>> _messageSendTimestamps = new();
+    // userId → EncryptionKey, ProfileImageUrl, UserName (populated on first message, avoids repeated DB lookups)
     private static readonly ConcurrentDictionary<string, CachedUserInfo> _userInfoCache = new();
     private const int MessageRateLimit = 5;
     private static readonly TimeSpan MessageRateWindow = TimeSpan.FromSeconds(5);

@@ -1,4 +1,5 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using ParrotsAPI2.Models;
 
@@ -7,7 +8,9 @@ namespace ParrotsAPI2.Models
     [Index(nameof(PublicId), IsUnique = true)]
     public class AppUser : IdentityUser
     {
+        [MaxLength(50)]
         public string? Title { get; set; }
+        [MaxLength(500)]
         public string? Bio { get; set; }
         public string? DisplayEmail { get; set; }
         public string? Instagram { get; set; }

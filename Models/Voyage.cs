@@ -1,4 +1,5 @@
-﻿using ParrotsAPI2.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using ParrotsAPI2.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ParrotsAPI2.Models
@@ -6,8 +7,11 @@ namespace ParrotsAPI2.Models
     public class Voyage
     {
         public int Id { get; set; }
+        [MaxLength(30)]
         public string Name { get; set; } = string.Empty;
+        [MaxLength(300)]
         public string Brief { get; set; } = string.Empty;
+        [MaxLength(10000)]
         public string Description { get; set; } = string.Empty;
         public int Vacancy { get; set; }
         public DateTime StartDate { get; set; }
