@@ -145,6 +145,7 @@ builder.Services.AddScoped<IMetricsService, MetricsService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddSingleton<ConversationPageTracker>();
+builder.Services.AddHostedService<ParrotsAPI2.Services.HubDiagnosticsService>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddHostedService<GroupCleanupService>();
 builder.Services.AddScoped<IBlobService, BlobService>();

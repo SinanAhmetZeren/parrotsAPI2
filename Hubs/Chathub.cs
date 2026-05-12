@@ -24,6 +24,11 @@ public class ChatHub : Hub
 
     private record CachedUserInfo(string EncryptionKey, string ProfileImageUrl, string UserName);
 
+    public static IReadOnlyDictionary<string, HashSet<string>> GetUserConnections() => _userConnections;
+    public static IReadOnlyDictionary<string, bool> GetUnreadCache() => _unreadCache;
+    public static IEnumerable<(string UserId, string UserName)> GetUserInfoCache() =>
+        _userInfoCache.Select(kvp => (kvp.Key, kvp.Value.UserName));
+
     public ChatHub(ILogger<ChatHub> logger, IServiceScopeFactory scopeFactory, ConversationPageTracker tracker)
     {
         _logger = logger;
