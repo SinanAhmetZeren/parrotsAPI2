@@ -375,6 +375,18 @@ public class ChatHub : Hub
         return Task.CompletedTask;
     }
 
+    public Task EnterGroupConversationPage(string userId, string groupId)
+    {
+        _tracker.EnterConversation(userId, Context.ConnectionId, groupId);
+        return Task.CompletedTask;
+    }
+
+    public Task LeaveGroupConversationPage(string userId)
+    {
+        _tracker.LeaveConversation(Context.ConnectionId);
+        return Task.CompletedTask;
+    }
+
     public async Task EnterMessagesScreen(string userId)
     {
         _tracker.EnterMessagesScreen(userId, Context.ConnectionId); // Pass connectionId
@@ -473,8 +485,9 @@ public class ChatHub : Hub
             if (!_userConnections.TryGetValue(memberId, out var connections)) continue;
 
             bool isOnMessagesScreen = _tracker.IsOnMessagesScreen(memberId);
+            bool isViewingThisGroup = _tracker.IsViewingConversation(memberId, groupConversationId.ToString());
 
-            bool shouldNotifyUnread = memberId != senderId && !isOnMessagesScreen;
+            bool shouldNotifyUnread = memberId != senderId && !isOnMessagesScreen && !isViewingThisGroup;
             if (shouldNotifyUnread)
             {
                 _unreadCache[memberId] = true;
