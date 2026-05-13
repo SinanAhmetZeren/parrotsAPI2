@@ -262,3 +262,37 @@ Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum n
 [2026-04-23 18:46:29 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
 [2026-04-23 18:46:30 INF] [Weekly Cleanup] Threshold Date: 21.04.2026 15:46:29
 
+[2026-04-23 19:13:12 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: 614bcaa5-f132-7e74-f011-45a186329a65
+[2026-04-23 19:13:14 INF] GetUserById request took 372 ms
+[2026-04-23 19:13:15 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-23 19:13:15 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-23 19:13:16 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-23 19:13:26 INF] GetUserById request took 514 ms
+[2026-04-23 20:18:23 ERR] Failed executing DbCommand (37,377ms) [Parameters=[@p='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."BackgroundImageUrl", a."Bio", a."ConcurrencyStamp", a."ConfirmationCode", a."Confirmed", a."ConnectionId", a."CreatedAt", a."DisplayEmail", a."Email", a."EmailConfirmed", a."EmailVisible", a."EncryptionKey", a."Facebook", a."HasAcknowledgedPublicProfile", a."Instagram", a."IsAdmin", a."Linkedin", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."ParrotCoinBalance", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."ProfileImageThumbnailUrl", a."ProfileImageUrl", a."PublicId", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TermsAcceptedAt", a."TermsVersion", a."Tiktok", a."Title", a."Twitter", a."TwoFactorEnabled", a."UnseenMessages", a."UserName", a."Youtube"
+FROM "AspNetUsers" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[2026-04-23 20:18:23 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-04-23 22:07:08 INF] Vehicle Voyage Cleanup Service started.
+[2026-04-23 22:07:09 INF] [Weekly Cleanup] Threshold Date: 21.04.2026 19:07:08
+
+[2026-04-23 22:07:09 INF] Now listening on: https://localhost:7151
+[2026-04-23 22:07:09 INF] Now listening on: http://localhost:5094
+[2026-04-23 22:07:09 INF] Application started. Press Ctrl+C to shut down.
+[2026-04-23 22:07:09 INF] Hosting environment: Development
+[2026-04-23 22:07:09 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-04-23 22:07:13 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-23 22:11:32 INF] GetUserById request took 402 ms
+[2026-04-23 22:11:36 INF] GetUserById request took 380 ms
+[2026-04-23 22:16:18 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: 72901dc4-ca1c-294f-e5f1-dd3df806ceea
+[2026-04-23 22:16:20 INF] GetUserById request took 274 ms
+[2026-04-23 22:16:21 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-23 22:16:21 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-04-23 22:26:09 INF] GetUserById request took 751 ms
+[2026-04-23 23:18:43 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: 72901dc4-ca1c-294f-e5f1-dd3df806ceea
+[2026-04-23 23:18:45 INF] GetUserById request took 674 ms
+[2026-04-23 23:19:07 INF] Login success. UserId: 703904d7-d3aa-4577-99ff-4b6d9962b841, IP: ::1, DeviceId: bad5ee58-5baa-44c4-8566-2af73ae62b6b
+[2026-04-23 23:21:18 INF] GetUserById request took 268 ms
+[2026-04-23 23:28:50 INF] GetUserById request took 816 ms
+[2026-04-23 23:37:36 INF] GetUserById request took 484 ms
