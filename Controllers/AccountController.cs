@@ -765,6 +765,18 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPost("push-token")]
+        public async Task<IActionResult> SavePushToken([FromBody] string token)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId!);
+            if (user == null) return Unauthorized();
+            user.ExpoPushToken = token;
+            await _userManager.UpdateAsync(user);
+            return Ok();
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("admin/logs")]
         public IActionResult GetLogs([FromQuery] string? from, [FromQuery] string? to, [FromQuery] string? level)

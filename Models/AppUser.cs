@@ -45,7 +45,7 @@ namespace ParrotsAPI2.Models
         public DateTime? TermsAcceptedAt { get; set; }
         public string? TermsVersion { get; set; }
         public bool HasAcknowledgedPublicProfile { get; set; } = false;
-
+        public string? ExpoPushToken { get; set; }
 
     }
 }
