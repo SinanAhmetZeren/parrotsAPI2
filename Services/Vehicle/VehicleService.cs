@@ -6,6 +6,7 @@ using ParrotsAPI2.Dtos.VehicleDtos;
 using ParrotsAPI2.Dtos.VehicleImageDtos;
 using ParrotsAPI2.Models;
 using ParrotsAPI2.Services;
+using static ParrotsAPI2.Services.ImageProcessor.ImageProcessor;
 
 namespace ParrotsAPI2.Services.Vehicle
 {
@@ -41,7 +42,7 @@ namespace ParrotsAPI2.Services.Vehicle
             var fullKey = $"{prefix.TrimEnd('/')}/{guid}.webp";
             var thumbKey = $"{prefix.TrimEnd('/')}/{guid}_thumb.webp";
 
-            var (fullStream, thumbStream) = await ImageProcessor.ProcessAsync(file.OpenReadStream());
+            var (fullStream, thumbStream) = await ProcessAsync(file.OpenReadStream());
 
             var fullPath = await _blobService.UploadAsync(fullStream, fullKey, "image/webp");
             var thumbPath = await _blobService.UploadAsync(thumbStream, thumbKey, "image/webp");

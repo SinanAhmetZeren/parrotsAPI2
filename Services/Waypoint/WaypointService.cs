@@ -4,6 +4,7 @@ using ParrotsAPI2.Dtos.VoyageImageDtos;
 using ParrotsAPI2.Dtos.WaypointDtos;
 using ParrotsAPI2.Models;
 using ParrotsAPI2.Services;
+using static ParrotsAPI2.Services.ImageProcessor.ImageProcessor;
 
 namespace ParrotsAPI2.Services.Waypoint
 {
@@ -38,7 +39,7 @@ namespace ParrotsAPI2.Services.Waypoint
             var guid = Guid.NewGuid().ToString();
             var blobPath = $"{prefix.TrimEnd('/')}/{guid}.webp";
 
-            var (fullStream, _) = await ImageProcessor.ProcessAsync(file.OpenReadStream());
+            var (fullStream, _) = await ProcessAsync(file.OpenReadStream());
 
             return await _blobService.UploadAsync(fullStream, blobPath, "image/webp");
         }
