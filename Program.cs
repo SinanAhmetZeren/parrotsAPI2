@@ -145,11 +145,11 @@ builder.Services.AddScoped<IMetricsService, MetricsService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddSingleton<ConversationPageTracker>();
-builder.Services.AddHostedService<ParrotsAPI2.Services.HubDiagnosticsService>();
+builder.Services.AddHostedService<ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddHostedService<GroupCleanupService>();
 builder.Services.AddScoped<IBlobService, BlobService>();
-builder.Services.AddHttpClient<ParrotsAPI2.Services.ExpoPushService>();
+builder.Services.AddHttpClient<ParrotsAPI2.Services.Notifications.ExpoPushService>();
 
 builder.Services.AddMemoryCache();
 
