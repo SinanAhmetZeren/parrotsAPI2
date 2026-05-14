@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ParrotsAPI2.Helpers;
 using System.Collections.Concurrent;
+using ParrotsAPI2.Services;
 
 
 public class ChatHub : Hub
@@ -15,6 +16,7 @@ public class ChatHub : Hub
     private readonly ILogger<ChatHub> _logger;
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ConversationPageTracker _tracker;
+    private readonly ExpoPushService _expoPush;
     // userId → set of active SignalR connection IDs (one user can have multiple tabs/devices)
     private static readonly ConcurrentDictionary<string, HashSet<string>> _userConnections = new();
     // userId → whether the user currently has unread messages (mirrors DB UnseenMessages, avoids repeated DB reads)
@@ -32,11 +34,12 @@ public class ChatHub : Hub
     public static IEnumerable<(string UserId, string UserName)> GetUserInfoCache() =>
         _userInfoCache.Select(kvp => (kvp.Key, kvp.Value.UserName));
 
-    public ChatHub(ILogger<ChatHub> logger, IServiceScopeFactory scopeFactory, ConversationPageTracker tracker)
+    public ChatHub(ILogger<ChatHub> logger, IServiceScopeFactory scopeFactory, ConversationPageTracker tracker, ExpoPushService expoPush)
     {
         _logger = logger;
         _scopeFactory = scopeFactory;
         _tracker = tracker;
+        _expoPush = expoPush;
     }
 
     public override async Task OnConnectedAsync()
@@ -236,10 +239,14 @@ public class ChatHub : Hub
             }
             else
             {
-                // User offline → load entity just for flag update
+                // User offline → set unread flag and send push notification
                 var receiverEntity = await dbContext.Users.FindAsync(receiverId);
                 if (receiverEntity != null)
+                {
                     receiverEntity.UnseenMessages = true;
+                    if (!string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
+                        _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken);
+                }
             }
         }
 
@@ -348,7 +355,12 @@ public class ChatHub : Hub
                 else
                 {
                     var receiverEntity = await dbContext.Users.FindAsync(receiverId);
-                    if (receiverEntity != null) receiverEntity.UnseenMessages = true;
+                    if (receiverEntity != null)
+                    {
+                        receiverEntity.UnseenMessages = true;
+                        if (!string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
+                            _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken);
+                    }
                 }
             }
 
@@ -525,7 +537,11 @@ public class ChatHub : Hub
                 .Where(u => offlineUnreadMembers.Contains(u.Id))
                 .ToListAsync();
             foreach (var u in offlineUsers)
+            {
                 u.UnseenMessages = true;
+                if (!string.IsNullOrEmpty(u.ExpoPushToken))
+                    _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken);
+            }
             await dbContext.SaveChangesAsync();
         }
     }
