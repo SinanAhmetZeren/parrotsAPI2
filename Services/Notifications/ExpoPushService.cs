@@ -26,7 +26,7 @@ public class ExpoPushService
             to = expoPushToken,
             badge = 1,
             sound = (string?)null,
-            body = (string?)null,
+            body = "",
             data = new { silent = true }
         };
 

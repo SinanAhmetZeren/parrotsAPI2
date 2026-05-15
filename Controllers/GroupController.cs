@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ParrotsAPI2.Dtos.GroupDtos;
+using ParrotsAPI2.Hubs;
 using ParrotsAPI2.Services.Group;
 
 namespace ParrotsAPI2.Controllers
@@ -11,10 +13,12 @@ namespace ParrotsAPI2.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupService _groupService;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public GroupController(IGroupService groupService)
+        public GroupController(IGroupService groupService, IHubContext<ChatHub> hubContext)
         {
             _groupService = groupService;
+            _hubContext = hubContext;
         }
 
         [HttpPost]
@@ -30,6 +34,12 @@ namespace ParrotsAPI2.Controllers
         {
             var result = await _groupService.AddMember(groupId, userId, requesterId);
             if (!result.Success) return BadRequest(result.Message);
+
+            var userConnections = ChatHub.GetUserConnections();
+            if (userConnections.TryGetValue(userId, out var connectionIds))
+                foreach (var connId in connectionIds)
+                    await _hubContext.Clients.Client(connId).SendAsync("ReceiveMessageRefetch");
+
             return Ok(result.Data);
         }
 
