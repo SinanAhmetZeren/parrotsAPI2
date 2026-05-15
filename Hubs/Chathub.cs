@@ -245,6 +245,7 @@ public class ChatHub : Hub
                 if (receiverEntity != null)
                 {
                     receiverEntity.UnseenMessages = true;
+                    _logger.LogInformation("[PUSH] Receiver offline. Token: {Token}", receiverEntity.ExpoPushToken ?? "NULL");
                     if (!string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
                         _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken);
                 }
