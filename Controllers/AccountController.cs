@@ -122,8 +122,6 @@ namespace API.Controllers
             }
 
             var userResponse = await CreateUserObject(user);
-            userResponse.RefreshToken = refreshToken;
-            userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
             var currentTermsVersion = await _context.TermsVersions
                 .Where(t => t.IsCurrent)
                 .Select(t => t.Version)
@@ -273,8 +271,6 @@ namespace API.Controllers
 
 
                 var userResponse = await CreateUserObject(existingUser);
-                userResponse.RefreshToken = existingUser.RefreshToken;
-                userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
 
                 _logger.LogInformation(
                     "User re-registered successfully. Email: {Email}, IP: {IP}",
@@ -327,8 +323,6 @@ namespace API.Controllers
             SendConfirmationEmailSafe(newUser);
 
             var response = await CreateUserObject(newUser);
-            response.RefreshToken = newUser.RefreshToken;
-            response.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
 
             _logger.LogInformation(
                 "New user registered successfully. Email: {Email}, IP: {IP}",
@@ -490,8 +484,6 @@ namespace API.Controllers
             await _userManager.UpdateAsync(existingUser);
 
             var userResponse = await CreateUserObject(existingUser);
-            userResponse.RefreshToken = refreshToken;
-            userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
 
             _logger.LogInformation(
                 "ResetPassword succeeded for user {UserId}. Email: {Email}, IP: {IP}",
@@ -567,8 +559,6 @@ namespace API.Controllers
             );
 
             var userResponse = await CreateUserObject(user);
-            userResponse.RefreshToken = refreshToken;
-            userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
             return userResponse;
         }
 
@@ -659,8 +649,6 @@ namespace API.Controllers
                 _logger.LogInformation("GoogleLogin succeeded. UserId: {UserId}, Email: {Email}, IP: {IP}", user.Id, user.Email, HttpContext.Connection.RemoteIpAddress);
 
                 var userResponse = await CreateUserObject(user);
-                userResponse.RefreshToken = refreshToken;
-                userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
                 var currentTermsVersion = await _context.TermsVersions
                     .Where(t => t.IsCurrent)
                     .Select(t => t.Version)
@@ -902,6 +890,7 @@ namespace API.Controllers
                 ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
                 ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty,
+                RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
                 UnreadMessages = user.UnseenMessages ? "true" : "false",
                 IsAdmin = user.IsAdmin,
                 HasAcknowledgedPublicProfile = user.HasAcknowledgedPublicProfile,
