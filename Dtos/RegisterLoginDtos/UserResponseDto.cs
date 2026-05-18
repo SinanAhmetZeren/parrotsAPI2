@@ -14,6 +14,9 @@
         public bool IsAdmin { get; set; } = false;
         public bool RequiresTermsAcceptance { get; set; } = false;
         public bool HasAcknowledgedPublicProfile { get; set; } = false;
+        public List<int> FavoriteVoyageIds { get; set; } = new();
+        public List<int> FavoriteVehicleIds { get; set; } = new();
+        public List<string> BookmarkedUserIds { get; set; } = new();
 
     }
 }

@@ -121,7 +121,7 @@ namespace API.Controllers
                 return StatusCode(500, "Login failed");
             }
 
-            var userResponse = CreateUserObject(user);
+            var userResponse = await CreateUserObject(user);
             userResponse.RefreshToken = refreshToken;
             userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
             var currentTermsVersion = await _context.TermsVersions
@@ -272,7 +272,7 @@ namespace API.Controllers
                 SendConfirmationEmailSafe(existingUser);
 
 
-                var userResponse = CreateUserObject(existingUser);
+                var userResponse = await CreateUserObject(existingUser);
                 userResponse.RefreshToken = existingUser.RefreshToken;
                 userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
 
@@ -326,7 +326,7 @@ namespace API.Controllers
 
             SendConfirmationEmailSafe(newUser);
 
-            var response = CreateUserObject(newUser);
+            var response = await CreateUserObject(newUser);
             response.RefreshToken = newUser.RefreshToken;
             response.RefreshTokenExpiryTime = newUser.RefreshTokenExpiryTime;
 
@@ -489,17 +489,9 @@ namespace API.Controllers
 
             await _userManager.UpdateAsync(existingUser);
 
-            var userResponse = new UserResponseDto
-            {
-                Email = existingUser.Email ?? string.Empty,
-                UserName = existingUser.UserName ?? string.Empty,
-                UserId = existingUser.Id,
-                ProfileImageUrl = existingUser.ProfileImageUrl ?? string.Empty,
-                ProfileImageThumbnailUrl = existingUser.ProfileImageThumbnailUrl ?? string.Empty,
-                Token = _tokenService.CreateToken(existingUser),
-                RefreshToken = refreshToken,
-                RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime
-            };
+            var userResponse = await CreateUserObject(existingUser);
+            userResponse.RefreshToken = refreshToken;
+            userResponse.RefreshTokenExpiryTime = existingUser.RefreshTokenExpiryTime;
 
             _logger.LogInformation(
                 "ResetPassword succeeded for user {UserId}. Email: {Email}, IP: {IP}",
@@ -574,17 +566,10 @@ namespace API.Controllers
                 HttpContext.Connection.RemoteIpAddress
             );
 
-            return new UserResponseDto
-            {
-                Token = _tokenService.CreateToken(user),
-                RefreshToken = refreshToken,
-                RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
-                UserName = user.UserName ?? string.Empty,
-                Email = user.Email ?? string.Empty,
-                UserId = user.Id,
-                ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
-                ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
-            };
+            var userResponse = await CreateUserObject(user);
+            userResponse.RefreshToken = refreshToken;
+            userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
+            return userResponse;
         }
 
         // [AllowAnonymous]
@@ -673,18 +658,15 @@ namespace API.Controllers
 
                 _logger.LogInformation("GoogleLogin succeeded. UserId: {UserId}, Email: {Email}, IP: {IP}", user.Id, user.Email, HttpContext.Connection.RemoteIpAddress);
 
-                return new UserResponseDto
-                {
-                    UserName = user.UserName ?? string.Empty,
-                    Email = user.Email ?? string.Empty,
-                    UserId = user.Id,
-                    ProfileImageUrl = user.ProfileImageUrl ?? string.Empty,
-                    ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
-                    Token = _tokenService.CreateToken(user),
-                    RefreshToken = refreshToken,
-                    RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
-                    UnreadMessages = user.UnseenMessages ? "true" : "false"
-                };
+                var userResponse = await CreateUserObject(user);
+                userResponse.RefreshToken = refreshToken;
+                userResponse.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
+                var currentTermsVersion = await _context.TermsVersions
+                    .Where(t => t.IsCurrent)
+                    .Select(t => t.Version)
+                    .FirstOrDefaultAsync() ?? "2025-01";
+                userResponse.RequiresTermsAcceptance = user.TermsVersion != currentTermsVersion;
+                return userResponse;
             }
             catch (Exception ex)
             {
@@ -719,7 +701,7 @@ namespace API.Controllers
             }
 
             var newAccessToken = _tokenService.CreateToken(user);
-            var userResponse = CreateUserObject(user);
+            var userResponse = await CreateUserObject(user);
             userResponse.Token = newAccessToken;
 
             _logger.LogInformation(
@@ -747,7 +729,7 @@ namespace API.Controllers
             user.TermsVersion = currentTermsVersion;
             await _userManager.UpdateAsync(user);
 
-            var userResponse = CreateUserObject(user);
+            var userResponse = await CreateUserObject(user);
             userResponse.RequiresTermsAcceptance = false;
             return userResponse;
         }
@@ -894,8 +876,23 @@ namespace API.Controllers
             return Ok(new { terms.Version, terms.Content, terms.PublishedAt });
         }
 
-        private UserResponseDto CreateUserObject(AppUser user)
+        private async Task<UserResponseDto> CreateUserObject(AppUser user)
         {
+            var favoriteVoyageIds = await _context.Favorites
+                .Where(f => f.UserId == user.Id && f.Type == "voyage")
+                .Select(f => f.ItemId)
+                .ToListAsync();
+
+            var favoriteVehicleIds = await _context.Favorites
+                .Where(f => f.UserId == user.Id && f.Type == "vehicle")
+                .Select(f => f.ItemId)
+                .ToListAsync();
+
+            var bookmarkedUserIds = await _context.UserBookmarks
+                .Where(b => b.BookmarkerId == user.Id)
+                .Select(b => b.BookmarkedUserId)
+                .ToListAsync();
+
             return new UserResponseDto
             {
                 Token = _tokenService.CreateToken(user),
@@ -908,7 +905,9 @@ namespace API.Controllers
                 UnreadMessages = user.UnseenMessages ? "true" : "false",
                 IsAdmin = user.IsAdmin,
                 HasAcknowledgedPublicProfile = user.HasAcknowledgedPublicProfile,
-
+                FavoriteVoyageIds = favoriteVoyageIds,
+                FavoriteVehicleIds = favoriteVehicleIds,
+                BookmarkedUserIds = bookmarkedUserIds,
             };
         }
 
