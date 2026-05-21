@@ -1133,7 +1133,7 @@ namespace ParrotsAPI2.Services.Voyage
                     );
 
                     var waypointDtos = _mapper.Map<List<GetWaypointDto>>(
-                        _context.Waypoints.Where(w => w.VoyageId == voyage.Id).ToList()
+                        _context.Waypoints.Where(w => w.VoyageId == voyage.Id && w.Order == 1).ToList()
                     );
 
                     var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
@@ -1185,11 +1185,10 @@ namespace ParrotsAPI2.Services.Voyage
 
             if (voyage.Waypoints != null && voyage.Waypoints.Any())
             {
-                // find waypoint with lowest order
-                var lowestWaypoint = voyage.Waypoints.OrderBy(w => w.Order).FirstOrDefault();
-                if (lowestWaypoint != null)
+                var ordered = voyage.Waypoints.OrderBy(w => w.Order).ToList();
+                for (int i = 0; i < ordered.Count; i++)
                 {
-                    lowestWaypoint.Order = 1;
+                    ordered[i].Order = i + 1;
                 }
             }
 
