@@ -742,6 +742,12 @@ namespace API.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId!);
             if (user == null) return Unauthorized();
+            if (string.IsNullOrEmpty(token))
+            {
+                _logger.LogWarning("[PUSH] Token registration skipped — empty token. UserId: {UserId}", userId); // 3.9
+                return BadRequest("Token is empty");
+            }
+            _logger.LogInformation("[PUSH] Token registered for UserId: {UserId}, Token: {Token}", userId, token); // 3.8
             user.ExpoPushToken = token;
             await _userManager.UpdateAsync(user);
             return Ok();
