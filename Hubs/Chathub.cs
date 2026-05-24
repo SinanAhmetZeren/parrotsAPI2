@@ -225,6 +225,7 @@ public class ChatHub : Hub
         {
             if (isReceiverOnline)
             {
+                _logger.LogInformation("[PUSH] Receiver {ReceiverId} is online → push skipped, sending SignalR event", receiverId); // 3.6
                 // User is online → keep in memory & send "ReceiveUnreadNotification"
                 // Mark unread in memory
                 _unreadCache[receiverId] = true;
@@ -247,7 +248,7 @@ public class ChatHub : Hub
                     receiverEntity.UnseenMessages = true;
                     _logger.LogInformation("[PUSH] Receiver offline. Token: {Token}", receiverEntity.ExpoPushToken ?? "NULL");
                     if (!string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
-                        _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken);
+                        _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName);
                 }
             }
         }
@@ -361,7 +362,7 @@ public class ChatHub : Hub
                     {
                         receiverEntity.UnseenMessages = true;
                         if (!string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
-                            _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken);
+                            _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName);
                     }
                 }
             }
@@ -542,7 +543,7 @@ public class ChatHub : Hub
             {
                 u.UnseenMessages = true;
                 if (!string.IsNullOrEmpty(u.ExpoPushToken))
-                    _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken);
+                    _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken, senderInfo.UserName);
             }
             await dbContext.SaveChangesAsync();
         }
