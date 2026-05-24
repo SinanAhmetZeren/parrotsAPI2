@@ -15,7 +15,7 @@ public class ExpoPushService
         _logger = logger;
     }
 
-    public async Task SendBadgeNotificationAsync(string expoPushToken)
+    public async Task SendBadgeNotificationAsync(string expoPushToken, string senderName = "Someone")
     {
         if (string.IsNullOrEmpty(expoPushToken)) return;
 
@@ -24,10 +24,12 @@ public class ExpoPushService
         var payload = new
         {
             to = expoPushToken,
+            title = "New Message",
+            body = $"{senderName} sent you a message",
+            sound = "default",
             badge = 1,
-            sound = (string?)null,
-            body = "",
-            data = new { silent = true }
+            priority = "high",
+            channelId = "default"
         };
 
         try
