@@ -49,6 +49,10 @@ namespace ParrotsAPI2.Services.Message
                         cmu => cmu.Conversation.User2Id,
                         u => u.Id,
                         (cmu, u2) => new { cmu.Conversation, cmu.LastMessage, cmu.User1, User2 = u2 })
+                    .GroupJoin(_context.UnreadConversations.Where(u => u.UserId == userId),
+                        r => r.Conversation.ConversationKey,
+                        uc => uc.ConversationKey,
+                        (r, ucs) => new { r.Conversation, r.LastMessage, r.User1, r.User2, UnreadCount = ucs.Sum(u => u.Count) })
                     .ToListAsync();
 
                 // Map DTOs
@@ -96,7 +100,9 @@ namespace ParrotsAPI2.Services.Message
                             ReceiverProfileUrl = users.GetValueOrDefault(lastMessage.ReceiverId)?.ProfileImageUrl ?? "",
                             ReceiverProfileThumbnailUrl = users.GetValueOrDefault(lastMessage.ReceiverId)?.ProfileImageThumbnailUrl ?? "",
                             ReceiverUsername = users.GetValueOrDefault(lastMessage.ReceiverId)?.UserName ?? "",
-                            ReceiverPublicId = users.GetValueOrDefault(lastMessage.ReceiverId)?.PublicId ?? ""
+                            ReceiverPublicId = users.GetValueOrDefault(lastMessage.ReceiverId)?.PublicId ?? "",
+
+                            UnreadCount = r.UnreadCount
                         };
                     })
                     .Where(dto => dto != null)
@@ -175,6 +181,11 @@ namespace ParrotsAPI2.Services.Message
                     try { decrypted = EncryptionHelper.DecryptString(lastMessage.Message.Text, keyBytes); }
                     catch { decrypted = string.Empty; }
 
+                    var groupConvKey = $"group_{group.Id}";
+                    var groupUnread = await _context.UnreadConversations
+                        .Where(u => u.UserId == userId && u.ConversationKey == groupConvKey)
+                        .SumAsync(u => u.Count);
+
                     dtos.Add(new GetMessageDto
                     {
                         Id = lastMessage.Message.Id,
@@ -186,7 +197,8 @@ namespace ParrotsAPI2.Services.Message
                         SenderProfileThumbnailUrl = lastMessage.Sender.ProfileImageThumbnailUrl ?? string.Empty,
                         SenderPublicId = lastMessage.Sender.PublicId ?? string.Empty,
                         GroupConversationId = group.Id,
-                        GroupName = group.Name
+                        GroupName = group.Name,
+                        UnreadCount = groupUnread
                     });
                 }
 

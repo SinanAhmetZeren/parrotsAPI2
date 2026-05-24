@@ -22,6 +22,7 @@ namespace ParrotsAPI2.Data
         public DbSet<GroupConversation> GroupConversations { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<GroupMessage> GroupMessages { get; set; }
+        public DbSet<UnreadConversation> UnreadConversations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -197,6 +198,11 @@ namespace ParrotsAPI2.Data
             modelBuilder.Entity<GroupMessage>()
                 .HasIndex(gm => new { gm.GroupConversationId, gm.DateTime })
                 .HasDatabaseName("IX_GroupMessages_GroupConversationId_DateTime");
+
+            modelBuilder.Entity<UnreadConversation>()
+                .HasIndex(u => new { u.UserId, u.ConversationKey })
+                .IsUnique()
+                .HasDatabaseName("IX_UnreadConversations_UserId_ConversationKey");
 
             // Seed default vehicles ("walk" and "run") with UserId = "1"
             /*

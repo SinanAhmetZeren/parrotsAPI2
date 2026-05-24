@@ -15,7 +15,7 @@ public class ExpoPushService
         _logger = logger;
     }
 
-    public async Task SendBadgeNotificationAsync(string expoPushToken, string senderName = "Someone")
+    public async Task SendBadgeNotificationAsync(string expoPushToken, string senderName = "Someone", int badgeCount = 1)
     {
         if (string.IsNullOrEmpty(expoPushToken)) return;
 
@@ -27,7 +27,7 @@ public class ExpoPushService
             title = "New Message",
             body = $"{senderName} sent you a message",
             sound = "default",
-            badge = 1,
+            badge = badgeCount,
             priority = "high",
             channelId = "default"
         };
