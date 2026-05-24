@@ -18,5 +18,6 @@
 
         public int? GroupConversationId { get; set; }
         public string? GroupName { get; set; }
+        public int UnreadCount { get; set; }
     }
 }
