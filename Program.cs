@@ -1,5 +1,4 @@
 
-
 global using ParrotsAPI2.Models;
 global using ParrotsAPI2.Dtos.User;
 global using ParrotsAPI2.Dtos.VehicleDtos;
@@ -209,6 +208,8 @@ builder.Services.Configure<GoogleAuthOptions>(builder.Configuration.GetSection("
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+Stripe.StripeConfiguration.ApiKey = app.Configuration["Stripe:SecretKey"];
 app.UseForwardedHeaders();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<DeviceRateLimitMiddleware>();
