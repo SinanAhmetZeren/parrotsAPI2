@@ -887,6 +887,10 @@ namespace API.Controllers
                 .Select(b => b.BookmarkedUserId)
                 .ToListAsync();
 
+            var hasUnread = await _context.UnreadConversations
+                .Where(u => u.UserId == user.Id)
+                .AnyAsync(u => u.Count > 0);
+
             return new UserResponseDto
             {
                 Token = _tokenService.CreateToken(user),
@@ -897,7 +901,7 @@ namespace API.Controllers
                 ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty,
                 RefreshToken = user.RefreshToken ?? string.Empty,
                 RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
-                UnreadMessages = user.UnseenMessages ? "true" : "false",
+                UnreadMessages = hasUnread ? "true" : "false",
                 IsAdmin = user.IsAdmin,
                 HasAcknowledgedPublicProfile = user.HasAcknowledgedPublicProfile,
                 FavoriteVoyageIds = favoriteVoyageIds,

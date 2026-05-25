@@ -61,16 +61,12 @@ public class ChatHub : Hub
                         return existingSet;
                     });
 
-            // Only initialize unread cache if not present
-            if (!_unreadCache.ContainsKey(userId))
-            {
-                using var scope = _scopeFactory.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-                var total = await dbContext.UnreadConversations
-                    .Where(u => u.UserId == userId)
-                    .SumAsync(u => u.Count);
-                _unreadCache[userId] = total;
-            }
+            using var scope = _scopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+            var hasUnread = await dbContext.UnreadConversations
+                .AnyAsync(u => u.UserId == userId && u.Count > 0);
+            if (hasUnread)
+                await Clients.Caller.SendAsync("ReceiveUnreadNotification");
         }
         await base.OnConnectedAsync();
         await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
@@ -114,7 +110,6 @@ public class ChatHub : Hub
                 _messageSendTimestamps.TryRemove(userId, out _);
                 _userInfoCache.TryRemove(userId, out _);
 
-                _unreadCache.TryRemove(userId, out _);
             }
         }
 
@@ -203,7 +198,6 @@ public class ChatHub : Hub
         if (!(isReceiverViewingChat || isReceiverOnMessagesScreen))
         {
             var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
-            _unreadCache.AddOrUpdate(receiverId, badgeCount, (_, old) => old + 1);
 
             if (isReceiverOnline)
             {
@@ -320,7 +314,6 @@ public class ChatHub : Hub
             if (!(isReceiverViewingChat || isReceiverOnMessagesScreen))
             {
                 var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
-                _unreadCache.AddOrUpdate(receiverId, badgeCount, (_, old) => old + 1);
 
                 if (isReceiverOnline)
                 {
@@ -347,16 +340,10 @@ public class ChatHub : Hub
         }
     }
 
-    public async Task EnterConversationPage(string userId, string partnerId)
+    public Task EnterConversationPage(string userId, string partnerId)
     {
         _tracker.EnterConversation(userId, Context.ConnectionId, partnerId);
-        var conversationKey = string.CompareOrdinal(userId, partnerId) < 0
-            ? userId + "_" + partnerId
-            : partnerId + "_" + userId;
-        await using var scope = _scopeFactory.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-        await ResetUnreadAsync(dbContext, userId, conversationKey);
-        _unreadCache.AddOrUpdate(userId, 0, (_, old) => Math.Max(0, old - 1));
+        return Task.CompletedTask;
     }
 
     public Task LeaveConversationPage(string userId)
@@ -365,14 +352,10 @@ public class ChatHub : Hub
         return Task.CompletedTask;
     }
 
-    public async Task EnterGroupConversationPage(string userId, string groupId)
+    public Task EnterGroupConversationPage(string userId, string groupId)
     {
         _tracker.EnterConversation(userId, Context.ConnectionId, groupId);
-        var groupConvKey = $"group_{groupId}";
-        await using var scope = _scopeFactory.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-        await ResetUnreadAsync(dbContext, userId, groupConvKey);
-        _unreadCache.AddOrUpdate(userId, 0, (_, old) => Math.Max(0, old - 1));
+        return Task.CompletedTask;
     }
 
     public Task LeaveGroupConversationPage(string userId)
@@ -510,7 +493,6 @@ public class ChatHub : Hub
             {
                 var groupConvKey = $"group_{groupConversationId}";
                 await UpsertUnreadAndGetTotalAsync(dbContext, memberId, groupConvKey);
-                _unreadCache.AddOrUpdate(memberId, 1, (_, old) => old + 1);
             }
 
             foreach (var connId in connections)
@@ -548,7 +530,6 @@ public class ChatHub : Hub
             foreach (var u in offlineUsers)
             {
                 var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, u.Id, groupConvKey);
-                _unreadCache.AddOrUpdate(u.Id, badgeCount, (_, old) => old + 1);
                 if (!string.IsNullOrEmpty(u.ExpoPushToken))
                     _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken, senderInfo.UserName, badgeCount);
             }
@@ -559,17 +540,11 @@ public class ChatHub : Hub
     {
         if (string.IsNullOrEmpty(userId)) return 0;
 
-        if (_unreadCache.TryGetValue(userId, out var cached))
-            return cached;
-
         using var scope = _scopeFactory.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-        var total = await dbContext.UnreadConversations
+        return await dbContext.UnreadConversations
             .Where(u => u.UserId == userId)
             .SumAsync(u => u.Count);
-
-        _unreadCache[userId] = total;
-        return total;
     }
 
 

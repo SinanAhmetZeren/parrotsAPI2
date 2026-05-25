@@ -227,6 +227,19 @@ namespace ParrotsAPI2.Services.Message
 
                 var currentUserKeyBytes = EncryptionHelper.KeyFromBase64(currentUser.EncryptionKey);
 
+                // Reset unread count for this conversation
+                var conversationKey = string.CompareOrdinal(userId1, userId2) < 0
+                    ? userId1 + "_" + userId2
+                    : userId2 + "_" + userId1;
+                var unreadRow = await _context.UnreadConversations
+                    .FirstOrDefaultAsync(u => u.UserId == userId1 && u.ConversationKey == conversationKey);
+                if (unreadRow != null && unreadRow.Count > 0)
+                {
+                    unreadRow.Count = 0;
+                    unreadRow.LastUpdated = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                }
+
                 // Step 1: Fetch all messages between these two users
                 var messages = await _context.Messages
                     .Where(m => (m.SenderId == userId1 && m.ReceiverId == userId2)

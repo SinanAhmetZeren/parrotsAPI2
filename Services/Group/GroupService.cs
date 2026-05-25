@@ -197,6 +197,16 @@ namespace ParrotsAPI2.Services.Group
                     return response;
                 }
 
+                var groupConvKey = $"group_{groupId}";
+                var unreadRow = await _context.UnreadConversations
+                    .FirstOrDefaultAsync(u => u.UserId == userId && u.ConversationKey == groupConvKey);
+                if (unreadRow != null && unreadRow.Count > 0)
+                {
+                    unreadRow.Count = 0;
+                    unreadRow.LastUpdated = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                }
+
                 var keyBytes = EncryptionHelper.KeyFromBase64(group.EncryptionKey);
 
                 var messages = await _context.GroupMessages
