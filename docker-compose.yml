@@ -17,6 +17,8 @@ services:
     volumes:
       - ./Uploads:/app/Uploads
       - ./logs:/app/logs
+      - ./docs:/app/docs
+      - ./Tests:/app/Tests
     depends_on:
       - db
 

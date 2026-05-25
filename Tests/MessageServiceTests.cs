@@ -88,6 +88,54 @@ public class MessageServiceTests
         Assert.True(result.Success);
         Assert.Single(result.Data!);
         Assert.Equal("Hello!", result.Data![0].Text);
+        Assert.Equal(0, result.Data![0].UnreadCount);
+    }
+
+    [Fact]
+    public async Task GetMessagesByUserId_WithUnread_ReturnsCorrectUnreadCount()
+    {
+        var context = TestDbContextFactory.Create();
+        var u1 = MakeUser("u1", "user1");
+        var u2 = MakeUser("u2", "user2");
+        context.Users.AddRange(u1, u2);
+        await context.SaveChangesAsync();
+
+        var msg = new Message
+        {
+            Id = 1,
+            SenderId = "u2",
+            ReceiverId = "u1",
+            TextSenderEncrypted = Encrypt("Hey!"),
+            TextReceiverEncrypted = Encrypt("Hey!"),
+            DateTime = DateTime.UtcNow
+        };
+        context.Messages.Add(msg);
+
+        context.Conversations.Add(new Conversation
+        {
+            User1Id = "u1",
+            User2Id = "u2",
+            ConversationKey = "u1_u2",
+            LastMessageId = 1,
+            LastMessageDate = DateTime.UtcNow
+        });
+
+        context.UnreadConversations.Add(new UnreadConversation
+        {
+            UserId = "u1",
+            ConversationKey = "u1_u2",
+            Count = 3,
+            LastUpdated = DateTime.UtcNow
+        });
+
+        await context.SaveChangesAsync();
+
+        var service = CreateService(context);
+        var result = await service.GetMessagesByUserId("u1");
+
+        Assert.True(result.Success);
+        Assert.Single(result.Data!);
+        Assert.Equal(3, result.Data![0].UnreadCount);
     }
 
     // --- GetMessagesBetweenUsers ---
