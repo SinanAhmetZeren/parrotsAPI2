@@ -729,9 +729,9 @@ namespace ParrotsAPI2.Services.User
             {
                 return new ServiceResponse<int> { Success = false, Message = "User not found." };
             }
-            if (user.ParrotCoinBalance >= 500)
+            if (user.ParrotCoinBalance >= 200)
             {
-                return new ServiceResponse<int> { Success = false, Message = "Balance must be below 500 to claim free coins." };
+                return new ServiceResponse<int> { Success = false, Message = "Balance must be below 200 to claim free coins." };
             }
             user.ParrotCoinBalance += 100;
             var purchase = new CoinPurchase

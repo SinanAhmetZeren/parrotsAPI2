@@ -143,8 +143,7 @@ namespace ParrotsAPI2.Services.Voyage
                         return;
                     }
 
-                    // Calculate required coins (example: days until start)
-                    int requiredCoins = (newVoyage.StartDate - DateTime.UtcNow).Days;
+                    int requiredCoins = (newVoyage.EndDate - DateTime.UtcNow).Days;
                     if (requiredCoins < 0)
                         requiredCoins = 0;
 
