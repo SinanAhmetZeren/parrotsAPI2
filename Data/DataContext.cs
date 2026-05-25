@@ -167,6 +167,11 @@ namespace ParrotsAPI2.Data
                 .Property(cp => cp.EurAmount)
                 .HasPrecision(10, 2);
 
+            modelBuilder.Entity<CoinPurchase>()
+                .HasIndex(cp => cp.PaymentProviderId)
+                .IsUnique()
+                .HasFilter("\"PaymentProviderId\" IS NOT NULL");
+
             modelBuilder.Entity<GroupMember>()
                 .HasOne(gm => gm.GroupConversation)
                 .WithMany(gc => gc.Members)

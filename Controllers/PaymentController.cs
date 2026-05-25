@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Stripe;
 
 namespace parrotsAPI2.Controllers;
@@ -107,7 +108,15 @@ public class PaymentController : ControllerBase
                 CreatedAt = DateTime.UtcNow
             });
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("duplicate key") == true ||
+                                                ex.InnerException?.Message.Contains("unique constraint") == true)
+            {
+                return Ok();
+            }
         }
 
         return Ok();
