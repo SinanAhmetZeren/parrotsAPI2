@@ -435,6 +435,7 @@ namespace ParrotsAPI2.Services.Voyage
             // Get waypoints asynchronously
             var waypointDtos = await _context.Waypoints
                 .Where(w => w.VoyageId == id)
+                .OrderBy(w => w.Order)
                 .Select(w => _mapper.Map<GetWaypointDto>(w))
                 .ToListAsync();
 
@@ -507,6 +508,7 @@ namespace ParrotsAPI2.Services.Voyage
             // Get waypoints asynchronously
             var waypointDtos = await _context.Waypoints
                 .Where(w => w.VoyageId == id)
+                .OrderBy(w => w.Order)
                 .Select(w => _mapper.Map<GetWaypointDto>(w))
                 .ToListAsync();
 
