@@ -114,7 +114,6 @@ public class ChatHub : Hub
         }
 
         // 4️⃣ Always clean up trackers
-        _tracker.LeaveMessagesScreen(connectionId);
         _tracker.LeaveConversation(connectionId);
 
         await base.OnDisconnectedAsync(exception);
@@ -192,10 +191,9 @@ public class ChatHub : Hub
 
         // Update receiver notifications
         bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
-        bool isReceiverOnMessagesScreen = _tracker.IsOnMessagesScreen(receiverId);
         bool isReceiverOnline = _userConnections.ContainsKey(receiverId);
 
-        if (!(isReceiverViewingChat || isReceiverOnMessagesScreen))
+        if (!isReceiverViewingChat)
         {
             var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
 
@@ -308,10 +306,9 @@ public class ChatHub : Hub
             conversation.LastMessageDate = message.DateTime;
 
             bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
-            bool isReceiverOnMessagesScreen = _tracker.IsOnMessagesScreen(receiverId);
             bool isReceiverOnline = _userConnections.ContainsKey(receiverId);
 
-            if (!(isReceiverViewingChat || isReceiverOnMessagesScreen))
+            if (!isReceiverViewingChat)
             {
                 var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
 
@@ -364,12 +361,6 @@ public class ChatHub : Hub
         return Task.CompletedTask;
     }
 
-    public Task EnterMessagesScreen(string userId)
-    {
-        _tracker.EnterMessagesScreen(userId, Context.ConnectionId);
-        return Task.CompletedTask;
-    }
-
     private async Task<int> UpsertUnreadAndGetTotalAsync(DataContext dbContext, string userId, string conversationKey)
     {
         var existing = await dbContext.UnreadConversations
@@ -419,12 +410,6 @@ public class ChatHub : Hub
         var info = new CachedUserInfo(user.EncryptionKey, user.ProfileImageUrl ?? string.Empty, user.UserName ?? string.Empty);
         _userInfoCache[userId] = info;
         return info;
-    }
-
-    public Task LeaveMessagesScreen(string userId)
-    {
-        _tracker.LeaveMessagesScreen(Context.ConnectionId); // Remove using connectionId
-        return Task.CompletedTask;
     }
 
     public async Task SendGroupMessage(string senderId, int groupConversationId, string content)
@@ -485,10 +470,9 @@ public class ChatHub : Hub
         {
             if (!_userConnections.TryGetValue(memberId, out var connections)) continue;
 
-            bool isOnMessagesScreen = _tracker.IsOnMessagesScreen(memberId);
             bool isViewingThisGroup = _tracker.IsViewingConversation(memberId, groupConversationId.ToString());
 
-            bool shouldNotifyUnread = memberId != senderId && !isOnMessagesScreen && !isViewingThisGroup;
+            bool shouldNotifyUnread = memberId != senderId && !isViewingThisGroup;
             if (shouldNotifyUnread)
             {
                 var groupConvKey = $"group_{groupConversationId}";
