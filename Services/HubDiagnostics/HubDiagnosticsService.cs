@@ -21,7 +21,7 @@ public class HubDiagnosticsService : BackgroundService
         {
             await Task.Delay(10000, stoppingToken);
 
-            var connections = ChatHub.GetUserConnections();
+            var connections = ChatHub.GetUserConnectionIds();
             var unreadCache = ChatHub.GetUnreadCache();
             var userInfoCache = ChatHub.GetUserInfoCache();
 
