@@ -35,7 +35,7 @@ namespace ParrotsAPI2.Controllers
             var result = await _groupService.AddMember(groupId, userId, requesterId);
             if (!result.Success) return BadRequest(result.Message);
 
-            var userConnections = ChatHub.GetUserConnections();
+            var userConnections = ChatHub.GetUserConnectionIds();
             if (userConnections.TryGetValue(userId, out var connectionIds))
                 foreach (var connId in connectionIds)
                     await _hubContext.Clients.Client(connId).SendAsync("ReceiveMessageRefetch");

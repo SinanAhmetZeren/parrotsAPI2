@@ -18,8 +18,8 @@ public class ChatHub : Hub
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ConversationPageTracker _tracker;
     private readonly ExpoPushService _expoPush;
-    // userId → set of active SignalR connection IDs (one user can have multiple tabs/devices)
-    private static readonly ConcurrentDictionary<string, HashSet<string>> _userConnections = new();
+    // userId → set of active connections with foreground state (one user can have multiple tabs/devices)
+    private static readonly ConcurrentDictionary<string, HashSet<ConnectionInfo>> _userConnections = new();
     // userId → total unread message count across all conversations (persisted to DB on disconnect)
     private static readonly ConcurrentDictionary<string, int> _unreadCache = new();
     private static readonly ConcurrentDictionary<string, List<DateTime>> _messageSendTimestamps = new();
@@ -29,8 +29,10 @@ public class ChatHub : Hub
     private static readonly TimeSpan MessageRateWindow = TimeSpan.FromSeconds(5);
 
     private record CachedUserInfo(string EncryptionKey, string ProfileImageUrl, string UserName);
+    internal record ConnectionInfo(string ConnectionId, bool IsForeground);
 
-    public static IReadOnlyDictionary<string, HashSet<string>> GetUserConnections() => _userConnections;
+    public static IReadOnlyDictionary<string, IEnumerable<string>> GetUserConnectionIds() =>
+        _userConnections.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(c => c.ConnectionId));
     public static IReadOnlyDictionary<string, int> GetUnreadCache() => _unreadCache;
     public static IEnumerable<(string UserId, string UserName)> GetUserInfoCache() =>
         _userInfoCache.Select(kvp => (kvp.Key, kvp.Value.UserName));
@@ -51,12 +53,12 @@ public class ChatHub : Hub
 
             _userConnections.AddOrUpdate(
                     userId,
-                    _ => new HashSet<string> { Context.ConnectionId },
+                    _ => new HashSet<ConnectionInfo> { new(Context.ConnectionId, true) },
                     (_, existingSet) =>
                     {
                         lock (existingSet)
                         {
-                            existingSet.Add(Context.ConnectionId);
+                            existingSet.Add(new(Context.ConnectionId, true));
                         }
                         return existingSet;
                     });
@@ -81,7 +83,7 @@ public class ChatHub : Hub
         // 1️⃣ Find the user that owns this connection
         foreach (var kvp in _userConnections)
         {
-            if (kvp.Value.Contains(connectionId))
+            if (kvp.Value.Any(c => c.ConnectionId == connectionId))
             {
                 userId = kvp.Key;
                 break;
@@ -96,7 +98,7 @@ public class ChatHub : Hub
             // 2️⃣ Remove this connection (thread-safe)
             lock (connections)
             {
-                connections.Remove(connectionId);
+                connections.RemoveWhere(c => c.ConnectionId == connectionId);
                 if (connections.Count == 0)
                 {
                     removeUserCompletely = true;
@@ -191,28 +193,29 @@ public class ChatHub : Hub
 
         // Update receiver notifications
         bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
-        bool isReceiverOnline = _userConnections.ContainsKey(receiverId);
+        bool isReceiverOnline = _userConnections.TryGetValue(receiverId, out var receiverConns);
+        bool isReceiverForeground = isReceiverOnline && receiverConns!.Any(c => c.IsForeground);
 
         if (!isReceiverViewingChat)
         {
             var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
 
             if (isReceiverOnline)
+                foreach (var connId in receiverConns!.Select(c => c.ConnectionId))
+                    await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
+
+            if (!isReceiverForeground)
             {
-                _logger.LogInformation("[PUSH] Receiver {ReceiverId} is online → push skipped, sending SignalR event", receiverId);
-                if (_userConnections.TryGetValue(receiverId, out var connectionIds))
-                    foreach (var connId in connectionIds)
-                        await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
+                var receiverEntity = await dbContext.Users.FindAsync(receiverId);
+                if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
+                {
+                    _logger.LogInformation("[PUSH] Receiver backgrounded/offline → sending push. Token: {Token}", receiverEntity.ExpoPushToken);
+                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, badgeCount);
+                }
             }
             else
             {
-                var receiverEntity = await dbContext.Users.FindAsync(receiverId);
-                if (receiverEntity != null)
-                {
-                    _logger.LogInformation("[PUSH] Receiver offline. Token: {Token}", receiverEntity.ExpoPushToken ?? "NULL");
-                    if (!string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
-                        _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, badgeCount);
-                }
+                _logger.LogInformation("[PUSH] Receiver {ReceiverId} in foreground → push skipped", receiverId);
             }
         }
 
@@ -221,7 +224,7 @@ public class ChatHub : Hub
         // Notify all receiver connections of new message
         if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
         {
-            foreach (var connId in receiverConnections)
+            foreach (var connId in receiverConnections.Select(c => c.ConnectionId))
             {
                 await Clients.Client(connId).SendAsync("ReceiveMessage",
                     senderId,
@@ -306,19 +309,18 @@ public class ChatHub : Hub
             conversation.LastMessageDate = message.DateTime;
 
             bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
-            bool isReceiverOnline = _userConnections.ContainsKey(receiverId);
+            bool isReceiverOnline = _userConnections.TryGetValue(receiverId, out var bcastReceiverConns);
+            bool isReceiverForeground = isReceiverOnline && bcastReceiverConns!.Any(c => c.IsForeground);
 
             if (!isReceiverViewingChat)
             {
                 var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
 
                 if (isReceiverOnline)
-                {
-                    if (_userConnections.TryGetValue(receiverId, out var connIds))
-                        foreach (var connId in connIds)
-                            await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
-                }
-                else
+                    foreach (var connId in bcastReceiverConns!.Select(c => c.ConnectionId))
+                        await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
+
+                if (!isReceiverForeground)
                 {
                     var receiverEntity = await dbContext.Users.FindAsync(receiverId);
                     if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
@@ -329,7 +331,7 @@ public class ChatHub : Hub
             await dbContext.SaveChangesAsync();
 
             if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
-                foreach (var connId in receiverConnections)
+                foreach (var connId in receiverConnections.Select(c => c.ConnectionId))
                 {
                     await Clients.Client(connId).SendAsync("ReceiveMessage", senderId, content, message.DateTime, senderInfo.ProfileImageUrl, senderInfo.UserName);
                     await Clients.Client(connId).SendAsync("ReceiveMessageRefetch");
@@ -358,6 +360,25 @@ public class ChatHub : Hub
     public Task LeaveGroupConversationPage(string userId)
     {
         _tracker.LeaveConversation(Context.ConnectionId);
+        return Task.CompletedTask;
+    }
+
+    public Task UpdatePresence(bool isForeground)
+    {
+        var connectionId = Context.ConnectionId;
+        foreach (var kvp in _userConnections)
+        {
+            lock (kvp.Value)
+            {
+                var existing = kvp.Value.FirstOrDefault(c => c.ConnectionId == connectionId);
+                if (existing != null)
+                {
+                    kvp.Value.Remove(existing);
+                    kvp.Value.Add(new ConnectionInfo(connectionId, isForeground));
+                    break;
+                }
+            }
+        }
         return Task.CompletedTask;
     }
 
@@ -479,7 +500,7 @@ public class ChatHub : Hub
                 await UpsertUnreadAndGetTotalAsync(dbContext, memberId, groupConvKey);
             }
 
-            foreach (var connId in connections)
+            foreach (var connId in connections.Select(c => c.ConnectionId))
             {
                 if (shouldNotifyUnread)
                 {
@@ -500,18 +521,18 @@ public class ChatHub : Hub
             }
         }
 
-        // Persist unread flag for offline members
-        var offlineUnreadMembers = memberIds
-            .Where(id => id != senderId && !_userConnections.ContainsKey(id))
+        // Persist unread flag for offline or backgrounded members
+        var pushTargetMembers = memberIds
+            .Where(id => id != senderId && (!_userConnections.ContainsKey(id) || !_userConnections[id].Any(c => c.IsForeground)))
             .ToList();
 
-        if (offlineUnreadMembers.Any())
+        if (pushTargetMembers.Any())
         {
             var groupConvKey = $"group_{groupConversationId}";
-            var offlineUsers = await dbContext.Users
-                .Where(u => offlineUnreadMembers.Contains(u.Id))
+            var targetUsers = await dbContext.Users
+                .Where(u => pushTargetMembers.Contains(u.Id))
                 .ToListAsync();
-            foreach (var u in offlineUsers)
+            foreach (var u in targetUsers)
             {
                 var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, u.Id, groupConvKey);
                 if (!string.IsNullOrEmpty(u.ExpoPushToken))
