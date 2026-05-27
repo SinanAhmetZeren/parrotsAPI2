@@ -16,8 +16,6 @@ public class AdminController : ControllerBase
     private static readonly string[] _docBaseDirs =
     {
         "docs",
-        Path.Combine("docs", "parrotsId"),
-        "Tests"
     };
 
     [HttpGet("admin/docs")]
@@ -29,7 +27,7 @@ public class AdminController : ControllerBase
         {
             var full = Path.Combine(root, dir);
             if (!Directory.Exists(full)) continue;
-            foreach (var f in Directory.GetFiles(full, "*.txt", SearchOption.TopDirectoryOnly))
+            foreach (var f in Directory.GetFiles(full, "*.txt", SearchOption.AllDirectories))
             {
                 var name = Path.GetFileName(f);
                 if (_excludedDocs.Contains(name)) continue;
