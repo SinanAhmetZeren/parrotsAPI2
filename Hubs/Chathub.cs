@@ -20,6 +20,8 @@ public class ChatHub : Hub
     private readonly ExpoPushService _expoPush;
     // userId → set of active connections with foreground state (one user can have multiple tabs/devices)
     private static readonly ConcurrentDictionary<string, HashSet<ConnectionInfo>> _userConnections = new();
+    // userId → badge count (resets when user foregrounds the app)
+    private static readonly ConcurrentDictionary<string, int> _userBadgeCounts = new();
     // userId → total unread message count across all conversations (persisted to DB on disconnect)
     private static readonly ConcurrentDictionary<string, int> _unreadCache = new();
     private static readonly ConcurrentDictionary<string, List<DateTime>> _messageSendTimestamps = new();
@@ -209,8 +211,9 @@ public class ChatHub : Hub
                 var receiverEntity = await dbContext.Users.FindAsync(receiverId);
                 if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
                 {
+                    var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
                     _logger.LogInformation("[PUSH] Receiver backgrounded/offline → sending push. Token: {Token}", receiverEntity.ExpoPushToken);
-                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, badgeCount);
+                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
                 }
             }
             else
@@ -375,6 +378,8 @@ public class ChatHub : Hub
                 {
                     kvp.Value.Remove(existing);
                     kvp.Value.Add(new ConnectionInfo(connectionId, isForeground));
+                    if (isForeground)
+                        _userBadgeCounts[kvp.Key] = 0;
                     break;
                 }
             }
@@ -536,7 +541,10 @@ public class ChatHub : Hub
             {
                 var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, u.Id, groupConvKey);
                 if (!string.IsNullOrEmpty(u.ExpoPushToken))
-                    _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken, senderInfo.UserName, badgeCount);
+                {
+                    var pushBadge = _userBadgeCounts.AddOrUpdate(u.Id, 1, (_, old) => old + 1);
+                    _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken, senderInfo.UserName, pushBadge);
+                }
             }
         }
     }
