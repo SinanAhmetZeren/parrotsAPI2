@@ -30,7 +30,7 @@ public class ChatHub : Hub
     private const int MessageRateLimit = 5;
     private static readonly TimeSpan MessageRateWindow = TimeSpan.FromSeconds(5);
 
-    private record CachedUserInfo(string EncryptionKey, string ProfileImageUrl, string UserName);
+    private record CachedUserInfo(string EncryptionKey, string ProfileImageUrl, string ProfileImageThumbnailUrl, string UserName, string PublicId);
     internal record ConnectionInfo(string ConnectionId, bool IsForeground);
 
     public static IReadOnlyDictionary<string, IEnumerable<string>> GetUserConnectionIds() =>
@@ -224,22 +224,44 @@ public class ChatHub : Hub
 
         await dbContext.SaveChangesAsync(); // single batched save for conversation + unread flag
 
-        // Notify all receiver connections of new message
-        if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
-        {
-            foreach (var connId in receiverConnections.Select(c => c.ConnectionId))
-            {
-                await Clients.Client(connId).SendAsync("ReceiveMessage",
-                    senderId,
-                    content,
-                    message.DateTime,
-                    senderInfo.ProfileImageUrl,
-                    senderInfo.UserName
-                );
+        // Query last 5 messages for this conversation
+        var rawLast5 = await dbContext.Messages
+            .Where(m => m.ConversationKey == conversationKey)
+            .OrderByDescending(m => m.DateTime)
+            .Take(3)
+            .OrderBy(m => m.DateTime)
+            .ToListAsync();
 
-                await Clients.Client(connId).SendAsync("ReceiveMessageRefetch");
-            }
-        }
+        // Decrypt for receiver perspective
+        var last5ForReceiver = rawLast5.Select(m => new {
+            id = m.Id,
+            senderId = m.SenderId,
+            text = m.SenderId == senderId
+                ? EncryptionHelper.DecryptString(m.TextReceiverEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey))
+                : EncryptionHelper.DecryptString(m.TextSenderEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey)),
+            dateTime = m.DateTime,
+            senderProfileImageUrl = m.SenderId == senderId ? senderInfo.ProfileImageUrl : receiverInfo.ProfileImageUrl,
+            senderProfileThumbnailUrl = m.SenderId == senderId ? senderInfo.ProfileImageThumbnailUrl : receiverInfo.ProfileImageThumbnailUrl,
+            senderUsername = m.SenderId == senderId ? senderInfo.UserName : receiverInfo.UserName,
+            senderPublicId = m.SenderId == senderId ? senderInfo.PublicId : receiverInfo.PublicId,
+        }).ToList();
+
+        // Decrypt for sender perspective
+        var last5ForSender = rawLast5.Select(m => new {
+            id = m.Id,
+            senderId = m.SenderId,
+            text = m.SenderId == senderId
+                ? EncryptionHelper.DecryptString(m.TextSenderEncrypted, EncryptionHelper.KeyFromBase64(senderInfo.EncryptionKey))
+                : EncryptionHelper.DecryptString(m.TextReceiverEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey)),
+            dateTime = m.DateTime,
+            senderProfileImageUrl = m.SenderId == senderId ? senderInfo.ProfileImageUrl : receiverInfo.ProfileImageUrl,
+            senderUsername = m.SenderId == senderId ? senderInfo.UserName : receiverInfo.UserName,
+            senderPublicId = m.SenderId == senderId ? senderInfo.PublicId : receiverInfo.PublicId,
+        }).ToList();
+
+        if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
+            foreach (var connId in receiverConnections.Select(c => c.ConnectionId))
+                await Clients.Client(connId).SendAsync("ReceiveMessage", last5ForReceiver);
     }
 
 
@@ -427,13 +449,13 @@ public class ChatHub : Hub
 
         var user = await dbContext.Users
             .Where(u => u.Id == userId)
-            .Select(u => new { u.EncryptionKey, u.ProfileImageUrl, u.UserName })
+            .Select(u => new { u.EncryptionKey, u.ProfileImageUrl, u.ProfileImageThumbnailUrl, u.UserName, u.PublicId })
             .FirstOrDefaultAsync();
 
         if (user == null || string.IsNullOrEmpty(user.EncryptionKey))
             return null;
 
-        var info = new CachedUserInfo(user.EncryptionKey, user.ProfileImageUrl ?? string.Empty, user.UserName ?? string.Empty);
+        var info = new CachedUserInfo(user.EncryptionKey, user.ProfileImageUrl ?? string.Empty, user.ProfileImageThumbnailUrl ?? string.Empty, user.UserName ?? string.Empty, user.PublicId ?? string.Empty);
         _userInfoCache[userId] = info;
         return info;
     }
@@ -497,9 +519,9 @@ public class ChatHub : Hub
             if (!_userConnections.TryGetValue(memberId, out var connections)) continue;
 
             bool isViewingThisGroup = _tracker.IsViewingConversation(memberId, groupConversationId.ToString());
-
+            bool isMemberForeground = connections.Any(c => c.IsForeground);
             bool shouldNotifyUnread = memberId != senderId && !isViewingThisGroup;
-            if (shouldNotifyUnread)
+            if (shouldNotifyUnread && isMemberForeground)
             {
                 var groupConvKey = $"group_{groupConversationId}";
                 await UpsertUnreadAndGetTotalAsync(dbContext, memberId, groupConvKey);
@@ -508,22 +530,46 @@ public class ChatHub : Hub
             foreach (var connId in connections.Select(c => c.ConnectionId))
             {
                 if (shouldNotifyUnread)
-                {
                     await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
-                }
-                if (memberId != senderId)
-                {
-                    await Clients.Client(connId).SendAsync("ReceiveMessage",
-                        senderId,
-                        content,
-                        now,
-                        senderInfo.ProfileImageUrl,
-                        senderInfo.UserName
-                    );
-                }
-                await Clients.Client(connId).SendAsync("ReceiveGroupMessageRefetch", groupConversationId);
-                await Clients.Client(connId).SendAsync("ReceiveMessageRefetch");
             }
+        }
+
+        // Query last 5 group messages and send to all online members
+        var last5GroupRaw = await (
+            from m in dbContext.GroupMessages
+            join u in dbContext.Users on m.SenderId equals u.Id
+            where m.GroupConversationId == groupConversationId
+            orderby m.DateTime descending
+            select new {
+                id = m.Id,
+                senderId = m.SenderId,
+                encryptedText = m.Text,
+                dateTime = m.DateTime,
+                senderProfileImageUrl = u.ProfileImageUrl ?? "",
+                senderProfileThumbnailUrl = u.ProfileImageThumbnailUrl ?? "",
+                senderUsername = u.UserName ?? "",
+                senderPublicId = u.PublicId ?? "",
+            })
+            .Take(3)
+            .OrderBy(m => m.dateTime)
+            .ToListAsync();
+
+        var last5Group = last5GroupRaw.Select(m => new {
+            m.id,
+            m.senderId,
+            text = EncryptionHelper.DecryptString(m.encryptedText, keyBytes),
+            m.dateTime,
+            m.senderProfileImageUrl,
+            m.senderProfileThumbnailUrl,
+            m.senderUsername,
+            m.senderPublicId,
+        }).ToList();
+
+        foreach (var memberId in memberIds)
+        {
+            if (!_userConnections.TryGetValue(memberId, out var memberConns)) continue;
+            foreach (var connId in memberConns.Select(c => c.ConnectionId))
+                await Clients.Client(connId).SendAsync("ReceiveGroupMessage", last5Group);
         }
 
         // Persist unread flag for offline or backgrounded members
