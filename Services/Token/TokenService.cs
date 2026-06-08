@@ -9,8 +9,8 @@ namespace ParrotsAPI2.Services.Token
     public class TokenService
     {
         // Token expiry — swap comments to switch between test and production values
-        // public static readonly TimeSpan JwtExpiry = TimeSpan.FromDays(7);
-        public static readonly TimeSpan JwtExpiry = TimeSpan.FromSeconds(20);
+        public static readonly TimeSpan JwtExpiry = TimeSpan.FromDays(7);
+        // public static readonly TimeSpan JwtExpiry = TimeSpan.FromSeconds(20);
 
         private readonly IConfiguration _config;
         public TokenService(IConfiguration config)

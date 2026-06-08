@@ -28,8 +28,8 @@ namespace API.Controllers
     public class AccountController : ControllerBase
     {
         // Refresh token expiry — swap comments to switch between test and production values
-        // private static readonly TimeSpan RefreshExpiry = TimeSpan.FromDays(30);
-        private static readonly TimeSpan RefreshExpiry = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan RefreshExpiry = TimeSpan.FromDays(30);
+        // private static readonly TimeSpan RefreshExpiry = TimeSpan.FromMinutes(1);
 
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
