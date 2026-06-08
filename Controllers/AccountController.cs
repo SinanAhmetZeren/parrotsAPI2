@@ -27,6 +27,10 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
+        // Refresh token expiry — swap comments to switch between test and production values
+        // private static readonly TimeSpan RefreshExpiry = TimeSpan.FromDays(30);
+        private static readonly TimeSpan RefreshExpiry = TimeSpan.FromMinutes(1);
+
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly string _googleClientId;
@@ -105,7 +109,8 @@ namespace API.Controllers
             // 🔄 Refresh token handling
             var refreshToken = _tokenService.GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.Add(RefreshExpiry);
 
             var updateResult = await _userManager.UpdateAsync(user);
 
@@ -249,7 +254,8 @@ namespace API.Controllers
                     passwordHasher.HashPassword(existingUser, registerDto.Password);
 
                 existingUser.RefreshToken = _tokenService.GenerateRefreshToken();
-                existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                
+                existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.Add(RefreshExpiry);
                 existingUser.EncryptionKey = GenerateBase64Key();
                 existingUser.PublicId = await GenerateUniquePublicId();
                 existingUser.TermsAcceptedAt = DateTime.UtcNow;
@@ -317,7 +323,8 @@ namespace API.Controllers
             }
 
             newUser.RefreshToken = _tokenService.GenerateRefreshToken();
-            newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            
+            newUser.RefreshTokenExpiryTime = DateTime.UtcNow.Add(RefreshExpiry);
             await _userManager.UpdateAsync(newUser);
 
             SendConfirmationEmailSafe(newUser);
@@ -479,7 +486,8 @@ namespace API.Controllers
             // Generate and save new refresh token
             var refreshToken = _tokenService.GenerateRefreshToken();
             existingUser.RefreshToken = refreshToken;
-            existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            
+            existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.Add(RefreshExpiry);
 
             await _userManager.UpdateAsync(existingUser);
 
@@ -537,7 +545,8 @@ namespace API.Controllers
             // Generate and assign refresh token
             var refreshToken = _tokenService.GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.Add(RefreshExpiry);
 
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
@@ -642,7 +651,7 @@ namespace API.Controllers
                 // Generate refresh token
                 var refreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.Add(RefreshExpiry);
 
                 await _userManager.UpdateAsync(user);
 

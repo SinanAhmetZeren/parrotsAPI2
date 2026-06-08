@@ -8,6 +8,10 @@ namespace ParrotsAPI2.Services.Token
 {
     public class TokenService
     {
+        // Token expiry — swap comments to switch between test and production values
+        // public static readonly TimeSpan JwtExpiry = TimeSpan.FromDays(7);
+        public static readonly TimeSpan JwtExpiry = TimeSpan.FromSeconds(20);
+
         private readonly IConfiguration _config;
         public TokenService(IConfiguration config)
         {
@@ -39,8 +43,7 @@ namespace ParrotsAPI2.Services.Token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                // Expires = DateTime.UtcNow.AddDays(1),
-                Expires = DateTime.UtcNow.AddSeconds(5000000000),
+                Expires = DateTime.UtcNow.Add(JwtExpiry),
                 SigningCredentials = creds
             };
 
