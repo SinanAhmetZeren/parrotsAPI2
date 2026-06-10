@@ -31,11 +31,16 @@ public class ChatHub : Hub
     private static readonly TimeSpan MessageRateWindow = TimeSpan.FromSeconds(5);
 
     private record CachedUserInfo(string EncryptionKey, string ProfileImageUrl, string ProfileImageThumbnailUrl, string UserName, string PublicId);
-    internal record ConnectionInfo(string ConnectionId, bool IsForeground);
+    internal record ConnectionInfo(string ConnectionId, bool IsForeground, bool IsWeb);
 
     public static IReadOnlyDictionary<string, IEnumerable<string>> GetUserConnectionIds() =>
         _userConnections.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(c => c.ConnectionId));
     public static IReadOnlyDictionary<string, int> GetUnreadCache() => _unreadCache;
+    public static void SeedBadgeCounts(Dictionary<string, int> counts)
+    {
+        foreach (var kvp in counts)
+            _userBadgeCounts[kvp.Key] = kvp.Value;
+    }
     public static IEnumerable<(string UserId, string UserName)> GetUserInfoCache() =>
         _userInfoCache.Select(kvp => (kvp.Key, kvp.Value.UserName));
 
@@ -50,17 +55,18 @@ public class ChatHub : Hub
     public override async Task OnConnectedAsync()
     {
         var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString() ?? string.Empty;
+        var isWeb = Context.GetHttpContext()?.Request.Query["platform"].ToString() == "web";
         if (!string.IsNullOrEmpty(userId))
         {
 
             _userConnections.AddOrUpdate(
                     userId,
-                    _ => new HashSet<ConnectionInfo> { new(Context.ConnectionId, true) },
+                    _ => new HashSet<ConnectionInfo> { new(Context.ConnectionId, true, isWeb) },
                     (_, existingSet) =>
                     {
                         lock (existingSet)
                         {
-                            existingSet.Add(new(Context.ConnectionId, true));
+                            existingSet.Add(new(Context.ConnectionId, true, isWeb));
                         }
                         return existingSet;
                     });
@@ -196,7 +202,7 @@ public class ChatHub : Hub
         // Update receiver notifications
         bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
         bool isReceiverOnline = _userConnections.TryGetValue(receiverId, out var receiverConns);
-        bool isReceiverForeground = isReceiverOnline && receiverConns!.Any(c => c.IsForeground);
+        bool isReceiverForeground = isReceiverOnline && receiverConns!.Any(c => c.IsForeground && !c.IsWeb);
 
         if (!isReceiverViewingChat)
         {
@@ -399,8 +405,8 @@ public class ChatHub : Hub
                 if (existing != null)
                 {
                     kvp.Value.Remove(existing);
-                    kvp.Value.Add(new ConnectionInfo(connectionId, isForeground));
-                    if (isForeground)
+                    kvp.Value.Add(new ConnectionInfo(connectionId, isForeground, existing.IsWeb));
+                    if (isForeground && !existing.IsWeb)
                         _userBadgeCounts[kvp.Key] = 0;
                     break;
                 }
@@ -519,7 +525,7 @@ public class ChatHub : Hub
             if (!_userConnections.TryGetValue(memberId, out var connections)) continue;
 
             bool isViewingThisGroup = _tracker.IsViewingConversation(memberId, groupConversationId.ToString());
-            bool isMemberForeground = connections.Any(c => c.IsForeground);
+            bool isMemberForeground = connections.Any(c => c.IsForeground && !c.IsWeb);
             bool shouldNotifyUnread = memberId != senderId && !isViewingThisGroup;
             if (shouldNotifyUnread && isMemberForeground)
             {
@@ -574,7 +580,7 @@ public class ChatHub : Hub
 
         // Persist unread flag for offline or backgrounded members
         var pushTargetMembers = memberIds
-            .Where(id => id != senderId && (!_userConnections.ContainsKey(id) || !_userConnections[id].Any(c => c.IsForeground)))
+            .Where(id => id != senderId && (!_userConnections.ContainsKey(id) || !_userConnections[id].Any(c => c.IsForeground && !c.IsWeb)))
             .ToList();
 
         if (pushTargetMembers.Any())
@@ -605,6 +611,7 @@ public class ChatHub : Hub
             .Where(u => u.UserId == userId)
             .SumAsync(u => u.Count);
     }
+
 
 
 

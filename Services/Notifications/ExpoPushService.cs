@@ -15,6 +15,29 @@ public class ExpoPushService
         _logger = logger;
     }
 
+    public async Task SendSilentBadgeUpdateAsync(string expoPushToken, int badgeCount)
+    {
+        if (string.IsNullOrEmpty(expoPushToken)) return;
+
+        var payload = new
+        {
+            to = expoPushToken,
+            badge = badgeCount,
+            priority = "normal",
+            channelId = "default"
+        };
+
+        try
+        {
+            var response = await _http.PostAsJsonAsync(ExpoEndpoint, payload);
+            _logger.LogInformation("[PUSH] Silent badge update {Badge}, response {Status}", badgeCount, response.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "[PUSH] Failed to send silent badge update");
+        }
+    }
+
     public async Task SendBadgeNotificationAsync(string expoPushToken, string senderName = "Someone", int badgeCount = 1)
     {
         if (string.IsNullOrEmpty(expoPushToken)) return;

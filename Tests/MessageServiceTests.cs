@@ -15,7 +15,9 @@ public class MessageServiceTests
     private MessageService CreateService(DataContext context)
     {
         var logger = new Mock<ILogger<MessageService>>().Object;
-        return new MessageService(context, logger);
+        var pushLogger = new Mock<ILogger<ParrotsAPI2.Services.Notifications.ExpoPushService>>().Object;
+        var expoPush = new ParrotsAPI2.Services.Notifications.ExpoPushService(new HttpClient(), pushLogger);
+        return new MessageService(context, logger, expoPush);
     }
 
     private static string Encrypt(string plainText) =>

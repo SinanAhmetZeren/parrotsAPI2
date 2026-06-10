@@ -3,6 +3,7 @@ using ParrotsAPI2.Data;
 using ParrotsAPI2.Dtos.GroupDtos;
 using ParrotsAPI2.Helpers;
 using ParrotsAPI2.Models;
+using ParrotsAPI2.Services.Notifications;
 
 namespace ParrotsAPI2.Services.Group
 {
@@ -10,11 +11,13 @@ namespace ParrotsAPI2.Services.Group
     {
         private readonly DataContext _context;
         private readonly ILogger<GroupService> _logger;
+        private readonly ExpoPushService _expoPush;
 
-        public GroupService(DataContext context, ILogger<GroupService> logger)
+        public GroupService(DataContext context, ILogger<GroupService> logger, ExpoPushService expoPush)
         {
             _context = context;
             _logger = logger;
+            _expoPush = expoPush;
         }
 
         public async Task<ServiceResponse<GetGroupDto>> CreateGroup(CreateGroupDto dto)
@@ -205,6 +208,13 @@ namespace ParrotsAPI2.Services.Group
                     unreadRow.Count = 0;
                     unreadRow.LastUpdated = DateTime.UtcNow;
                     await _context.SaveChangesAsync();
+
+                    var newTotal = await _context.UnreadConversations
+                        .Where(u => u.UserId == userId)
+                        .SumAsync(u => u.Count);
+                    var reader = await _context.Users.FindAsync(userId);
+                    if (reader != null && !string.IsNullOrEmpty(reader.ExpoPushToken))
+                        _ = _expoPush.SendSilentBadgeUpdateAsync(reader.ExpoPushToken, newTotal);
                 }
 
                 var keyBytes = EncryptionHelper.KeyFromBase64(group.EncryptionKey);

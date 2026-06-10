@@ -13,7 +13,9 @@ public class GroupServiceTests
     private GroupService CreateService(DataContext context)
     {
         var logger = new Mock<ILogger<GroupService>>().Object;
-        return new GroupService(context, logger);
+        var pushLogger = new Mock<ILogger<ParrotsAPI2.Services.Notifications.ExpoPushService>>().Object;
+        var expoPush = new ParrotsAPI2.Services.Notifications.ExpoPushService(new HttpClient(), pushLogger);
+        return new GroupService(context, logger, expoPush);
     }
 
     private static AppUser MakeUser(string id, string username) => new AppUser
