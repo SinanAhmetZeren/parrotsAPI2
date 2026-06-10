@@ -2,6 +2,7 @@
 using ParrotsAPI2.Dtos.MessageDtos;
 using ParrotsAPI2.Helpers;
 using ParrotsAPI2.Models;
+using ParrotsAPI2.Services.Notifications;
 
 namespace ParrotsAPI2.Services.Message
 {
@@ -10,11 +11,13 @@ namespace ParrotsAPI2.Services.Message
 
         private readonly DataContext _context;
         private readonly ILogger<MessageService> _logger;
+        private readonly ExpoPushService _expoPush;
 
-        public MessageService(DataContext context, ILogger<MessageService> logger)
+        public MessageService(DataContext context, ILogger<MessageService> logger, ExpoPushService expoPush)
         {
             _context = context;
             _logger = logger;
+            _expoPush = expoPush;
         }
 
 
@@ -238,6 +241,13 @@ namespace ParrotsAPI2.Services.Message
                     unreadRow.Count = 0;
                     unreadRow.LastUpdated = DateTime.UtcNow;
                     await _context.SaveChangesAsync();
+
+                    var newTotal = await _context.UnreadConversations
+                        .Where(u => u.UserId == userId1)
+                        .SumAsync(u => u.Count);
+                    var user1 = await _context.Users.FindAsync(userId1);
+                    if (user1 != null && !string.IsNullOrEmpty(user1.ExpoPushToken))
+                        _ = _expoPush.SendSilentBadgeUpdateAsync(user1.ExpoPushToken, newTotal);
                 }
 
                 // Step 1: Fetch all messages between these two users
