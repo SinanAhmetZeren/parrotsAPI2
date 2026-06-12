@@ -334,6 +334,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
+// --- Seed badge count cache from DB on startup ---
+using (var seedScope = app.Services.CreateScope())
+{
+    var seedDb = seedScope.ServiceProvider.GetRequiredService<DataContext>();
+    var badgeSums = await seedDb.UnreadConversations
+        .Where(u => u.Count > 0)
+        .GroupBy(u => u.UserId)
+        .Select(g => new { UserId = g.Key, Total = g.Sum(x => x.Count) })
+        .ToListAsync();
+    ChatHub.SeedBadgeCounts(badgeSums.ToDictionary(x => x.UserId, x => x.Total));
+}
+
 // --- Map endpoints ---
 app.MapHub<ChatHub>("/chathub/81");
 app.MapControllers();

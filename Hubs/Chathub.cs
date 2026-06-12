@@ -204,7 +204,18 @@ public class ChatHub : Hub
         bool isReceiverOnline = _userConnections.TryGetValue(receiverId, out var receiverConns);
         bool isReceiverForeground = isReceiverOnline && receiverConns!.Any(c => c.IsForeground && !c.IsWeb);
 
-        if (!isReceiverViewingChat)
+        if (!isReceiverForeground)
+        {
+            var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
+            var receiverEntity = await dbContext.Users.FindAsync(receiverId);
+            if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
+            {
+                var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
+                _logger.LogInformation("[PUSH] Receiver backgrounded/offline → sending push. Token: {Token}", receiverEntity.ExpoPushToken);
+                _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
+            }
+        }
+        else if (!isReceiverViewingChat)
         {
             var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
 
@@ -212,20 +223,7 @@ public class ChatHub : Hub
                 foreach (var connId in receiverConns!.Select(c => c.ConnectionId))
                     await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
 
-            if (!isReceiverForeground)
-            {
-                var receiverEntity = await dbContext.Users.FindAsync(receiverId);
-                if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
-                {
-                    var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
-                    _logger.LogInformation("[PUSH] Receiver backgrounded/offline → sending push. Token: {Token}", receiverEntity.ExpoPushToken);
-                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
-                }
-            }
-            else
-            {
-                _logger.LogInformation("[PUSH] Receiver {ReceiverId} in foreground → push skipped", receiverId);
-            }
+            _logger.LogInformation("[PUSH] Receiver {ReceiverId} in foreground → push skipped", receiverId);
         }
 
         await dbContext.SaveChangesAsync(); // single batched save for conversation + unread flag
@@ -343,20 +341,23 @@ public class ChatHub : Hub
             bool isReceiverOnline = _userConnections.TryGetValue(receiverId, out var bcastReceiverConns);
             bool isReceiverForeground = isReceiverOnline && bcastReceiverConns!.Any(c => c.IsForeground);
 
-            if (!isReceiverViewingChat)
+            if (!isReceiverForeground)
+            {
+                var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
+                var receiverEntity = await dbContext.Users.FindAsync(receiverId);
+                if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
+                {
+                    var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
+                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
+                }
+            }
+            else if (!isReceiverViewingChat)
             {
                 var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
 
                 if (isReceiverOnline)
                     foreach (var connId in bcastReceiverConns!.Select(c => c.ConnectionId))
                         await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
-
-                if (!isReceiverForeground)
-                {
-                    var receiverEntity = await dbContext.Users.FindAsync(receiverId);
-                    if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
-                        _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, badgeCount);
-                }
             }
 
             await dbContext.SaveChangesAsync();
