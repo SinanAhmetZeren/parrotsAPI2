@@ -256,7 +256,7 @@ public class ChatHub : Hub
             senderId = m.SenderId,
             text = m.SenderId == senderId
                 ? EncryptionHelper.DecryptString(m.TextSenderEncrypted, EncryptionHelper.KeyFromBase64(senderInfo.EncryptionKey))
-                : EncryptionHelper.DecryptString(m.TextReceiverEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey)),
+                : EncryptionHelper.DecryptString(m.TextReceiverEncrypted, EncryptionHelper.KeyFromBase64(senderInfo.EncryptionKey)),
             dateTime = m.DateTime,
             senderProfileImageUrl = m.SenderId == senderId ? senderInfo.ProfileImageUrl : receiverInfo.ProfileImageUrl,
             senderUsername = m.SenderId == senderId ? senderInfo.UserName : receiverInfo.UserName,
