@@ -32,6 +32,7 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public List<VoyageBidDto> Bids { get; set; } = new List<VoyageBidDto>();
         public int BidCount { get; set; } = 0;
         public int AcceptedBidCount { get; set; } = 0;
+        public bool? UserBidAccepted { get; set; } = null;
         public int PlaceType { get; set; } = 0;
     }
 }
