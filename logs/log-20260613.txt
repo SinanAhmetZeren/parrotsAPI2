@@ -1,0 +1,505 @@
+[2026-06-13 16:22:51 INF] Vehicle Voyage Cleanup Service started.
+[2026-06-13 16:22:51 INF] Group Cleanup Service started.
+[2026-06-13 16:22:51 INF] Now listening on: https://localhost:7151
+[2026-06-13 16:22:51 INF] Now listening on: http://localhost:5094
+[2026-06-13 16:22:51 INF] Application started. Press Ctrl+C to shut down.
+[2026-06-13 16:22:51 INF] Hosting environment: Development
+[2026-06-13 16:22:51 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-06-13 16:22:52 INF] [Weekly Cleanup] Threshold Date: 11.06.2026 13:22:51
+
+[2026-06-13 16:23:01 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:23:12 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:23:22 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:23:32 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:23:42 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:23:53 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:24:03 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:24:13 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:24:23 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:24:33 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:24:44 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:24:54 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:25:04 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:25:14 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:25:24 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:25:34 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:25:45 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:25:55 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:26:05 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:26:15 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:26:26 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:26:36 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:26:46 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:26:56 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:27:07 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:27:17 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:27:27 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:27:37 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:27:48 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:27:58 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:28:08 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:28:18 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:28:29 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:28:39 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:28:49 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:28:59 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:29:09 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:29:19 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:29:30 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:29:40 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:29:50 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:30:01 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:30:11 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:30:21 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:30:31 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:30:42 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:30:52 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:31:03 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:31:13 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:31:24 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:31:34 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:31:44 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:31:54 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:32:04 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:32:15 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:32:25 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:32:35 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:32:45 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:32:56 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:33:07 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:33:17 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:33:27 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:33:37 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:33:47 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:33:58 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:34:08 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:34:18 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:34:29 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:34:39 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:34:49 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:34:59 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:35:10 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:35:20 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:35:41 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 16:35:52 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [HIuddEpdlPtlk2XDbV9Sqw]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-13 18:00:45 ERR] Failed executing DbCommand (24,526ms) [Parameters=[@p='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."BackgroundImageUrl", a."Bio", a."ConcurrencyStamp", a."ConfirmationCode", a."Confirmed", a."ConnectionId", a."CreatedAt", a."DisplayEmail", a."Email", a."EmailConfirmed", a."EmailVisible", a."EncryptionKey", a."ExpoPushToken", a."Facebook", a."HasAcknowledgedPublicProfile", a."Instagram", a."IsAdmin", a."Linkedin", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."ParrotCoinBalance", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."ProfileImageThumbnailUrl", a."ProfileImageUrl", a."PublicId", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TermsAcceptedAt", a."TermsVersion", a."Tiktok", a."Title", a."Twitter", a."TwoFactorEnabled", a."UnseenMessages", a."UserName", a."Youtube"
+FROM "AspNetUsers" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[2026-06-13 18:00:46 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-06-13 18:00:47 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-06-13 18:16:58 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-06-13 18:16:58 ERR] An exception occurred while iterating over the results of a query for context type 'ParrotsAPI2.Data.DataContext'.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2026-06-13 18:16:58 ERR] BackgroundService failed
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService.ExecuteAsync(CancellationToken stoppingToken) in /Users/ahmetzeren/Repos/parrotsAPI2/Services/HubDiagnostics/HubDiagnosticsService.cs:line 35
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-06-13 18:16:58 FTL] The HostOptions.BackgroundServiceExceptionBehavior is configured to StopHost. A BackgroundService has thrown an unhandled exception, and the IHost instance is stopping. To avoid this behavior, configure this to Ignore; however the BackgroundService will not be restarted.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService.ExecuteAsync(CancellationToken stoppingToken) in /Users/ahmetzeren/Repos/parrotsAPI2/Services/HubDiagnostics/HubDiagnosticsService.cs:line 35
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-06-13 18:16:58 INF] Application is shutting down...
+[2026-06-13 18:16:58 INF] Vehicle Voyage Cleanup Service stopped.

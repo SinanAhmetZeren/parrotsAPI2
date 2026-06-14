@@ -30,6 +30,8 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public int? VehicleId { get; set; }
         public VehicleDto? Vehicle { get; set; }
         public List<VoyageBidDto> Bids { get; set; } = new List<VoyageBidDto>();
+        public int BidCount { get; set; } = 0;
+        public int AcceptedBidCount { get; set; } = 0;
         public int PlaceType { get; set; } = 0;
     }
 }

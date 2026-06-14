@@ -1,0 +1,4414 @@
+[2026-05-28 15:19:18 INF] Vehicle Voyage Cleanup Service started.
+[2026-05-28 15:19:18 INF] Group Cleanup Service started.
+[2026-05-28 15:19:18 INF] Now listening on: https://localhost:7151
+[2026-05-28 15:19:18 INF] Now listening on: http://localhost:5094
+[2026-05-28 15:19:18 INF] Application started. Press Ctrl+C to shut down.
+[2026-05-28 15:19:18 INF] Hosting environment: Development
+[2026-05-28 15:19:18 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-05-28 15:19:18 INF] [Weekly Cleanup] Threshold Date: 26.05.2026 12:19:18
+
+[2026-05-28 15:19:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:19:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:19:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:19:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:20:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:20:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:20:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:20:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:20:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:21:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:21:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:21:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:21:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:21:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:21:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:22:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:22:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:22:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:22:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:22:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:22:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:23:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:23:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:23:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:23:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:23:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:23:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:24:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:24:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:24:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:24:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:24:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:24:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:25:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:25:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:25:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:25:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:25:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:26:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:26:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:26:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:27:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:27:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:27:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:27:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:27:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:28:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:28:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:28:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:28:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:28:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:28:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:29:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:29:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:29:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:29:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:29:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:29:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:30:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:30:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:30:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:30:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:30:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:31:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:31:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:31:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:31:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:31:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:31:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:32:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:32:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:32:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:32:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:32:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:32:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:33:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:33:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:33:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:33:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:33:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:33:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:34:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:34:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:34:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:34:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:34:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:34:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:35:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:35:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:35:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:35:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:35:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:36:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:36:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:36:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:36:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:36:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:36:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:37:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:37:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:37:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:37:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:37:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:37:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:38:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:38:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:38:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:38:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:38:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:38:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:39:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:39:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:39:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:39:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:39:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:39:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:40:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:40:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:40:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:40:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:40:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:41:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:41:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:41:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:41:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:41:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:41:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:42:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:42:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:42:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:42:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:42:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:42:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:43:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:43:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:43:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:43:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:43:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:44:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:44:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:44:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:44:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:44:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:45:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:45:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:45:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:45:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:45:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:46:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:46:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:46:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:46:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:46:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:46:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:47:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:47:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:47:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:47:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:47:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:47:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:48:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:48:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:48:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:48:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:48:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:49:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:49:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:49:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:49:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:49:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:50:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:50:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:50:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:50:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:50:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:50:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:51:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:51:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:51:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:51:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:51:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:52:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:52:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:52:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:52:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:52:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:52:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:53:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:53:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:53:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:53:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:54:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:54:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:54:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:54:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:54:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:54:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:55:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:55:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:55:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:55:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:55:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:56:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:56:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:56:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:56:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:56:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:57:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:57:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:57:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:57:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:57:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:57:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:58:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:58:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:58:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:58:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:58:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:59:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:59:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:59:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:59:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 15:59:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:00:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:00:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:00:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:01:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:01:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:01:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:01:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:01:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:01:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:02:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:02:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:02:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:02:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:02:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:03:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:03:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:03:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:03:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:03:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:04:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:04:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:04:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:04:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:04:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:05:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:05:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:05:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:05:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:05:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:05:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:06:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:06:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:06:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:06:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:06:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:06:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:07:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:07:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:07:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:07:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:07:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:07:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:08:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:08:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:08:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:08:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:09:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:09:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:09:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:09:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:09:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:10:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:10:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:10:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:10:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:10:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:10:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:11:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:11:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:11:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:11:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:11:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:11:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:12:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:12:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:12:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:12:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:12:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:13:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:14:20 ERR] Failed executing DbCommand (60,029ms) [Parameters=[@p='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."BackgroundImageUrl", a."Bio", a."ConcurrencyStamp", a."ConfirmationCode", a."Confirmed", a."ConnectionId", a."CreatedAt", a."DisplayEmail", a."Email", a."EmailConfirmed", a."EmailVisible", a."EncryptionKey", a."ExpoPushToken", a."Facebook", a."HasAcknowledgedPublicProfile", a."Instagram", a."IsAdmin", a."Linkedin", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."ParrotCoinBalance", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."ProfileImageThumbnailUrl", a."ProfileImageUrl", a."PublicId", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TermsAcceptedAt", a."TermsVersion", a."Tiktok", a."Title", a."Twitter", a."TwoFactorEnabled", a."UnseenMessages", a."UserName", a."Youtube"
+FROM "AspNetUsers" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[2026-05-28 16:14:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:14:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:14:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:14:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:15:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:15:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:15:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:15:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:15:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:16:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:16:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:16:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:16:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:16:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:16:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:17:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:17:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:17:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:17:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:17:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:17:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:18:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:18:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:18:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:18:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:18:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:19:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:19:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:19:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:19:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:19:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:19:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:20:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:20:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:20:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:20:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:20:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:21:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:21:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:21:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:21:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:21:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:21:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:22:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:22:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:22:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:22:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:22:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:23:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:23:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:23:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:23:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:23:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:23:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:24:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:24:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:24:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:24:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:24:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:25:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:25:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:25:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:25:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:25:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:25:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:26:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:26:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:26:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:26:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:26:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:26:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:27:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:27:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:27:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:27:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:27:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:27:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:28:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:28:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:28:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:28:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:28:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:29:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:29:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:29:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:29:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:29:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:29:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:30:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:30:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:30:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:30:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:30:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:30:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:31:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:31:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:31:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:31:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:31:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:31:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:32:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:32:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:32:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:32:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:32:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:32:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:33:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:33:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:33:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:33:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:33:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:34:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:34:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:34:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:34:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:34:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:34:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:35:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:35:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:35:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:35:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:35:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:35:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:36:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:36:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:36:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:36:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:36:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:36:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:37:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:37:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:37:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:37:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:37:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:37:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:38:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:38:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:38:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:38:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:38:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:38:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:39:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:39:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:39:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:39:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:39:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:39:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:40:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:40:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:40:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:40:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:40:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:41:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:41:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:41:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 16:41:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [1zmjDbSbXe6A_ObZGOdNCA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 17:12:33 ERR] Failed executing DbCommand (48,554ms) [Parameters=[@p='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."BackgroundImageUrl", a."Bio", a."ConcurrencyStamp", a."ConfirmationCode", a."Confirmed", a."ConnectionId", a."CreatedAt", a."DisplayEmail", a."Email", a."EmailConfirmed", a."EmailVisible", a."EncryptionKey", a."ExpoPushToken", a."Facebook", a."HasAcknowledgedPublicProfile", a."Instagram", a."IsAdmin", a."Linkedin", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."ParrotCoinBalance", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."ProfileImageThumbnailUrl", a."ProfileImageUrl", a."PublicId", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TermsAcceptedAt", a."TermsVersion", a."Tiktok", a."Title", a."Twitter", a."TwoFactorEnabled", a."UnseenMessages", a."UserName", a."Youtube"
+FROM "AspNetUsers" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[2026-05-28 17:12:33 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 17:12:34 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 17:12:37 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 17:12:37 ERR] An exception occurred while iterating over the results of a query for context type 'ParrotsAPI2.Data.DataContext'.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2026-05-28 17:12:37 ERR] BackgroundService failed
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService.ExecuteAsync(CancellationToken stoppingToken) in /Users/ahmetzeren/Repos/parrotsAPI2/Services/HubDiagnostics/HubDiagnosticsService.cs:line 35
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-05-28 17:12:37 FTL] The HostOptions.BackgroundServiceExceptionBehavior is configured to StopHost. A BackgroundService has thrown an unhandled exception, and the IHost instance is stopping. To avoid this behavior, configure this to Ignore; however the BackgroundService will not be restarted.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService.ExecuteAsync(CancellationToken stoppingToken) in /Users/ahmetzeren/Repos/parrotsAPI2/Services/HubDiagnostics/HubDiagnosticsService.cs:line 35
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-05-28 17:12:37 INF] Application is shutting down...
+[2026-05-28 17:12:37 INF] Vehicle Voyage Cleanup Service stopped.
+[2026-05-28 18:23:33 INF] Vehicle Voyage Cleanup Service started.
+[2026-05-28 18:23:33 INF] Group Cleanup Service started.
+[2026-05-28 18:23:33 INF] Now listening on: https://localhost:7151
+[2026-05-28 18:23:33 INF] Now listening on: http://localhost:5094
+[2026-05-28 18:23:33 INF] Application started. Press Ctrl+C to shut down.
+[2026-05-28 18:23:33 INF] Hosting environment: Development
+[2026-05-28 18:23:33 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-05-28 18:23:33 INF] [Weekly Cleanup] Threshold Date: 26.05.2026 15:23:33
+
+[2026-05-28 18:23:43 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:23:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:24:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:24:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:24:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:24:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:24:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:24:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:25:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:25:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:25:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:25:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:25:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:25:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:26:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:26:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:26:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:26:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:26:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:26:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:27:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:27:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:27:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:27:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:27:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:27:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:28:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:28:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:28:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:28:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:28:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:29:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:29:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:29:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:29:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:29:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:29:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:30:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:30:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:30:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:30:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:30:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:30:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:31:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:31:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:31:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:31:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:31:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:32:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:32:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:32:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:32:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:32:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:32:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:33:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:33:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:33:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:33:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:33:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:33:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:34:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:34:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:34:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:34:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:34:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:34:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:35:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:35:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:35:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:35:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:35:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:35:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:36:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:36:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:36:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:36:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:36:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:36:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:37:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:37:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:37:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:37:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:37:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:37:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:38:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:38:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:38:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:38:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:38:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:39:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:39:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:39:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:39:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:39:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:39:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:40:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:40:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:40:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:40:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:40:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:40:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:41:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:41:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:41:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:41:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:41:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:41:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:42:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:42:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:42:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:42:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:42:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:42:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:43:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:43:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:43:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:43:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:43:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:43:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:44:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:44:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:44:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:44:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:44:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:44:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:45:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:45:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:45:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:45:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:45:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:45:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:46:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:46:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:46:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:46:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:46:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:47:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:47:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:47:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:47:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:47:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:47:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:48:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:48:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:48:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:48:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:48:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:48:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:49:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:49:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:49:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:49:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:49:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:49:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:50:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:50:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:50:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:50:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:50:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:50:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:51:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:51:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:51:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:51:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:51:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:51:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:52:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:52:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:52:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:52:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:52:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:52:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:53:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:53:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:53:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:53:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:53:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:53:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:54:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:54:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:54:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:54:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:54:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:55:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:55:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:55:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:55:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:55:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:55:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:56:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:56:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:56:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:56:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:56:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:56:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:57:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:57:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:57:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:57:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:57:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:57:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:58:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:58:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:58:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:58:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:58:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:58:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:59:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:59:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:59:26 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:59:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:59:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 18:59:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:00:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:00:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:00:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:00:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:00:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:00:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:01:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:01:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:01:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:01:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:01:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:01:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:02:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:02:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:02:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:02:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:02:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:03:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:03:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:03:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:03:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:03:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:03:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:04:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:04:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:04:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:04:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:04:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:04:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:05:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:05:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:05:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:05:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:05:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:05:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:06:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:06:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:06:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:06:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:06:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:07:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:07:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:07:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:07:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:07:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:07:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:08:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:08:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:08:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:08:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:08:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:08:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:09:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:09:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:09:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:09:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:09:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:09:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:10:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:10:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:10:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:10:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:10:44 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:10:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:11:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:11:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:11:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:11:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:11:46 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:11:56 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:12:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:12:16 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:12:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:12:37 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:12:47 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:12:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:13:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:13:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:13:28 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:13:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:13:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:13:59 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:14:09 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:14:19 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:14:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:14:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:14:50 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:15:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:15:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:15:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:15:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:15:41 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:15:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:16:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:16:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:16:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:16:32 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:16:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:16:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:17:03 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:17:13 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:17:23 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:17:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:17:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:17:54 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:18:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:18:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:18:24 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:18:34 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:18:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:18:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:19:05 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:19:15 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:19:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:19:36 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:22:34 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 19:22:49 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 19:22:57 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:23:07 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:23:17 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:23:27 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:23:38 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:23:48 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:23:58 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:24:08 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:24:18 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:24:29 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:24:39 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:24:49 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:25:00 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:25:10 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:25:20 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:25:30 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:25:40 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:25:51 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:26:01 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:26:11 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:26:21 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:26:31 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:26:42 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:26:52 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:27:02 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:27:12 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:27:22 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:27:33 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:27:43 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:27:53 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:28:04 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:28:14 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:28:25 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:28:35 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:28:45 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:28:55 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 19:29:06 INF] === _userConnections ===
+  bosnanil (ca72426e-3b05-42bd-aca2-f43de918f110): [R7W5zdJmEh1OzSSI4SQx-g]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-05-28 20:06:13 ERR] Failed executing DbCommand (60,021ms) [Parameters=[@p='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."BackgroundImageUrl", a."Bio", a."ConcurrencyStamp", a."ConfirmationCode", a."Confirmed", a."ConnectionId", a."CreatedAt", a."DisplayEmail", a."Email", a."EmailConfirmed", a."EmailVisible", a."EncryptionKey", a."ExpoPushToken", a."Facebook", a."HasAcknowledgedPublicProfile", a."Instagram", a."IsAdmin", a."Linkedin", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."ParrotCoinBalance", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."ProfileImageThumbnailUrl", a."ProfileImageUrl", a."PublicId", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TermsAcceptedAt", a."TermsVersion", a."Tiktok", a."Title", a."Twitter", a."TwoFactorEnabled", a."UnseenMessages", a."UserName", a."Youtube"
+FROM "AspNetUsers" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[2026-05-28 20:06:28 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 20:06:44 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 20:07:02 ERR] An error occurred using the connection to database 'parrotsdb' on server 'tcp://127.0.0.1:5432'.
+[2026-05-28 20:07:02 ERR] An exception occurred while iterating over the results of a query for context type 'ParrotsAPI2.Data.DataContext'.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): The operation has timed out
+ ---> System.TimeoutException: The operation has timed out.
+   at Npgsql.ThrowHelper.ThrowNpgsqlExceptionWithInnerTimeoutException(String message)
+   at Npgsql.Util.NpgsqlTimeout.Check()
+   at Npgsql.Util.NpgsqlTimeout.CheckAndGetTimeLeft()
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): The operation has timed out
+ ---> System.TimeoutException: The operation has timed out.
+   at Npgsql.ThrowHelper.ThrowNpgsqlExceptionWithInnerTimeoutException(String message)
+   at Npgsql.Util.NpgsqlTimeout.Check()
+   at Npgsql.Util.NpgsqlTimeout.CheckAndGetTimeLeft()
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+[2026-05-28 20:07:02 ERR] BackgroundService failed
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): The operation has timed out
+ ---> System.TimeoutException: The operation has timed out.
+   at Npgsql.ThrowHelper.ThrowNpgsqlExceptionWithInnerTimeoutException(String message)
+   at Npgsql.Util.NpgsqlTimeout.Check()
+   at Npgsql.Util.NpgsqlTimeout.CheckAndGetTimeLeft()
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService.ExecuteAsync(CancellationToken stoppingToken) in /Users/ahmetzeren/Repos/parrotsAPI2/Services/HubDiagnostics/HubDiagnosticsService.cs:line 35
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-05-28 20:07:03 FTL] The HostOptions.BackgroundServiceExceptionBehavior is configured to StopHost. A BackgroundService has thrown an unhandled exception, and the IHost instance is stopping. To avoid this behavior, configure this to Ignore; however the BackgroundService will not be restarted.
+Microsoft.EntityFrameworkCore.Storage.RetryLimitExceededException: The maximum number of retries (3) was exceeded while executing database operations with 'NpgsqlRetryingExecutionStrategy'. See the inner exception for the most recent failure.
+ ---> Npgsql.NpgsqlException (0x80004005): The operation has timed out
+ ---> System.TimeoutException: The operation has timed out.
+   at Npgsql.ThrowHelper.ThrowNpgsqlExceptionWithInnerTimeoutException(String message)
+   at Npgsql.Util.NpgsqlTimeout.Check()
+   at Npgsql.Util.NpgsqlTimeout.CheckAndGetTimeLeft()
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService.ExecuteAsync(CancellationToken stoppingToken) in /Users/ahmetzeren/Repos/parrotsAPI2/Services/HubDiagnostics/HubDiagnosticsService.cs:line 35
+   at Microsoft.Extensions.Hosting.Internal.Host.TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
+[2026-05-28 20:07:03 INF] Application is shutting down...
+[2026-05-28 20:07:03 ERR] Unexpected exception in TimingPipeFlusher.FlushAsync.
+System.IO.IOException: The encryption operation failed, see inner exception.
+ ---> System.ComponentModel.Win32Exception (14): Bad address
+   --- End of inner exception stack trace ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.TimingPipeFlusher.FlushAsync(MinDataRate minRate, Int64 count, IHttpOutputAborter outputAborter, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2FrameWriter.WriteGoAwayAsync(Int32 lastStreamId, Http2ErrorCode errorCode)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.UpdateConnectionState()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.ProcessRequestsAsync[TContext](IHttpApplication`1 application)
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecuteFromThreadPool(Thread threadPoolThread)
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+   at System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+   at System.Threading.Thread.StartCallback()
+--- End of stack trace from previous location ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.ConcurrentPipeWriter.FlushAsyncAwaited(ValueTask`1 flushTask, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.TimingPipeFlusher.TimeFlushAsyncAwaited(ValueTask`1 pipeFlushTask, MinDataRate minRate, IHttpOutputAborter outputAborter, CancellationToken cancellationToken)
+[2026-05-28 20:07:03 ERR] Unhandled exception while processing 0HNLSPKEFPAP5.
+System.IO.IOException: The encryption operation failed, see inner exception.
+ ---> System.ComponentModel.Win32Exception (14): Bad address
+   --- End of inner exception stack trace ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.SetExistingTaskResult(Task`1 task, TResult result)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.ProcessRequestsAsync[TContext](IHttpApplication`1 httpApplication)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.SetExistingTaskResult(Task`1 task, TResult result)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.ProcessRequestsAsync[TContext](IHttpApplication`1 application)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Threading.Tasks.Task`1.TrySetResult(TResult result)
+   at System.Threading.Tasks.UnwrapPromise`1.TrySetFromTask(Task task, Boolean lookForOce)
+   at System.Threading.Tasks.UnwrapPromise`1.Invoke(Task completingTask)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.SetExistingTaskResult(Task`1 task, TResult result)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2FrameWriter.WriteToOutputPipe()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.ThreadPool.<>c.<.cctor>b__48_0(Object state)
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+   at System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+   at System.Threading.Thread.StartCallback()
+--- End of stack trace from previous location ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection`1.ExecuteAsync()
+[2026-05-28 20:07:03 INF] Vehicle Voyage Cleanup Service stopped.
