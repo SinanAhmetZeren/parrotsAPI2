@@ -572,11 +572,13 @@ public class ChatHub : Hub
             m.senderPublicId,
         }).ToList();
 
+        var groupMessagePayload = new { groupConversationId, messages = last5Group };
+
         foreach (var memberId in memberIds)
         {
             if (!_userConnections.TryGetValue(memberId, out var memberConns)) continue;
             foreach (var connId in memberConns.Select(c => c.ConnectionId))
-                await Clients.Client(connId).SendAsync("ReceiveGroupMessage", last5Group);
+                await Clients.Client(connId).SendAsync("ReceiveGroupMessage", groupMessagePayload);
         }
 
         // Persist unread flag for offline or backgrounded members
