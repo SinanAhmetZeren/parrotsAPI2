@@ -606,14 +606,19 @@ namespace ParrotsAPI2.Services.Voyage
                 return serviceResponse;
             }
 
+            var voyageIds = voyages.Select(v => v.Id).ToList();
+            var bidCounts = await _context.Bids
+                .Where(b => voyageIds.Contains(b.VoyageId))
+                .GroupBy(b => b.VoyageId)
+                .Select(g => new { VoyageId = g.Key, Total = g.Count(), Accepted = g.Count(b => b.Accepted) })
+                .ToListAsync();
+            var bidCountMap = bidCounts.ToDictionary(x => x.VoyageId, x => (x.Total, x.Accepted));
+
             var voyageDtos = voyages.Select(voyage =>
             {
                 var userDto = _mapper.Map<UserDto>(voyage?.User);
                 var voyageImageDtos = _mapper.Map<List<VoyageImageDto>>(voyage?.VoyageImages);
                 var vehicleDto = _mapper.Map<VehicleDto>(voyage?.Vehicle);
-                var bidDtos = _mapper.Map<List<VoyageBidDto>>(_context.Bids
-                        .Where(bid => voyage != null && bid.VoyageId == voyage.Id)
-                        .ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
                 var waypointDtos = _mapper.Map<List<GetWaypointDto>>(_context.Waypoints
                         .Where(w => voyage != null && w.VoyageId == voyage.Id)
@@ -621,8 +626,12 @@ namespace ParrotsAPI2.Services.Voyage
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
-                voyageDto.Bids = bidDtos;
                 voyageDto.Waypoints = waypointDtos;
+                if (bidCountMap.TryGetValue(voyage.Id, out var counts))
+                {
+                    voyageDto.BidCount = counts.Total;
+                    voyageDto.AcceptedBidCount = counts.Accepted;
+                }
                 return voyageDto;
             }).ToList();
 
