@@ -242,11 +242,13 @@ namespace ParrotsAPI2.Services.Message
                 var waypointDtos = _mapper.Map<List<GetWaypointDto>>(waypoints.Where(w => w.VoyageId == voyage.Id).ToList());
                 var voyageDto = _mapper.Map<GetVoyageDto>(voyage);
 
+                var userBid = bids.FirstOrDefault(b => b.VoyageId == voyage.Id && b.UserId == userId);
                 voyageDto.User = userDto;
                 voyageDto.VoyageImages = voyageImageDtos;
                 voyageDto.Vehicle = vehicleDto;
                 voyageDto.Bids = bidDtos;
                 voyageDto.Waypoints = waypointDtos;
+                voyageDto.UserBidAccepted = userBid != null ? userBid.Accepted : null;
 
                 return voyageDto;
             }).ToList();
