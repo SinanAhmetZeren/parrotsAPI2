@@ -4506,3 +4506,1887 @@
 === _unreadCache ===
 === _userInfoCache ===
 
+[2026-06-14 22:32:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:32:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:33:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:33:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:33:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:33:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:33:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:33:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:34:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:34:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:34:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:34:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:34:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:34:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:35:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:35:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:35:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:35:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:35:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:35:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:36:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:36:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:36:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:36:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:36:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:36:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:37:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:37:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:37:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:37:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:37:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:37:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:38:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:38:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:38:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:38:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:38:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:38:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:39:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:39:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:39:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:39:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:39:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:39:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:40:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:40:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:40:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:40:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:40:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:40:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:41:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:41:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:41:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:41:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:41:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:41:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:42:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:42:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:42:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:42:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:42:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:42:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:43:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:43:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:43:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:43:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:43:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:43:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:44:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:44:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:44:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:44:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:44:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:44:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:45:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:45:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:45:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:45:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:45:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:45:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:46:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:46:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:46:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:46:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:46:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:46:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:47:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:47:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:47:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:47:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:47:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:47:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:48:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:48:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:48:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:48:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:48:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:48:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:49:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:49:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:49:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:49:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:49:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:49:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:50:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:50:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:50:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:50:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:50:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:50:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:51:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:51:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:51:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:51:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:51:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:51:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:52:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:52:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:52:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:52:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:52:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:52:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:53:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:53:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:53:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:53:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:53:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:53:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:54:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:54:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:54:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:54:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:54:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:54:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:55:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:55:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:55:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:55:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:55:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:55:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:56:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:56:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:56:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:56:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:56:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:56:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:57:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:57:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:57:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:57:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:57:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:57:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:58:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:58:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:58:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:58:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:58:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:58:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:59:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:59:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:59:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:59:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:59:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 22:59:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:00:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:00:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:00:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:00:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:00:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:00:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:01:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:01:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:01:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:01:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:01:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:01:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:02:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:02:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:02:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:02:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:02:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:02:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:03:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:03:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:03:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:03:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:03:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:03:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:04:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:04:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:04:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:04:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:04:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:04:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:05:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:05:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:05:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:05:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:05:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:05:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:06:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:06:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:06:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:06:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:06:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:06:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:07:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:07:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:07:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:07:31 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:07:41 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:07:51 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:08:01 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:08:11 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:08:21 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:08:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:08:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:08:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:09:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:09:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:09:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:09:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:09:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:09:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:10:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:10:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:10:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:10:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:10:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:10:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:11:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:11:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:11:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:11:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:11:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:11:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:12:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:12:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:12:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:12:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:12:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:12:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:13:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:13:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:13:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:13:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:13:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:13:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:14:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:14:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:14:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:14:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:14:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:14:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:15:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:15:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:15:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:15:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:15:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:15:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:16:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:16:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:16:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:16:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:16:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:16:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:17:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:17:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:17:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:17:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:17:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:17:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:18:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:18:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:18:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:18:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:18:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:18:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:19:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:19:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:19:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:19:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:19:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:19:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:20:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:20:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:20:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:20:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:20:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:20:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:21:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:21:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:21:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:21:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:21:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:21:52 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:22:02 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:22:12 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:22:22 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:22:32 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:22:42 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:22:48 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-06-14 23:22:52 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:23:02 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:23:12 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:23:23 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:23:33 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:23:43 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:23:53 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:24:04 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:24:14 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:24:24 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:24:34 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:24:44 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:24:54 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:25:05 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:25:15 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:25:25 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:25:35 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [sFSVw9-wB40i_DXc6JdXNQ]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:25:45 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:25:55 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:26:05 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:26:15 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:26:25 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:26:35 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:26:45 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:26:55 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:27:05 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:27:15 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:27:25 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:27:35 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:27:45 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:27:55 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:28:05 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:28:15 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:28:25 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:28:30 ERR] Unexpected exception in TimingPipeFlusher.FlushAsync.
+System.IO.IOException: The encryption operation failed, see inner exception.
+ ---> System.ComponentModel.Win32Exception (14): Bad address
+   --- End of inner exception stack trace ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.TimingPipeFlusher.FlushAsync(MinDataRate minRate, Int64 count, IHttpOutputAborter outputAborter, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2FrameWriter.WriteGoAwayAsync(Int32 lastStreamId, Http2ErrorCode errorCode)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.UpdateConnectionState()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.ProcessRequestsAsync[TContext](IHttpApplication`1 application)
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecuteFromThreadPool(Thread threadPoolThread)
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+   at System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+   at System.Threading.Thread.StartCallback()
+--- End of stack trace from previous location ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.ConcurrentPipeWriter.FlushAsyncAwaited(ValueTask`1 flushTask, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.TimingPipeFlusher.TimeFlushAsyncAwaited(ValueTask`1 pipeFlushTask, MinDataRate minRate, IHttpOutputAborter outputAborter, CancellationToken cancellationToken)
+[2026-06-14 23:28:30 ERR] Unhandled exception while processing 0HNMAAAPMC6V5.
+System.IO.IOException: The encryption operation failed, see inner exception.
+ ---> System.ComponentModel.Win32Exception (14): Bad address
+   --- End of inner exception stack trace ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder.SetResult()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.ProcessRequestsAsync[TContext](IHttpApplication`1 httpApplication)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder.SetResult()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.ProcessRequestsAsync[TContext](IHttpApplication`1 application)
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecuteFromThreadPool(Thread threadPoolThread)
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+   at System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+   at System.Threading.Thread.StartCallback()
+--- End of stack trace from previous location ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection`1.ExecuteAsync()
+[2026-06-14 23:28:35 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:28:45 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:28:55 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:29:05 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:29:08 INF] Application is shutting down...
+[2026-06-14 23:29:08 INF] Vehicle Voyage Cleanup Service stopped.
+[2026-06-14 23:29:17 INF] Vehicle Voyage Cleanup Service started.
+[2026-06-14 23:29:17 INF] Group Cleanup Service started.
+[2026-06-14 23:29:17 INF] Now listening on: https://localhost:7151
+[2026-06-14 23:29:17 INF] Now listening on: http://localhost:5094
+[2026-06-14 23:29:17 INF] Application started. Press Ctrl+C to shut down.
+[2026-06-14 23:29:17 INF] Hosting environment: Development
+[2026-06-14 23:29:17 INF] Content root path: /Users/ahmetzeren/Repos/parrotsAPI2
+[2026-06-14 23:29:17 INF] [Weekly Cleanup] Threshold Date: 12.06.2026 20:29:17
+
+[2026-06-14 23:29:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:29:32 WRN] Collection navigations are only considered null if their parent entity is null. Use 'Any' to check whether collection navigation 'Voyage.Waypoints' is empty.
+[2026-06-14 23:29:37 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:29:47 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:29:57 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:30:09 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:30:19 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:30:30 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:30:41 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:30:51 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:31:01 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:31:11 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:31:22 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:31:32 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:31:42 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:31:52 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:32:02 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:32:13 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:32:24 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:32:34 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:32:44 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:32:55 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:33:05 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:33:15 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:33:25 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:33:36 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:33:46 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:33:56 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:34:06 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:34:16 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:34:27 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:34:37 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:34:47 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:34:57 INF] === _userConnections ===
+  sinan@Zen (703904d7-d3aa-4577-99ff-4b6d9962b841): [4UZu5RqAAIv8PjqxCtRGgA]
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:35:07 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:35:17 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:35:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:35:37 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:35:47 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:35:57 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:36:07 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:36:17 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:36:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:36:37 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:36:47 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:36:57 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:37:07 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:37:17 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:37:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:37:37 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:37:47 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:37:56 ERR] Unexpected exception in TimingPipeFlusher.FlushAsync.
+System.IO.IOException: The encryption operation failed, see inner exception.
+ ---> System.ComponentModel.Win32Exception (14): Bad address
+   --- End of inner exception stack trace ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.TimingPipeFlusher.FlushAsync(MinDataRate minRate, Int64 count, IHttpOutputAborter outputAborter, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2FrameWriter.WriteGoAwayAsync(Int32 lastStreamId, Http2ErrorCode errorCode)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.UpdateConnectionState()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.ProcessRequestsAsync[TContext](IHttpApplication`1 application)
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecuteFromThreadPool(Thread threadPoolThread)
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+   at System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+   at System.Threading.Thread.StartCallback()
+--- End of stack trace from previous location ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.ConcurrentPipeWriter.FlushAsyncAwaited(ValueTask`1 flushTask, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.PipeWriterHelpers.TimingPipeFlusher.TimeFlushAsyncAwaited(ValueTask`1 pipeFlushTask, MinDataRate minRate, IHttpOutputAborter outputAborter, CancellationToken cancellationToken)
+[2026-06-14 23:37:56 ERR] Unhandled exception while processing 0HNMAAEIAB5RF.
+System.IO.IOException: The encryption operation failed, see inner exception.
+ ---> System.ComponentModel.Win32Exception (14): Bad address
+   --- End of inner exception stack trace ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder.SetResult()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.ProcessRequestsAsync[TContext](IHttpApplication`1 httpApplication)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder.SetResult()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2Connection.ProcessRequestsAsync[TContext](IHttpApplication`1 application)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Threading.Tasks.Task`1.TrySetResult(TResult result)
+   at System.Threading.Tasks.UnwrapPromise`1.TrySetFromTask(Task task, Boolean lookForOce)
+   at System.Threading.Tasks.UnwrapPromise`1.Invoke(Task completingTask)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder.SetResult()
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.Http2FrameWriter.WriteToOutputPipe()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.ThreadPool.<>c.<.cctor>b__48_0(Object state)
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+   at System.Threading.PortableThreadPool.WorkerThread.WorkerThreadStart()
+   at System.Threading.Thread.StartCallback()
+--- End of stack trace from previous location ---
+   at System.Net.Security.SslStream.WriteAsyncInternal[TIOAdapter](ReadOnlyMemory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Pipelines.StreamPipeWriter.FlushAsyncInternal(Boolean writeToStream, ReadOnlyMemory`1 data, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at System.IO.Pipelines.StreamPipeWriter.CompleteAsync(Exception exception)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.DuplexPipeStreamAdapter`1.DisposeAsync()
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection`1.ExecuteAsync()
+[2026-06-14 23:37:57 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:38:07 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:38:17 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:38:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:38:37 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:38:47 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:38:57 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:39:07 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:39:17 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:39:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:39:37 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:39:47 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:39:57 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:40:07 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:40:17 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:40:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:40:37 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:40:47 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:40:57 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:41:07 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:41:17 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:41:27 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:57:13 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:57:23 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:57:33 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:57:43 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:57:53 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:58:03 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:58:13 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
+[2026-06-14 23:58:23 INF] === _userConnections ===
+=== _unreadCache ===
+=== _userInfoCache ===
+
