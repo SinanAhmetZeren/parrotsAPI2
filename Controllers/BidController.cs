@@ -129,6 +129,16 @@ namespace ParrotsAPI2.Controllers
 
 
 
+        [HttpGet("myBids")]
+        public async Task<ActionResult<ServiceResponse<List<MyBidDto>>>> GetMyBids()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+            var serviceResponse = await _bidService.GetMyBids(userId);
+            if (serviceResponse.Success) return Ok(serviceResponse);
+            return BadRequest(serviceResponse);
+        }
+
         [HttpGet("userBids/{userId}")]
         [Authorize(Roles = "Admin")]
 

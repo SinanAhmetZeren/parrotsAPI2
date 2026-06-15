@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ParrotsAPI2.Dtos.BidDtos;
+using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Bid
 {
     public interface IBidService
     {
 
+        Task<ServiceResponse<List<MyBidDto>>> GetMyBids(string userId);
         Task<ServiceResponse<GetBidDto>> GetBidById(int bidId);
         Task<ServiceResponse<List<GetBidDto>>> GetBidsByVoyageId(int voyageId);
         Task<ServiceResponse<List<GetBidDto>>> GetBidsByUserId(string userId);
