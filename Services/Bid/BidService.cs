@@ -360,6 +360,56 @@ namespace ParrotsAPI2.Services.Bid
 
 
 
+        public async Task<ServiceResponse<List<MyBidDto>>> GetMyBids(string userId)
+        {
+            var response = new ServiceResponse<List<MyBidDto>>();
+            try
+            {
+                var bids = await _context.Bids
+                    .AsNoTracking()
+                    .Where(b => b.UserId == userId)
+                    .ToListAsync();
+
+                var voyageIds = bids.Select(b => b.VoyageId).Distinct().ToList();
+
+                var voyages = await _context.Voyages
+                    .AsNoTracking()
+                    .Where(v => voyageIds.Contains(v.Id))
+                    .ToListAsync();
+
+                var voyageMap = voyages.ToDictionary(v => v.Id);
+
+                response.Data = bids
+                    .OrderByDescending(b => b.DateTime)
+                    .Select(b =>
+                    {
+                        voyageMap.TryGetValue(b.VoyageId, out var voyage);
+                        return new MyBidDto
+                        {
+                            BidId = b.Id,
+                            Accepted = b.Accepted,
+                            OfferPrice = b.OfferPrice,
+                            BidDateTime = b.DateTime,
+                            VoyageId = b.VoyageId,
+                            VoyageName = voyage?.Name ?? string.Empty,
+                            ProfileImageThumbnail = voyage?.ProfileImageThumbnail ?? string.Empty,
+                            StartDate = voyage?.StartDate ?? default,
+                            EndDate = voyage?.EndDate ?? default,
+                        };
+                    })
+                    .ToList();
+
+                response.Message = "Bids retrieved successfully";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving bids for user {UserId}", userId);
+                response.Success = false;
+                response.Message = "Error retrieving bids: " + ex.Message;
+            }
+            return response;
+        }
+
     }
 }
 
