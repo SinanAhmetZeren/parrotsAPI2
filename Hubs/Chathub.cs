@@ -71,12 +71,19 @@ public class ChatHub : Hub
                         return existingSet;
                     });
 
-            using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-            var hasUnread = await dbContext.UnreadConversations
-                .AnyAsync(u => u.UserId == userId && u.Count > 0);
-            if (hasUnread)
-                await Clients.Caller.SendAsync("ReceiveUnreadNotification");
+            try
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var hasUnread = await dbContext.UnreadConversations
+                    .AnyAsync(u => u.UserId == userId && u.Count > 0);
+                if (hasUnread)
+                    await Clients.Caller.SendAsync("ReceiveUnreadNotification");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "OnConnectedAsync: unread check failed for user {UserId}", userId);
+            }
         }
         await base.OnConnectedAsync();
         await Clients.Caller.SendAsync("ParrotsChatHubInitialized");
