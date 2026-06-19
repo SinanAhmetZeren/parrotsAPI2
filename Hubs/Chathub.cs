@@ -390,10 +390,20 @@ public class ChatHub : Hub
         return Task.CompletedTask;
     }
 
-    public Task EnterGroupConversationPage(string userId, string groupId)
+    public async Task EnterGroupConversationPage(string userId, string groupId)
     {
         _tracker.EnterConversation(userId, Context.ConnectionId, groupId);
-        return Task.CompletedTask;
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+        var groupConvKey = $"group_{groupId}";
+        var unread = await dbContext.UnreadConversations
+            .Where(u => u.UserId == userId && u.ConversationKey == groupConvKey)
+            .ToListAsync();
+        if (unread.Any())
+        {
+            dbContext.UnreadConversations.RemoveRange(unread);
+            await dbContext.SaveChangesAsync();
+        }
     }
 
     public Task LeaveGroupConversationPage(string userId)
@@ -590,7 +600,9 @@ public class ChatHub : Hub
 
         // Persist unread flag for offline or backgrounded members
         var pushTargetMembers = memberIds
-            .Where(id => id != senderId && (!_userConnections.ContainsKey(id) || !_userConnections[id].Any(c => c.IsForeground && !c.IsWeb)))
+            .Where(id => id != senderId
+                && !_tracker.IsViewingConversation(id, groupConversationId.ToString())
+                && (!_userConnections.ContainsKey(id) || !_userConnections[id].Any(c => c.IsForeground && !c.IsWeb)))
             .ToList();
 
         if (pushTargetMembers.Any())
