@@ -698,6 +698,12 @@ namespace API.Controllers
             }
 
             var newAccessToken = _tokenService.CreateToken(user);
+
+            var newRefreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.Add(RefreshExpiry);
+            await _userManager.UpdateAsync(user);
+
             var userResponse = await CreateUserObject(user);
             userResponse.Token = newAccessToken;
 
