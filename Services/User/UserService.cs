@@ -216,7 +216,7 @@ namespace ParrotsAPI2.Services.User
                 .Include(u => u.Vehicles)
                 .Include(u => u.Voyages)
                 .AsSplitQuery()
-                .FirstOrDefaultAsync(c => c.UserName == username);
+                .FirstOrDefaultAsync(c => c.UserName.ToLower() == username.ToLower());
 
             stopwatch.Stop();
 
