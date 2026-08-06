@@ -13,7 +13,7 @@ namespace ParrotsAPI2.Controllers
         private readonly IAiService _aiService;
         private static readonly Dictionary<string, (int count, DateTime windowStart)> _rateLimitCache = new();
         private static readonly object _lock = new();
-        private const int MaxRequestsPerHour = 5;
+        private const int MaxRequestsPerHour = 20;
 
         public AiController(IAiService aiService)
         {
