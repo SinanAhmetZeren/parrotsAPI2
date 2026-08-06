@@ -136,9 +136,9 @@ public class ChatHub : Hub
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task SendMessage(string senderId, string receiverId, string content)
+    public async Task SendMessage(string senderId, string receiverId, string content, bool isAutomatic = false)
     {
-        if (string.IsNullOrWhiteSpace(content) || content.Length > 500)
+        if (string.IsNullOrWhiteSpace(content) || (!isAutomatic && content.Length > 500))
         {
             _logger.LogWarning("SendMessage rejected: invalid content length. SenderId={SenderId}", senderId);
             return;

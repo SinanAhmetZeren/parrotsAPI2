@@ -85,9 +85,12 @@ namespace ParrotsAPI2.Services.Ai
                 ? "I'm open to any vibe"
                 : $"I'm looking for a {vibeDescriptions[dto.Vibe]} experience";
 
-            return $"I have a {dto.VehicleType} and {dto.Duration} available. " +
-                   $"{vibePart}, {locationPart}. " +
-                   $"What voyage would you suggest?";
+            var isOnFoot = dto.VehicleType == "Walk" || dto.VehicleType == "Run";
+            var vehiclePart = isOnFoot
+                ? $"I want to go for a {dto.VehicleType} for {dto.Duration}."
+                : $"I have a {dto.VehicleType} and {dto.Duration} available.";
+
+            return $"{vehiclePart} {vibePart}, {locationPart}. What voyage would you suggest?";
         }
     }
 }
