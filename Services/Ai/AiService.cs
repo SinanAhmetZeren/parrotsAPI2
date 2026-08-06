@@ -18,7 +18,7 @@ namespace ParrotsAPI2.Services.Ai
             "for example, do not suggest a boat route on water that is not navigable, or a walking route that is impossibly long. " +
             "Wrap every place name (streets, landmarks, towns, lakes, bridges etc.) in double asterisks like **King's College**. " +
             "Begin your response by naturally mentioning the starting location inferred from the coordinates. " +
-            "Do not mention bringing cash as a tip.";
+            "Never mention cash, card payments, or payment methods in any form.";
 
         public AiService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
