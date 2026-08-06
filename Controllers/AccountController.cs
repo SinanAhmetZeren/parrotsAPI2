@@ -35,6 +35,7 @@ namespace API.Controllers
         private readonly TokenService _tokenService;
         private readonly string _googleClientId;
         private readonly string _googleAndroidClientId;
+        private readonly string _googleAndroidClientId2;
         private readonly ILogger<AccountController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly DataContext _context;
@@ -52,6 +53,7 @@ namespace API.Controllers
             _userManager = userManager;
             _googleClientId = googleOptions.Value.ClientId;
             _googleAndroidClientId = googleOptions.Value.AndroidClientId;
+            _googleAndroidClientId2 = googleOptions.Value.AndroidClientId2;
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
@@ -596,7 +598,7 @@ namespace API.Controllers
                     return BadRequest("Email not verified by Google.");
                 }
 
-                if (tokenInfo.Audience != _googleClientId && tokenInfo.Audience != _googleAndroidClientId)
+                if (tokenInfo.Audience != _googleClientId && tokenInfo.Audience != _googleAndroidClientId && tokenInfo.Audience != _googleAndroidClientId2)
                 {
                     _logger.LogWarning("GoogleLogin failed: token audience mismatch. Email: {Email}, IP: {IP}", tokenInfo.Email, HttpContext.Connection.RemoteIpAddress);
                     return BadRequest("Token was not issued for this app.");
@@ -801,7 +803,7 @@ namespace API.Controllers
             var levelFilter = string.IsNullOrWhiteSpace(level) || level == "ALL" ? null : level.ToUpper();
 
             // Group into entries: header line + continuation lines
-            var groups = new List<(string? Level, List<string> Lines)>();
+            var groups = new List<(string? Level, DateTime? Timestamp, List<string> Lines)>();
             foreach (var line in allLines)
             {
                 var lvl = line.Contains(" INF]") ? "INF"
@@ -811,12 +813,19 @@ namespace API.Controllers
                         : null;
 
                 if (lvl != null)
-                    groups.Add((lvl, new List<string> { line }));
+                {
+                    DateTime? ts = null;
+                    var tsMatch = System.Text.RegularExpressions.Regex.Match(line, @"^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})");
+                    if (tsMatch.Success && DateTime.TryParse(tsMatch.Groups[1].Value, out var parsed))
+                        ts = DateTime.SpecifyKind(parsed, DateTimeKind.Utc);
+                    groups.Add((lvl, ts, new List<string> { line }));
+                }
                 else if (groups.Count > 0)
                     groups[^1].Lines.Add(line);
             }
 
             var result = groups
+                .Where(g => (g.Timestamp == null || (g.Timestamp >= fromDt && g.Timestamp <= toDt)))
                 .Where(g => levelFilter == null || g.Level == levelFilter)
                 .SelectMany(g =>
                 {

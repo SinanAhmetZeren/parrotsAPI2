@@ -148,7 +148,9 @@ builder.Services.AddHostedService<ParrotsAPI2.Services.HubDiagnostics.HubDiagnos
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddHostedService<GroupCleanupService>();
 builder.Services.AddScoped<IBlobService, BlobService>();
+builder.Services.AddScoped<ParrotsAPI2.Services.Ai.IAiService, ParrotsAPI2.Services.Ai.AiService>();
 builder.Services.AddHttpClient<ParrotsAPI2.Services.Notifications.ExpoPushService>();
+builder.Services.AddHttpClient();
 
 builder.Services.AddMemoryCache();
 
