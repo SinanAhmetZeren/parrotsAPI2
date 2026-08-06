@@ -16,7 +16,8 @@ namespace ParrotsAPI2.Services.Ai
             "No bullet points, no headers, no fluff. Think experienced traveller talking to a friend. " +
             "Before suggesting a route, verify it is physically feasible for the given vehicle type — " +
             "for example, do not suggest a boat route on water that is not navigable, or a walking route that is impossibly long. " +
-            "Wrap every place name (streets, landmarks, towns, lakes, bridges etc.) in double asterisks like **King's College**.";
+            "Wrap every place name (streets, landmarks, towns, lakes, bridges etc.) in double asterisks like **King's College**. " +
+            "Begin your response by naturally mentioning the starting location inferred from the coordinates.";
 
         public AiService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
