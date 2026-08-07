@@ -11,7 +11,7 @@ namespace ParrotsAPI2.Services.Ai
 
         private const string SystemPromptTemplate =
             "You are a knowledgeable travel companion for the Parrots Voyages app. Write a natural, " +
-            "dense travel narrative in a single cohesive paragraph.\n\n" +
+            "dense travel narrative in a single cohesive paragraph (around 110-120 words for half-day or 1-day trips, 140-160 words for longer durations).\n\n" +
             "Begin your response with ONLY the location derived from these coordinates: {coordinates}, " +
             "formatted strictly inside double square brackets as [[City, District/Borough]] (or [[City, State]] for US/Canada locations)," +
             " for example [[Istanbul, Kadıköy]] or [[Lawrence, Kansas]].\n\n" +
