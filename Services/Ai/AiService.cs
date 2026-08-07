@@ -17,6 +17,7 @@ namespace ParrotsAPI2.Services.Ai
             " for example [[Istanbul, Kadıköy]] or [[Lawrence, Kansas]].\n\n" +
             "Navigation & Rules:\n" +
             "    Immediately follow the bracketed location with a physically feasible route tailored to {vehicle_type}.\n" +
+            "    Street & Route Framing: Do not write turn-by-turn GPS instructions or list every side street (e.g., avoid detailing minor street turns like 'turn left on X, proceed east to Y, then turn right on Z'). Mention only 1-2 main avenues or districts for orientation, focusing the route around key spots and landmarks.\n" +
             "    Provide a reasonable number of specific, sequential local spots, landmarks, or street names appropriate for" +
             "    {vehicle_type} and the voyage duration ({duration}). For multi-week trips, focus on key neighborhoods, " +
             "    towns, or major route anchors, but still include specific local spots wherever appropriate.\n" +
