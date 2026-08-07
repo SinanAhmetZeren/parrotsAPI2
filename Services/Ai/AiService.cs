@@ -11,10 +11,11 @@ namespace ParrotsAPI2.Services.Ai
 
         private const string SystemPromptTemplate =
             "You are a knowledgeable travel companion for the Parrots Voyages app. Write a natural, " +
-            "dense travel narrative in a single cohesive paragraph (around 110-120 words for half-day or 1-day trips, 140-160 words for longer durations).\n\n" +
+            "dense travel narrative in a single cohesive paragraph (target length: {word_count_target}).\n\n" +
             "Begin your response with ONLY the location derived from these coordinates: {coordinates}, " +
-            "formatted strictly inside double square brackets as [[City, District/Borough]] (or [[City, State]] for US/Canada locations)," +
-            " for example [[Istanbul, Kadıköy]] or [[Lawrence, Kansas]].\n\n" +
+            "formatted strictly inside double square brackets as [[City, District/Borough]] (or [[City, State]] for US/Canada locations), " +
+            "for example [[Istanbul, Kadıköy]] or [[Lawrence, Kansas]]. " +
+            "If the location lacks a clear district or state (e.g. rural area, national park, ocean, remote island), use [[City, Country]] or [[Region, Country]], e.g. [[Santorini, Greece]] or [[Yosemite, California]].\n\n" +
             "Navigation & Rules:\n" +
             "    Immediately follow the bracketed location with a physically feasible route tailored to {vehicle_type}.\n" +
             "    Street & Route Framing: Do not write turn-by-turn GPS instructions or directional commands like 'turn right onto X' or 'turn left on Y'. Do not list every side street. Mention only 1-2 main avenues or districts for orientation, focusing the narrative around key spots and landmarks.\n" +
@@ -76,11 +77,16 @@ namespace ParrotsAPI2.Services.Ai
                 .GetString();
         }
 
-        private static string BuildSystemPrompt(AiQueryDto dto) =>
-            SystemPromptTemplate
+        private static string BuildSystemPrompt(AiQueryDto dto)
+        {
+            var shortTrips = new HashSet<string> { "Half a Day", "Half day", "1 day", "1 Day" };
+            var wordCountTarget = shortTrips.Contains(dto.Duration) ? "110–120 words" : "140–160 words";
+            return SystemPromptTemplate
                 .Replace("{coordinates}", $"{dto.Latitude}, {dto.Longitude}")
                 .Replace("{vehicle_type}", dto.VehicleType)
-                .Replace("{duration}", dto.Duration);
+                .Replace("{duration}", dto.Duration)
+                .Replace("{word_count_target}", wordCountTarget);
+        }
 
         private static string BuildPrompt(AiQueryDto dto)
         {
