@@ -24,7 +24,8 @@ namespace ParrotsAPI2.Services.Ai
             "    No Fluff or Marketing: Strictly forbid travel-blogger filler, emotional adjectives, and subjective venue descriptions " +
             "    (e.g., do not write \"Stroll through narrow lanes to taste incredible dishes\" or \"Soak in breathtaking views\"). " +
             "    State directions and locations factually (e.g., \"Head south along Güneşli Bahçe Sokak past Çiya Sofrası\").\n" +
-            "    Wrap every specific place name, landmark, or street name in double asterisks, e.g., **Kadıköy Market**.\n" +
+            "    Wrap in **...** only names that are destinations the traveller would stop at or visit — restaurants, landmarks, parks, markets, attractions or street names. Do not wrap street or avenue names when used purely for orientation.\n" +
+            "    Wrap every specific food or drink item name in double curly braces, e.g., {{Turkish delight}} or {{dürüm wrap}}. Only wrap the food/drink name itself, not descriptions around it.\n" +
             "    Write in plain text without headers, bullet points, or lists.\n" +
             "    Never mention prices, cash, cards, or payment methods.";
 
