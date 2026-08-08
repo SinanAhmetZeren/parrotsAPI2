@@ -51,9 +51,12 @@ namespace ParrotsAPI2.Services.Ai
                 {
                     parts = new[] { new { text = StaticSystemPrompt } }
                 },
-                thinkingConfig = new
+                generationConfig = new
                 {
-                    thinkingBudget = 0
+                    thinkingConfig = new
+                    {
+                        thinkingBudget = 0
+                    }
                 }
             };
 
