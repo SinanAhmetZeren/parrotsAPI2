@@ -22,6 +22,7 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<int>> ClaimFreeCoins(string userId);
         Task<ServiceResponse<int>> SendParrotCoins(string userId, string receiverId, int coins);
         Task<ServiceResponse<ParrotCoinSummaryDto>> GetParrotCoinBalanceAndPurchases(string userId);
+        Task<ServiceResponse<int>> DeductCoinForAsk(string userId);
 
 
 
