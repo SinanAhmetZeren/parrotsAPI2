@@ -32,13 +32,13 @@ namespace ParrotsAPI2.Controllers
             if (!CheckRateLimit(userId))
                 return StatusCode(429, new { message = "You've reached the limit of 5 requests per hour. Please try again later." });
 
+            var result = await _aiService.AskAsync(dto);
+            if (string.IsNullOrEmpty(result) || !result.TrimStart().StartsWith("[["))
+                return StatusCode(500, new { message = "AI service unavailable. Please try again." });
+
             var deduct = await _userService.DeductCoinForAsk(userId);
             if (!deduct.Success)
                 return StatusCode(402, new { message = deduct.Message });
-
-            var result = await _aiService.AskAsync(dto);
-            if (result == null)
-                return StatusCode(500, new { message = "AI service unavailable. Please try again." });
 
             return Ok(new { response = result, remainingBalance = deduct.Data });
         }
