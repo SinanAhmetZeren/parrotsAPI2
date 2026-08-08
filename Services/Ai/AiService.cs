@@ -64,8 +64,8 @@ namespace ParrotsAPI2.Services.Ai
 
             var models = new[]
             {
-                "gemini-2.5-flash-lite",
-                "gemini-2.5-flash"
+                "gemini-flash-lite-latest",
+                "gemini-flash-latest"
             };
 
             foreach (var model in models)
