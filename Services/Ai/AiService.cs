@@ -51,13 +51,7 @@ namespace ParrotsAPI2.Services.Ai
                 {
                     parts = new[] { new { text = StaticSystemPrompt } }
                 },
-                generationConfig = new
-                {
-                    thinkingConfig = new
-                    {
-                        thinkingBudget = 0
-                    }
-                }
+                generationConfig = new { }
             };
 
             var json = JsonSerializer.Serialize(requestBody);
