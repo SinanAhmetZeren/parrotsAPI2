@@ -68,6 +68,7 @@ namespace ParrotsAPI2.Services.Ai
             }
 
             var responseJson = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Gemini raw response: {responseJson}");
             using var doc = JsonDocument.Parse(responseJson);
             return doc.RootElement
                 .GetProperty("candidates")[0]
