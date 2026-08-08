@@ -741,7 +741,7 @@ namespace ParrotsAPI2.Services.User
                 EurAmount = 0,
                 Status = "completed",
                 CreatedAt = DateTime.UtcNow,
-                PaymentProviderId = "free_claim"
+                PaymentProviderId = $"free_claim_{userId}_{DateTime.UtcNow:yyyyMMddHHmmssfff}"
             };
             _context.CoinPurchases.Add(purchase);
             await _context.SaveChangesAsync();
@@ -754,6 +754,28 @@ namespace ParrotsAPI2.Services.User
         }
 
 
+
+        public async Task<ServiceResponse<int>> DeductCoinForAsk(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return new ServiceResponse<int> { Success = false, Message = "User not found." };
+
+            if (user.ParrotCoinBalance < 1)
+                return new ServiceResponse<int> { Success = false, Message = "Insufficient ParrotCrackers." };
+
+            user.ParrotCoinBalance -= 1;
+            _context.CoinTransactions.Add(new CoinTransaction
+            {
+                UserId = userId,
+                Amount = -1,
+                Type = "ask_parrots",
+                Description = "Ask Parrots query",
+                CreatedAt = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+            return new ServiceResponse<int> { Data = user.ParrotCoinBalance, Success = true };
+        }
 
         public async Task<ServiceResponse<int>> SendParrotCoins(string userId, string receiverId, int coins)
         {
