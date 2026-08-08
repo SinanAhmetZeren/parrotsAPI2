@@ -62,39 +62,59 @@ namespace ParrotsAPI2.Services.Ai
 
             var json = JsonSerializer.Serialize(requestBody);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={_apiKey}";
 
-            try
+            var models = new[]
             {
-                var response = await _httpClient.PostAsync(url, content);
-                if (!response.IsSuccessStatusCode)
+                "gemini-2.5-flash-lite-preview-06-17",
+                "gemini-2.5-flash-lite",
+                "gemini-2.5-flash"
+            };
+
+            foreach (var model in models)
+            {
+                try
                 {
-                    var error = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Gemini error {response.StatusCode}: {error}");
+                    var url = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={_apiKey}";
+                    var response = await _httpClient.PostAsync(url, content);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        Console.WriteLine($"Model {model} not available, trying next.");
+                        continue;
+                    }
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Gemini error {response.StatusCode} on {model}: {error}");
+                        return null;
+                    }
+
+                    var responseJson = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Gemini raw response ({model}): {responseJson}");
+                    using var doc = JsonDocument.Parse(responseJson);
+
+                    if (doc.RootElement.TryGetProperty("candidates", out var candidates) &&
+                        candidates.GetArrayLength() > 0 &&
+                        candidates[0].TryGetProperty("content", out var candidateContent) &&
+                        candidateContent.TryGetProperty("parts", out var parts) &&
+                        parts.GetArrayLength() > 0)
+                    {
+                        return parts[0].GetProperty("text").GetString();
+                    }
+
+                    Console.WriteLine($"Gemini response from {model} returned no valid text candidates.");
                     return null;
                 }
-
-                var responseJson = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Gemini raw response: {responseJson}");
-                using var doc = JsonDocument.Parse(responseJson);
-
-                if (doc.RootElement.TryGetProperty("candidates", out var candidates) &&
-                    candidates.GetArrayLength() > 0 &&
-                    candidates[0].TryGetProperty("content", out var candidateContent) &&
-                    candidateContent.TryGetProperty("parts", out var parts) &&
-                    parts.GetArrayLength() > 0)
+                catch (Exception ex)
                 {
-                    return parts[0].GetProperty("text").GetString();
+                    Console.WriteLine($"Exception calling Gemini API on {model}: {ex.Message}");
+                    return null;
                 }
+            }
 
-                Console.WriteLine("Gemini response returned no valid text candidates.");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception calling Gemini API: {ex.Message}");
-                return null;
-            }
+            Console.WriteLine("All Gemini models exhausted.");
+            return null;
         }
 
         private static string BuildPrompt(AiQueryDto dto)
