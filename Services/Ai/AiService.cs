@@ -61,11 +61,9 @@ namespace ParrotsAPI2.Services.Ai
             };
 
             var json = JsonSerializer.Serialize(requestBody);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var models = new[]
             {
-                "gemini-2.5-flash-lite-preview-06-17",
                 "gemini-2.5-flash-lite",
                 "gemini-2.5-flash"
             };
@@ -74,20 +72,15 @@ namespace ParrotsAPI2.Services.Ai
             {
                 try
                 {
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
                     var url = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={_apiKey}";
                     var response = await _httpClient.PostAsync(url, content);
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    {
-                        Console.WriteLine($"Model {model} not available, trying next.");
-                        continue;
-                    }
 
                     if (!response.IsSuccessStatusCode)
                     {
                         var error = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Gemini error {response.StatusCode} on {model}: {error}");
-                        return null;
+                        Console.WriteLine($"Gemini warning on model '{model}' ({response.StatusCode}): {error}. Trying next fallback...");
+                        continue;
                     }
 
                     var responseJson = await response.Content.ReadAsStringAsync();
@@ -109,7 +102,6 @@ namespace ParrotsAPI2.Services.Ai
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception calling Gemini API on {model}: {ex.Message}");
-                    return null;
                 }
             }
 
