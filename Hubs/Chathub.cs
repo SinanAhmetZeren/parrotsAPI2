@@ -270,9 +270,10 @@ public class ChatHub : Hub
             senderPublicId = m.SenderId == senderId ? senderInfo.PublicId : receiverInfo.PublicId,
         }).ToList();
 
-        if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
-            foreach (var connId in receiverConnections.Select(c => c.ConnectionId))
-                await Clients.Client(connId).SendAsync("ReceiveMessage", last5ForReceiver);
+        if (receiverId != senderId)
+            if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
+                foreach (var connId in receiverConnections.Select(c => c.ConnectionId))
+                    await Clients.Client(connId).SendAsync("ReceiveMessage", last5ForReceiver);
     }
 
 
