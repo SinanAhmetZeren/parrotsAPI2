@@ -142,8 +142,7 @@ namespace ParrotsAPI2.Services.Ai
             var isOnFoot = string.Equals(dto.VehicleType, "Walk", StringComparison.OrdinalIgnoreCase) ||
                            string.Equals(dto.VehicleType, "Run", StringComparison.OrdinalIgnoreCase);
 
-            var isTransit = string.Equals(dto.VehicleType, "Bus", StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(dto.VehicleType, "Train", StringComparison.OrdinalIgnoreCase) ||
+            var isTransit = string.Equals(dto.VehicleType, "Train", StringComparison.OrdinalIgnoreCase) ||
                             string.Equals(dto.VehicleType, "Airplane", StringComparison.OrdinalIgnoreCase);
 
             var displayVehicle = string.Equals(dto.VehicleType, "TinyHouse", StringComparison.OrdinalIgnoreCase)
