@@ -18,6 +18,7 @@ namespace ParrotsAPI2.Services.Ai
             "If the location lacks a clear district or state (e.g. rural area, national park, ocean, remote island), use [[City, Country]] or [[Region, Country]], e.g. [[Santorini, Greece]] or [[Yosemite, California]].\n\n" +
             "Navigation & Rules:\n" +
             "    Immediately follow the bracketed location with a physically feasible route tailored to the specified vehicle type.\n" +
+            "    Spot Density & Scale: For half-day trips, suggest 2 to 3 closely located spots. For 1-day trips, suggest 4 to 5 sequential stops. For multi-day trips, scale the stops and neighborhoods accordingly.\n" +
             "    Street & Route Framing: Do not write turn-by-turn GPS instructions or directional commands like 'turn right onto X' or 'turn left on Y'. Do not list every side street. Mention only 1-2 main avenues or districts for orientation, focusing the narrative around key spots and landmarks.\n" +
             "    Provide a reasonable number of specific, sequential local spots, landmarks, or street names appropriate for " +
             "    the vehicle type and voyage duration. For multi-week trips, focus on key neighborhoods, " +
@@ -173,7 +174,7 @@ namespace ParrotsAPI2.Services.Ai
                 { "Popular Spots",   "popular spots (iconic landmarks and high-profile highlights)" },
                 { "Local Favorites", "local favorites (authentic neighborhood staples favored by locals)" },
                 { "Hidden Gems",     "hidden gems (lesser-known, off-the-beaten-path secret spots)" },
-                { "Mix of Both",     "a balanced mix (a balance of famous highlights and local spots)" },
+                { "Mixed Picks",     "mixed picks (a curated mix of popular spots, local favorites, and hidden gems)" },
             };
 
             var spotPart = !string.IsNullOrWhiteSpace(dto.SpotType) && spotDescriptions.TryGetValue(dto.SpotType, out var spotDesc)
