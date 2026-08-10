@@ -30,7 +30,7 @@ namespace ParrotsAPI2.Services.Ai
             "    Write in plain text without headers, bullet points, or lists.\n" +
             "    Never mention prices, cash, cards, or payment methods.\n" +
             "    Spot Selection & Discovery Style: Strictly respect the discovery style requested in the user prompt. " +
-            "    If 'hidden gems' is specified, you MUST strictly avoid famous tourist staples, top-ranked guidebook destinations, and world-famous venues (e.g. in Kadıköy, avoid Çiya Sofrası; in London, avoid Borough Market). Focus strictly on quiet side-street spots, neighborhood secrets, and non-touristy local places.";
+            "    If 'hidden gems' is specified, you MUST strictly avoid famous tourist staples, top-ranked guidebook destinations, highly blogged places, and world-famous venues (e.g. in Kadıköy, avoid Çiya Sofrası or Şekerci Cafer Erol; in London, avoid Borough Market, Dishoom, or Sky Garden; in Cambridge, avoid King's College Chapel or Fitzbillies; in NYC, avoid Katz's Delicatessen, Chelsea Market, or Levain Bakery). Focus strictly on quiet side-street spots, neighborhood secrets, and non-touristy local places.";
 
         public AiService(HttpClient httpClient, IConfiguration configuration)
         {
