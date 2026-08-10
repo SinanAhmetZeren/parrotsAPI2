@@ -28,7 +28,9 @@ namespace ParrotsAPI2.Services.Ai
             "    Wrap in **...** only names that are destinations the traveller would stop at or visit — restaurants, landmarks, parks, markets, attractions or street names. Do not wrap street or avenue names when used purely for orientation.\n" +
             "    Wrap every specific food or drink item name in double curly braces, e.g., {{Turkish delight}} or {{dürüm wrap}}. Only wrap the food/drink name itself, not descriptions around it.\n" +
             "    Write in plain text without headers, bullet points, or lists.\n" +
-            "    Never mention prices, cash, cards, or payment methods.";
+            "    Never mention prices, cash, cards, or payment methods.\n" +
+            "    Spot Selection & Discovery Style: Strictly respect the discovery style requested in the user prompt. " +
+            "    If 'hidden gems' is specified, you MUST strictly avoid famous tourist staples, top-ranked guidebook destinations, and world-famous venues (e.g. in Kadıköy, avoid Çiya Sofrası; in London, avoid Borough Market). Focus strictly on quiet side-street spots, neighborhood secrets, and non-touristy local places.";
 
         public AiService(HttpClient httpClient, IConfiguration configuration)
         {
@@ -40,6 +42,7 @@ namespace ParrotsAPI2.Services.Ai
         public async Task<string?> AskAsync(AiQueryDto dto)
         {
             var userPrompt = BuildPrompt(dto);
+            Console.WriteLine($"Gemini user prompt: {userPrompt}");
 
             var requestBody = new
             {
@@ -112,29 +115,72 @@ namespace ParrotsAPI2.Services.Ai
                 ? "anywhere in the world"
                 : $"starting within {dto.RadiusKm}km of coordinates ({dto.Latitude}, {dto.Longitude})";
 
-            var vibeDescriptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var vibeConfigs = new Dictionary<string, (string Label, string Detail)>(StringComparer.OrdinalIgnoreCase)
             {
-                { "Culture", "Culture (focused on cultural sights and history)" },
-                { "Food", "Food (focused on local food and dining)" },
-                { "Nature", "Nature (focused on nature and outdoor scenery)" },
-                { "Chill", "Chill (relaxed and laid-back)" },
-                { "Adventure", "Adventure (adventurous and off the beaten path)" },
-                { "Budget", "Budget (budget-friendly)" },
-                { "Scenic", "Scenic (focused on scenic landscapes and views)" },
+                { "Culture",   ("culture-focused", "cultural sights and history") },
+                { "Food",      ("food-focused", "local food and dining") },
+                { "Nature",    ("nature-focused", "outdoor scenery and nature") },
+                { "Chill",     ("relaxed", "laid-back pace") },
+                { "Adventure", ("adventurous", "off the beaten path") },
+                { "Budget",    ("budget-friendly", "low-cost spots") },
+                { "Scenic",    ("scenic", "landscapes and views") },
             };
 
-            var vibePart = dto.Vibe == "Any" || !vibeDescriptions.ContainsKey(dto.Vibe)
-                ? "I'm open to any vibe"
-                : $"I'm looking for a {vibeDescriptions[dto.Vibe]} experience";
+            string vibePart;
+            if (string.Equals(dto.Vibe, "Any", StringComparison.OrdinalIgnoreCase) || !vibeConfigs.TryGetValue(dto.Vibe, out var vibeConf))
+            {
+                vibePart = "I'm looking for a voyage of any vibe";
+            }
+            else
+            {
+                var vibeArticle = "aeiou".IndexOf(char.ToLower(vibeConf.Label[0])) >= 0 ? "an" : "a";
+                var detailStr = !string.IsNullOrEmpty(vibeConf.Detail) ? $" ({vibeConf.Detail})" : "";
+                vibePart = $"I'm looking for {vibeArticle} {vibeConf.Label} experience{detailStr}";
+            }
 
             var isOnFoot = string.Equals(dto.VehicleType, "Walk", StringComparison.OrdinalIgnoreCase) ||
                            string.Equals(dto.VehicleType, "Run", StringComparison.OrdinalIgnoreCase);
 
-            var vehiclePart = isOnFoot
-                ? $"I want to go for a {dto.VehicleType} for {dto.Duration}."
-                : $"I have a {dto.VehicleType} and {dto.Duration} available.";
+            var isTransit = string.Equals(dto.VehicleType, "Bus", StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(dto.VehicleType, "Train", StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(dto.VehicleType, "Airplane", StringComparison.OrdinalIgnoreCase);
 
-            return $"{vehiclePart} {vibePart}, {locationPart}. Coordinates: ({dto.Latitude}, {dto.Longitude}). Target length: {wordCountTarget}. What voyage would you suggest?";
+            var displayVehicle = string.Equals(dto.VehicleType, "TinyHouse", StringComparison.OrdinalIgnoreCase)
+                ? "tiny house"
+                : dto.VehicleType.ToLower();
+
+            var displayDuration = string.Equals(dto.Duration, "Half day", StringComparison.OrdinalIgnoreCase)
+                ? "half a day"
+                : dto.Duration;
+
+            string vehiclePart;
+            if (isOnFoot)
+            {
+                vehiclePart = $"I want to go for a {displayVehicle} for {displayDuration}.";
+            }
+            else if (isTransit)
+            {
+                vehiclePart = $"I'm traveling by {displayVehicle} for {displayDuration}.";
+            }
+            else
+            {
+                var vehicleArticle = "aeiou".IndexOf(char.ToLower(displayVehicle[0])) >= 0 ? "an" : "a";
+                vehiclePart = $"I have {vehicleArticle} {displayVehicle} and {displayDuration} available.";
+            }
+
+            var spotDescriptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Popular Spots",   "popular spots (iconic landmarks and high-profile highlights)" },
+                { "Local Favorites", "local favorites (authentic neighborhood staples favored by locals)" },
+                { "Hidden Gems",     "hidden gems (lesser-known, off-the-beaten-path secret spots)" },
+                { "Mix of Both",     "a balanced mix (a balance of famous highlights and local spots)" },
+            };
+
+            var spotPart = !string.IsNullOrWhiteSpace(dto.SpotType) && spotDescriptions.TryGetValue(dto.SpotType, out var spotDesc)
+                ? $", focusing on {spotDesc}"
+                : "";
+
+            return $"{vehiclePart} {vibePart}{spotPart}, {locationPart}. Coordinates: ({dto.Latitude}, {dto.Longitude}). Target length: {wordCountTarget}. What voyage would you suggest?";
         }
     }
 }
