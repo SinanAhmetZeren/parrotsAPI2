@@ -61,7 +61,7 @@ public class VoyageServiceTests
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
-        var dto = new AddVoyageDto { UserId = "u1", VehicleId = 1, StartDate = DateTime.UtcNow.AddDays(10) };
+        var dto = new AddVoyageDto { UserId = "u1", VehicleId = 1, StartDate = DateTime.UtcNow.AddDays(10), EndDate = DateTime.UtcNow.AddDays(15) };
         var result = await service.AddVoyage(dto, "u1");
 
         Assert.False(result.Success);
@@ -81,7 +81,7 @@ public class VoyageServiceTests
 
         var service = CreateService(context);
         var startDate = DateTime.UtcNow.AddDays(daysAhead);
-        var dto = new AddVoyageDto { UserId = "u1", VehicleId = 1, StartDate = startDate, Name = "Test Voyage" };
+        var dto = new AddVoyageDto { UserId = "u1", VehicleId = 1, StartDate = startDate, EndDate = startDate.AddDays(3), Name = "Test Voyage" };
         var result = await service.AddVoyage(dto, "u1");
 
         Assert.True(result.Success);

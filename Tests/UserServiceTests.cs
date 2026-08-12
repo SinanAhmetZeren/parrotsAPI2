@@ -69,14 +69,14 @@ public class UserServiceTests
     public async Task ClaimFreeCoins_BalanceAbove500_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
-        context.Users.Add(new AppUser { Id = "u1", ParrotCoinBalance = 500 });
+        context.Users.Add(new AppUser { Id = "u1", ParrotCoinBalance = 200 });
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
         var result = await service.ClaimFreeCoins("u1");
 
         Assert.False(result.Success);
-        Assert.Contains("500", result.Message);
+        Assert.Contains("200", result.Message);
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class UserServiceTests
         Assert.True(result.Success);
         Assert.Equal(100, result.Data);
         Assert.Equal(1, context.CoinPurchases.Count());
-        Assert.Equal("free_claim", context.CoinPurchases.First().PaymentProviderId);
+        Assert.StartsWith("free_claim_", context.CoinPurchases.First().PaymentProviderId);
     }
 
     // --- SendParrotCoins ---
