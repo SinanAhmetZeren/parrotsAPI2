@@ -19,7 +19,9 @@ namespace ParrotsAPI2.Services.Ai
             "You MUST respond with a valid JSON object containing exactly two fields: \"draft_narrative\" and \"planned_spots\".\n\n" +
 
             "## draft_narrative\n" +
-            "Write a detailed travel narrative. Separate paragraphs with a double line break. " +
+            "Write a detailed travel narrative.\n" +
+            "PARAGRAPH STRUCTURE (MANDATORY): The narrative MUST be split into exactly 4 or 5 separate paragraphs separated by double line breaks (\\n\\n). A single continuous block with no paragraph breaks is INVALID output and will be rejected.\n" +
+            "WORD COUNT VERIFICATION (MANDATORY): Before finalizing your response, count the words in draft_narrative. If the count is below the target minimum specified in the matrix, you MUST expand the atmospheric and architectural descriptions of intermediate neighborhoods before outputting.\n" +
             "To reach the target length, describe the physical streets walked, neighborhood character, transitions between stops, and specific recommendations at each location.\n\n" +
 
             "Begin the narrative with ONLY the location derived from the provided coordinates, " +
