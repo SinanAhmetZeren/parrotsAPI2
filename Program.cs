@@ -149,6 +149,7 @@ builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddHostedService<GroupCleanupService>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddHttpClient<ParrotsAPI2.Services.Ai.IAiService, ParrotsAPI2.Services.Ai.AiService>();
+builder.Services.AddHttpClient("places");
 builder.Services.AddHttpClient<ParrotsAPI2.Services.Notifications.ExpoPushService>();
 builder.Services.AddHttpClient();
 

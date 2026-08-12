@@ -49,7 +49,7 @@ public class HubDiagnosticsService : BackgroundService
                 sb.AppendLine($"  {userName} ({userId})");
             }
 
-            _logger.LogInformation(sb.ToString());
+            // _logger.LogInformation(sb.ToString());
         }
     }
 }
