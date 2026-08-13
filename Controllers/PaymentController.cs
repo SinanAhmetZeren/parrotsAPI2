@@ -10,16 +10,18 @@ namespace parrotsAPI2.Controllers;
 [Route("api/payment")]
 public class PaymentController : ControllerBase
 {
-    private static readonly Dictionary<string, (int Coins, decimal Eur)> _priceMap = new()
+    private static Dictionary<string, (int Coins, decimal Eur)> BuildPriceMap()
     {
-        // SANDBOX
-        { "pri_01kzy7q6p1y27qdv9xw080qvx2", (100, 2.99m) },
+        var map = new Dictionary<string, (int, decimal)>();
+        void Add(string? key, int coins, decimal eur) { if (!string.IsNullOrEmpty(key)) map[key] = (coins, eur); }
+        Add(Environment.GetEnvironmentVariable("Paddle__PriceSandboxNest"),  100, 2.99m);
+        Add(Environment.GetEnvironmentVariable("Paddle__PriceLiveNest"),     100, 2.99m);
+        Add(Environment.GetEnvironmentVariable("Paddle__PriceLiveFlock"),    250, 5.99m);
+        Add(Environment.GetEnvironmentVariable("Paddle__PriceLiveColony"),   500, 9.99m);
+        return map;
+    }
 
-        // LIVE
-        { "pri_01kzy51dwrk3fwffn5mxp9exbf", (100,  2.99m) },
-        { "pri_01kzy50nhj0gcwwva3n2h8nxh5", (250,  5.99m) },
-        { "pri_01kzy4ybnwkkqg4znhzax5efyn", (500,  9.99m) },
-    };
+    private static readonly Dictionary<string, (int Coins, decimal Eur)> _priceMap = BuildPriceMap();
 
     private readonly DataContext _context;
     private readonly IConfiguration _config;
