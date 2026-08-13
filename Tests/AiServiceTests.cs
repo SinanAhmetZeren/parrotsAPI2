@@ -107,32 +107,31 @@ public class AiServiceTests
     }
 
     [Fact]
-    public async Task Half_day_duration_targets_110_120_words()
+    public async Task Half_day_duration_targets_350_380_words()
     {
         var captured = await CapturePrompt(MakeDto(duration: "Half day"));
-        // en-dash is JSON-escaped to – in the serialized request body
-        Assert.Contains("110\\u2013120 words", captured);
+        Assert.Contains("350\\u2013380 words", captured);
     }
 
     [Fact]
-    public async Task Half_a_Day_duration_targets_110_120_words()
+    public async Task Half_a_Day_duration_targets_350_380_words()
     {
         var captured = await CapturePrompt(MakeDto(duration: "Half a Day"));
-        Assert.Contains("110\\u2013120 words", captured);
+        Assert.Contains("350\\u2013380 words", captured);
     }
 
     [Fact]
-    public async Task One_day_duration_targets_110_120_words()
+    public async Task One_day_duration_targets_350_380_words()
     {
         var captured = await CapturePrompt(MakeDto(duration: "1 Day"));
-        Assert.Contains("110\\u2013120 words", captured);
+        Assert.Contains("350\\u2013380 words", captured);
     }
 
     [Fact]
-    public async Task Multi_day_duration_targets_140_160_words()
+    public async Task Multi_day_duration_targets_550_600_words()
     {
         var captured = await CapturePrompt(MakeDto(duration: "3 Days"));
-        Assert.Contains("140\\u2013160 words", captured);
+        Assert.Contains("550\\u2013600 words", captured);
     }
 
     [Fact]
@@ -148,7 +147,7 @@ public class AiServiceTests
     {
         var captured = await CapturePrompt(MakeDto(vibe: "Food"));
         Assert.Contains("food-focused", captured);
-        Assert.Contains("local food and dining", captured);
+        Assert.Contains("culinary experiences, local dining, and eateries", captured);
     }
 
     [Fact]
