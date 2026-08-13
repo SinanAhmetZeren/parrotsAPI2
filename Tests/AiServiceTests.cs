@@ -6,6 +6,7 @@ using ParrotsAPI2.Dtos.AiDtos;
 using ParrotsAPI2.Services.Ai;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace parrotsAPI2.Tests;
 
@@ -24,10 +25,11 @@ public class AiServiceTests
         var client = new HttpClient(handler.Object);
         var factory = new Mock<IHttpClientFactory>();
         var cache = new Mock<IMemoryCache>();
+        var scopeFactory = new Mock<IServiceScopeFactory>();
         var config = new Mock<IConfiguration>();
         config.Setup(c => c["Google_Gemini_Parrots_AI_Query_Key"]).Returns("test-key");
 
-        return new AiService(client, factory.Object, cache.Object, config.Object);
+        return new AiService(client, factory.Object, cache.Object, scopeFactory.Object, config.Object);
     }
 
     // Wraps narrative in the JSON structure Gemini now returns inside parts[0].text
@@ -58,10 +60,10 @@ public class AiServiceTests
     {
         var service = CreateService(GeminiResponse("[[X, Y]] test"));
         var dto = MakeDto(vehicleType: "Walk", duration: "1 Day");
-        await service.AskAsync(dto);
+        await service.AskAsync(dto, "test-user");
         // If BuildPrompt is wrong the prompt logged would differ — we validate via captured request
         // For now we verify AskAsync returns successfully
-        var result = await CreateService(GeminiResponse("[[City, District]] narrative")).AskAsync(dto);
+        var result = await CreateService(GeminiResponse("[[City, District]] narrative")).AskAsync(dto, "test-user");
         Assert.NotNull(result);
     }
 
@@ -69,7 +71,7 @@ public class AiServiceTests
     public async Task Run_vehicle_uses_go_for_a_run_phrasing()
     {
         var result = await CreateService(GeminiResponse("[[City, District]] narrative"))
-            .AskAsync(MakeDto(vehicleType: "Run", duration: "1 Day"));
+            .AskAsync(MakeDto(vehicleType: "Run", duration: "1 Day"), "test-user");
         Assert.NotNull(result);
     }
 
@@ -77,7 +79,7 @@ public class AiServiceTests
     public async Task Train_vehicle_uses_traveling_by_phrasing()
     {
         var result = await CreateService(GeminiResponse("[[City, District]] narrative"))
-            .AskAsync(MakeDto(vehicleType: "Train", duration: "1 Day"));
+            .AskAsync(MakeDto(vehicleType: "Train", duration: "1 Day"), "test-user");
         Assert.NotNull(result);
     }
 
@@ -190,7 +192,7 @@ public class AiServiceTests
     public async Task Returns_null_when_gemini_returns_error_status()
     {
         var service = CreateService(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable));
-        var result = await service.AskAsync(MakeDto());
+        var result = await service.AskAsync(MakeDto(), "test-user");
         Assert.Null(result);
     }
 
@@ -198,7 +200,7 @@ public class AiServiceTests
     public async Task Returns_narrative_when_gemini_succeeds()
     {
         var service = CreateService(GeminiResponse("[[Istanbul, Kadıköy]] some narrative"));
-        var result = await service.AskAsync(MakeDto());
+        var result = await service.AskAsync(MakeDto(), "test-user");
         Assert.Equal("[[Istanbul, Kadıköy]] some narrative", result);
     }
 
@@ -211,7 +213,7 @@ public class AiServiceTests
             Content = new StringContent(body, System.Text.Encoding.UTF8, "application/json")
         };
         var service = CreateService(response);
-        var result = await service.AskAsync(MakeDto());
+        var result = await service.AskAsync(MakeDto(), "test-user");
         Assert.Null(result);
     }
 
@@ -255,11 +257,12 @@ public class AiServiceTests
         var client = new HttpClient(handler.Object);
         var factory = new Mock<IHttpClientFactory>();
         var cache = new Mock<IMemoryCache>();
+        var scopeFactory = new Mock<IServiceScopeFactory>();
         var config = new Mock<IConfiguration>();
         config.Setup(c => c["Google_Gemini_Parrots_AI_Query_Key"]).Returns("test-key");
 
-        var service = new AiService(client, factory.Object, cache.Object, config.Object);
-        await service.AskAsync(dto);
+        var service = new AiService(client, factory.Object, cache.Object, scopeFactory.Object, config.Object);
+        await service.AskAsync(dto, "test-user");
         return captured;
     }
 }

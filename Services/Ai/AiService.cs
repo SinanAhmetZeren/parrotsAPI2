@@ -1,8 +1,11 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Caching.Memory;
+using ParrotsAPI2.Data;
 using ParrotsAPI2.Dtos.AiDtos;
+using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Ai
 {
@@ -11,8 +14,10 @@ namespace ParrotsAPI2.Services.Ai
         private readonly HttpClient _httpClient;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IMemoryCache _cache;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly string _apiKey;
         private readonly string? _placesApiKey;
+
 
         private static string GetSystemPrompt() =>
             "You are a knowledgeable travel companion for the Parrots Voyages app. " +
@@ -83,22 +88,23 @@ namespace ParrotsAPI2.Services.Ai
 
         private static void LogABCDE(string message)
         {
-            Console.WriteLine(message);
+            // Console.WriteLine(message);
             Directory.CreateDirectory(Path.GetDirectoryName(_abcdePath)!);
             File.AppendAllText(_abcdePath, message + Environment.NewLine);
         }
 
-        public AiService(HttpClient httpClient, IHttpClientFactory httpClientFactory, IMemoryCache cache, IConfiguration configuration)
+        public AiService(HttpClient httpClient, IHttpClientFactory httpClientFactory, IMemoryCache cache, IServiceScopeFactory scopeFactory, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _httpClientFactory = httpClientFactory;
             _cache = cache;
+            _scopeFactory = scopeFactory;
             _apiKey = configuration["Google_Gemini_Parrots_AI_Query_Key"]
                       ?? throw new ArgumentNullException("Gemini API key is missing.");
             _placesApiKey = configuration["Google_Places_API_Key"];
         }
 
-        public async Task<string?> AskAsync(AiQueryDto dto)
+        public async Task<string?> AskAsync(AiQueryDto dto, string userId)
         {
             var (wordCountTarget, sentenceStructure) = GetWordCountTarget(dto.Duration);
             var userPrompt = BuildPrompt(dto, wordCountTarget);
@@ -158,6 +164,8 @@ namespace ParrotsAPI2.Services.Ai
                 "gemini-flash-latest"
             };
 
+            var sw = Stopwatch.StartNew();
+
             foreach (var model in models)
             {
                 try
@@ -169,12 +177,21 @@ namespace ParrotsAPI2.Services.Ai
                     if (!response.IsSuccessStatusCode)
                     {
                         var error = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Gemini warning on model '{model}' ({response.StatusCode}): {error}. Trying next fallback...");
+                        // Console.WriteLine($"Gemini warning on model '{model}' ({response.StatusCode}): {error}. Trying next fallback...");
                         continue;
                     }
 
                     var responseJson = await response.Content.ReadAsStringAsync();
                     using var doc = JsonDocument.Parse(responseJson);
+
+                    int inputTokens = 0, outputTokens = 0;
+                    int? cachedInputTokens = null;
+                    if (doc.RootElement.TryGetProperty("usageMetadata", out var usage))
+                    {
+                        if (usage.TryGetProperty("promptTokenCount", out var pt)) inputTokens = pt.GetInt32();
+                        if (usage.TryGetProperty("candidatesTokenCount", out var ct)) outputTokens = ct.GetInt32();
+                        if (usage.TryGetProperty("cachedContentTokenCount", out var cc)) cachedInputTokens = cc.GetInt32();
+                    }
 
                     if (doc.RootElement.TryGetProperty("candidates", out var candidates) &&
                         candidates.GetArrayLength() > 0 &&
@@ -191,7 +208,8 @@ namespace ParrotsAPI2.Services.Ai
                         if (!root.TryGetProperty("draft_narrative", out var narrativeEl) ||
                             !root.TryGetProperty("planned_spots", out var spotsEl))
                         {
-                            Console.WriteLine($"Gemini response from {model} missing expected JSON fields.");
+                            // Console.WriteLine($"Gemini response from {model} missing expected JSON fields.");
+                            await SaveQueryAsync(dto, userId, userPrompt, model, responseJson, null, null, null, null, inputTokens, outputTokens, cachedInputTokens, (int)sw.ElapsedMilliseconds, false, "Missing JSON fields");
                             return null;
                         }
 
@@ -213,52 +231,113 @@ namespace ParrotsAPI2.Services.Ai
                         var narrativeCharCount = narrative.Length;
                         LogABCDE($"[AskParrots] C. Draft narrative ({narrativeWordCount} words, {narrativeCharCount} chars): {narrative}");
 
-                        var sanitized = await SanitizeNarrativeAsync(narrative, plannedSpots);
+                        var (sanitized, auditJson) = await SanitizeNarrativeAsync(narrative, plannedSpots);
                         var sanitizedWordCount = sanitized.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
                         var sanitizedCharCount = sanitized.Length;
                         LogABCDE($"[AskParrots] E. Final narrative ({sanitizedWordCount} words, {sanitizedCharCount} chars): {sanitized}");
+
+                        var plannedSpotsJson = JsonSerializer.Serialize(plannedSpots.Select(s => new { s.Name, s.Lat, s.Lng, s.Region, s.FallbackLabel }));
+                        await SaveQueryAsync(dto, userId, userPrompt, model, responseJson, narrative, plannedSpotsJson, auditJson, sanitized, inputTokens, outputTokens, cachedInputTokens, (int)sw.ElapsedMilliseconds, true, null);
+
                         return sanitized;
                     }
 
-                    Console.WriteLine($"Gemini response from {model} returned no valid text candidates.");
+                    // Console.WriteLine($"Gemini response from {model} returned no valid text candidates.");
+                    await SaveQueryAsync(dto, userId, userPrompt, model, responseJson, null, null, null, null, inputTokens, outputTokens, cachedInputTokens, (int)sw.ElapsedMilliseconds, false, "No valid candidates");
                     return null;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Console.WriteLine($"Exception calling Gemini API on {model}: {ex.Message}");
+                    // Console.WriteLine($"Exception calling Gemini API on {model}: {ex.Message}");
                 }
             }
 
-            Console.WriteLine("All Gemini models exhausted.");
+            // Console.WriteLine("All Gemini models exhausted.");
             return null;
         }
 
-        private async Task<string> SanitizeNarrativeAsync(string narrative, List<PlannedSpot> spots)
+        private async Task SaveQueryAsync(AiQueryDto dto, string userId, string userPrompt, string model, string? rawResponseJson,
+            string? draftNarrative, string? plannedSpotsJson, string? placesAuditJson, string? finalNarrative,
+            int inputTokens, int outputTokens, int? cachedInputTokens, int durationMs, bool isSuccess, string? errorMessage)
+        {
+            try
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+                var plannedSpotCount = 0;
+                if (!string.IsNullOrEmpty(plannedSpotsJson))
+                {
+                    using var doc = JsonDocument.Parse(plannedSpotsJson);
+                    plannedSpotCount = doc.RootElement.GetArrayLength();
+                }
+
+                db.AiQueries.Add(new AiQueryEntity
+                {
+                    UserId = userId,
+                    UserQuery = userPrompt,
+                    Latitude = dto.Latitude,
+                    Longitude = dto.Longitude,
+                    RadiusKm = double.TryParse(dto.RadiusKm, out var r) ? r : 0,
+                    VehicleType = dto.VehicleType ?? string.Empty,
+                    Duration = dto.Duration ?? string.Empty,
+                    Vibe = dto.Vibe ?? string.Empty,
+                    SpotType = dto.SpotType ?? string.Empty,
+                    ModelUsed = model,
+                    IsSuccess = isSuccess,
+                    ErrorMessage = errorMessage,
+                    DurationMs = durationMs,
+                    InputTokens = inputTokens,
+                    OutputTokens = outputTokens,
+                    CachedInputTokens = cachedInputTokens,
+                    RawAiResponseJson = rawResponseJson,
+                    DraftNarrative = draftNarrative,
+                    PlannedSpotCount = plannedSpotCount,
+                    PlannedSpotsJson = plannedSpotsJson,
+                    PlacesApiAuditJson = placesAuditJson,
+                    FinalSanitizedNarrative = finalNarrative,
+                    CreatedAt = DateTime.UtcNow
+                });
+
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AskParrots] Failed to save AiQuery: {ex.Message}");
+            }
+        }
+
+        private async Task<(string Narrative, string AuditJson)> SanitizeNarrativeAsync(string narrative, List<PlannedSpot> spots)
         {
             if (spots.Count == 0)
-                return narrative;
+                return (narrative, "[]");
 
             var verifyTasks = spots.Select(s => VerifySpotAsync(s.Name, s.Region, CancellationToken.None)).ToArray();
             var results = await Task.WhenAll(verifyTasks);
 
             for (int i = 0; i < spots.Count; i++)
             {
-                if (!results[i])
+                if (!results[i].Exists)
                     narrative = narrative.Replace($"**{spots[i].Name}**", spots[i].FallbackLabel, StringComparison.Ordinal);
             }
 
-            return Regex.Replace(narrative, @"\b(a|an|the)\s+(a|an)\b", "$2", RegexOptions.IgnoreCase);
+            narrative = Regex.Replace(narrative, @"\b(a|an|the)\s+(a|an)\b", "$2", RegexOptions.IgnoreCase);
+
+            var audit = spots.Select((s, i) => new { spotName = s.Name, placeId = results[i].PlaceId });
+            var auditJson = JsonSerializer.Serialize(audit);
+
+            return (narrative, auditJson);
         }
 
-        private async Task<bool> VerifySpotAsync(string spotName, string region, CancellationToken cancellationToken)
+        private async Task<(bool Exists, string? PlaceId)> VerifySpotAsync(string spotName, string region, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(_placesApiKey))
-                return true;
+                return (true, null);
 
             var cacheKey = $"spot_exists_{spotName.Trim().ToLowerInvariant()}_{region.Trim().ToLowerInvariant()}";
 
-            if (_cache.TryGetValue(cacheKey, out bool cachedExists))
-                return cachedExists;
+            if (_cache.TryGetValue(cacheKey, out (bool Exists, string? PlaceId) cached))
+                return cached;
 
             try
             {
@@ -276,20 +355,26 @@ namespace ParrotsAPI2.Services.Ai
                 {
                     var errorJson = await response.Content.ReadAsStringAsync(cancellationToken);
                     LogABCDE($"[AskParrots] D. Places 403 error: {errorJson}");
-                    return true;
+                    return (true, null);
                 }
 
                 var json = await response.Content.ReadAsStringAsync(cancellationToken);
-                var spotExists = json.Contains("\"id\"");
+                using var doc = JsonDocument.Parse(json);
 
-                LogABCDE($"[AskParrots] D. Places check: \"{spotName}, {region}\" → {(spotExists ? "VERIFIED" : "NOT FOUND")}");
+                string? placeId = null;
+                if (doc.RootElement.TryGetProperty("places", out var places) && places.GetArrayLength() > 0)
+                    placeId = places[0].TryGetProperty("id", out var idEl) ? idEl.GetString() : null;
 
-                _cache.Set(cacheKey, spotExists, TimeSpan.FromHours(24));
-                return spotExists;
+                var exists = placeId != null;
+                LogABCDE($"[AskParrots] D. Places check: \"{spotName}, {region}\" → {(exists ? "VERIFIED" : "NOT FOUND")}");
+
+                var result = (exists, placeId);
+                _cache.Set(cacheKey, result, TimeSpan.FromHours(24));
+                return result;
             }
             catch
             {
-                return true;
+                return (true, null);
             }
         }
 
@@ -312,13 +397,13 @@ namespace ParrotsAPI2.Services.Ai
 
             var vibeConfigs = new Dictionary<string, (string Label, string Detail)>(StringComparer.OrdinalIgnoreCase)
             {
-                { "Culture",   ("culture-focused", "cultural sights and history") },
-                { "Food",      ("food-focused", "local food and dining") },
-                { "Nature",    ("nature-focused", "outdoor scenery and nature") },
-                { "Chill",     ("relaxed", "laid-back pace") },
-                { "Adventure", ("adventurous", "off the beaten path") },
-                { "Budget",    ("budget-friendly", "low-cost spots") },
-                { "Scenic",    ("scenic", "landscapes and views") },
+                { "Culture",   ("culture-focused", "cultural sights, historical depth, and heritage") },
+                { "Food",      ("food-focused", "culinary experiences, local dining, and eateries") },
+                { "Nature",    ("nature-focused", "outdoor scenery, green spaces, and natural landscapes") },
+                { "Chill",     ("relaxed", "laid-back, slow-paced atmosphere") },
+                { "Adventure", ("adventurous", "dynamic, off-the-beaten-path exploration") },
+                { "Budget",    ("budget-friendly", "low-cost, high-value stops") },
+                { "Scenic",    ("scenic", "visual aesthetics and viewpoints") },
             };
 
             string vibePart;
@@ -364,10 +449,10 @@ namespace ParrotsAPI2.Services.Ai
 
             var spotDescriptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "Popular Spots",   "popular spots (iconic landmarks and high-profile highlights)" },
-                { "Local Favorites", "local favorites (authentic neighborhood staples favored by locals)" },
-                { "Hidden Gems",     "hidden gems (lesser-known, off-the-beaten-path secret spots)" },
-                { "Mixed Picks",     "mixed picks (a curated mix of popular spots, local favorites, and hidden gems)" },
+                { "Popular Spots",   "popular spots (renowned, high-profile highlights relative to the chosen theme)" },
+                { "Local Favorites", "local favorites (authentic neighborhood staples favored by locals relative to the chosen theme)" },
+                { "Hidden Gems",     "hidden gems (lesser-known, off-the-beaten-path secret spots relative to the chosen theme)" },
+                { "Mixed Picks",     "mixed picks (a curated mix of popular spots, local favorites, and hidden gems relative to the chosen theme)" },
             };
 
             var spotPart = !string.IsNullOrWhiteSpace(dto.SpotType) && spotDescriptions.TryGetValue(dto.SpotType, out var spotDesc)

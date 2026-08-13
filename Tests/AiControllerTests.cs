@@ -20,7 +20,7 @@ public class AiControllerTests
         string userId = "user-1")
     {
         var aiService = new Mock<IAiService>();
-        aiService.Setup(s => s.AskAsync(It.IsAny<AiQueryDto>()))
+        aiService.Setup(s => s.AskAsync(It.IsAny<AiQueryDto>(), It.IsAny<string>()))
                  .ReturnsAsync(geminiResult);
 
         var userService = new Mock<IUserService>();
@@ -126,7 +126,7 @@ public class AiControllerTests
     public async Task Does_not_deduct_coin_when_gemini_fails()
     {
         var aiService = new Mock<IAiService>();
-        aiService.Setup(s => s.AskAsync(It.IsAny<AiQueryDto>())).ReturnsAsync((string?)null);
+        aiService.Setup(s => s.AskAsync(It.IsAny<AiQueryDto>(), It.IsAny<string>())).ReturnsAsync((string?)null);
 
         var userService = new Mock<IUserService>();
 
