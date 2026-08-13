@@ -32,7 +32,7 @@ namespace ParrotsAPI2.Controllers
             if (!CheckRateLimit(userId))
                 return StatusCode(429, new { message = "You've reached your limit of 20 voyages per hour. Take a short break and try again later!" });
 
-            var result = await _aiService.AskAsync(dto);
+            var result = await _aiService.AskAsync(dto, userId);
             if (string.IsNullOrEmpty(result) || !result.TrimStart().StartsWith("[["))
                 return StatusCode(500, new { message = "Our travel companion is resting right now. Please try again in a moment." });
 

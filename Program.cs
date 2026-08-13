@@ -147,6 +147,7 @@ builder.Services.AddSingleton<ConversationPageTracker>();
 builder.Services.AddHostedService<ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService>();
 builder.Services.AddHostedService<VehicleVoyageCleanupService>();
 builder.Services.AddHostedService<GroupCleanupService>();
+builder.Services.AddHostedService<AiQueryCleanupService>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddHttpClient<ParrotsAPI2.Services.Ai.IAiService, ParrotsAPI2.Services.Ai.AiService>();
 builder.Services.AddHttpClient("places");
