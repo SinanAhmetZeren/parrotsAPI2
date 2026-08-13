@@ -60,7 +60,7 @@ namespace ParrotsAPI2.Services.Ai
             "    Wrap in **...** ONLY proper destinations a traveler would physically enter to spend time or consume something — such as restaurants, cafés, museums, parks, or markets. NEVER wrap infrastructure, transit stations, intersections, or bridges (e.g., do not wrap Behmstraßenbrücke). Do not wrap street or avenue names when used purely for orientation.\n" +
 
             "    CRITICAL ARTICLE & ADJECTIVE RULE FOR BOLD SPOTS:\n" +
-            "    1. NEVER place articles ('a', 'an', 'the') or descriptive pre-modifiers ('famous', 'historic', 'popular', 'iconic') immediately before a **Spot Name**.\n" +
+            "    1. NEVER precede a bold spot name (wrapped in **...**) with articles ('a', 'an', 'the') or descriptive adjectives/pre-modifiers ('famous', 'historic', 'popular', 'iconic', 'legendary', 'traditional').\n" +
             "    2. Always write bold spots so the proper noun stands alone naturally. Write 'stop at **Çiya Sofrası** for...', NEVER 'stop at the **Çiya Sofrası**' or 'visit the famous **Çiya Sofrası**'.\n" +
             "    3. Bold tags MUST contain strictly the venue name itself (e.g., **Çiya Sofrası**), never generic words or articles.\n\n" +
 
