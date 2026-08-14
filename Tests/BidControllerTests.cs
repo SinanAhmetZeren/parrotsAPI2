@@ -45,7 +45,7 @@ public class BidControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (ownerToken, ownerId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (bidderToken, bidderId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(ownerId, 500);
+        _factory.GiveCrackers(ownerId, 500);
         var voyageId = await CreateConfirmedVoyageAsync(ownerToken, ownerId);
 
         var authedClient = _factory.CreateClient();
@@ -65,7 +65,7 @@ public class BidControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (bidderToken, bidderId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (otherToken, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(ownerId, 500);
+        _factory.GiveCrackers(ownerId, 500);
         var voyageId = await CreateConfirmedVoyageAsync(ownerToken, ownerId);
         var bidId = await CreateBidAsync(bidderToken, bidderId, voyageId);
 
@@ -83,7 +83,7 @@ public class BidControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (ownerToken, ownerId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (bidderToken, bidderId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(ownerId, 500);
+        _factory.GiveCrackers(ownerId, 500);
         var voyageId = await CreateConfirmedVoyageAsync(ownerToken, ownerId);
         var bidId = await CreateBidAsync(bidderToken, bidderId, voyageId);
 
@@ -103,7 +103,7 @@ public class BidControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (ownerToken, ownerId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (bidderToken, bidderId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(ownerId, 500);
+        _factory.GiveCrackers(ownerId, 500);
         var voyageId = await CreateConfirmedVoyageAsync(ownerToken, ownerId);
         var bidId = await CreateBidAsync(bidderToken, bidderId, voyageId);
 
@@ -120,7 +120,7 @@ public class BidControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (ownerToken, ownerId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (bidderToken, bidderId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(ownerId, 500);
+        _factory.GiveCrackers(ownerId, 500);
         var voyageId = await CreateConfirmedVoyageAsync(ownerToken, ownerId);
         var bidId = await CreateBidAsync(bidderToken, bidderId, voyageId);
 
@@ -139,7 +139,7 @@ public class BidControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (ownerToken, ownerId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (bidderToken, bidderId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(ownerId, 500);
+        _factory.GiveCrackers(ownerId, 500);
         var voyageId = await CreateConfirmedVoyageAsync(ownerToken, ownerId);
         var bidId = await CreateBidAsync(bidderToken, bidderId, voyageId);
 
@@ -156,7 +156,7 @@ public class BidControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (ownerToken, ownerId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (bidderToken, bidderId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(ownerId, 500);
+        _factory.GiveCrackers(ownerId, 500);
         var voyageId = await CreateConfirmedVoyageAsync(ownerToken, ownerId);
         var bidId = await CreateBidAsync(bidderToken, bidderId, voyageId);
 

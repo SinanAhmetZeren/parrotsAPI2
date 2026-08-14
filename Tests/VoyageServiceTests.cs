@@ -51,7 +51,7 @@ public class VoyageServiceTests
     }
 
     [Fact]
-    public async Task AddVoyage_NotEnoughCoins_ReturnsFailure()
+    public async Task AddVoyage_NotEnoughCrackers_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
         var user = new AppUser { Id = "u1", ParrotCrackerBalance = 0 };
@@ -65,11 +65,11 @@ public class VoyageServiceTests
         var result = await service.AddVoyage(dto, "u1");
 
         Assert.False(result.Success);
-        Assert.Equal("Not enough ParrotCoins.", result.Message);
+        Assert.Equal("Not enough ParrotCrackers.", result.Message);
     }
 
     [Fact]
-    public async Task AddVoyage_HappyPath_DeductsCoinsAndCreatesTransaction()
+    public async Task AddVoyage_HappyPath_DeductsCrackersAndCreatesTransaction()
     {
         var context = TestDbContextFactory.Create();
         int daysAhead = 5;
@@ -88,7 +88,7 @@ public class VoyageServiceTests
         Assert.NotNull(result.Data);
 
         var updatedUser = context.Users.First();
-        Assert.True(updatedUser.ParrotCrackerBalance < 100); // coins were deducted
+        Assert.True(updatedUser.ParrotCrackerBalance < 100); // crackers were deducted
 
         Assert.Equal(1, context.CrackerTransactions.Count());
         var tx = context.CrackerTransactions.First();

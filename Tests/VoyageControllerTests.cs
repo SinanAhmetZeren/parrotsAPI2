@@ -53,7 +53,7 @@ public class VoyageControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        _factory.GiveCoins(userId, 500);
+        _factory.GiveCrackers(userId, 500);
 
         var response = await authedClient.PostAsync("/api/Voyage/AddVoyage", BuildVoyageForm("My Voyage", _factory.GetSeededVehicleId(), userId));
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -67,7 +67,7 @@ public class VoyageControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (token1, userId1) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (token2, userId2) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(userId1, 500);
+        _factory.GiveCrackers(userId1, 500);
         var voyageId = await CreateUnconfirmedVoyageAsync(token1, userId1);
 
         var authedClient = _factory.CreateClient();
@@ -81,7 +81,7 @@ public class VoyageControllerTests : IClassFixture<ParrotsWebApplicationFactory>
     public async Task ConfirmVoyage_Owner_Returns200()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveCoins(userId, 500);
+        _factory.GiveCrackers(userId, 500);
         var voyageId = await CreateUnconfirmedVoyageAsync(token, userId);
 
         var authedClient = _factory.CreateClient();
@@ -95,7 +95,7 @@ public class VoyageControllerTests : IClassFixture<ParrotsWebApplicationFactory>
     public async Task ConfirmVoyage_AlreadyConfirmed_ReturnsBadRequest()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveCoins(userId, 500);
+        _factory.GiveCrackers(userId, 500);
         var voyageId = await CreateUnconfirmedVoyageAsync(token, userId);
 
         var authedClient = _factory.CreateClient();
@@ -115,7 +115,7 @@ public class VoyageControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var (token1, userId1) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (token2, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(userId1, 500);
+        _factory.GiveCrackers(userId1, 500);
         var voyageId = await CreateVoyageAsync(token1, userId1);
 
         var authedClient = _factory.CreateClient();
@@ -129,7 +129,7 @@ public class VoyageControllerTests : IClassFixture<ParrotsWebApplicationFactory>
     public async Task DeleteVoyage_Owner_Returns200()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveCoins(userId, 500);
+        _factory.GiveCrackers(userId, 500);
         var voyageId = await CreateVoyageAsync(token, userId);
 
         var authedClient = _factory.CreateClient();
