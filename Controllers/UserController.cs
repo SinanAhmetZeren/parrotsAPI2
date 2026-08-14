@@ -186,7 +186,6 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet("searchUsers/{username}")]
         public async Task<ActionResult<ServiceResponse<List<UserDto>>>> GetUsersByUsername(string username)
         {
