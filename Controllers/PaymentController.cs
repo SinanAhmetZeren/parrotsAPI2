@@ -10,10 +10,10 @@ namespace parrotsAPI2.Controllers;
 [Route("api/payment")]
 public class PaymentController : ControllerBase
 {
-    private static Dictionary<string, (int Coins, decimal Eur)> BuildPriceMap()
+    private static Dictionary<string, (int Crackers, decimal Eur)> BuildPriceMap()
     {
         var map = new Dictionary<string, (int, decimal)>();
-        void Add(string? key, int coins, decimal eur) { if (!string.IsNullOrEmpty(key)) map[key] = (coins, eur); }
+        void Add(string? key, int crackers, decimal eur) { if (!string.IsNullOrEmpty(key)) map[key] = (crackers, eur); }
         Add(Environment.GetEnvironmentVariable("Paddle__PriceSandboxNest"),  100, 2.99m);
         Add(Environment.GetEnvironmentVariable("Paddle__PriceLiveNest"),     100, 2.99m);
         Add(Environment.GetEnvironmentVariable("Paddle__PriceLiveFlock"),    250, 5.99m);
@@ -21,7 +21,7 @@ public class PaymentController : ControllerBase
         return map;
     }
 
-    private static readonly Dictionary<string, (int Coins, decimal Eur)> _priceMap = BuildPriceMap();
+    private static readonly Dictionary<string, (int Crackers, decimal Eur)> _priceMap = BuildPriceMap();
 
     private readonly DataContext _context;
     private readonly IConfiguration _config;
@@ -71,7 +71,7 @@ public class PaymentController : ControllerBase
             var transactionId = data.TryGetProperty("id", out var tid) ? tid.GetString() ?? "" : "";
             if (string.IsNullOrEmpty(transactionId)) return Ok();
 
-            var alreadyProcessed = await _context.CoinPurchases.AnyAsync(p => p.PaymentProviderId == transactionId);
+            var alreadyProcessed = await _context.CrackerPurchases.AnyAsync(p => p.PaymentProviderId == transactionId);
             if (alreadyProcessed) return Ok();
 
             if (!data.TryGetProperty("custom_data", out var customData) ||
@@ -86,7 +86,7 @@ public class PaymentController : ControllerBase
 
             if (!data.TryGetProperty("items", out var items) || items.GetArrayLength() == 0) return Ok();
 
-            int totalCoins = 0;
+            int totalCrackers = 0;
             decimal totalEur = 0;
 
             foreach (var item in items.EnumerateArray())
@@ -98,12 +98,12 @@ public class PaymentController : ControllerBase
 
                 if (_priceMap.TryGetValue(priceId, out var tier))
                 {
-                    totalCoins += tier.Coins * quantity;
+                    totalCrackers += tier.Crackers * quantity;
                     totalEur += tier.Eur * quantity;
                 }
             }
 
-            if (totalCoins == 0)
+            if (totalCrackers == 0)
             {
                 _logger.LogWarning("No recognized price IDs found in transaction {TransactionId}", transactionId);
                 return Ok();
@@ -116,12 +116,12 @@ public class PaymentController : ControllerBase
                 return Ok();
             }
 
-            user.ParrotCoinBalance += totalCoins;
+            user.ParrotCrackerBalance += totalCrackers;
 
-            _context.CoinPurchases.Add(new CoinPurchase
+            _context.CrackerPurchases.Add(new CrackerPurchase
             {
                 UserId = userId,
-                CoinsAmount = totalCoins,
+                CrackersAmount = totalCrackers,
                 EurAmount = totalEur,
                 Status = "completed",
                 PaymentProviderId = transactionId,
@@ -131,7 +131,7 @@ public class PaymentController : ControllerBase
             try
             {
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Credited {Coins} coins to user {UserId} via transaction {TransactionId}", totalCoins, userId, transactionId);
+                _logger.LogInformation("Credited {Crackers} crackers to user {UserId} via transaction {TransactionId}", totalCrackers, userId, transactionId);
             }
             catch (DbUpdateException ex) when (
                 ex.InnerException?.Message.Contains("duplicate key") == true ||

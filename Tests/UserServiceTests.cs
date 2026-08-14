@@ -18,130 +18,130 @@ public class UserServiceTests
         return new UserService(mapper, context, logger, blob);
     }
 
-    // --- PurchaseCoins ---
+    // --- PurchaseCrackers ---
 
     [Fact]
-    public async Task PurchaseCoins_UserNotFound_ReturnsFailure()
+    public async Task PurchaseCrackers_UserNotFound_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
         var service = CreateService(context);
 
-        var result = await service.PurchaseCoins("nonexistent", 100, 1.0m, "pay_1");
+        var result = await service.PurchaseCrackers("nonexistent", 100, 1.0m, "pay_1");
 
         Assert.False(result.Success);
         Assert.Equal("User not found.", result.Message);
     }
 
     [Fact]
-    public async Task PurchaseCoins_AddsCoinsAndCreatesRecord()
+    public async Task PurchaseCrackers_AddsCoinsAndCreatesRecord()
     {
         var context = TestDbContextFactory.Create();
-        var user = new AppUser { Id = "u1", ParrotCoinBalance = 50 };
+        var user = new AppUser { Id = "u1", ParrotCrackerBalance = 50 };
         context.Users.Add(user);
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
-        var result = await service.PurchaseCoins("u1", 100, 1.5m, "pay_abc");
+        var result = await service.PurchaseCrackers("u1", 100, 1.5m, "pay_abc");
 
         Assert.True(result.Success);
         Assert.Equal(150, result.Data);
-        Assert.Equal(1, context.CoinPurchases.Count());
-        var purchase = context.CoinPurchases.First();
-        Assert.Equal(100, purchase.CoinsAmount);
+        Assert.Equal(1, context.CrackerPurchases.Count());
+        var purchase = context.CrackerPurchases.First();
+        Assert.Equal(100, purchase.CrackersAmount);
         Assert.Equal(1.5m, purchase.EurAmount);
         Assert.Equal("pay_abc", purchase.PaymentProviderId);
     }
 
-    // --- ClaimFreeCoins ---
+    // --- ClaimFreeCrackers ---
 
     [Fact]
-    public async Task ClaimFreeCoins_UserNotFound_ReturnsFailure()
+    public async Task ClaimFreeCrackers_UserNotFound_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
         var service = CreateService(context);
 
-        var result = await service.ClaimFreeCoins("nonexistent");
+        var result = await service.ClaimFreeCrackers("nonexistent");
 
         Assert.False(result.Success);
     }
 
     [Fact]
-    public async Task ClaimFreeCoins_BalanceAbove500_ReturnsFailure()
+    public async Task ClaimFreeCrackers_BalanceAbove500_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
-        context.Users.Add(new AppUser { Id = "u1", ParrotCoinBalance = 200 });
+        context.Users.Add(new AppUser { Id = "u1", ParrotCrackerBalance = 200 });
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
-        var result = await service.ClaimFreeCoins("u1");
+        var result = await service.ClaimFreeCrackers("u1");
 
         Assert.False(result.Success);
         Assert.Contains("200", result.Message);
     }
 
     [Fact]
-    public async Task ClaimFreeCoins_LowBalance_Adds100CoinsAndCreatesRecord()
+    public async Task ClaimFreeCrackers_LowBalance_Adds100CoinsAndCreatesRecord()
     {
         var context = TestDbContextFactory.Create();
-        context.Users.Add(new AppUser { Id = "u1", ParrotCoinBalance = 0 });
+        context.Users.Add(new AppUser { Id = "u1", ParrotCrackerBalance = 0 });
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
-        var result = await service.ClaimFreeCoins("u1");
+        var result = await service.ClaimFreeCrackers("u1");
 
         Assert.True(result.Success);
         Assert.Equal(100, result.Data);
-        Assert.Equal(1, context.CoinPurchases.Count());
-        Assert.StartsWith("free_claim_", context.CoinPurchases.First().PaymentProviderId);
+        Assert.Equal(1, context.CrackerPurchases.Count());
+        Assert.StartsWith("free_claim_", context.CrackerPurchases.First().PaymentProviderId);
     }
 
-    // --- SendParrotCoins ---
+    // --- SendParrotCrackers ---
 
     [Fact]
-    public async Task SendParrotCoins_UserNotFound_ReturnsFailure()
+    public async Task SendParrotCrackers_UserNotFound_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
-        context.Users.Add(new AppUser { Id = "receiver", ParrotCoinBalance = 0 });
+        context.Users.Add(new AppUser { Id = "receiver", ParrotCrackerBalance = 0 });
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
-        var result = await service.SendParrotCoins("nonexistent", "receiver", 10);
+        var result = await service.SendParrotCrackers("nonexistent", "receiver", 10);
 
         Assert.False(result.Success);
     }
 
     [Fact]
-    public async Task SendParrotCoins_InsufficientBalance_ReturnsFailure()
+    public async Task SendParrotCrackers_InsufficientBalance_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
-        context.Users.Add(new AppUser { Id = "u1", ParrotCoinBalance = 5 });
-        context.Users.Add(new AppUser { Id = "u2", ParrotCoinBalance = 0 });
+        context.Users.Add(new AppUser { Id = "u1", ParrotCrackerBalance = 5 });
+        context.Users.Add(new AppUser { Id = "u2", ParrotCrackerBalance = 0 });
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
-        var result = await service.SendParrotCoins("u1", "u2", 100);
+        var result = await service.SendParrotCrackers("u1", "u2", 100);
 
         Assert.False(result.Success);
         Assert.Contains("Insufficient", result.Message);
     }
 
     [Fact]
-    public async Task SendParrotCoins_ValidTransfer_UpdatesBalancesAndCreatesTransactions()
+    public async Task SendParrotCrackers_ValidTransfer_UpdatesBalancesAndCreatesTransactions()
     {
         var context = TestDbContextFactory.Create();
-        context.Users.Add(new AppUser { Id = "u1", UserName = "sender", ParrotCoinBalance = 200 });
-        context.Users.Add(new AppUser { Id = "u2", UserName = "receiver", ParrotCoinBalance = 0 });
+        context.Users.Add(new AppUser { Id = "u1", UserName = "sender", ParrotCrackerBalance = 200 });
+        context.Users.Add(new AppUser { Id = "u2", UserName = "receiver", ParrotCrackerBalance = 0 });
         await context.SaveChangesAsync();
 
         var service = CreateService(context);
-        var result = await service.SendParrotCoins("u1", "u2", 50);
+        var result = await service.SendParrotCrackers("u1", "u2", 50);
 
         Assert.True(result.Success);
         Assert.Equal(150, result.Data);
 
         context.ChangeTracker.Clear();
-        Assert.Equal(150, context.Users.Find("u1")!.ParrotCoinBalance);
-        Assert.Equal(50, context.Users.Find("u2")!.ParrotCoinBalance);
-        Assert.Equal(2, context.CoinTransactions.Count());
+        Assert.Equal(150, context.Users.Find("u1")!.ParrotCrackerBalance);
+        Assert.Equal(50, context.Users.Find("u2")!.ParrotCrackerBalance);
+        Assert.Equal(2, context.CrackerTransactions.Count());
     }
 }

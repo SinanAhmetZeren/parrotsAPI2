@@ -38,7 +38,7 @@ public class VoyageServiceTests
     public async Task AddVoyage_VehicleNotFound_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
-        var user = new AppUser { Id = "u1", ParrotCoinBalance = 100 };
+        var user = new AppUser { Id = "u1", ParrotCrackerBalance = 100 };
         context.Users.Add(user);
         await context.SaveChangesAsync();
 
@@ -54,7 +54,7 @@ public class VoyageServiceTests
     public async Task AddVoyage_NotEnoughCoins_ReturnsFailure()
     {
         var context = TestDbContextFactory.Create();
-        var user = new AppUser { Id = "u1", ParrotCoinBalance = 0 };
+        var user = new AppUser { Id = "u1", ParrotCrackerBalance = 0 };
         var vehicle = new Vehicle { Id = 1, Name = "Sailboat" };
         context.Users.Add(user);
         context.Vehicles.Add(vehicle);
@@ -73,7 +73,7 @@ public class VoyageServiceTests
     {
         var context = TestDbContextFactory.Create();
         int daysAhead = 5;
-        var user = new AppUser { Id = "u1", ParrotCoinBalance = 100 };
+        var user = new AppUser { Id = "u1", ParrotCrackerBalance = 100 };
         var vehicle = new Vehicle { Id = 1, Name = "Sailboat" };
         context.Users.Add(user);
         context.Vehicles.Add(vehicle);
@@ -88,10 +88,10 @@ public class VoyageServiceTests
         Assert.NotNull(result.Data);
 
         var updatedUser = context.Users.First();
-        Assert.True(updatedUser.ParrotCoinBalance < 100); // coins were deducted
+        Assert.True(updatedUser.ParrotCrackerBalance < 100); // coins were deducted
 
-        Assert.Equal(1, context.CoinTransactions.Count());
-        var tx = context.CoinTransactions.First();
+        Assert.Equal(1, context.CrackerTransactions.Count());
+        var tx = context.CrackerTransactions.First();
         Assert.Equal("voyage_cost", tx.Type);
         Assert.True(tx.Amount <= 0);
     }

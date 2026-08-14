@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParrotsAPI2.Models
 {
-    public class CoinPurchase
+    [Table("CoinPurchases")]
+    public class CrackerPurchase
     {
         [Key]
         public int Id { get; set; }
@@ -18,17 +19,17 @@ namespace ParrotsAPI2.Models
 
         [Required]
         [Column(TypeName = "decimal(10,2)")]
-        public decimal EurAmount { get; set; }  // e.g., 10.00
+        public decimal EurAmount { get; set; }
 
         [Required]
-        public int CoinsAmount { get; set; }  // e.g., 100000
+        public int CrackersAmount { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string? Status { get; set; } // "pending", "completed", "failed"
+        public string? Status { get; set; }
 
         [MaxLength(100)]
-        public string? PaymentProviderId { get; set; } // Stripe / PayPal ID
+        public string? PaymentProviderId { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

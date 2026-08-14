@@ -216,7 +216,7 @@ public class ParrotsWebApplicationFactory : WebApplicationFactory<Program>
         var user = db.Users.Find(userId);
         if (user != null)
         {
-            user.ParrotCoinBalance = amount;
+            user.ParrotCrackerBalance = amount;
             db.SaveChanges();
         }
     }

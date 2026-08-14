@@ -38,9 +38,9 @@ namespace ParrotsAPI2.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? EncryptionKey { get; set; }
         public string PublicId { get; set; } = string.Empty;
-        public int ParrotCoinBalance { get; set; }
-        public ICollection<CoinPurchase>? CoinPurchases { get; set; }
-        public ICollection<CoinTransaction>? CoinTransactions { get; set; }
+        public int ParrotCrackerBalance { get; set; }
+        public ICollection<CrackerPurchase>? CrackerPurchases { get; set; }
+        public ICollection<CrackerTransaction>? CrackerTransactions { get; set; }
         public bool IsAdmin { get; set; } = false;
         public DateTime? TermsAcceptedAt { get; set; }
         public string? TermsVersion { get; set; }

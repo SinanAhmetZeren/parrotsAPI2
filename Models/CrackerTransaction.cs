@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParrotsAPI2.Models
 {
-    public class CoinTransaction
+    [Table("CoinTransactions")]
+    public class CrackerTransaction
     {
         [Key]
         public int Id { get; set; }
@@ -16,11 +17,11 @@ namespace ParrotsAPI2.Models
         public AppUser User { get; set; }
 
         [Required]
-        public int Amount { get; set; }  // Positive for purchase, negative for voyage_cost
+        public int Amount { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string? Type { get; set; }  // "purchase" or "voyage_cost"
+        public string? Type { get; set; }
 
         public int? VoyageId { get; set; }
         public string? Description { get; set; }

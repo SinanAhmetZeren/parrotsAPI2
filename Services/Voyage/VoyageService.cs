@@ -143,15 +143,15 @@ namespace ParrotsAPI2.Services.Voyage
                         return;
                     }
 
-                    int requiredCoins = (newVoyage.EndDate - DateTime.UtcNow).Days;
-                    if (requiredCoins < 0)
-                        requiredCoins = 0;
+                    int requiredCrackers = (newVoyage.EndDate - DateTime.UtcNow).Days;
+                    if (requiredCrackers < 0)
+                        requiredCrackers = 0;
 
-                    // ❌ Not enough coins
-                    if (user.ParrotCoinBalance < requiredCoins)
+                    // ❌ Not enough crackers
+                    if (user.ParrotCrackerBalance < requiredCrackers)
                     {
                         serviceResponse.Success = false;
-                        serviceResponse.Message = "Not enough ParrotCoins.";
+                        serviceResponse.Message = "Not enough ParrotCrackers.";
                         return;
                     }
 
@@ -178,20 +178,20 @@ namespace ParrotsAPI2.Services.Voyage
                     _context.Voyages.Add(voyage);
                     await _context.SaveChangesAsync(); // Voyage.Id is now available
 
-                    // 💰 Deduct coins
-                    user.ParrotCoinBalance -= requiredCoins;
+                    // 💰 Deduct crackers
+                    user.ParrotCrackerBalance -= requiredCrackers;
 
                     // 🧾 Create ledger entry
-                    var coinTransaction = new CoinTransaction
+                    var crackerTransaction = new CrackerTransaction
                     {
                         UserId = user.Id,
-                        Amount = -requiredCoins,
+                        Amount = -requiredCrackers,
                         Type = "voyage_cost",
                         Description = $"Created Voyage {voyage.Name}, (Id: {voyage.Id}) ",
                         VoyageId = voyage.Id, // optional: link to voyage
                         CreatedAt = DateTime.UtcNow
                     };
-                    _context.CoinTransactions.Add(coinTransaction);
+                    _context.CrackerTransactions.Add(crackerTransaction);
 
                     // Save everything
                     await _context.SaveChangesAsync();
