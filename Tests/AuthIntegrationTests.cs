@@ -209,7 +209,7 @@ public class ParrotsWebApplicationFactory : WebApplicationFactory<Program>
         return client;
     }
 
-    public void GiveCoins(string userId, int amount)
+    public void GiveCrackers(string userId, int amount)
     {
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<DataContext>();

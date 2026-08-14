@@ -14,8 +14,8 @@ public class AiControllerTests
 {
     private static AiController CreateController(
         string? geminiResult,
-        bool coinDeductSuccess = true,
-        string coinMessage = "OK",
+        bool crackerDeductSuccess = true,
+        string crackerMessage = "OK",
         int remainingBalance = 5,
         string userId = "user-1")
     {
@@ -27,8 +27,8 @@ public class AiControllerTests
         userService.Setup(s => s.DeductCrackerForAsk(It.IsAny<string>()))
                    .ReturnsAsync(new ServiceResponse<int>
                    {
-                       Success = coinDeductSuccess,
-                       Message = coinMessage,
+                       Success = crackerDeductSuccess,
+                       Message = crackerMessage,
                        Data = remainingBalance
                    });
 
@@ -91,12 +91,12 @@ public class AiControllerTests
     }
 
     [Fact]
-    public async Task Returns_402_when_coin_deduction_fails()
+    public async Task Returns_402_when_cracker_deduction_fails()
     {
         var controller = CreateController(
             "[[City, District]] narrative",
-            coinDeductSuccess: false,
-            coinMessage: "Insufficient coins");
+            crackerDeductSuccess: false,
+            crackerMessage: "Insufficient crackers");
 
         var result = await controller.Ask(MakeDto()) as ObjectResult;
 
@@ -123,7 +123,7 @@ public class AiControllerTests
     }
 
     [Fact]
-    public async Task Does_not_deduct_coin_when_gemini_fails()
+    public async Task Does_not_deduct_cracker_when_gemini_fails()
     {
         var aiService = new Mock<IAiService>();
         aiService.Setup(s => s.AskAsync(It.IsAny<AiQueryDto>(), It.IsAny<string>())).ReturnsAsync((string?)null);

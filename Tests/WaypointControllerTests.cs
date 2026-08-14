@@ -32,7 +32,7 @@ public class WaypointControllerTests : IClassFixture<ParrotsWebApplicationFactor
     {
         var (token1, userId1) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (token2, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveCoins(userId1, 500);
+        _factory.GiveCrackers(userId1, 500);
         var voyageId = await CreateVoyageAsync(token1, userId1);
 
         var authedClient = _factory.CreateClient();
@@ -46,7 +46,7 @@ public class WaypointControllerTests : IClassFixture<ParrotsWebApplicationFactor
     public async Task AddWaypointNoImage_Owner_Returns200()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveCoins(userId, 500);
+        _factory.GiveCrackers(userId, 500);
         var voyageId = await CreateVoyageAsync(token, userId);
 
         var authedClient = _factory.CreateClient();
@@ -63,7 +63,7 @@ public class WaypointControllerTests : IClassFixture<ParrotsWebApplicationFactor
     {
         var (token1, userId1) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (token2, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveCoins(userId1, 500);
+        _factory.GiveCrackers(userId1, 500);
         var voyageId = await CreateVoyageAsync(token1, userId1);
         var waypointId = await CreateWaypointAsync(token1, voyageId);
 
@@ -78,7 +78,7 @@ public class WaypointControllerTests : IClassFixture<ParrotsWebApplicationFactor
     public async Task DeleteWaypoint_Owner_Returns200()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
-        _factory.GiveCoins(userId, 500);
+        _factory.GiveCrackers(userId, 500);
         var voyageId = await CreateVoyageAsync(token, userId);
         var waypointId = await CreateWaypointAsync(token, voyageId);
 

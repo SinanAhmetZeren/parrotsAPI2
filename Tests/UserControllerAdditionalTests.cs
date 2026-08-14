@@ -73,33 +73,33 @@ public class UserControllerAdditionalTests : IClassFixture<ParrotsWebApplication
     // --- PurchaseCoins ---
 
     [Fact]
-    public async Task PurchaseCoins_WithoutToken_Returns401()
+    public async Task PurchaseCrackers_WithoutToken_Returns401()
     {
-        var response = await _client.PostAsJsonAsync("/api/User/PurchaseCoins", new { });
+        var response = await _client.PostAsJsonAsync("/api/User/PurchaseCrackers", new { });
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
-    public async Task PurchaseCoins_WrongUser_Returns403()
+    public async Task PurchaseCrackers_WrongUser_Returns403()
     {
         var (token, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var payload = new { UserId = "someone-else", Coins = 100, EurAmount = 1.0, PaymentProviderId = "pay_test" };
-        var response = await authedClient.PostAsJsonAsync("/api/User/PurchaseCoins", payload);
+        var payload = new { UserId = "someone-else", Crackers = 100, EurAmount = 1.0, PaymentProviderId = "pay_test" };
+        var response = await authedClient.PostAsJsonAsync("/api/User/PurchaseCrackers", payload);
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Fact]
-    public async Task PurchaseCoins_OwnUser_Returns200()
+    public async Task PurchaseCrackers_OwnUser_Returns200()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var payload = new { UserId = userId, Coins = 100, EurAmount = 1.0, PaymentProviderId = $"pay_{Guid.NewGuid():N}" };
-        var response = await authedClient.PostAsJsonAsync("/api/User/PurchaseCoins", payload);
+        var payload = new { UserId = userId, Crackers = 100, EurAmount = 1.0, PaymentProviderId = $"pay_{Guid.NewGuid():N}" };
+        var response = await authedClient.PostAsJsonAsync("/api/User/PurchaseCrackers", payload);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }

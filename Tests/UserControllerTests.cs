@@ -69,27 +69,27 @@ public class UserControllerTests : IClassFixture<ParrotsWebApplicationFactory>
     // --- ClaimFreeCoins ---
 
     [Fact]
-    public async Task ClaimFreeCoins_WithoutToken_Returns401()
+    public async Task ClaimFreeCrackers_WithoutToken_Returns401()
     {
-        var response = await _client.PostAsync("/api/User/ClaimFreeCoins", null);
+        var response = await _client.PostAsync("/api/User/ClaimFreeCrackers", null);
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
-    public async Task ClaimFreeCoins_WithToken_Returns200()
+    public async Task ClaimFreeCrackers_WithToken_Returns200()
     {
         var (token, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var response = await authedClient.PostAsync("/api/User/ClaimFreeCoins", null);
+        var response = await authedClient.PostAsync("/api/User/ClaimFreeCrackers", null);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     // --- SendParrotCoins ---
 
     [Fact]
-    public async Task SendParrotCoins_InsufficientBalance_ReturnsBadRequest()
+    public async Task SendParrotCrackers_InsufficientBalance_ReturnsBadRequest()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (_, receiverId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
@@ -97,13 +97,13 @@ public class UserControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var payload = new { UserId = userId, ReceiverId = receiverId, Coins = 99999 };
-        var response = await authedClient.PostAsJsonAsync("/api/User/SendParrotCoins", payload);
+        var payload = new { UserId = userId, ReceiverId = receiverId, Crackers = 99999 };
+        var response = await authedClient.PostAsJsonAsync("/api/User/SendParrotCrackers", payload);
         Assert.NotEqual(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
-    public async Task SendParrotCoins_WrongUser_Returns403()
+    public async Task SendParrotCrackers_WrongUser_Returns403()
     {
         var (token, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (_, receiverId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
@@ -111,48 +111,48 @@ public class UserControllerTests : IClassFixture<ParrotsWebApplicationFactory>
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var payload = new { UserId = "someone-else", ReceiverId = receiverId, Coins = 10 };
-        var response = await authedClient.PostAsJsonAsync("/api/User/SendParrotCoins", payload);
+        var payload = new { UserId = "someone-else", ReceiverId = receiverId, Crackers = 10 };
+        var response = await authedClient.PostAsJsonAsync("/api/User/SendParrotCrackers", payload);
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Fact]
-    public async Task SendParrotCoins_WithSufficientBalance_Returns200()
+    public async Task SendParrotCrackers_WithSufficientBalance_Returns200()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var (_, receiverId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
 
-        _factory.GiveCoins(userId, 100);
+        _factory.GiveCrackers(userId, 100);
 
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var payload = new { UserId = userId, ReceiverId = receiverId, Coins = 10 };
-        var response = await authedClient.PostAsJsonAsync("/api/User/SendParrotCoins", payload);
+        var payload = new { UserId = userId, ReceiverId = receiverId, Crackers = 10 };
+        var response = await authedClient.PostAsJsonAsync("/api/User/SendParrotCrackers", payload);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     // --- ParrotCoinBalance ---
 
     [Fact]
-    public async Task ParrotCoinBalance_OtherUser_Returns403()
+    public async Task ParrotCrackerBalance_OtherUser_Returns403()
     {
         var (token, _) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var response = await authedClient.GetAsync("/api/User/parrotCoinBalance/someone-else");
+        var response = await authedClient.GetAsync("/api/User/parrotCrackerBalance/someone-else");
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Fact]
-    public async Task ParrotCoinBalance_OwnUser_Returns200()
+    public async Task ParrotCrackerBalance_OwnUser_Returns200()
     {
         var (token, userId) = await ApiTestHelper.CreateConfirmedUserAsync(_client, _factory);
         var authedClient = _factory.CreateClient();
         ApiTestHelper.SetBearer(authedClient, token);
 
-        var response = await authedClient.GetAsync($"/api/User/parrotCoinBalance/{userId}");
+        var response = await authedClient.GetAsync($"/api/User/parrotCrackerBalance/{userId}");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }
