@@ -15,8 +15,8 @@ namespace ParrotsAPI2.Data
         public DbSet<Waypoint> Waypoints { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
-        public DbSet<CoinPurchase> CoinPurchases { get; set; }
-        public DbSet<CoinTransaction> CoinTransactions { get; set; }
+        public DbSet<CrackerPurchase> CrackerPurchases { get; set; }
+        public DbSet<CrackerTransaction> CrackerTransactions { get; set; }
         public DbSet<TermsVersion> TermsVersions { get; set; }
         public DbSet<UserBookmark> UserBookmarks { get; set; }
         public DbSet<GroupConversation> GroupConversations { get; set; }
@@ -58,14 +58,14 @@ namespace ParrotsAPI2.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<AppUser>()
-                .HasMany(u => u.CoinPurchases)
+                .HasMany(u => u.CrackerPurchases)
                 .WithOne(cp => cp.User)
                 .HasForeignKey(cp => cp.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AppUser>()
-                .HasMany(u => u.CoinTransactions)
+                .HasMany(u => u.CrackerTransactions)
                 .WithOne(ct => ct.User)
                 .HasForeignKey(ct => ct.UserId)
                 .IsRequired()
@@ -164,11 +164,11 @@ namespace ParrotsAPI2.Data
                 .Property(v => v.MaxPrice)
                 .HasPrecision(18, 2);
 
-            modelBuilder.Entity<CoinPurchase>()
+            modelBuilder.Entity<CrackerPurchase>()
                 .Property(cp => cp.EurAmount)
                 .HasPrecision(10, 2);
 
-            modelBuilder.Entity<CoinPurchase>()
+            modelBuilder.Entity<CrackerPurchase>()
                 .HasIndex(cp => cp.PaymentProviderId)
                 .IsUnique()
                 .HasFilter("\"PaymentProviderId\" IS NOT NULL");

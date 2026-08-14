@@ -36,7 +36,7 @@ namespace ParrotsAPI2.Controllers
             if (string.IsNullOrEmpty(result) || !result.TrimStart().StartsWith("[["))
                 return StatusCode(500, new { message = "Our travel companion is resting right now. Please try again in a moment." });
 
-            var deduct = await _userService.DeductCoinForAsk(userId);
+            var deduct = await _userService.DeductCrackerForAsk(userId);
             if (!deduct.Success)
                 return StatusCode(402, new { message = deduct.Message });
 

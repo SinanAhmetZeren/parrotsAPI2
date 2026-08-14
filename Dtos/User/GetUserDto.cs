@@ -25,7 +25,7 @@
         public List<GetUsersVehiclesDto>? UsersVehicles { get; set; }
         public List<GetUsersVoyagesDto>? UsersVoyages { get; set; }
         public string PublicId { get; set; } = string.Empty;
-        public int ParrotCoinBalance { get; set; }
+        public int ParrotCrackerBalance { get; set; }
 
     }
 }

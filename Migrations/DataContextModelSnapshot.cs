@@ -357,7 +357,7 @@ namespace ParrotsAPI2.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<int>("ParrotCoinBalance")
+                    b.Property<int>("ParrotCrackerBalance")
                         .HasColumnType("integer");
 
                     b.Property<string>("PasswordHash")

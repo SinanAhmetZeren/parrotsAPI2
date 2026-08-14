@@ -207,8 +207,8 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [HttpPost("PurchaseCoins")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> PurchaseCoins(UserDepositCoinsDto deposit)
+        [HttpPost("PurchaseCrackers")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> PurchaseCrackers(UserDepositCrackersDto deposit)
         {
             // Get user ID from JWT token
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -227,10 +227,10 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            // Call service to add coins and create CoinPurchase record
-            var response = await _userService.PurchaseCoins(
+            // Call service to add crackers and create CrackerPurchase record
+            var response = await _userService.PurchaseCrackers(
                 deposit.UserId,
-                deposit.Coins,
+                deposit.Crackers,
                 deposit.EurAmount,
                 deposit.PaymentProviderId
                 );
@@ -243,15 +243,15 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpPost("ClaimFreeCoins")]
-        public async Task<ActionResult<ServiceResponse<int>>> ClaimFreeCoins()
+        [HttpPost("ClaimFreeCrackers")]
+        public async Task<ActionResult<ServiceResponse<int>>> ClaimFreeCrackers()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
                 return Unauthorized(new ServiceResponse<string> { Success = false, Message = "User identity not found." });
             }
-            var response = await _userService.ClaimFreeCoins(userId);
+            var response = await _userService.ClaimFreeCrackers(userId);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -259,8 +259,8 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpPost("SendParrotCoins")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> SendParrotCoins(UserSendCoinsDto deposit)
+        [HttpPost("SendParrotCrackers")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> SendParrotCrackers(UserSendCrackersDto deposit)
         {
             // Get user ID from JWT token
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -279,11 +279,11 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            // Call service to add coins and create CoinPurchase record
-            var response = await _userService.SendParrotCoins(
+            // Call service to add crackers and create CrackerPurchase record
+            var response = await _userService.SendParrotCrackers(
                 deposit.UserId,
                 deposit.ReceiverId,
-                deposit.Coins
+                deposit.Crackers
                 );
 
             if (!response.Success)
@@ -297,8 +297,8 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [HttpGet("parrotCoinBalance/{userId}")]
-        public async Task<ActionResult<ServiceResponse<ParrotCoinSummaryDto>>> GetParrotCoinBalanceAndPurchases(string userId)
+        [HttpGet("parrotCrackerBalance/{userId}")]
+        public async Task<ActionResult<ServiceResponse<ParrotCrackerSummaryDto>>> GetParrotCrackerBalanceAndPurchases(string userId)
         {
 
             // Get user ID from JWT token
@@ -318,7 +318,7 @@ namespace ParrotsAPI2.Controllers
                 return Forbid();
             }
 
-            return Ok(await _userService.GetParrotCoinBalanceAndPurchases(userId));
+            return Ok(await _userService.GetParrotCrackerBalanceAndPurchases(userId));
         }
         private static readonly string[] AllowedImageTypes = { "image/jpeg", "image/png", "image/gif", "image/webp" };
 

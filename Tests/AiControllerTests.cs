@@ -24,7 +24,7 @@ public class AiControllerTests
                  .ReturnsAsync(geminiResult);
 
         var userService = new Mock<IUserService>();
-        userService.Setup(s => s.DeductCoinForAsk(It.IsAny<string>()))
+        userService.Setup(s => s.DeductCrackerForAsk(It.IsAny<string>()))
                    .ReturnsAsync(new ServiceResponse<int>
                    {
                        Success = coinDeductSuccess,
@@ -144,7 +144,7 @@ public class AiControllerTests
 
         await controller.Ask(MakeDto());
 
-        userService.Verify(s => s.DeductCoinForAsk(It.IsAny<string>()), Times.Never);
+        userService.Verify(s => s.DeductCrackerForAsk(It.IsAny<string>()), Times.Never);
     }
 
     [Fact]

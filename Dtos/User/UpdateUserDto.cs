@@ -24,7 +24,7 @@ namespace ParrotsAPI2.Dtos.User
         public string ProfileImageUrl { get; set; } = string.Empty;
         public string BackgroundImageUrl { get; set; } = string.Empty;
         public IFormFile? ImageFile { get; set; }
-        public int ParrotCoinBalance { get; set; }
+        public int ParrotCrackerBalance { get; set; }
 
 
     }

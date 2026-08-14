@@ -26,7 +26,7 @@ namespace ParrotsAPI2.Services.Message
         {
             var response = new ServiceResponse<List<WeeklyPurchaseDto>>();
 
-            var data = (await _context.CoinPurchases
+            var data = (await _context.CrackerPurchases
                     .AsNoTracking()
                     .ToListAsync())
                 .GroupBy(p => GetWeekStart(p.CreatedAt))
@@ -34,7 +34,7 @@ namespace ParrotsAPI2.Services.Message
                 {
                     WeekStart = g.Key,
                     PurchaseCount = g.Count(),
-                    TotalAmount = g.Sum(p => p.CoinsAmount)
+                    TotalAmount = g.Sum(p => p.CrackersAmount)
                 })
                 .OrderBy(x => x.WeekStart)
                 .ToList();
@@ -48,7 +48,7 @@ namespace ParrotsAPI2.Services.Message
         {
             var response = new ServiceResponse<List<WeeklyTransactionsDto>>();
 
-            var data = (await _context.CoinTransactions
+            var data = (await _context.CrackerTransactions
                     .AsNoTracking()
                     .ToListAsync())
                 .GroupBy(t => new

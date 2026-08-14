@@ -184,7 +184,7 @@ namespace ParrotsAPI2.Services.User
                 BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
                 UnseenMessages = user.UnseenMessages,
                 EmailVisible = user.EmailVisible,
-                ParrotCoinBalance = user.ParrotCoinBalance,
+                ParrotCrackerBalance = user.ParrotCrackerBalance,
                 UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
                 UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
@@ -251,7 +251,7 @@ namespace ParrotsAPI2.Services.User
                 BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
                 UnseenMessages = user.UnseenMessages,
                 EmailVisible = user.EmailVisible,
-                ParrotCoinBalance = user.ParrotCoinBalance,
+                ParrotCrackerBalance = user.ParrotCrackerBalance,
                 UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
                 UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
@@ -360,7 +360,7 @@ namespace ParrotsAPI2.Services.User
                 BackgroundImageUrl = user.BackgroundImageUrl ?? string.Empty,
                 UnseenMessages = user.UnseenMessages,
                 EmailVisible = user.EmailVisible,
-                ParrotCoinBalance = user.ParrotCoinBalance,
+                ParrotCrackerBalance = user.ParrotCrackerBalance,
                 UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
                 UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
@@ -691,7 +691,7 @@ namespace ParrotsAPI2.Services.User
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<int>> PurchaseCoins(string userId, int coins, decimal eurAmount, string PaymentProviderId)
+        public async Task<ServiceResponse<int>> PurchaseCrackers(string userId, int crackers, decimal eurAmount, string PaymentProviderId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -702,70 +702,70 @@ namespace ParrotsAPI2.Services.User
                     Message = "User not found."
                 };
             }
-            user.ParrotCoinBalance += coins;
-            var purchase = new CoinPurchase
+            user.ParrotCrackerBalance += crackers;
+            var purchase = new CrackerPurchase
             {
                 UserId = userId,
-                CoinsAmount = coins,
+                CrackersAmount = crackers,
                 EurAmount = eurAmount,
                 Status = "completed",
                 CreatedAt = DateTime.UtcNow,
                 PaymentProviderId = PaymentProviderId
             };
-            _context.CoinPurchases.Add(purchase);
+            _context.CrackerPurchases.Add(purchase);
             await _context.SaveChangesAsync();
             return new ServiceResponse<int>
             {
-                Data = user.ParrotCoinBalance,
+                Data = user.ParrotCrackerBalance,
                 Success = true,
-                Message = $"{coins} coins deposited successfully and purchase recorded."
+                Message = $"{crackers} crackers deposited successfully and purchase recorded."
             };
         }
 
-        public async Task<ServiceResponse<int>> ClaimFreeCoins(string userId)
+        public async Task<ServiceResponse<int>> ClaimFreeCrackers(string userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
             {
                 return new ServiceResponse<int> { Success = false, Message = "User not found." };
             }
-            if (user.ParrotCoinBalance >= 200)
+            if (user.ParrotCrackerBalance >= 200)
             {
-                return new ServiceResponse<int> { Success = false, Message = "Balance must be below 200 to claim free coins." };
+                return new ServiceResponse<int> { Success = false, Message = "Balance must be below 200 to claim free crackers." };
             }
-            user.ParrotCoinBalance += 100;
-            var purchase = new CoinPurchase
+            user.ParrotCrackerBalance += 100;
+            var purchase = new CrackerPurchase
             {
                 UserId = userId,
-                CoinsAmount = 100,
+                CrackersAmount = 100,
                 EurAmount = 0,
                 Status = "completed",
                 CreatedAt = DateTime.UtcNow,
                 PaymentProviderId = $"free_claim_{userId}_{DateTime.UtcNow:yyyyMMddHHmmssfff}"
             };
-            _context.CoinPurchases.Add(purchase);
+            _context.CrackerPurchases.Add(purchase);
             await _context.SaveChangesAsync();
             return new ServiceResponse<int>
             {
-                Data = user.ParrotCoinBalance,
+                Data = user.ParrotCrackerBalance,
                 Success = true,
-                Message = "100 free coins claimed successfully."
+                Message = "100 free crackers claimed successfully."
             };
         }
 
 
 
-        public async Task<ServiceResponse<int>> DeductCoinForAsk(string userId)
+        public async Task<ServiceResponse<int>> DeductCrackerForAsk(string userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
                 return new ServiceResponse<int> { Success = false, Message = "User not found." };
 
-            if (user.ParrotCoinBalance < 1)
+            if (user.ParrotCrackerBalance < 1)
                 return new ServiceResponse<int> { Success = false, Message = "Insufficient ParrotCrackers." };
 
-            user.ParrotCoinBalance -= 1;
-            _context.CoinTransactions.Add(new CoinTransaction
+            user.ParrotCrackerBalance -= 1;
+            _context.CrackerTransactions.Add(new CrackerTransaction
             {
                 UserId = userId,
                 Amount = -1,
@@ -774,10 +774,10 @@ namespace ParrotsAPI2.Services.User
                 CreatedAt = DateTime.UtcNow
             });
             await _context.SaveChangesAsync();
-            return new ServiceResponse<int> { Data = user.ParrotCoinBalance, Success = true };
+            return new ServiceResponse<int> { Data = user.ParrotCrackerBalance, Success = true };
         }
 
-        public async Task<ServiceResponse<int>> SendParrotCoins(string userId, string receiverId, int coins)
+        public async Task<ServiceResponse<int>> SendParrotCrackers(string userId, string receiverId, int crackers)
         {
             var user = await _context.Users.FindAsync(userId);
             var receiver = await _context.Users.FindAsync(receiverId);
@@ -790,7 +790,7 @@ namespace ParrotsAPI2.Services.User
                 };
             }
 
-            if (user.ParrotCoinBalance < coins)
+            if (user.ParrotCrackerBalance < crackers)
             {
                 return new ServiceResponse<int>
                 {
@@ -810,30 +810,30 @@ namespace ParrotsAPI2.Services.User
                 var sender = await _context.Users.FindAsync(userId);
                 var recv = await _context.Users.FindAsync(receiverId);
 
-                if (sender == null || recv == null || sender.ParrotCoinBalance < coins)
+                if (sender == null || recv == null || sender.ParrotCrackerBalance < crackers)
                 {
                     result.Success = false;
                     result.Message = "Insufficient balance.";
                     return;
                 }
 
-                sender.ParrotCoinBalance -= coins;
-                recv.ParrotCoinBalance += coins;
+                sender.ParrotCrackerBalance -= crackers;
+                recv.ParrotCrackerBalance += crackers;
 
-                _context.CoinTransactions.Add(new CoinTransaction
+                _context.CrackerTransactions.Add(new CrackerTransaction
                 {
                     UserId = userId,
-                    Amount = -coins,
-                    Type = "send_parrotCoins",
+                    Amount = -crackers,
+                    Type = "send_parrotCrackers",
                     Description = $"Sent to {recv.UserName}",
                     VoyageId = 0,
                     CreatedAt = DateTime.UtcNow
                 });
-                _context.CoinTransactions.Add(new CoinTransaction
+                _context.CrackerTransactions.Add(new CrackerTransaction
                 {
                     UserId = receiverId,
-                    Amount = coins,
-                    Type = "receive_parrotCoins",
+                    Amount = crackers,
+                    Type = "receive_parrotCrackers",
                     Description = $"Received from {sender.UserName}",
                     VoyageId = 0,
                     CreatedAt = DateTime.UtcNow
@@ -842,9 +842,9 @@ namespace ParrotsAPI2.Services.User
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
-                result.Data = sender.ParrotCoinBalance;
+                result.Data = sender.ParrotCrackerBalance;
                 result.Success = true;
-                result.Message = $"{coins} coins sent successfully and recorded.";
+                result.Message = $"{crackers} crackers sent successfully and recorded.";
             });
 
             return result;
@@ -852,50 +852,50 @@ namespace ParrotsAPI2.Services.User
 
 
 
-        public async Task<ServiceResponse<ParrotCoinSummaryDto>> GetParrotCoinBalanceAndPurchases(string userId)
+        public async Task<ServiceResponse<ParrotCrackerSummaryDto>> GetParrotCrackerBalanceAndPurchases(string userId)
         {
             var user = await _context.Users
-                .Include(u => u.CoinPurchases)
-                .Include(u => u.CoinTransactions)
+                .Include(u => u.CrackerPurchases)
+                .Include(u => u.CrackerTransactions)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
-                return new ServiceResponse<ParrotCoinSummaryDto>
+                return new ServiceResponse<ParrotCrackerSummaryDto>
                 {
                     Success = false,
                     Message = "User not found."
                 };
             }
 
-            var dto = new ParrotCoinSummaryDto
+            var dto = new ParrotCrackerSummaryDto
             {
-                Balance = user.ParrotCoinBalance,
-                Purchases = (user.CoinPurchases ?? Enumerable.Empty<CoinPurchase>())
+                Balance = user.ParrotCrackerBalance,
+                Purchases = (user.CrackerPurchases ?? Enumerable.Empty<CrackerPurchase>())
                     .OrderByDescending(p => p.CreatedAt)
-                    .Select(p => new CoinPurchaseDto
+                    .Select(p => new CrackerPurchaseDto
                     {
                         Id = p.Id,
                         EurAmount = p.EurAmount,
-                        CoinsAmount = p.CoinsAmount,
+                        CrackersAmount = p.CrackersAmount,
                         Status = p.Status ?? string.Empty,
                         PaymentProviderId = p.PaymentProviderId,
                         CreatedAt = p.CreatedAt
                     })
                     .ToList(),
-                Transactions = (user.CoinTransactions ?? Enumerable.Empty<CoinTransaction>())
+                Transactions = (user.CrackerTransactions ?? Enumerable.Empty<CrackerTransaction>())
                     .OrderByDescending(p => p.CreatedAt)
-                    .Select(p => new CoinTransactionDto
+                    .Select(p => new CrackerTransactionDto
                     {
                         Id = p.Id,
-                        CoinsAmount = p.Amount,
+                        CrackersAmount = p.Amount,
                         Description = p.Description,
                         CreatedAt = p.CreatedAt
                     })
                     .ToList()
             };
             var a = 0;
-            return new ServiceResponse<ParrotCoinSummaryDto>
+            return new ServiceResponse<ParrotCrackerSummaryDto>
             {
                 Data = dto,
                 Success = true,
