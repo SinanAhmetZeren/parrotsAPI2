@@ -26,7 +26,6 @@ namespace ParrotsAPI2.Controllers
                 }
         */
 
-        [AllowAnonymous]
         [HttpGet("GetVehicleById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVehicleDto>>> GetSingle(int id)
         {
@@ -41,7 +40,6 @@ namespace ParrotsAPI2.Controllers
             return Ok(await _vehicleService.GetVehicleByIdAdmin(id));
         }
 
-        [AllowAnonymous]
         [HttpGet("GetVehiclesByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> GetVehiclesByUserId(string userId)
         {
@@ -49,7 +47,6 @@ namespace ParrotsAPI2.Controllers
         }
 
 
-        [AllowAnonymous]
         [HttpGet("GetVehiclesImagesByVehicleId/{vehicleId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVehicleDto>>>> GetVehicleImagesByVehicleId(int vehicleId)
         {

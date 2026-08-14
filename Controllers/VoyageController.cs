@@ -21,7 +21,6 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [AllowAnonymous]
         [HttpGet("GetVoyageById/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingle(int id)
         {
@@ -40,7 +39,6 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [AllowAnonymous]
         [HttpGet("GetVoyageByUserId/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByUserId(string userId)
         {
@@ -318,21 +316,18 @@ namespace ParrotsAPI2.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet("GetVoyagesByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyagesByCoordinates(double lat1, double lat2, double lon1, double lon2)
         {
             return Ok(await _voyageService.GetVoyagesByCoordinates(lat1, lat2, lon1, lon2));
         }
 
-        [AllowAnonymous]
         [HttpGet("GetVoyageIdsByCoords/{lat1}/{lat2}/{lon1}/{lon2}")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetVoyageIdsByCoordinates(double lat1, double lat2, double lon1, double lon2)
         {
             return Ok(await _voyageService.GetVoyageIdsByCoordinates(lat1, lat2, lon1, lon2));
         }
 
-        [AllowAnonymous]
         [HttpGet("GetFilteredVoyages")]
         public async Task<ActionResult<ServiceResponse<List<GetVoyageDto>>>> GetFilteredVoyages(
             [FromQuery] double? lat1,
