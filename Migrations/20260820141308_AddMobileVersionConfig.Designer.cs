@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ParrotsAPI2.Data;
@@ -11,9 +12,11 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260820141308_AddMobileVersionConfig")]
+    partial class AddMobileVersionConfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,9 +337,6 @@ namespace ParrotsAPI2.Migrations
 
                     b.Property<string>("Facebook")
                         .HasColumnType("text");
-
-                    b.Property<bool>("HasAcknowledgedGroupHistory")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("HasAcknowledgedPublicProfile")
                         .HasColumnType("boolean");
@@ -728,9 +728,6 @@ namespace ParrotsAPI2.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("ForceUpdate")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Key")
                         .IsRequired()

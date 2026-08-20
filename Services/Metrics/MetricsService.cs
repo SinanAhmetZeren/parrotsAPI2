@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Data;
 using ParrotsAPI2.Dtos;
+using ParrotsAPI2.Dtos.AiDtos;
 using ParrotsAPI2.Models;
 
 namespace ParrotsAPI2.Services.Message
@@ -187,6 +189,154 @@ namespace ParrotsAPI2.Services.Message
                 .ToList();
 
             response.Data = data;
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<AiQueryDayDto>>> GetAiQueryStats(DateTime? from, DateTime? to)
+        {
+            var response = new ServiceResponse<List<AiQueryDayDto>>();
+
+            var query = _context.AiQueries.AsNoTracking().AsQueryable();
+
+            if (from.HasValue)
+                query = query.Where(q => q.CreatedAt >= DateTime.SpecifyKind(from.Value, DateTimeKind.Utc));
+            if (to.HasValue)
+                query = query.Where(q => q.CreatedAt <= DateTime.SpecifyKind(to.Value, DateTimeKind.Utc));
+
+            var rows = await query
+                .Select(q => new { q.CreatedAt, q.DurationMs, q.InputTokens, q.OutputTokens, q.Duration, q.PlannedSpotCount })
+                .ToListAsync();
+
+            var grouped = rows
+                .GroupBy(q => q.CreatedAt.Date)
+                .OrderBy(g => g.Key)
+                .Select(g =>
+                {
+                    var durationBreakdown = g
+                        .Where(q => !string.IsNullOrEmpty(q.Duration))
+                        .GroupBy(q => q.Duration)
+                        .Select(dg => new AiDailyDurationBreakdown
+                        {
+                            Duration = dg.Key,
+                            AvgPlacesSuggested = dg.Average(q => q.PlannedSpotCount),
+                        })
+                        .ToList();
+
+                    return new AiQueryDayDto
+                    {
+                        Date = g.Key.ToString("yyyy-MM-dd"),
+                        QueryCount = g.Count(),
+                        AvgDurationMs = g.Average(q => q.DurationMs),
+                        AvgInputTokens = g.Average(q => q.InputTokens),
+                        AvgOutputTokens = g.Average(q => q.OutputTokens),
+                        AvgTotalTokens = g.Average(q => q.InputTokens + q.OutputTokens),
+                        DurationBreakdown = durationBreakdown,
+                    };
+                })
+                .ToList();
+
+            response.Data = grouped;
+            return response;
+        }
+
+        public async Task<ServiceResponse<AiQueryPageDto>> GetAiQueries(
+            int page, int pageSize,
+            string? userId, string? vehicleType, string? duration,
+            string? vibe, string? spotType, double? radiusKm,
+            DateTime? from, DateTime? to, bool? isSuccess, string? model)
+        {
+            var response = new ServiceResponse<AiQueryPageDto>();
+
+            var query = _context.AiQueries.AsNoTracking().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(userId))
+                query = query.Where(q => q.UserId == userId);
+            if (!string.IsNullOrWhiteSpace(vehicleType))
+                query = query.Where(q => q.VehicleType == vehicleType);
+            if (!string.IsNullOrWhiteSpace(duration))
+                query = query.Where(q => q.Duration == duration);
+            if (!string.IsNullOrWhiteSpace(vibe))
+                query = query.Where(q => q.Vibe == vibe);
+            if (!string.IsNullOrWhiteSpace(spotType))
+                query = query.Where(q => q.SpotType == spotType);
+            if (radiusKm.HasValue)
+                query = query.Where(q => q.RadiusKm == radiusKm.Value);
+            if (from.HasValue)
+                query = query.Where(q => q.CreatedAt >= DateTime.SpecifyKind(from.Value, DateTimeKind.Utc));
+            if (to.HasValue)
+                query = query.Where(q => q.CreatedAt <= DateTime.SpecifyKind(to.Value, DateTimeKind.Utc));
+            if (isSuccess.HasValue)
+                query = query.Where(q => q.IsSuccess == isSuccess.Value);
+            if (!string.IsNullOrWhiteSpace(model))
+                query = query.Where(q => q.ModelUsed == model);
+
+            var totalCount = await query.CountAsync();
+
+            var rows = await query
+                .OrderByDescending(q => q.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(q => new
+                {
+                    q.Id, q.UserId, q.UserQuery, q.Latitude, q.Longitude, q.RadiusKm,
+                    q.VehicleType, q.Duration, q.Vibe, q.SpotType,
+                    q.ModelRequested, q.ModelUsed, q.IsSuccess, q.ErrorMessage,
+                    q.DurationMs, q.InputTokens, q.OutputTokens, q.CachedInputTokens,
+                    q.PlannedSpotCount, q.PlannedSpotsJson, q.PlacesApiAuditJson,
+                    q.DraftNarrative, q.FinalSanitizedNarrative, q.CreatedAt
+                })
+                .ToListAsync();
+
+            var items = rows.Select(q =>
+            {
+                int placesVerified = 0;
+                if (!string.IsNullOrEmpty(q.PlacesApiAuditJson))
+                {
+                    try
+                    {
+                        using var doc = JsonDocument.Parse(q.PlacesApiAuditJson);
+                        placesVerified = doc.RootElement.EnumerateArray()
+                            .Count(e => e.TryGetProperty("placeId", out var pid) && pid.ValueKind != JsonValueKind.Null);
+                    }
+                    catch { }
+                }
+                return new AiQueryRecordDto
+                {
+                    Id = q.Id,
+                    UserId = q.UserId,
+                    UserQuery = q.UserQuery,
+                    Latitude = q.Latitude,
+                    Longitude = q.Longitude,
+                    RadiusKm = q.RadiusKm,
+                    VehicleType = q.VehicleType,
+                    Duration = q.Duration,
+                    Vibe = q.Vibe,
+                    SpotType = q.SpotType,
+                    ModelRequested = q.ModelRequested,
+                    ModelUsed = q.ModelUsed,
+                    IsSuccess = q.IsSuccess,
+                    ErrorMessage = q.ErrorMessage,
+                    DurationMs = q.DurationMs,
+                    InputTokens = q.InputTokens,
+                    OutputTokens = q.OutputTokens,
+                    CachedInputTokens = q.CachedInputTokens,
+                    PlannedSpotCount = q.PlannedSpotCount,
+                    PlacesVerified = placesVerified,
+                    PlannedSpotsJson = q.PlannedSpotsJson,
+                    PlacesApiAuditJson = q.PlacesApiAuditJson,
+                    DraftNarrative = q.DraftNarrative,
+                    FinalSanitizedNarrative = q.FinalSanitizedNarrative,
+                    CreatedAt = q.CreatedAt
+                };
+            }).ToList();
+
+            response.Data = new AiQueryPageDto
+            {
+                Items = items,
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize
+            };
             return response;
         }
     }
