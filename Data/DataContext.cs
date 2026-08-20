@@ -24,6 +24,7 @@ namespace ParrotsAPI2.Data
         public DbSet<GroupMessage> GroupMessages { get; set; }
         public DbSet<UnreadConversation> UnreadConversations { get; set; }
         public DbSet<AiQueryEntity> AiQueries { get; set; }
+        public DbSet<MobileVersionConfig> MobileVersionConfigs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -16,6 +16,7 @@ public class AiQueryEntity
     public string SpotType { get; set; } = string.Empty;
 
     // Execution Metadata
+    public string ModelRequested { get; set; } = string.Empty;
     public string ModelUsed { get; set; } = string.Empty;
     public bool IsSuccess { get; set; }
     public string? ErrorMessage { get; set; }

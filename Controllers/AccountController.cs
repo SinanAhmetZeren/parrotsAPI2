@@ -753,6 +753,19 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [HttpPost("acknowledge-group-history")]
+        public async Task<IActionResult> AcknowledgeGroupHistory()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId!);
+            if (user == null) return Unauthorized();
+
+            user.HasAcknowledgedGroupHistory = true;
+            await _userManager.UpdateAsync(user);
+            return Ok();
+        }
+
+        [Authorize]
         [HttpPost("push-token")]
         public async Task<IActionResult> SavePushToken([FromBody] string token)
         {
@@ -928,6 +941,7 @@ namespace API.Controllers
                 UnreadMessages = hasUnread ? "true" : "false",
                 IsAdmin = user.IsAdmin,
                 HasAcknowledgedPublicProfile = user.HasAcknowledgedPublicProfile,
+                HasAcknowledgedGroupHistory = user.HasAcknowledgedGroupHistory,
                 FavoriteVoyageIds = favoriteVoyageIds,
                 FavoriteVehicleIds = favoriteVehicleIds,
                 BookmarkedUserIds = bookmarkedUserIds,

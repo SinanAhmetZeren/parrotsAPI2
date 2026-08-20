@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ParrotsAPI2.Data;
@@ -11,9 +12,11 @@ using ParrotsAPI2.Data;
 namespace ParrotsAPI2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260815051727_AddAiQueryModelRequested")]
+    partial class AddAiQueryModelRequested
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,9 +337,6 @@ namespace ParrotsAPI2.Migrations
 
                     b.Property<string>("Facebook")
                         .HasColumnType("text");
-
-                    b.Property<bool>("HasAcknowledgedGroupHistory")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("HasAcknowledgedPublicProfile")
                         .HasColumnType("boolean");
@@ -719,30 +719,6 @@ namespace ParrotsAPI2.Migrations
                         .HasDatabaseName("IX_Messages_ConversationKey_DateTime");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("ParrotsAPI2.Models.MobileVersionConfig", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("ForceUpdate")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MobileVersionConfigs");
                 });
 
             modelBuilder.Entity("ParrotsAPI2.Models.TermsVersion", b =>

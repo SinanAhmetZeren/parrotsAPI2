@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ParrotsAPI2.Services;
 using ParrotsAPI2.Dtos;
+using ParrotsAPI2.Dtos.AiDtos;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ParrotsAPI2.Controllers
@@ -88,6 +89,42 @@ namespace ParrotsAPI2.Controllers
         public async Task<ActionResult<ServiceResponse<List<WeeklyMessagesDto>>>> GetWeeklyMessages()
         {
             var response = await _metricsService.GetWeeklyMessages();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("aiQueryStats")]
+        public async Task<ActionResult<ServiceResponse<List<AiQueryDayDto>>>> GetAiQueryStats(
+            [FromQuery] DateTime? from = null,
+            [FromQuery] DateTime? to = null)
+        {
+            var response = await _metricsService.GetAiQueryStats(from, to);
+            if (!response.Success)
+                return BadRequest(response);
+            return Ok(response);
+        }
+
+        [HttpGet("aiQueries")]
+        public async Task<ActionResult<ServiceResponse<AiQueryPageDto>>> GetAiQueries(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 50,
+            [FromQuery] string? userId = null,
+            [FromQuery] string? vehicleType = null,
+            [FromQuery] string? duration = null,
+            [FromQuery] string? vibe = null,
+            [FromQuery] string? spotType = null,
+            [FromQuery] double? radiusKm = null,
+            [FromQuery] DateTime? from = null,
+            [FromQuery] DateTime? to = null,
+            [FromQuery] bool? isSuccess = null,
+            [FromQuery] string? model = null)
+        {
+            var response = await _metricsService.GetAiQueries(
+                page, pageSize, userId, vehicleType, duration,
+                vibe, spotType, radiusKm, from, to, isSuccess, model);
 
             if (!response.Success)
                 return BadRequest(response);
