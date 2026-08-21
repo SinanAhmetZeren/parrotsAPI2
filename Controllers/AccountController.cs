@@ -914,6 +914,14 @@ namespace API.Controllers
             return Ok(new { version = dto.Version });
         }
 
+        [HttpGet("current-terms")]
+        public async Task<IActionResult> GetCurrentTermsPublic()
+        {
+            var terms = await _context.TermsVersions.FirstOrDefaultAsync(t => t.IsCurrent);
+            if (terms == null) return NotFound();
+            return Ok(new { terms.Version, terms.Content });
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("admin/current-terms")]
         public async Task<IActionResult> GetCurrentTerms()
