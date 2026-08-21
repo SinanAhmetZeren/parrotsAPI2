@@ -740,6 +740,22 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [HttpGet("requires-terms-acceptance")]
+        public async Task<IActionResult> RequiresTermsAcceptance()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId!);
+            if (user == null) return Unauthorized();
+
+            var currentTermsVersion = await _context.TermsVersions
+                .Where(t => t.IsCurrent)
+                .Select(t => t.Version)
+                .FirstOrDefaultAsync() ?? "2025-01";
+
+            return Ok(new { requiresAcceptance = user.TermsVersion != currentTermsVersion });
+        }
+
+        [Authorize]
         [HttpPost("acknowledge-public-profile")]
         public async Task<IActionResult> AcknowledgePublicProfile()
         {
