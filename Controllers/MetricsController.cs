@@ -96,7 +96,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpGet("aiQueryStats")]
+        [HttpGet("askParrotsQueryStats")]
         public async Task<ActionResult<ServiceResponse<List<AiQueryDayDto>>>> GetAiQueryStats(
             [FromQuery] DateTime? from = null,
             [FromQuery] DateTime? to = null)
@@ -107,7 +107,7 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
-        [HttpGet("aiQueries")]
+        [HttpGet("askParrotsQueries")]
         public async Task<ActionResult<ServiceResponse<AskParrotsQueryPageDto>>> GetAskParrotsQueries(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 50,
