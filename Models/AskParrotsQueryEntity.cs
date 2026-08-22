@@ -1,6 +1,6 @@
 namespace ParrotsAPI2.Models;
 
-public class AiQueryEntity
+public class AskParrotsQueryEntity
 {
     public int Id { get; set; }
 

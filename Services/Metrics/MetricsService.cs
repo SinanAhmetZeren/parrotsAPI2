@@ -196,7 +196,7 @@ namespace ParrotsAPI2.Services.Message
         {
             var response = new ServiceResponse<List<AiQueryDayDto>>();
 
-            var query = _context.AiQueries.AsNoTracking().AsQueryable();
+            var query = _context.AskParrotsQueries.AsNoTracking().AsQueryable();
 
             if (from.HasValue)
                 query = query.Where(q => q.CreatedAt >= DateTime.SpecifyKind(from.Value, DateTimeKind.Utc));
@@ -239,15 +239,15 @@ namespace ParrotsAPI2.Services.Message
             return response;
         }
 
-        public async Task<ServiceResponse<AiQueryPageDto>> GetAiQueries(
+        public async Task<ServiceResponse<AskParrotsQueryPageDto>> GetAskParrotsQueries(
             int page, int pageSize,
             string? userId, string? vehicleType, string? duration,
             string? vibe, string? spotType,
             DateTime? from, DateTime? to, bool? isSuccess, string? model)
         {
-            var response = new ServiceResponse<AiQueryPageDto>();
+            var response = new ServiceResponse<AskParrotsQueryPageDto>();
 
-            var query = _context.AiQueries.AsNoTracking().AsQueryable();
+            var query = _context.AskParrotsQueries.AsNoTracking().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(userId))
                 query = query.Where(q => q.UserId == userId);
@@ -298,7 +298,7 @@ namespace ParrotsAPI2.Services.Message
                     }
                     catch { }
                 }
-                return new AiQueryRecordDto
+                return new AskParrotsQueryRecordDto
                 {
                     Id = q.Id,
                     UserId = q.UserId,
@@ -327,7 +327,7 @@ namespace ParrotsAPI2.Services.Message
                 };
             }).ToList();
 
-            response.Data = new AiQueryPageDto
+            response.Data = new AskParrotsQueryPageDto
             {
                 Items = items,
                 TotalCount = totalCount,

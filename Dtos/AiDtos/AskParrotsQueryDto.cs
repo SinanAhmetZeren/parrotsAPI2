@@ -1,6 +1,6 @@
 namespace ParrotsAPI2.Dtos.AiDtos
 {
-    public class AiQueryDto
+    public class AskParrotsQueryDto
     {
         public string VehicleType { get; set; } = string.Empty;
         public string Duration { get; set; } = string.Empty;

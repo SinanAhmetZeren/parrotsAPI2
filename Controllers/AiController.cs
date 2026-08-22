@@ -24,7 +24,7 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpPost("ask")]
-        public async Task<IActionResult> Ask([FromBody] AiQueryDto dto)
+        public async Task<IActionResult> Ask([FromBody] AskParrotsQueryDto dto)
         {
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();

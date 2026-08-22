@@ -20,7 +20,7 @@ public class AiControllerTests
         string userId = "user-1")
     {
         var aiService = new Mock<IAiService>();
-        aiService.Setup(s => s.AskAsync(It.IsAny<AiQueryDto>(), It.IsAny<string>()))
+        aiService.Setup(s => s.AskAsync(It.IsAny<AskParrotsQueryDto>(), It.IsAny<string>()))
                  .ReturnsAsync(geminiResult);
 
         var userService = new Mock<IUserService>();
@@ -46,7 +46,7 @@ public class AiControllerTests
         return controller;
     }
 
-    private static AiQueryDto MakeDto() => new()
+    private static AskParrotsQueryDto MakeDto() => new()
     {
         VehicleType = "Car",
         Duration = "1 Day",
@@ -125,7 +125,7 @@ public class AiControllerTests
     public async Task Does_not_deduct_cracker_when_gemini_fails()
     {
         var aiService = new Mock<IAiService>();
-        aiService.Setup(s => s.AskAsync(It.IsAny<AiQueryDto>(), It.IsAny<string>())).ReturnsAsync((string?)null);
+        aiService.Setup(s => s.AskAsync(It.IsAny<AskParrotsQueryDto>(), It.IsAny<string>())).ReturnsAsync((string?)null);
 
         var userService = new Mock<IUserService>();
 

@@ -217,7 +217,7 @@ public class AiServiceTests
 
     // --- helpers ---
 
-    private static AiQueryDto MakeDto(
+    private static AskParrotsQueryDto MakeDto(
         string vehicleType = "Car",
         string duration = "1 Day",
         string vibe = "Food",
@@ -234,7 +234,7 @@ public class AiServiceTests
             Longitude = lon
         };
 
-    private static async Task<string> CapturePrompt(AiQueryDto dto)
+    private static async Task<string> CapturePrompt(AskParrotsQueryDto dto)
     {
         string captured = string.Empty;
 

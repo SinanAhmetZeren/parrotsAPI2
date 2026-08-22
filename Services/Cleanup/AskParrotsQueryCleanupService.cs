@@ -1,15 +1,15 @@
 namespace ParrotsAPI2.Services.Cleanup
 {
-    public class AiQueryCleanupService : IHostedService, IDisposable
+    public class AskParrotsQueryCleanupService : IHostedService, IDisposable
     {
         private Timer? _timer;
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly ILogger<AiQueryCleanupService> _logger;
+        private readonly ILogger<AskParrotsQueryCleanupService> _logger;
 
         private static readonly TimeSpan Retention = TimeSpan.FromDays(180);
         private static readonly TimeSpan Interval = TimeSpan.FromHours(24);
 
-        public AiQueryCleanupService(IServiceScopeFactory scopeFactory, ILogger<AiQueryCleanupService> logger)
+        public AskParrotsQueryCleanupService(IServiceScopeFactory scopeFactory, ILogger<AskParrotsQueryCleanupService> logger)
         {
             _scopeFactory = scopeFactory;
             _logger = logger;
@@ -30,7 +30,7 @@ namespace ParrotsAPI2.Services.Cleanup
                 var context = scope.ServiceProvider.GetRequiredService<DataContext>();
 
                 var cutoff = DateTime.UtcNow - Retention;
-                var deleted = await context.AiQueries
+                var deleted = await context.AskParrotsQueries
                     .Where(q => q.CreatedAt < cutoff)
                     .ExecuteDeleteAsync();
 

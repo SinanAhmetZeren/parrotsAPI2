@@ -1,6 +1,6 @@
 namespace ParrotsAPI2.Dtos.AiDtos
 {
-    public class AiQueryRecordDto
+    public class AskParrotsQueryRecordDto
     {
         public int Id { get; set; }
         public string UserId { get; set; } = string.Empty;
@@ -28,9 +28,9 @@ namespace ParrotsAPI2.Dtos.AiDtos
         public DateTime CreatedAt { get; set; }
     }
 
-    public class AiQueryPageDto
+    public class AskParrotsQueryPageDto
     {
-        public List<AiQueryRecordDto> Items { get; set; } = new();
+        public List<AskParrotsQueryRecordDto> Items { get; set; } = new();
         public int TotalCount { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
