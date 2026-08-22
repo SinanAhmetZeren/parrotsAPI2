@@ -62,7 +62,8 @@ if (!builder.Environment.IsEnvironment("Testing"))
     var alertSink = new AlertEmailSink(
         smtpUser: Environment.GetEnvironmentVariable("Email__SmtpUser") ?? "",
         smtpPass: Environment.GetEnvironmentVariable("Email__SmtpPass") ?? "",
-        adminEmail: Environment.GetEnvironmentVariable("Email__AdminAddress") ?? ""
+        adminEmail: Environment.GetEnvironmentVariable("Email__AdminAddress") ?? "",
+        instanceName: instanceName
     );
     Log.Logger = new LoggerConfiguration()
         .MinimumLevel.Information()
