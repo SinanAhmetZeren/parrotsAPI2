@@ -280,7 +280,6 @@ namespace ParrotsAPI2.Services.Ai
                     UserQuery = userPrompt,
                     Latitude = dto.Latitude,
                     Longitude = dto.Longitude,
-                    RadiusKm = double.TryParse(dto.RadiusKm, out var r) ? r : 0,
                     VehicleType = dto.VehicleType ?? string.Empty,
                     Duration = dto.Duration ?? string.Empty,
                     Vibe = dto.Vibe ?? string.Empty,
@@ -437,7 +436,7 @@ namespace ParrotsAPI2.Services.Ai
         private static string BuildPrompt(AiQueryDto dto, string wordCountTarget)
         {
 
-            var locationPart = $"starting within {dto.RadiusKm}km of coordinates ({dto.Latitude}, {dto.Longitude})";
+            var locationPart = $"around coordinates ({dto.Latitude}, {dto.Longitude})";
 
             var vibeConfigs = new Dictionary<string, (string Label, string Detail)>(StringComparer.OrdinalIgnoreCase)
             {

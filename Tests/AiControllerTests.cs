@@ -52,7 +52,6 @@ public class AiControllerTests
         Duration = "1 Day",
         Vibe = "Food",
         SpotType = "Hidden Gems",
-        RadiusKm = "5",
         Latitude = 41.0,
         Longitude = 29.0
     };
