@@ -10,13 +10,20 @@ namespace ParrotsAPI2.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropColumn(
+                name: "RadiusKm",
+                table: "AiQueries");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.AddColumn<double>(
+                name: "RadiusKm",
+                table: "AiQueries",
+                type: "double precision",
+                nullable: false,
+                defaultValue: 0.0);
         }
     }
 }
