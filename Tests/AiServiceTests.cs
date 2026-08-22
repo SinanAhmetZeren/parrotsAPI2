@@ -135,11 +135,10 @@ public class AiServiceTests
     }
 
     [Fact]
-    public async Task Specific_radius_includes_coordinates()
+    public async Task Location_coordinates_included_in_prompt()
     {
-        var captured = await CapturePrompt(MakeDto(radiusKm: "5", lat: 41.0, lon: 29.0));
-        Assert.Contains("starting within 5km of coordinates", captured);
-        Assert.Contains("(41, 29)", captured);
+        var captured = await CapturePrompt(MakeDto(lat: 41.0, lon: 29.0));
+        Assert.Contains("around coordinates (41, 29)", captured);
     }
 
     [Fact]
@@ -223,7 +222,6 @@ public class AiServiceTests
         string duration = "1 Day",
         string vibe = "Food",
         string spotType = "Hidden Gems",
-        string radiusKm = "5",
         double lat = 41.0,
         double lon = 29.0) =>
         new()
@@ -232,7 +230,6 @@ public class AiServiceTests
             Duration = duration,
             Vibe = vibe,
             SpotType = spotType,
-            RadiusKm = radiusKm,
             Latitude = lat,
             Longitude = lon
         };

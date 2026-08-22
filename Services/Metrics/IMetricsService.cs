@@ -17,7 +17,7 @@ namespace ParrotsAPI2.Services.Message
         Task<ServiceResponse<AiQueryPageDto>> GetAiQueries(
             int page, int pageSize,
             string? userId, string? vehicleType, string? duration,
-            string? vibe, string? spotType, double? radiusKm,
+            string? vibe, string? spotType,
             DateTime? from, DateTime? to, bool? isSuccess, string? model);
         Task<ServiceResponse<List<AiQueryDayDto>>> GetAiQueryStats(DateTime? from, DateTime? to);
     }

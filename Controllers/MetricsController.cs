@@ -116,7 +116,6 @@ namespace ParrotsAPI2.Controllers
             [FromQuery] string? duration = null,
             [FromQuery] string? vibe = null,
             [FromQuery] string? spotType = null,
-            [FromQuery] double? radiusKm = null,
             [FromQuery] DateTime? from = null,
             [FromQuery] DateTime? to = null,
             [FromQuery] bool? isSuccess = null,
@@ -124,7 +123,7 @@ namespace ParrotsAPI2.Controllers
         {
             var response = await _metricsService.GetAiQueries(
                 page, pageSize, userId, vehicleType, duration,
-                vibe, spotType, radiusKm, from, to, isSuccess, model);
+                vibe, spotType, from, to, isSuccess, model);
 
             if (!response.Success)
                 return BadRequest(response);

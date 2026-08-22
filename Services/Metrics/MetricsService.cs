@@ -242,7 +242,7 @@ namespace ParrotsAPI2.Services.Message
         public async Task<ServiceResponse<AiQueryPageDto>> GetAiQueries(
             int page, int pageSize,
             string? userId, string? vehicleType, string? duration,
-            string? vibe, string? spotType, double? radiusKm,
+            string? vibe, string? spotType,
             DateTime? from, DateTime? to, bool? isSuccess, string? model)
         {
             var response = new ServiceResponse<AiQueryPageDto>();
@@ -259,8 +259,6 @@ namespace ParrotsAPI2.Services.Message
                 query = query.Where(q => q.Vibe == vibe);
             if (!string.IsNullOrWhiteSpace(spotType))
                 query = query.Where(q => q.SpotType == spotType);
-            if (radiusKm.HasValue)
-                query = query.Where(q => q.RadiusKm == radiusKm.Value);
             if (from.HasValue)
                 query = query.Where(q => q.CreatedAt >= DateTime.SpecifyKind(from.Value, DateTimeKind.Utc));
             if (to.HasValue)
@@ -278,7 +276,7 @@ namespace ParrotsAPI2.Services.Message
                 .Take(pageSize)
                 .Select(q => new
                 {
-                    q.Id, q.UserId, q.UserQuery, q.Latitude, q.Longitude, q.RadiusKm,
+                    q.Id, q.UserId, q.UserQuery, q.Latitude, q.Longitude,
                     q.VehicleType, q.Duration, q.Vibe, q.SpotType,
                     q.ModelRequested, q.ModelUsed, q.IsSuccess, q.ErrorMessage,
                     q.DurationMs, q.InputTokens, q.OutputTokens, q.CachedInputTokens,
@@ -307,7 +305,6 @@ namespace ParrotsAPI2.Services.Message
                     UserQuery = q.UserQuery,
                     Latitude = q.Latitude,
                     Longitude = q.Longitude,
-                    RadiusKm = q.RadiusKm,
                     VehicleType = q.VehicleType,
                     Duration = q.Duration,
                     Vibe = q.Vibe,

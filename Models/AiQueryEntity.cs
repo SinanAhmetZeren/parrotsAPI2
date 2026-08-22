@@ -9,7 +9,6 @@ public class AiQueryEntity
     public string UserQuery { get; set; } = string.Empty;
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public double RadiusKm { get; set; }
     public string VehicleType { get; set; } = string.Empty;
     public string Duration { get; set; } = string.Empty;
     public string Vibe { get; set; } = string.Empty;
