@@ -635,6 +635,7 @@ namespace API.Controllers
                         ProfileImageUrl = selectedImage,
                         BackgroundImageUrl = $"{baseUrl}amazon.jpeg",
                         EmailVisible = false,
+                        PublicId = await GenerateUniquePublicId(),
                     };
 
                     var createResult = await _userManager.CreateAsync(user);
