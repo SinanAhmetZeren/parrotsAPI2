@@ -28,11 +28,14 @@ public class AlertEmailSink : ILogEventSink
     private static readonly TimeSpan WrnSpikeWindow = TimeSpan.FromMinutes(5);
     private DateTime _lastWrnSpikeSent = DateTime.MinValue;
 
-    public AlertEmailSink(string smtpUser, string smtpPass, string adminEmail)
+    private readonly string _instanceName;
+
+    public AlertEmailSink(string smtpUser, string smtpPass, string adminEmail, string instanceName)
     {
         _smtpUser = smtpUser;
         _smtpPass = smtpPass;
         _adminEmail = adminEmail;
+        _instanceName = instanceName;
     }
 
     public void Emit(LogEvent logEvent)
@@ -93,8 +96,8 @@ public class AlertEmailSink : ILogEventSink
             var mail = new MailMessage
             {
                 From = new MailAddress(_smtpUser, "Parrots API"),
-                Subject = $"[{level}] {message[..Math.Min(message.Length, 80)]}",
-                Body = $"Time: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC\nLevel: {level}\n\nMessage:\n{message}{exception}",
+                Subject = $"[{_instanceName}] [{level}] {message[..Math.Min(message.Length, 80)]}",
+                Body = $"Time: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC\nInstance: {_instanceName}\nLevel: {level}\n\nMessage:\n{message}{exception}",
                 IsBodyHtml = false
             };
             mail.To.Add(_adminEmail);
