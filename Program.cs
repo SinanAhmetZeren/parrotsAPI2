@@ -39,17 +39,20 @@ using Serilog;
 
 DotNetEnv.Env.TraversePath().Load();
 
+var instanceName = Environment.GetEnvironmentVariable("INSTANCE_NAME") ?? "local_dev";
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .Enrich.WithProperty("Env", instanceName)
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Env}] {Message:lj}{NewLine}{Exception}")
     .WriteTo.File(
         path: "logs/log-.txt",
         rollingInterval: RollingInterval.Day,
         retainedFileCountLimit: 14,
-        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] [{Env}] {Message:lj}{NewLine}{Exception}")
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,12 +69,13 @@ if (!builder.Environment.IsEnvironment("Testing"))
         .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
         .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
         .Enrich.FromLogContext()
-        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+        .Enrich.WithProperty("Env", instanceName)
+        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Env}] {Message:lj}{NewLine}{Exception}")
         .WriteTo.File(
             path: "logs/log-.txt",
             rollingInterval: RollingInterval.Day,
             retainedFileCountLimit: 14,
-            outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+            outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] [{Env}] {Message:lj}{NewLine}{Exception}")
         .WriteTo.Sink(alertSink)
         .CreateLogger();
 }
