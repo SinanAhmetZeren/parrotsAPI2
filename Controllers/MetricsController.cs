@@ -108,7 +108,7 @@ namespace ParrotsAPI2.Controllers
         }
 
         [HttpGet("aiQueries")]
-        public async Task<ActionResult<ServiceResponse<AiQueryPageDto>>> GetAiQueries(
+        public async Task<ActionResult<ServiceResponse<AskParrotsQueryPageDto>>> GetAskParrotsQueries(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 50,
             [FromQuery] string? userId = null,
@@ -121,7 +121,7 @@ namespace ParrotsAPI2.Controllers
             [FromQuery] bool? isSuccess = null,
             [FromQuery] string? model = null)
         {
-            var response = await _metricsService.GetAiQueries(
+            var response = await _metricsService.GetAskParrotsQueries(
                 page, pageSize, userId, vehicleType, duration,
                 vibe, spotType, from, to, isSuccess, model);
 

@@ -14,7 +14,7 @@ namespace ParrotsAPI2.Services.Message
         Task<ServiceResponse<List<WeeklyUsersDto>>> GetWeeklyUsersCreated();
         Task<ServiceResponse<List<WeeklyBidsDto>>> GetWeeklyBids();
         Task<ServiceResponse<List<WeeklyMessagesDto>>> GetWeeklyMessages();
-        Task<ServiceResponse<AiQueryPageDto>> GetAiQueries(
+        Task<ServiceResponse<AskParrotsQueryPageDto>> GetAskParrotsQueries(
             int page, int pageSize,
             string? userId, string? vehicleType, string? duration,
             string? vibe, string? spotType,

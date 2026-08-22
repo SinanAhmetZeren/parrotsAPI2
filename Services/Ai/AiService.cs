@@ -104,7 +104,7 @@ namespace ParrotsAPI2.Services.Ai
             _placesApiKey = configuration["Google_Places_API_Key"];
         }
 
-        public async Task<string?> AskAsync(AiQueryDto dto, string userId)
+        public async Task<string?> AskAsync(AskParrotsQueryDto dto, string userId)
         {
             var (wordCountTarget, sentenceStructure) = GetWordCountTarget(dto.Duration);
             var userPrompt = BuildPrompt(dto, wordCountTarget);
@@ -258,7 +258,7 @@ namespace ParrotsAPI2.Services.Ai
             return null;
         }
 
-        private async Task SaveQueryAsync(AiQueryDto dto, string userId, string userPrompt, string modelRequested, string modelUsed, string? rawResponseJson,
+        private async Task SaveQueryAsync(AskParrotsQueryDto dto, string userId, string userPrompt, string modelRequested, string modelUsed, string? rawResponseJson,
             string? draftNarrative, string? plannedSpotsJson, string? placesAuditJson, string? finalNarrative,
             int inputTokens, int outputTokens, int? cachedInputTokens, int durationMs, bool isSuccess, string? errorMessage)
         {
@@ -274,7 +274,7 @@ namespace ParrotsAPI2.Services.Ai
                     plannedSpotCount = doc.RootElement.GetArrayLength();
                 }
 
-                db.AiQueries.Add(new AiQueryEntity
+                db.AskParrotsQueries.Add(new AskParrotsQueryEntity
                 {
                     UserId = userId,
                     UserQuery = userPrompt,
@@ -433,7 +433,7 @@ namespace ParrotsAPI2.Services.Ai
             return ("550–600 words", "5 to 6 paragraphs, each containing 5 to 6 long and highly detailed sentences");
         }
 
-        private static string BuildPrompt(AiQueryDto dto, string wordCountTarget)
+        private static string BuildPrompt(AskParrotsQueryDto dto, string wordCountTarget)
         {
 
             var locationPart = $"around coordinates ({dto.Latitude}, {dto.Longitude})";
