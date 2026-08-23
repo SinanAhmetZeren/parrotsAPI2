@@ -1,0 +1,12 @@
+{
+  "Rules": [
+    {
+      "ID": "DeleteOldBackupsAfter30Days",
+      "Status": "Enabled",
+      "Prefix": "backups/",
+      "Expiration": {
+        "Days": 30
+      }
+    }
+  ]
+}

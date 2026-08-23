@@ -138,7 +138,7 @@ public class AiServiceTests
     public async Task Location_coordinates_included_in_prompt()
     {
         var captured = await CapturePrompt(MakeDto(lat: 41.0, lon: 29.0));
-        Assert.Contains("around coordinates (41, 29)", captured);
+        Assert.Contains("starting from coordinates (41, 29)", captured);
     }
 
     [Fact]

@@ -436,7 +436,7 @@ namespace ParrotsAPI2.Services.Ai
         private static string BuildPrompt(AskParrotsQueryDto dto, string wordCountTarget)
         {
 
-            var locationPart = $"around coordinates ({dto.Latitude}, {dto.Longitude})";
+            var locationPart = $"starting from coordinates ({dto.Latitude}, {dto.Longitude})";
 
             var vibeConfigs = new Dictionary<string, (string Label, string Detail)>(StringComparer.OrdinalIgnoreCase)
             {
