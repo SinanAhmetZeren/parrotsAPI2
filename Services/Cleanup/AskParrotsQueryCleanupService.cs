@@ -6,7 +6,7 @@ namespace ParrotsAPI2.Services.Cleanup
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<AskParrotsQueryCleanupService> _logger;
 
-        private static readonly TimeSpan Retention = TimeSpan.FromDays(180);
+        private static readonly TimeSpan Retention = TimeSpan.FromDays(720);
         private static readonly TimeSpan Interval = TimeSpan.FromHours(24);
 
         public AskParrotsQueryCleanupService(IServiceScopeFactory scopeFactory, ILogger<AskParrotsQueryCleanupService> logger)
@@ -17,7 +17,7 @@ namespace ParrotsAPI2.Services.Cleanup
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("AiQuery Cleanup Service started.");
+            _logger.LogInformation("AskParrots Query Cleanup Service started.");
             _timer = new Timer(DoCleanup, null, Interval, Interval);
             return Task.CompletedTask;
         }
@@ -35,7 +35,7 @@ namespace ParrotsAPI2.Services.Cleanup
                     .ExecuteDeleteAsync();
 
                 if (deleted > 0)
-                    _logger.LogInformation("AiQuery Cleanup: deleted {Count} records older than 180 days.", deleted);
+                    _logger.LogInformation("AskParrots Query Cleanup: deleted {Count} records older than 720 days.", deleted);
             }
             catch (Exception ex)
             {
