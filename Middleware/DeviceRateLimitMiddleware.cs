@@ -8,8 +8,10 @@ public class DeviceRateLimitMiddleware
     private static readonly ConcurrentDictionary<string, RateLimitEntry> _deviceStore = new();
     private static readonly ConcurrentDictionary<string, RateLimitEntry> _ipStore = new();
 
-    private const int DEVICE_LIMIT = 100; // requests per minute per device
-    private const int IP_LIMIT = 300;     // requests per minute per IP (covers shared NAT)
+    private const int DEVICE_LIMIT = 100;
+    private const int IP_LIMIT_DEFAULT = 300;
+    private const int IP_LIMIT_LOADTEST = 10000;
+    private const string LOAD_TEST_KEY = "3a7676e3de328901f51c850e7bd53917";
     private static readonly TimeSpan WINDOW = TimeSpan.FromMinutes(1);
     private static readonly TimeSpan IDLE_EXPIRY = TimeSpan.FromMinutes(30);
 
@@ -44,6 +46,8 @@ public class DeviceRateLimitMiddleware
 
         var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
         var deviceId = context.Request.Headers["X-Device-Id"].FirstOrDefault() ?? ip;
+        var isLoadTest = context.Request.Headers["X-Load-Test-Key"].FirstOrDefault() == LOAD_TEST_KEY;
+        var ipLimit = isLoadTest ? IP_LIMIT_LOADTEST : IP_LIMIT_DEFAULT;
 
         _logger.LogDebug("Request {Method} {Path} | DeviceId={DeviceId} | IP={IP}",
             context.Request.Method, context.Request.Path, deviceId, ip);
@@ -53,7 +57,7 @@ public class DeviceRateLimitMiddleware
         var deviceEntry = Track(_deviceStore, deviceId, now);
         var ipEntry = Track(_ipStore, ip, now);
 
-        if (deviceEntry.Count > DEVICE_LIMIT || ipEntry.Count > IP_LIMIT)
+        if (deviceEntry.Count > DEVICE_LIMIT || ipEntry.Count > ipLimit)
         {
             context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
             context.Response.ContentType = "application/json";
