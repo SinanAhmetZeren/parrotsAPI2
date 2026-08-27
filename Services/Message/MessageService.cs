@@ -251,9 +251,11 @@ namespace ParrotsAPI2.Services.Message
                 }
 
                 // Step 1: Fetch all messages between these two users
+                // IsBlocked=true messages are hidden from the receiver (userId1 when they are the receiver)
                 var messages = await _context.Messages
-                    .Where(m => (m.SenderId == userId1 && m.ReceiverId == userId2)
+                    .Where(m => ((m.SenderId == userId1 && m.ReceiverId == userId2)
                              || (m.SenderId == userId2 && m.ReceiverId == userId1))
+                             && (!m.IsBlocked || m.SenderId == userId1))
                     .OrderBy(m => m.DateTime)
                     .ToListAsync();
 

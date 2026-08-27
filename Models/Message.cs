@@ -15,6 +15,7 @@ namespace ParrotsAPI2.Models
 
         [MaxLength(73)]
         public string? ConversationKey { get; set; }
+        public bool IsBlocked { get; set; } = false;
 
     }
 }

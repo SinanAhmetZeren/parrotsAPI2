@@ -173,6 +173,13 @@ public class ChatHub : Hub
             ? senderId + "_" + receiverId
             : receiverId + "_" + senderId;
 
+        // Check if receiver has blocked the sender (append-only log — check latest action)
+        var isBlocked = await dbContext.BlockedUsers
+            .Where(b => b.BlockerId == receiverId && b.BlockedId == senderId)
+            .OrderByDescending(b => b.CreatedAt)
+            .Select(b => b.Action)
+            .FirstOrDefaultAsync() == "blocked";
+
         // Create message object
         var message = new Message
         {
@@ -181,7 +188,8 @@ public class ChatHub : Hub
             TextSenderEncrypted = encryptedForSender,
             TextReceiverEncrypted = encryptedForReceiver,
             DateTime = DateTime.UtcNow,
-            ConversationKey = conversationKey
+            ConversationKey = conversationKey,
+            IsBlocked = isBlocked
         };
 
         dbContext.Messages.Add(message);
@@ -206,31 +214,34 @@ public class ChatHub : Hub
         conversation.LastMessageDate = message.DateTime;
         // Batched: conversation update + potential offline unread flag together below
 
-        // Update receiver notifications
+        // Update receiver notifications (skip everything if sender is blocked by receiver)
         bool isReceiverViewingChat = _tracker.IsViewingConversation(receiverId, senderId);
         bool isReceiverOnline = _userConnections.TryGetValue(receiverId, out var receiverConns);
         bool isReceiverForeground = isReceiverOnline && receiverConns!.Any(c => c.IsForeground && !c.IsWeb);
 
-        if (!isReceiverForeground)
+        if (!isBlocked)
         {
-            var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
-            var receiverEntity = await dbContext.Users.FindAsync(receiverId);
-            if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
+            if (!isReceiverForeground)
             {
-                var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
-                _logger.LogInformation("[PUSH] Receiver backgrounded/offline → sending push. Token: {Token}", receiverEntity.ExpoPushToken);
-                _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
+                var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
+                var receiverEntity = await dbContext.Users.FindAsync(receiverId);
+                if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
+                {
+                    var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
+                    _logger.LogInformation("[PUSH] Receiver backgrounded/offline → sending push. Token: {Token}", receiverEntity.ExpoPushToken);
+                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
+                }
             }
-        }
-        else if (!isReceiverViewingChat)
-        {
-            var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
+            else if (!isReceiverViewingChat)
+            {
+                var badgeCount = await UpsertUnreadAndGetTotalAsync(dbContext, receiverId, conversationKey);
 
-            if (isReceiverOnline)
-                foreach (var connId in receiverConns!.Select(c => c.ConnectionId))
-                    await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
+                if (isReceiverOnline)
+                    foreach (var connId in receiverConns!.Select(c => c.ConnectionId))
+                        await Clients.Client(connId).SendAsync("ReceiveUnreadNotification");
 
-            _logger.LogInformation("[PUSH] Receiver {ReceiverId} in foreground → push skipped", receiverId);
+                _logger.LogInformation("[PUSH] Receiver {ReceiverId} in foreground → push skipped", receiverId);
+            }
         }
 
         await dbContext.SaveChangesAsync(); // single batched save for conversation + unread flag
@@ -243,21 +254,7 @@ public class ChatHub : Hub
             .OrderBy(m => m.DateTime)
             .ToListAsync();
 
-        // Decrypt for receiver perspective
-        var last5ForReceiver = rawLast5.Select(m => new {
-            id = m.Id,
-            senderId = m.SenderId,
-            text = m.SenderId == senderId
-                ? EncryptionHelper.DecryptString(m.TextReceiverEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey))
-                : EncryptionHelper.DecryptString(m.TextSenderEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey)),
-            dateTime = m.DateTime,
-            senderProfileImageUrl = m.SenderId == senderId ? senderInfo.ProfileImageUrl : receiverInfo.ProfileImageUrl,
-            senderProfileThumbnailUrl = m.SenderId == senderId ? senderInfo.ProfileImageThumbnailUrl : receiverInfo.ProfileImageThumbnailUrl,
-            senderUsername = m.SenderId == senderId ? senderInfo.UserName : receiverInfo.UserName,
-            senderPublicId = m.SenderId == senderId ? senderInfo.PublicId : receiverInfo.PublicId,
-        }).ToList();
-
-        // Decrypt for sender perspective
+        // Decrypt for sender perspective (sender always sees their own messages)
         var last5ForSender = rawLast5.Select(m => new {
             id = m.Id,
             senderId = m.SenderId,
@@ -270,10 +267,33 @@ public class ChatHub : Hub
             senderPublicId = m.SenderId == senderId ? senderInfo.PublicId : receiverInfo.PublicId,
         }).ToList();
 
-        if (receiverId != senderId)
+        // Decrypt for receiver perspective — filter out blocked messages
+        if (!isBlocked && receiverId != senderId)
+        {
+            var rawLast5ForReceiver = await dbContext.Messages
+                .Where(m => m.ConversationKey == conversationKey && !m.IsBlocked)
+                .OrderByDescending(m => m.DateTime)
+                .Take(3)
+                .OrderBy(m => m.DateTime)
+                .ToListAsync();
+
+            var last5ForReceiver = rawLast5ForReceiver.Select(m => new {
+                id = m.Id,
+                senderId = m.SenderId,
+                text = m.SenderId == senderId
+                    ? EncryptionHelper.DecryptString(m.TextReceiverEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey))
+                    : EncryptionHelper.DecryptString(m.TextSenderEncrypted, EncryptionHelper.KeyFromBase64(receiverInfo.EncryptionKey)),
+                dateTime = m.DateTime,
+                senderProfileImageUrl = m.SenderId == senderId ? senderInfo.ProfileImageUrl : receiverInfo.ProfileImageUrl,
+                senderProfileThumbnailUrl = m.SenderId == senderId ? senderInfo.ProfileImageThumbnailUrl : receiverInfo.ProfileImageThumbnailUrl,
+                senderUsername = m.SenderId == senderId ? senderInfo.UserName : receiverInfo.UserName,
+                senderPublicId = m.SenderId == senderId ? senderInfo.PublicId : receiverInfo.PublicId,
+            }).ToList();
+
             if (_userConnections.TryGetValue(receiverId, out var receiverConnections))
                 foreach (var connId in receiverConnections.Select(c => c.ConnectionId))
                     await Clients.Client(connId).SendAsync("ReceiveMessage", last5ForReceiver);
+        }
     }
 
 

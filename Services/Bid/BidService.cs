@@ -53,6 +53,24 @@ namespace ParrotsAPI2.Services.Bid
             var response = new ServiceResponse<GetBidDto>();
             try
             {
+                // Check if voyage owner has blocked the bidder
+                var voyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == newBid.VoyageId);
+                if (voyage != null)
+                {
+                    var isBlocked = await _context.BlockedUsers
+                        .Where(b => b.BlockerId == voyage.UserId && b.BlockedId == newBid.UserId)
+                        .OrderByDescending(b => b.CreatedAt)
+                        .Select(b => b.Action)
+                        .FirstOrDefaultAsync() == "blocked";
+
+                    if (isBlocked)
+                    {
+                        response.Success = false;
+                        response.Message = "Unable to place bid.";
+                        return response;
+                    }
+                }
+
                 var bidEntity = new Models.Bid
                 {
                     Accepted = false,

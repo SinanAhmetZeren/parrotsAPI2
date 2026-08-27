@@ -25,6 +25,8 @@ namespace ParrotsAPI2.Data
         public DbSet<UnreadConversation> UnreadConversations { get; set; }
         public DbSet<AskParrotsQueryEntity> AskParrotsQueries { get; set; }
         public DbSet<MobileVersionConfig> MobileVersionConfigs { get; set; }
+        public DbSet<BlockedUser> BlockedUsers { get; set; }
+        public DbSet<UserReport> UserReports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -210,6 +212,10 @@ namespace ParrotsAPI2.Data
                 .HasIndex(u => new { u.UserId, u.ConversationKey })
                 .IsUnique()
                 .HasDatabaseName("IX_UnreadConversations_UserId_ConversationKey");
+
+            modelBuilder.Entity<BlockedUser>()
+                .HasIndex(b => new { b.BlockerId, b.BlockedId, b.CreatedAt })
+                .HasDatabaseName("IX_BlockedUsers_BlockerId_BlockedId_CreatedAt");
 
             // Seed default vehicles ("walk" and "run") with UserId = "1"
             /*
