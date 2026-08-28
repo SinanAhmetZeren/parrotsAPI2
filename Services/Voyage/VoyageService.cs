@@ -378,7 +378,7 @@ namespace ParrotsAPI2.Services.Voyage
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetVoyageDto>> GetVoyageById(int id)
+        public async Task<ServiceResponse<GetVoyageDto>> GetVoyageById(int id, string? viewerId = null)
         {
             var serviceResponse = new ServiceResponse<GetVoyageDto>();
             var voyage = await _context.Voyages
@@ -444,6 +444,16 @@ namespace ParrotsAPI2.Services.Voyage
             voyageDto.Vehicle = vehicleDto;
             voyageDto.Bids = bidDtos;
             voyageDto.Waypoints = waypointDtos;
+
+            // Check if organizer has blocked the viewer
+            if (viewerId != null && viewerId != voyage.UserId)
+            {
+                voyageDto.IsBlockedByOrganizer = await _context.BlockedUsers
+                    .Where(b => b.BlockerId == voyage.UserId && b.BlockedId == viewerId)
+                    .OrderByDescending(b => b.CreatedAt)
+                    .Select(b => b.Action)
+                    .FirstOrDefaultAsync() == "blocked";
+            }
 
             serviceResponse.Data = voyageDto;
             return serviceResponse;
@@ -841,6 +851,7 @@ namespace ParrotsAPI2.Services.Voyage
                             w.Longitude >= lon1 &&
                             w.Longitude <= lon2) &&
                         (v.PlaceType > 0 && v.StartDate <= DateTime.UtcNow && v.EndDate >= DateTime.UtcNow || (v.PlaceType == 0 && v.Confirmed && v.EndDate.Date >= DateTime.UtcNow.Date)))
+                    .Where(v => !v.User.LockoutEnabled || v.User.LockoutEnd == null || v.User.LockoutEnd < DateTimeOffset.UtcNow)
                     .Include(v => v.User)
                     .Include(v => v.Vehicle)
                     .Include(v => v.Waypoints)
@@ -965,6 +976,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.Vehicle)
                     // .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
                     .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
+                    .Where(v => !v.User.LockoutEnabled || v.User.LockoutEnd == null || v.User.LockoutEnd < DateTimeOffset.UtcNow)
                     .AsQueryable();
 
                 // ✅ Apply coordinate filtering only if all lat/lon bounds are provided
@@ -1071,6 +1083,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
                     .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
+                    .Where(v => !v.User.LockoutEnabled || v.User.LockoutEnd == null || v.User.LockoutEnd < DateTimeOffset.UtcNow)
                     .AsQueryable();
 
                 // Filter by coordinates if all bounds provided

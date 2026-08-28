@@ -27,6 +27,7 @@ namespace ParrotsAPI2.Data
         public DbSet<MobileVersionConfig> MobileVersionConfigs { get; set; }
         public DbSet<BlockedUser> BlockedUsers { get; set; }
         public DbSet<UserReport> UserReports { get; set; }
+        public DbSet<UserSuspension> UserSuspensions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
