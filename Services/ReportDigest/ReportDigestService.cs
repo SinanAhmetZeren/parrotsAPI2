@@ -61,7 +61,7 @@ namespace ParrotsAPI2.Services.ReportDigest
 
                 var voyageIds = reports.Where(r => r.ReportedVoyageId.HasValue).Select(r => r.ReportedVoyageId!.Value).Distinct().ToList();
                 var voyageNames = voyageIds.Any()
-                    ? await context.Voyages.Where(v => voyageIds.Contains(v.Id)).Select(v => new { v.Id, v.Name }).ToDictionaryAsync(v => v.Id, v => v.Name)
+                    ? await context.Voyages.Where(v => voyageIds.Contains(v.Id)).Select(v => new { v.Id, v.Name }).ToDictionaryAsync(v => v.Id, v => (string?)v.Name)
                     : new Dictionary<int, string?>();
 
                 var items = reports.Select(r => new ReportDigestItem
