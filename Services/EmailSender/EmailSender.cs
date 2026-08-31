@@ -68,6 +68,65 @@ public class EmailSender : IEmailSender
         }
     }
 
+    public async Task SendRegistrationEmail(
+        string recipientEmail,
+        string confirmationCode,
+        string username)
+    {
+        if (string.IsNullOrWhiteSpace(recipientEmail))
+        {
+            _logger.LogWarning(
+                "Registration email skipped: empty recipient email. Username={Username}",
+                username
+            );
+            return;
+        }
+
+        try
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(
+                    _config["Email:SmtpUser"],
+                    _config["Email:SmtpPass"]
+                ),
+                EnableSsl = true
+            };
+
+            string body =
+                $"Welcome to Parrots, {username}!\n\n" +
+                $"Your confirmation code is: {confirmationCode}\n\n" +
+                $"Enter this code in the app to activate your account.";
+
+            var message = new MailMessage
+            {
+                From = new MailAddress(_config["Email:From"]),
+                Subject = "Welcome to Parrots — Confirm your account",
+                Body = body,
+                IsBodyHtml = false
+            };
+
+            message.To.Add(recipientEmail);
+            await smtpClient.SendMailAsync(message);
+
+            _logger.LogInformation(
+                "Registration email sent successfully. Email={Email}, Username={Username}",
+                recipientEmail,
+                username
+            );
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Failed to send registration email. Email={Email}, Username={Username}",
+                recipientEmail,
+                username
+            );
+        }
+    }
+
     public async Task SendConfirmationEmail( // HELPER FOR FORGOT PASSWORD
         string recipientEmail,
         string confirmationCode,

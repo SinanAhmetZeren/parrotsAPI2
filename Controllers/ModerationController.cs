@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ParrotsAPI2.Helpers;
 using ParrotsAPI2.Services.Moderation;
+using ParrotsAPI2.Services.Suspension;
 using System.Security.Claims;
 
 namespace ParrotsAPI2.Controllers
@@ -14,12 +16,14 @@ namespace ParrotsAPI2.Controllers
         private readonly IModerationService _moderationService;
         private readonly DataContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly SuspendedUserCache _suspendedUserCache;
 
-        public ModerationController(IModerationService moderationService, DataContext context, UserManager<AppUser> userManager)
+        public ModerationController(IModerationService moderationService, DataContext context, UserManager<AppUser> userManager, SuspendedUserCache suspendedUserCache)
         {
             _moderationService = moderationService;
             _context = context;
             _userManager = userManager;
+            _suspendedUserCache = suspendedUserCache;
         }
 
         [HttpPost("block/{publicId}")]
@@ -82,13 +86,17 @@ namespace ParrotsAPI2.Controllers
         // ── ADMIN ENDPOINTS ──
 
         [HttpGet("admin/reports")]
-        public async Task<IActionResult> GetReports([FromQuery] string? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 50)
+        public async Task<IActionResult> GetReports([FromQuery] string? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 50, [FromQuery] DateTime? from = null, [FromQuery] DateTime? to = null)
         {
             if (!await IsAdmin()) return Forbid();
 
             var query = _context.UserReports.AsQueryable();
             if (!string.IsNullOrEmpty(status))
                 query = query.Where(r => r.Status == status);
+            if (from.HasValue)
+                query = query.Where(r => r.CreatedAt >= from.Value.ToUniversalTime());
+            if (to.HasValue)
+                query = query.Where(r => r.CreatedAt <= to.Value.ToUniversalTime());
 
             var total = await query.CountAsync();
 
@@ -166,6 +174,7 @@ namespace ParrotsAPI2.Controllers
                 CreatedAt = DateTime.UtcNow
             });
             await _context.SaveChangesAsync();
+            _suspendedUserCache.Add(userId);
 
             return Ok(new { success = true });
         }
@@ -190,8 +199,137 @@ namespace ParrotsAPI2.Controllers
                 CreatedAt = DateTime.UtcNow
             });
             await _context.SaveChangesAsync();
+            _suspendedUserCache.Remove(userId);
 
             return Ok(new { success = true });
+        }
+
+        [HttpGet("admin/direct-messages")]
+        public async Task<IActionResult> GetDirectMessages(
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? to,
+            [FromQuery] string? userId1,
+            [FromQuery] string? userId2,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 50)
+        {
+            if (!await IsAdmin()) return Forbid();
+
+            var query = _context.Messages.AsQueryable();
+
+            if (from.HasValue)
+                query = query.Where(m => m.DateTime >= from.Value.ToUniversalTime());
+            if (to.HasValue)
+                query = query.Where(m => m.DateTime <= to.Value.ToUniversalTime());
+            if (!string.IsNullOrEmpty(userId1) && !string.IsNullOrEmpty(userId2))
+                query = query.Where(m =>
+                    (m.SenderId == userId1 && m.ReceiverId == userId2) ||
+                    (m.SenderId == userId2 && m.ReceiverId == userId1));
+            else if (!string.IsNullOrEmpty(userId1))
+                query = query.Where(m => m.SenderId == userId1 || m.ReceiverId == userId1);
+            else if (!string.IsNullOrEmpty(userId2))
+                query = query.Where(m => m.SenderId == userId2 || m.ReceiverId == userId2);
+
+            var total = await query.CountAsync();
+
+            var messages = await query
+                .OrderByDescending(m => m.DateTime)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var userIds = messages.SelectMany(m => new[] { m.SenderId, m.ReceiverId }).Distinct().ToList();
+            var users = await _context.Users
+                .Where(u => userIds.Contains(u.Id))
+                .Select(u => new { u.Id, u.UserName, u.EncryptionKey })
+                .ToDictionaryAsync(u => u.Id);
+
+            var result = messages.Select(m =>
+            {
+                string text;
+                try
+                {
+                    var senderKey = users.GetValueOrDefault(m.SenderId)?.EncryptionKey;
+                    var keyBytes = EncryptionHelper.KeyFromBase64(senderKey!);
+                    text = EncryptionHelper.DecryptString(m.TextSenderEncrypted, keyBytes);
+                }
+                catch
+                {
+                    text = "[decryption failed]";
+                }
+
+                return new
+                {
+                    m.Id,
+                    m.DateTime,
+                    m.SenderId,
+                    SenderUsername = users.GetValueOrDefault(m.SenderId)?.UserName,
+                    m.ReceiverId,
+                    ReceiverUsername = users.GetValueOrDefault(m.ReceiverId)?.UserName,
+                    m.IsBlocked,
+                    Text = text,
+                };
+            });
+
+            return Ok(new { totalCount = total, items = result });
+        }
+
+        [HttpGet("admin/group-messages")]
+        public async Task<IActionResult> GetAdminGroupMessages(
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? to,
+            [FromQuery] int? groupId,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 50)
+        {
+            if (!await IsAdmin()) return Forbid();
+
+            var query = _context.GroupMessages
+                .Include(m => m.GroupConversation)
+                .Include(m => m.Sender)
+                .AsQueryable();
+
+            if (from.HasValue)
+                query = query.Where(m => m.DateTime >= from.Value.ToUniversalTime());
+            if (to.HasValue)
+                query = query.Where(m => m.DateTime <= to.Value.ToUniversalTime());
+            if (groupId.HasValue)
+                query = query.Where(m => m.GroupConversationId == groupId.Value);
+
+            var total = await query.CountAsync();
+
+            var messages = await query
+                .OrderByDescending(m => m.DateTime)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var result = messages.Select(m =>
+            {
+                string text;
+                try
+                {
+                    var keyBytes = EncryptionHelper.KeyFromBase64(m.GroupConversation.EncryptionKey);
+                    text = EncryptionHelper.DecryptString(m.Text, keyBytes);
+                }
+                catch
+                {
+                    text = "[decryption failed]";
+                }
+
+                return new
+                {
+                    m.Id,
+                    m.DateTime,
+                    m.GroupConversationId,
+                    GroupName = m.GroupConversation.Name,
+                    m.SenderId,
+                    SenderUsername = m.Sender.UserName,
+                    Text = text,
+                };
+            });
+
+            return Ok(new { totalCount = total, items = result });
         }
 
         private async Task<bool> IsAdmin()

@@ -802,7 +802,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("admin/logs")]
-        public IActionResult GetLogs([FromQuery] string? from, [FromQuery] string? to, [FromQuery] string? level)
+        public IActionResult GetLogs([FromQuery] string? from, [FromQuery] string? to, [FromQuery] string? level, [FromQuery] int page = 1, [FromQuery] int pageSize = 100)
         {
             var fromDt = string.IsNullOrWhiteSpace(from)
                 ? DateTime.UtcNow.Date
@@ -885,7 +885,9 @@ namespace API.Controllers
                 })
                 .ToList();
 
-            return Ok(result);
+            var totalCount = result.Count;
+            var paged = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return Ok(new { totalCount, items = paged });
         }
 
         [Authorize(Roles = "Admin")]
@@ -1008,7 +1010,7 @@ namespace API.Controllers
             {
                 try
                 {
-                    await _emailSender.SendConfirmationEmail(
+                    await _emailSender.SendRegistrationEmail(
                         user.Email!,
                         user.ConfirmationCode!,
                         user.UserName!

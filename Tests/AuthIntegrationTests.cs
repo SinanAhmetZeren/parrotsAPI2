@@ -258,6 +258,8 @@ public class NoOpEmailSender : IEmailSender
 {
     public Task SendConfirmationEmail(string recipientEmail, string confirmationCode, string username)
         => Task.CompletedTask;
+    public Task SendRegistrationEmail(string recipientEmail, string confirmationCode, string username)
+        => Task.CompletedTask;
     public Task SendReportDigestEmail(string recipientEmail, List<ReportDigestItem> reports)
         => Task.CompletedTask;
 }

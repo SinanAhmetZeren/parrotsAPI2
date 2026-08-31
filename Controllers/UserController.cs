@@ -12,10 +12,12 @@ namespace ParrotsAPI2.Controllers
     {
 
         private readonly IUserService _userService;
+        private readonly DataContext _context;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, DataContext context)
         {
             _userService = userService;
+            _context = context;
         }
 
 
@@ -29,6 +31,9 @@ namespace ParrotsAPI2.Controllers
         [HttpGet("getUserByPublicId/{publicId}")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetSingleWithPublicId(string publicId)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == publicId);
+            if (user == null) return NotFound();
+            if (user.LockoutEnabled && user.LockoutEnd > DateTimeOffset.UtcNow) return NotFound();
             return Ok(await _userService.GetUserByPublicId(publicId));
         }
 

@@ -98,7 +98,10 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 
 // Controllers + NewtonsoftJson
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ParrotsAPI2.Filters.CheckUserSuspendedFilter>();
+}).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
@@ -149,6 +152,8 @@ builder.Services.AddScoped<IModerationService, ModerationService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<IMetricsService, MetricsService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddSingleton<ParrotsAPI2.Services.Suspension.SuspendedUserCache>();
+builder.Services.AddHostedService<ParrotsAPI2.Services.Suspension.SuspendedUserCacheLoader>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddSingleton<ConversationPageTracker>();
 builder.Services.AddHostedService<ParrotsAPI2.Services.HubDiagnostics.HubDiagnosticsService>();

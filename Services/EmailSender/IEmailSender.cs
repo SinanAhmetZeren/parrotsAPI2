@@ -7,6 +7,11 @@ public interface IEmailSender
         string confirmationCode,
         string username);
 
+    Task SendRegistrationEmail(
+        string recipientEmail,
+        string confirmationCode,
+        string username);
+
     Task SendReportDigestEmail(
         string recipientEmail,
         List<ReportDigestItem> reports);
