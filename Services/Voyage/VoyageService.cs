@@ -329,8 +329,8 @@ namespace ParrotsAPI2.Services.Voyage
                     .Where(vi => vi.VoyageId == id)
                     .ToListAsync();
 
-                // Only proceed if there are NO waypoints OR NO voyage images
-                if (!waypoints.Any() || !voyageImages.Any())
+                // Only proceed if there are NO waypoints
+                if (!waypoints.Any())
                 {
                     // Soft delete voyage
                     voyage.IsDeleted = true;

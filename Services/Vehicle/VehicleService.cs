@@ -226,14 +226,10 @@ namespace ParrotsAPI2.Services.Vehicle
                 return serviceResponse;
             }
 
-            // Check if any vehicle images exist
-            var vehicleImagesExist = await _context.VehicleImages
-                .AnyAsync(vi => vi.VehicleId == id);
-
-            if (vehicleImagesExist)
+            if (vehicle.Confirmed)
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "Vehicle not deleted because it has associated images.";
+                serviceResponse.Message = "Vehicle not deleted because it is already confirmed.";
                 return serviceResponse;
             }
 
