@@ -111,7 +111,7 @@ namespace ParrotsAPI2.Controllers
             var allUserIds = reporterIds.Union(reportedIds).ToList();
             var users = await _context.Users
                 .Where(u => allUserIds.Contains(u.Id))
-                .Select(u => new { u.Id, u.UserName, u.PublicId })
+                .Select(u => new { u.Id, u.UserName, u.PublicId, u.LockoutEnabled, u.LockoutEnd })
                 .ToDictionaryAsync(u => u.Id);
 
             var voyageIds = reports.Where(r => r.ReportedVoyageId.HasValue).Select(r => r.ReportedVoyageId!.Value).Distinct().ToList();
@@ -132,6 +132,7 @@ namespace ParrotsAPI2.Controllers
                 ReportedUsername = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.UserName : null,
                 ReportedPublicId = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.PublicId : null,
                 ReportedUserId = r.ReportedUserId,
+                IsUserSuspended = r.ReportedUserId != null && users.TryGetValue(r.ReportedUserId, out var ru) && ru.LockoutEnabled && ru.LockoutEnd > DateTimeOffset.UtcNow,
                 ReportedVoyageId = r.ReportedVoyageId,
                 VoyageName = r.ReportedVoyageId.HasValue ? voyageNames.GetValueOrDefault(r.ReportedVoyageId.Value) : null,
             });
