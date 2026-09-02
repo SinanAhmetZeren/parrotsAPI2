@@ -455,6 +455,16 @@ namespace ParrotsAPI2.Services.Voyage
                     .FirstOrDefaultAsync() == "blocked";
             }
 
+            var updates = await _context.VoyageUpdates
+                .Where(u => u.VoyageId == id)
+                .OrderByDescending(u => u.CreatedAt)
+                .Select(u => new VoyageUpdateDto { Id = u.Id, Text = u.Text, CreatedAt = u.CreatedAt })
+                .ToListAsync();
+
+            voyageDto.Updates = updates;
+
+            voyageDto.IsOwnerDeleted = voyage.User.LockoutEnabled && voyage.User.LockoutEnd == DateTimeOffset.MaxValue;
+
             serviceResponse.Data = voyageDto;
             return serviceResponse;
         }

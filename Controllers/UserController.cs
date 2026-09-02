@@ -2,6 +2,8 @@
 using ParrotsAPI2.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using ParrotsAPI2.Services.Suspension;
 
 namespace ParrotsAPI2.Controllers
 {
@@ -13,11 +15,15 @@ namespace ParrotsAPI2.Controllers
 
         private readonly IUserService _userService;
         private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SuspendedUserCache _suspendedUserCache;
 
-        public UserController(IUserService userService, DataContext context)
+        public UserController(IUserService userService, DataContext context, UserManager<AppUser> userManager, SuspendedUserCache suspendedUserCache)
         {
             _userService = userService;
             _context = context;
+            _userManager = userManager;
+            _suspendedUserCache = suspendedUserCache;
         }
 
 
@@ -324,6 +330,33 @@ namespace ParrotsAPI2.Controllers
 
             return Ok(await _userService.GetParrotCrackerBalanceAndPurchases(userId));
         }
+        [HttpPost("delete-account")]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            user.LockoutEnabled = true;
+            user.LockoutEnd = DateTimeOffset.MaxValue;
+            await _userManager.UpdateAsync(user);
+
+            _context.UserSuspensions.Add(new UserSuspension
+            {
+                UserId = userId,
+                AdminId = userId,
+                Action = "deleted",
+                Reason = "user request",
+            });
+            await _context.SaveChangesAsync();
+
+            _suspendedUserCache.Add(userId);
+
+            return Ok(new { message = "Account deleted." });
+        }
+
         private static readonly string[] AllowedImageTypes = { "image/jpeg", "image/png", "image/gif", "image/webp" };
 
         private bool IsValidImage(IFormFile file, out ActionResult? error)

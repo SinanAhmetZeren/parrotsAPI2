@@ -28,6 +28,7 @@ namespace ParrotsAPI2.Data
         public DbSet<BlockedUser> BlockedUsers { get; set; }
         public DbSet<UserReport> UserReports { get; set; }
         public DbSet<UserSuspension> UserSuspensions { get; set; }
+        public DbSet<VoyageUpdate> VoyageUpdates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

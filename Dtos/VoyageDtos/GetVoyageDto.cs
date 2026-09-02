@@ -35,5 +35,7 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public bool? UserBidAccepted { get; set; } = null;
         public int PlaceType { get; set; } = 0;
         public bool IsBlockedByOrganizer { get; set; } = false;
+        public bool IsOwnerDeleted { get; set; } = false;
+        public List<VoyageUpdateDto> Updates { get; set; } = new();
     }
 }
