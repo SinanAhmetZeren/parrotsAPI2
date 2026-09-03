@@ -7,6 +7,7 @@ namespace ParrotsAPI2.Services.Voyage
     {
         Task<ServiceResponse<List<GetVoyageDto>>> GetAllVoyages();
         Task<ServiceResponse<GetVoyageDto>> GetVoyageById(int id, string? viewerId = null);
+        Task<ServiceResponse<GetVoyageDto>> GetVoyageByPublicId(string publicId, string? viewerId = null);
         Task<ServiceResponse<GetVoyageAdminDto>> GetVoyageByIdAdmin(int id);
         Task<ServiceResponse<GetVoyageDto>> GetUnconfirmedVoyageById(int id);
         Task<ServiceResponse<List<GetVoyageDto>>> GetVoyagesByUserId(string userId);

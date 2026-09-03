@@ -10,6 +10,7 @@ using ParrotsAPI2.Models;
 using ParrotsAPI2.Services;
 using static ParrotsAPI2.Services.ImageProcessor.ImageProcessor;
 using System.Globalization;
+using System.Security.Cryptography;
 
 namespace ParrotsAPI2.Services.Voyage
 {
@@ -28,6 +29,22 @@ namespace ParrotsAPI2.Services.Voyage
             _mapper = mapper;
             _logger = logger;
             _blobService = blobService;
+        }
+
+        private async Task<string> GenerateUniquePublicId()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            while (true)
+            {
+                char[] id = new char[10];
+                byte[] randomBytes = new byte[10];
+                RandomNumberGenerator.Fill(randomBytes);
+                for (int i = 0; i < 10; i++)
+                    id[i] = chars[randomBytes[i] % chars.Length];
+                string publicId = new string(id);
+                var exists = await _context.Voyages.AnyAsync(v => v.PublicId == publicId);
+                if (!exists) return publicId;
+            }
         }
 
         private async Task<(string fullPath, string thumbPath)> ProcessAndUploadAsync(IFormFile file, string prefix)
@@ -174,6 +191,7 @@ namespace ParrotsAPI2.Services.Voyage
                     voyage.VehicleType = vehicle.Type;
                     voyage.VehicleName = vehicle.Name;
                     voyage.CreatedAt = DateTime.UtcNow;
+                    voyage.PublicId = await GenerateUniquePublicId();
 
                     _context.Voyages.Add(voyage);
                     await _context.SaveChangesAsync(); // Voyage.Id is now available
@@ -470,6 +488,21 @@ namespace ParrotsAPI2.Services.Voyage
         }
 
 
+
+        public async Task<ServiceResponse<GetVoyageDto>> GetVoyageByPublicId(string publicId, string? viewerId = null)
+        {
+            var voyage = await _context.Voyages
+                .Where(v => v.PublicId == publicId && v.Confirmed == true && v.IsDeleted == false)
+                .Select(v => v.Id)
+                .FirstOrDefaultAsync();
+
+            if (voyage == 0)
+            {
+                return new ServiceResponse<GetVoyageDto> { Success = false, Message = "Voyage not found" };
+            }
+
+            return await GetVoyageById(voyage, viewerId);
+        }
 
         public async Task<ServiceResponse<GetVoyageAdminDto>> GetVoyageByIdAdmin(int id)
         {

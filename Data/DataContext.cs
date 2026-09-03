@@ -169,6 +169,10 @@ namespace ParrotsAPI2.Data
                 .Property(v => v.MaxPrice)
                 .HasPrecision(18, 2);
 
+            modelBuilder.Entity<Voyage>()
+                .HasIndex(v => v.PublicId)
+                .IsUnique();
+
             modelBuilder.Entity<CrackerPurchase>()
                 .Property(cp => cp.EurAmount)
                 .HasPrecision(10, 2);

@@ -409,6 +409,7 @@ namespace ParrotsAPI2.Services.Bid
                             OfferPrice = b.OfferPrice,
                             BidDateTime = b.DateTime,
                             VoyageId = b.VoyageId,
+                            VoyagePublicId = voyage?.PublicId ?? string.Empty,
                             VoyageName = voyage?.Name ?? string.Empty,
                             ProfileImageThumbnail = voyage?.ProfileImageThumbnail ?? string.Empty,
                             StartDate = voyage?.StartDate ?? default,

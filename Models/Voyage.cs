@@ -38,6 +38,7 @@ namespace ParrotsAPI2.Models
         public bool Confirmed { get; set; } = false;
         public bool IsDeleted { get; set; } = false;
         public int PlaceType { get; set; } = 0;
+        public string PublicId { get; set; } = string.Empty;
 
     }
 

@@ -7,6 +7,7 @@ namespace ParrotsAPI2.Dtos.BidDtos
         public decimal OfferPrice { get; set; }
         public DateTime BidDateTime { get; set; }
         public int VoyageId { get; set; }
+        public string VoyagePublicId { get; set; } = string.Empty;
         public string VoyageName { get; set; } = string.Empty;
         public string ProfileImage { get; set; } = string.Empty;
         public string ProfileImageThumbnail { get; set; } = string.Empty;
