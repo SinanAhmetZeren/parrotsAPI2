@@ -8,12 +8,30 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  api:
+  api-blue:
     build: .
-    container_name: parrots-api
+    container_name: parrots-api-blue
     restart: unless-stopped
     env_file: .env
     network_mode: host
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+    volumes:
+      - ./Uploads:/app/Uploads
+      - ./logs:/app/logs
+      - ./docs:/app/docs
+      - ./Tests:/app/Tests
+    depends_on:
+      - db
+
+  api-green:
+    build: .
+    container_name: parrots-api-green
+    restart: unless-stopped
+    env_file: .env
+    network_mode: host
+    environment:
+      - ASPNETCORE_URLS=http://+:5001
     volumes:
       - ./Uploads:/app/Uploads
       - ./logs:/app/logs
