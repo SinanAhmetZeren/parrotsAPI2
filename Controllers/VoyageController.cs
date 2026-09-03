@@ -12,11 +12,13 @@ namespace ParrotsAPI2.Controllers
     {
         private readonly IVoyageService _voyageService;
         private readonly ILogger<VoyageController> _logger;
+        private readonly DataContext _context;
 
-        public VoyageController(IVoyageService voyageService, ILogger<VoyageController> logger)
+        public VoyageController(IVoyageService voyageService, ILogger<VoyageController> logger, DataContext context)
         {
             _voyageService = voyageService;
             _logger = logger;
+            _context = context;
         }
 
 
@@ -379,6 +381,38 @@ namespace ParrotsAPI2.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
             return Ok(await _voyageService.AddPlace(newPlace, userId));
+        }
+
+        [Authorize]
+        [HttpPost("{voyageId}/update")]
+        public async Task<IActionResult> AddVoyageUpdate(int voyageId, [FromBody] AddVoyageUpdateDto dto)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var voyage = await _context.Voyages.FindAsync(voyageId);
+            if (voyage == null || voyage.IsDeleted) return NotFound();
+            if (voyage.UserId != userId) return Forbid();
+
+            if (string.IsNullOrWhiteSpace(dto.Text) || dto.Text.Length > 500)
+                return BadRequest("Update text must be between 1 and 500 characters.");
+
+            var update = new VoyageUpdate
+            {
+                VoyageId = voyageId,
+                Text = dto.Text.Trim(),
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            _context.VoyageUpdates.Add(update);
+            await _context.SaveChangesAsync();
+
+            return Ok(new VoyageUpdateDto
+            {
+                Id = update.Id,
+                Text = update.Text,
+                CreatedAt = update.CreatedAt,
+            });
         }
 
 

@@ -205,6 +205,51 @@ namespace ParrotsAPI2.Controllers
             return Ok(new { success = true });
         }
 
+        [HttpGet("admin/deleted-accounts")]
+        public async Task<IActionResult> GetDeletedAccounts()
+        {
+            if (!await IsAdmin()) return Forbid();
+
+            var deletedUserIds = await _context.UserSuspensions
+                .Where(s => s.Action == "deleted")
+                .Select(s => s.UserId)
+                .Distinct()
+                .ToListAsync();
+
+            var unsuspendedUserIds = await _context.UserSuspensions
+                .Where(s => s.Action == "unsuspended" && deletedUserIds.Contains(s.UserId))
+                .Select(s => s.UserId)
+                .Distinct()
+                .ToListAsync();
+
+            var activelyDeletedIds = deletedUserIds.Except(unsuspendedUserIds).ToList();
+
+            var suspensions = await _context.UserSuspensions
+                .Where(s => s.Action == "deleted" && activelyDeletedIds.Contains(s.UserId))
+                .OrderByDescending(s => s.CreatedAt)
+                .ToListAsync();
+
+            var latestPerUser = suspensions
+                .GroupBy(s => s.UserId)
+                .Select(g => g.First())
+                .ToList();
+
+            var users = await _context.Users
+                .Where(u => activelyDeletedIds.Contains(u.Id))
+                .Select(u => new { u.Id, u.UserName, u.PublicId })
+                .ToDictionaryAsync(u => u.Id);
+
+            var result = latestPerUser.Select(s => new
+            {
+                s.UserId,
+                Username = users.GetValueOrDefault(s.UserId)?.UserName,
+                PublicId = users.GetValueOrDefault(s.UserId)?.PublicId,
+                s.CreatedAt,
+            });
+
+            return Ok(result);
+        }
+
         [HttpGet("admin/direct-messages")]
         public async Task<IActionResult> GetDirectMessages(
             [FromQuery] DateTime? from,
