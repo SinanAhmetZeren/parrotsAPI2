@@ -59,6 +59,10 @@ nginx -s reload
 # Record new active color
 echo "$NEW" > "$ACTIVE_FILE"
 
+# Wait for in-flight requests to finish on the old container
+echo "Waiting 15 seconds for in-flight requests to complete on api-$OLD..."
+sleep 15
+
 # Stop old container
 echo "Stopping api-$OLD..."
 docker compose stop api-$OLD
