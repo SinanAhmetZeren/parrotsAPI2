@@ -38,7 +38,7 @@ public class ExpoPushService
         }
     }
 
-    public async Task SendBadgeNotificationAsync(string expoPushToken, string senderName = "Someone", int badgeCount = 1)
+    public async Task SendBadgeNotificationAsync(string expoPushToken, int badgeCount = 1)
     {
         if (string.IsNullOrEmpty(expoPushToken)) return;
 
@@ -47,8 +47,8 @@ public class ExpoPushService
         var payload = new
         {
             to = expoPushToken,
-            title = "New Message",
-            body = $"{senderName} sent you a message",
+            title = "Parrots Voyages",
+            body = "You have a new message",
             sound = "default",
             badge = badgeCount,
             priority = "high",

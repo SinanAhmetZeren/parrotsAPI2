@@ -229,7 +229,7 @@ public class ChatHub : Hub
                 {
                     var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
                     _logger.LogInformation("[PUSH] Receiver backgrounded/offline → sending push. Token: {Token}", receiverEntity.ExpoPushToken);
-                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
+                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, pushBadge);
                 }
             }
             else if (!isReceiverViewingChat)
@@ -376,7 +376,7 @@ public class ChatHub : Hub
                 if (receiverEntity != null && !string.IsNullOrEmpty(receiverEntity.ExpoPushToken))
                 {
                     var pushBadge = _userBadgeCounts.AddOrUpdate(receiverId, 1, (_, old) => old + 1);
-                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, senderInfo.UserName, pushBadge);
+                    _ = _expoPush.SendBadgeNotificationAsync(receiverEntity.ExpoPushToken, pushBadge);
                 }
             }
             else if (!isReceiverViewingChat)
@@ -638,7 +638,7 @@ public class ChatHub : Hub
                 if (!string.IsNullOrEmpty(u.ExpoPushToken))
                 {
                     var pushBadge = _userBadgeCounts.AddOrUpdate(u.Id, 1, (_, old) => old + 1);
-                    _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken, senderInfo.UserName, pushBadge);
+                    _ = _expoPush.SendBadgeNotificationAsync(u.ExpoPushToken, pushBadge);
                 }
             }
         }

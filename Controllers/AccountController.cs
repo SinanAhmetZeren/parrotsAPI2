@@ -791,12 +791,33 @@ namespace API.Controllers
             if (user == null) return Unauthorized();
             if (string.IsNullOrEmpty(token))
             {
-                _logger.LogWarning("[PUSH] Token registration skipped — empty token. UserId: {UserId}", userId); // 3.9
+                _logger.LogWarning("[PUSH] Token registration skipped — empty token. UserId: {UserId}", userId);
                 return BadRequest("Token is empty");
             }
-            _logger.LogInformation("[PUSH] Token registered for UserId: {UserId}, Token: {Token}", userId, token); // 3.8
+            // Clear this token from any other user who has it (device switched accounts)
+            var previousOwner = await _context.Users
+                .FirstOrDefaultAsync(u => u.ExpoPushToken == token && u.Id != userId);
+            if (previousOwner != null)
+            {
+                _logger.LogInformation("[PUSH] Token reassigned: cleared from UserId {OldUserId}, now registered to UserId {NewUserId}", previousOwner.Id, userId);
+                previousOwner.ExpoPushToken = null;
+                await _userManager.UpdateAsync(previousOwner);
+            }
+            _logger.LogInformation("[PUSH] Token registered for UserId: {UserId}", userId);
             user.ExpoPushToken = token;
             await _userManager.UpdateAsync(user);
+            return Ok();
+        }
+
+        [HttpDelete("push-token")]
+        public async Task<IActionResult> ClearPushToken([FromBody] string expoPushToken)
+        {
+            if (string.IsNullOrEmpty(expoPushToken)) return BadRequest();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.ExpoPushToken == expoPushToken);
+            if (user == null) return Ok();
+            user.ExpoPushToken = null;
+            await _userManager.UpdateAsync(user);
+            _logger.LogInformation("[PUSH] Token cleared on logout");
             return Ok();
         }
 
