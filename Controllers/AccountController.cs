@@ -72,6 +72,11 @@ namespace API.Controllers
             AppUser? user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
 
+            var loginBlockedEmail = await _context.BlockedEmails
+                .FirstOrDefaultAsync(b => b.Email == (loginDto.Email ?? "").Trim().ToLowerInvariant());
+            if (loginBlockedEmail != null)
+                return Unauthorized("This account is not available.");
+
             // ❌ User not found or email not confirmed
             if (user == null || !user.Confirmed)
             {
@@ -190,6 +195,11 @@ namespace API.Controllers
 
             var normalizedEmail = _userManager.NormalizeEmail(registerDto.Email.Trim());
             var normalizedUserName = _userManager.NormalizeName(registerDto.UserName.Trim());
+
+            var registerBlockedEmail = await _context.BlockedEmails
+                .FirstOrDefaultAsync(b => b.Email == registerDto.Email.Trim().ToLowerInvariant());
+            if (registerBlockedEmail != null)
+                return BadRequest("This email address cannot be used to register.");
 
             var existingUser = await _userManager.Users
                 .FirstOrDefaultAsync(u =>
@@ -605,6 +615,12 @@ namespace API.Controllers
                 }
 
                 var normalizedEmail = _userManager.NormalizeEmail(tokenInfo.Email.Trim());
+
+                var googleBlockedEmail = await _context.BlockedEmails
+                    .FirstOrDefaultAsync(b => b.Email == tokenInfo.Email.Trim().ToLowerInvariant());
+                if (googleBlockedEmail != null)
+                    return BadRequest("This account is not available.");
+
                 var user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail);
 
                 if (user == null)

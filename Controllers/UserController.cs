@@ -347,9 +347,19 @@ namespace ParrotsAPI2.Controllers
             {
                 UserId = userId,
                 AdminId = userId,
-                Action = "deleted",
+                Action = "self-suspended",
                 Reason = "user request",
             });
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                _context.BlockedEmails.Add(new BlockedEmail
+                {
+                    Email = user.Email.ToLowerInvariant(),
+                    UserId = userId,
+                    Reason = "self-suspended",
+                    BlockedBy = "self",
+                });
+            }
             await _context.SaveChangesAsync();
 
             _suspendedUserCache.Add(userId);

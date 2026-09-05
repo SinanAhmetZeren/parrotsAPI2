@@ -111,44 +111,55 @@ namespace ParrotsAPI2.Controllers
             var allUserIds = reporterIds.Union(reportedIds).ToList();
             var users = await _context.Users
                 .Where(u => allUserIds.Contains(u.Id))
-                .Select(u => new { u.Id, u.UserName, u.PublicId, u.LockoutEnabled, u.LockoutEnd })
+                .Select(u => new { u.Id, u.UserName, u.PublicId, u.Email, u.LockoutEnabled, u.LockoutEnd })
                 .ToDictionaryAsync(u => u.Id);
 
-            var voyageIds = reports.Where(r => r.ReportedVoyageId.HasValue).Select(r => r.ReportedVoyageId!.Value).Distinct().ToList();
-            var voyageNames = voyageIds.Any()
-                ? await _context.Voyages.Where(v => voyageIds.Contains(v.Id)).Select(v => new { v.Id, v.Name }).ToDictionaryAsync(v => v.Id, v => (string?)v.Name)
-                : new Dictionary<int, string?>();
+            var voyageIdList = reports.Where(r => r.ReportedVoyageId.HasValue).Select(r => r.ReportedVoyageId!.Value).Distinct().ToList();
+            var voyageInfos = await _context.Voyages.Where(v => voyageIdList.Contains(v.Id)).Select(v => new { v.Id, v.Name, v.UserId }).ToListAsync();
+            var voyageMap = voyageInfos.ToDictionary(v => v.Id);
 
-            var result = reports.Select(r => new
+            var voyageOwnerIdList = voyageInfos.Select(v => v.UserId).Distinct().ToList();
+            var voyageOwnerInfos = await _context.Users.Where(u => voyageOwnerIdList.Contains(u.Id)).Select(u => new { u.Id, u.UserName, u.LockoutEnabled, u.LockoutEnd }).ToListAsync();
+            var voyageOwnerMap = voyageOwnerInfos.ToDictionary(u => u.Id);
+
+            var result = reports.Select(r =>
             {
-                r.Id,
-                r.Reason,
-                r.Details,
-
-                r.Status,
-                r.CreatedAt,
-                ReporterUsername = users.GetValueOrDefault(r.ReporterId)?.UserName,
-                ReporterPublicId = users.GetValueOrDefault(r.ReporterId)?.PublicId,
-                ReportedUsername = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.UserName : null,
-                ReportedPublicId = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.PublicId : null,
-                ReportedUserId = r.ReportedUserId,
-                IsUserSuspended = r.ReportedUserId != null && users.TryGetValue(r.ReportedUserId, out var ru) && ru.LockoutEnabled && ru.LockoutEnd > DateTimeOffset.UtcNow,
-                ReportedVoyageId = r.ReportedVoyageId,
-                VoyageName = r.ReportedVoyageId.HasValue ? voyageNames.GetValueOrDefault(r.ReportedVoyageId.Value) : null,
+                var voyage = r.ReportedVoyageId.HasValue ? voyageMap.GetValueOrDefault(r.ReportedVoyageId.Value) : null;
+                var voyageOwner = voyage != null ? voyageOwnerMap.GetValueOrDefault(voyage.UserId) : null;
+                users.TryGetValue(r.ReportedUserId ?? "", out var ru);
+                return new
+                {
+                    r.Id,
+                    r.Reason,
+                    r.Details,
+                    r.Status,
+                    r.CreatedAt,
+                    ReporterId = r.ReporterId,
+                    ReporterUsername = users.GetValueOrDefault(r.ReporterId)?.UserName,
+                    ReportedUsername = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.UserName : null,
+                    ReportedUserId = r.ReportedUserId,
+                    ReportedUserEmail = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.Email : null,
+                    IsUserSuspended = ru != null && ru.LockoutEnabled && ru.LockoutEnd > DateTimeOffset.UtcNow,
+                    ReportedVoyageId = r.ReportedVoyageId,
+                    VoyageName = voyage?.Name,
+                    VoyageOwnerUserId = voyage?.UserId,
+                    VoyageOwnerUsername = voyageOwner?.UserName,
+                    IsVoyageOwnerSuspended = voyageOwner != null && voyageOwner.LockoutEnabled && voyageOwner.LockoutEnd > DateTimeOffset.UtcNow,
+                };
             });
 
             return Ok(new { totalCount = total, items = result });
         }
 
         [HttpPost("admin/reports/{id}/review")]
-        public async Task<IActionResult> MarkReviewed(int id)
+        public async Task<IActionResult> MarkReviewed(int id, [FromQuery] bool reviewed = true)
         {
             if (!await IsAdmin()) return Forbid();
 
             var report = await _context.UserReports.FindAsync(id);
             if (report == null) return NotFound();
 
-            report.Status = "reviewed";
+            report.Status = reviewed ? "reviewed" : "pending";
             await _context.SaveChangesAsync();
             return Ok(new { success = true });
         }
@@ -170,10 +181,20 @@ namespace ParrotsAPI2.Controllers
             {
                 UserId = userId,
                 AdminId = adminId,
-                Action = "suspended",
+                Action = "suspended-by-admin",
                 Reason = dto.Reason,
                 CreatedAt = DateTime.UtcNow
             });
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                _context.BlockedEmails.Add(new BlockedEmail
+                {
+                    Email = user.Email.ToLowerInvariant(),
+                    UserId = userId,
+                    Reason = "suspended-by-admin",
+                    BlockedBy = adminId,
+                });
+            }
             await _context.SaveChangesAsync();
             _suspendedUserCache.Add(userId);
 
@@ -199,6 +220,13 @@ namespace ParrotsAPI2.Controllers
                 Action = "unsuspended",
                 CreatedAt = DateTime.UtcNow
             });
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                var blockedEmail = await _context.BlockedEmails
+                    .FirstOrDefaultAsync(b => b.Email == user.Email.ToLowerInvariant());
+                if (blockedEmail != null)
+                    _context.BlockedEmails.Remove(blockedEmail);
+            }
             await _context.SaveChangesAsync();
             _suspendedUserCache.Remove(userId);
 
@@ -210,44 +238,177 @@ namespace ParrotsAPI2.Controllers
         {
             if (!await IsAdmin()) return Forbid();
 
-            var deletedUserIds = await _context.UserSuspensions
-                .Where(s => s.Action == "deleted")
-                .Select(s => s.UserId)
-                .Distinct()
+            var blockedEmails = await _context.BlockedEmails
+                .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
 
-            var unsuspendedUserIds = await _context.UserSuspensions
-                .Where(s => s.Action == "unsuspended" && deletedUserIds.Contains(s.UserId))
-                .Select(s => s.UserId)
-                .Distinct()
-                .ToListAsync();
-
-            var activelyDeletedIds = deletedUserIds.Except(unsuspendedUserIds).ToList();
-
-            var suspensions = await _context.UserSuspensions
-                .Where(s => s.Action == "deleted" && activelyDeletedIds.Contains(s.UserId))
-                .OrderByDescending(s => s.CreatedAt)
-                .ToListAsync();
-
-            var latestPerUser = suspensions
-                .GroupBy(s => s.UserId)
-                .Select(g => g.First())
-                .ToList();
-
+            var userIds = blockedEmails.Select(b => b.UserId).Distinct().ToList();
             var users = await _context.Users
-                .Where(u => activelyDeletedIds.Contains(u.Id))
-                .Select(u => new { u.Id, u.UserName, u.PublicId })
+                .Where(u => userIds.Contains(u.Id))
+                .Select(u => new { u.Id, u.UserName })
                 .ToDictionaryAsync(u => u.Id);
 
-            var result = latestPerUser.Select(s => new
+            var result = blockedEmails.Select(b => new
             {
-                s.UserId,
-                Username = users.GetValueOrDefault(s.UserId)?.UserName,
-                PublicId = users.GetValueOrDefault(s.UserId)?.PublicId,
-                s.CreatedAt,
+                b.UserId,
+                b.Email,
+                Username = users.GetValueOrDefault(b.UserId)?.UserName,
+                b.Reason,
+                b.CreatedAt,
             });
 
             return Ok(result);
+        }
+
+        [HttpGet("admin/moderation-feed")]
+        public async Task<IActionResult> GetModerationFeed(
+            [FromQuery] List<string>? status,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 50,
+            [FromQuery] DateTime? from = null,
+            [FromQuery] DateTime? to = null)
+        {
+            if (!await IsAdmin()) return Forbid();
+
+            var includeReports = status == null || status.Count == 0 || status.Any(s => s == "pending" || s == "reviewed" || s == "all");
+            var includeDeleted = status == null || status.Count == 0 || status.Contains("deleted") || status.Contains("all");
+
+            var reportItems = new List<object>();
+            int reportTotal = 0;
+
+            if (includeReports)
+            {
+                var reportQuery = _context.UserReports.AsQueryable();
+
+                var reportStatuses = status?.Where(s => s == "pending" || s == "reviewed").ToList();
+                if (reportStatuses != null && reportStatuses.Count > 0)
+                    reportQuery = reportQuery.Where(r => reportStatuses.Contains(r.Status));
+
+                if (from.HasValue)
+                    reportQuery = reportQuery.Where(r => r.CreatedAt >= from.Value.ToUniversalTime());
+                if (to.HasValue)
+                    reportQuery = reportQuery.Where(r => r.CreatedAt <= to.Value.ToUniversalTime());
+
+                reportTotal = await reportQuery.CountAsync();
+
+                var reports = await reportQuery
+                    .OrderByDescending(r => r.CreatedAt)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                var reporterIds = reports.Where(r => r.ReporterId != null).Select(r => r.ReporterId).Distinct().ToList();
+                var reportedIds = reports.Where(r => r.ReportedUserId != null).Select(r => r.ReportedUserId!).Distinct().ToList();
+                var allUserIds = reporterIds.Union(reportedIds).ToList();
+                var users = await _context.Users
+                    .Where(u => allUserIds.Contains(u.Id))
+                    .Select(u => new { u.Id, u.UserName, u.PublicId, u.Email, u.LockoutEnabled, u.LockoutEnd })
+                    .ToDictionaryAsync(u => u.Id);
+
+                var voyageIdList2 = reports.Where(r => r.ReportedVoyageId.HasValue).Select(r => r.ReportedVoyageId!.Value).Distinct().ToList();
+                var voyageInfos2 = await _context.Voyages.Where(v => voyageIdList2.Contains(v.Id)).Select(v => new { v.Id, v.Name, v.UserId }).ToListAsync();
+                var voyageMap2 = voyageInfos2.ToDictionary(v => v.Id);
+
+                var voyageOwnerIdList2 = voyageInfos2.Select(v => v.UserId).Distinct().ToList();
+                var voyageOwnerInfos2 = await _context.Users.Where(u => voyageOwnerIdList2.Contains(u.Id)).Select(u => new { u.Id, u.UserName, u.LockoutEnabled, u.LockoutEnd }).ToListAsync();
+                var voyageOwnerMap2 = voyageOwnerInfos2.ToDictionary(u => u.Id);
+
+                reportItems = reports.Select(r =>
+                {
+                    var voyage = r.ReportedVoyageId.HasValue ? voyageMap2.GetValueOrDefault(r.ReportedVoyageId.Value) : null;
+                    var voyageOwner = voyage != null ? voyageOwnerMap2.GetValueOrDefault(voyage.UserId) : null;
+                    users.TryGetValue(r.ReportedUserId ?? "", out var ru);
+                    return (object)new
+                    {
+                        RowType = "report",
+                        r.Id,
+                        r.Reason,
+                        r.Details,
+                        r.Status,
+                        r.CreatedAt,
+                        ReporterId = r.ReporterId,
+                        ReporterUsername = users.GetValueOrDefault(r.ReporterId)?.UserName,
+                        ReportedUsername = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.UserName : null,
+                        ReportedUserId = r.ReportedUserId,
+                        ReportedUserEmail = r.ReportedUserId != null ? users.GetValueOrDefault(r.ReportedUserId)?.Email : null,
+                        IsUserSuspended = ru != null && ru.LockoutEnabled && ru.LockoutEnd > DateTimeOffset.UtcNow,
+                        ReportedVoyageId = r.ReportedVoyageId,
+                        VoyageName = voyage?.Name,
+                        VoyageOwnerUserId = voyage?.UserId,
+                        VoyageOwnerUsername = voyageOwner?.UserName,
+                        IsVoyageOwnerSuspended = voyageOwner != null && voyageOwner.LockoutEnabled && voyageOwner.LockoutEnd > DateTimeOffset.UtcNow,
+                    };
+                }).ToList();
+            }
+
+            var deletedItems = new List<object>();
+            int deletedTotal = 0;
+
+            if (includeDeleted)
+            {
+                // Get the latest UserSuspension action per user
+                var suspensionQuery = _context.UserSuspensions
+                    .Where(s => s.Action == "suspended-by-admin" || s.Action == "self-suspended" || s.Action == "unsuspended");
+
+                if (from.HasValue)
+                    suspensionQuery = suspensionQuery.Where(s => s.CreatedAt >= from.Value.ToUniversalTime());
+                if (to.HasValue)
+                    suspensionQuery = suspensionQuery.Where(s => s.CreatedAt <= to.Value.ToUniversalTime());
+
+                var allSuspensions = await suspensionQuery.ToListAsync();
+
+                // Group by user, pick latest action
+                var latestPerUser = allSuspensions
+                    .GroupBy(s => s.UserId)
+                    .Select(g => g.OrderByDescending(s => s.CreatedAt).First())
+                    .ToList();
+
+                deletedTotal = latestPerUser.Count;
+
+                var suspUserIds = latestPerUser.Select(s => s.UserId).Distinct().ToList();
+                var suspUsers = await _context.Users
+                    .Where(u => suspUserIds.Contains(u.Id))
+                    .Select(u => new { u.Id, u.UserName, u.Email })
+                    .ToDictionaryAsync(u => u.Id);
+
+                // Also fetch email from BlockedEmails for users not found in AspNetUsers (hard deleted)
+                var blockedEmailMap = await _context.BlockedEmails
+                    .Where(b => suspUserIds.Contains(b.UserId))
+                    .Select(b => new { b.UserId, b.Email })
+                    .ToDictionaryAsync(b => b.UserId);
+
+                deletedItems = latestPerUser
+                    .OrderByDescending(s => s.CreatedAt)
+                    .Select(s =>
+                    {
+                        var u = suspUsers.GetValueOrDefault(s.UserId);
+                        var email = u?.Email ?? blockedEmailMap.GetValueOrDefault(s.UserId)?.Email;
+                        var isSuspended = s.Action != "unsuspended";
+                        return (object)new
+                        {
+                            RowType = "deleted",
+                            Id = (int?)null,
+                            Reason = s.Reason ?? s.Action,
+                            Details = (string?)null,
+                            Status = "deleted",
+                            CreatedAt = s.CreatedAt,
+                            ReporterUsername = (string?)null,
+                            ReportedUsername = u?.UserName,
+                            ReportedUserId = s.UserId,
+                            ReportedUserEmail = email,
+                            IsUserSuspended = isSuspended,
+                            CurrentSuspensionStatus = s.Action,
+                            ReportedVoyageId = (int?)null,
+                            VoyageName = (string?)null,
+                        };
+                    }).ToList();
+            }
+
+            var allItems = reportItems.Concat(deletedItems)
+                .OrderByDescending(i => ((dynamic)i).CreatedAt)
+                .ToList();
+
+            return Ok(new { totalCount = reportTotal + deletedTotal, items = allItems });
         }
 
         [HttpGet("admin/direct-messages")]

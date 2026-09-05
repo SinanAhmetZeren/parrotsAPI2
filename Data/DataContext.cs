@@ -28,6 +28,7 @@ namespace ParrotsAPI2.Data
         public DbSet<BlockedUser> BlockedUsers { get; set; }
         public DbSet<UserReport> UserReports { get; set; }
         public DbSet<UserSuspension> UserSuspensions { get; set; }
+        public DbSet<BlockedEmail> BlockedEmails { get; set; }
         public DbSet<VoyageUpdate> VoyageUpdates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -222,6 +223,10 @@ namespace ParrotsAPI2.Data
             modelBuilder.Entity<BlockedUser>()
                 .HasIndex(b => new { b.BlockerId, b.BlockedId, b.CreatedAt })
                 .HasDatabaseName("IX_BlockedUsers_BlockerId_BlockedId_CreatedAt");
+
+            modelBuilder.Entity<BlockedEmail>()
+                .HasIndex(b => b.Email)
+                .HasDatabaseName("IX_BlockedEmails_Email");
 
             // Seed default vehicles ("walk" and "run") with UserId = "1"
             /*
