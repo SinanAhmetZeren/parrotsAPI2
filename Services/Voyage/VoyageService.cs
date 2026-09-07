@@ -160,18 +160,6 @@ namespace ParrotsAPI2.Services.Voyage
                         return;
                     }
 
-                    int requiredCrackers = (newVoyage.EndDate - DateTime.UtcNow).Days;
-                    if (requiredCrackers < 0)
-                        requiredCrackers = 0;
-
-                    // ❌ Not enough crackers
-                    if (user.ParrotCrackerBalance < requiredCrackers)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = "Not enough ParrotCrackers.";
-                        return;
-                    }
-
                     // Validate vehicle
                     var vehicle = await _context.Vehicles.FindAsync(newVoyage.VehicleId);
                     if (vehicle == null)
@@ -194,22 +182,6 @@ namespace ParrotsAPI2.Services.Voyage
                     voyage.PublicId = await GenerateUniquePublicId();
 
                     _context.Voyages.Add(voyage);
-                    await _context.SaveChangesAsync(); // Voyage.Id is now available
-
-                    // 💰 Deduct crackers
-                    user.ParrotCrackerBalance -= requiredCrackers;
-
-                    // 🧾 Create ledger entry
-                    var crackerTransaction = new CrackerTransaction
-                    {
-                        UserId = user.Id,
-                        Amount = -requiredCrackers,
-                        Type = "voyage_cost",
-                        Description = $"Created Voyage {voyage.Name}, (Id: {voyage.Id}) ",
-                        VoyageId = voyage.Id, // optional: link to voyage
-                        CreatedAt = DateTime.UtcNow
-                    };
-                    _context.CrackerTransactions.Add(crackerTransaction);
 
                     // Save everything
                     await _context.SaveChangesAsync();
@@ -1245,6 +1217,41 @@ namespace ParrotsAPI2.Services.Voyage
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Voyage is already confirmed.";
                 return serviceResponse;
+            }
+
+            if (voyage.PublicOnMap)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == voyage.UserId);
+                if (user == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "User not found.";
+                    return serviceResponse;
+                }
+
+                int requiredCrackers = (voyage.EndDate.Date - DateTime.UtcNow.Date).Days + 1;
+                if (requiredCrackers < 0)
+                    requiredCrackers = 0;
+
+                if (user.ParrotCrackerBalance < requiredCrackers)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Not enough ParrotCrackers.";
+                    return serviceResponse;
+                }
+
+                user.ParrotCrackerBalance -= requiredCrackers;
+
+                var crackerTransaction = new CrackerTransaction
+                {
+                    UserId = user.Id,
+                    Amount = -requiredCrackers,
+                    Type = "voyage_cost",
+                    Description = $"Confirmed Voyage {voyage.Name}, (Id: {voyage.Id})",
+                    VoyageId = voyage.Id,
+                    CreatedAt = DateTime.UtcNow
+                };
+                _context.CrackerTransactions.Add(crackerTransaction);
             }
 
             voyage.Confirmed = true;

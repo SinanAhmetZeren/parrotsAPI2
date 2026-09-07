@@ -307,6 +307,17 @@ namespace ParrotsAPI2.Controllers
 
 
 
+        [HttpGet("crackerBalance/{userId}")]
+        public async Task<ActionResult<ServiceResponse<CrackerBalanceDto>>> GetCrackerBalance(string userId)
+        {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null)
+                return Unauthorized();
+            if (requestUserId != userId)
+                return Forbid();
+            return Ok(await _userService.GetCrackerBalance(userId));
+        }
+
         [HttpGet("parrotCrackerBalance/{userId}")]
         public async Task<ActionResult<ServiceResponse<ParrotCrackerSummaryDto>>> GetParrotCrackerBalanceAndPurchases(string userId)
         {

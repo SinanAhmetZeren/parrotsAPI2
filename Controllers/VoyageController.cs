@@ -118,6 +118,23 @@ namespace ParrotsAPI2.Controllers
 
 
 
+        [HttpPatch("PatchVoyageOwner/{voyageId}")]
+        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> PatchVoyageOwner(
+            int voyageId, JsonPatchDocument<UpdateVoyageDto> patchDoc)
+        {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null) return Unauthorized();
+
+            var voyage = await _context.Voyages.FindAsync(voyageId);
+            if (voyage == null) return NotFound();
+            if (voyage.UserId != requestUserId) return Forbid();
+            if (voyage.Confirmed) return BadRequest(new { message = "Voyage is already confirmed and cannot be edited." });
+
+            var response = await _voyageService.PatchVoyageAdmin(voyageId, patchDoc, ModelState);
+            if (response.Data == null) return NotFound(response);
+            return Ok(response);
+        }
+
         [HttpPatch("PatchVoyageAdmin/{voyageId}")]
         [Authorize(Roles = "Admin")]
 

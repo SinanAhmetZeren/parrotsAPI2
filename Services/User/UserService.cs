@@ -903,6 +903,21 @@ namespace ParrotsAPI2.Services.User
             };
         }
 
+        public async Task<ServiceResponse<CrackerBalanceDto>> GetCrackerBalance(string userId)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return new ServiceResponse<CrackerBalanceDto> { Success = false, Message = "User not found." };
+
+            return new ServiceResponse<CrackerBalanceDto>
+            {
+                Data = new CrackerBalanceDto { UserId = userId, Balance = user.ParrotCrackerBalance },
+                Success = true
+            };
+        }
+
 
     }
 }

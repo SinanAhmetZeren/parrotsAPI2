@@ -22,6 +22,7 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<int>> ClaimFreeCrackers(string userId);
         Task<ServiceResponse<int>> SendParrotCrackers(string userId, string receiverId, int crackers);
         Task<ServiceResponse<ParrotCrackerSummaryDto>> GetParrotCrackerBalanceAndPurchases(string userId);
+        Task<ServiceResponse<CrackerBalanceDto>> GetCrackerBalance(string userId);
         Task<ServiceResponse<int>> DeductCrackerForAsk(string userId);
 
 
