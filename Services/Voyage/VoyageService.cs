@@ -160,6 +160,21 @@ namespace ParrotsAPI2.Services.Voyage
                         return;
                     }
 
+                    // Check ParrotCracker balance for public voyages
+                    if (newVoyage.PublicOnMap)
+                    {
+                        int requiredCrackers = (int)((newVoyage.EndDate.Date - DateTime.UtcNow.Date).TotalMilliseconds / (1000 * 60 * 60 * 24)) + 1;
+                        if (requiredCrackers < 0)
+                            requiredCrackers = 0;
+
+                        if (user.ParrotCrackerBalance < requiredCrackers)
+                        {
+                            serviceResponse.Success = false;
+                            serviceResponse.Message = "Not enough ParrotCrackers.";
+                            return;
+                        }
+                    }
+
                     // Validate vehicle
                     var vehicle = await _context.Vehicles.FindAsync(newVoyage.VehicleId);
                     if (vehicle == null)
@@ -1229,7 +1244,7 @@ namespace ParrotsAPI2.Services.Voyage
                     return serviceResponse;
                 }
 
-                int requiredCrackers = (voyage.EndDate.Date - DateTime.UtcNow.Date).Days + 1;
+                int requiredCrackers = (int)((voyage.EndDate.Date - DateTime.UtcNow.Date).TotalMilliseconds / (1000 * 60 * 60 * 24)) + 1;
                 if (requiredCrackers < 0)
                     requiredCrackers = 0;
 
@@ -1267,7 +1282,7 @@ namespace ParrotsAPI2.Services.Voyage
 
             await _context.SaveChangesAsync();
 
-            serviceResponse.Data = "Voyage confirmed";
+            serviceResponse.Data = voyage.PublicId;
             return serviceResponse;
         }
 

@@ -57,6 +57,13 @@ namespace ParrotsAPI2.Services.Bid
                 var voyage = await _context.Voyages.FirstOrDefaultAsync(v => v.Id == newBid.VoyageId);
                 if (voyage != null)
                 {
+                    if (voyage.LastBidDate < DateTime.UtcNow)
+                    {
+                        response.Success = false;
+                        response.Message = "Bidding has closed for this voyage.";
+                        return response;
+                    }
+
                     var isBlocked = await _context.BlockedUsers
                         .Where(b => b.BlockerId == voyage.UserId && b.BlockedId == newBid.UserId)
                         .OrderByDescending(b => b.CreatedAt)

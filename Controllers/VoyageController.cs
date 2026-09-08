@@ -23,15 +23,6 @@ namespace ParrotsAPI2.Controllers
 
 
 
-        [HttpGet("GetVoyageById/{id}")]
-        public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingle(int id)
-        {
-            var viewerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var response = await _voyageService.GetVoyageById(id, viewerId);
-            if (!response.Success) return NotFound(response);
-            return Ok(response);
-        }
-
         [HttpGet("GetVoyageByPublicId/{publicId}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> GetSingleByPublicId(string publicId)
         {
