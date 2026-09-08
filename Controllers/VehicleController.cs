@@ -134,7 +134,7 @@ namespace ParrotsAPI2.Controllers
                 });
             }
 
-            var vehicle = await _vehicleService.GetVehicleById(vehicleId);
+            var vehicle = await _vehicleService.GetUnconfirmedVehicleById(vehicleId);
             if (vehicle == null)
             {
                 return NotFound(new ServiceResponse<string>
