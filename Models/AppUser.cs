@@ -10,7 +10,7 @@ namespace ParrotsAPI2.Models
     {
         [MaxLength(50)]
         public string? Title { get; set; }
-        [MaxLength(500)]
+        [MaxLength(700)]
         public string? Bio { get; set; }
         public string? DisplayEmail { get; set; }
         public string? Instagram { get; set; }

@@ -8,7 +8,7 @@ namespace ParrotsAPI2.Dtos.User
         public string UserName { get; set; } = string.Empty;
         [MaxLength(50)]
         public string Title { get; set; } = string.Empty;
-        [MaxLength(500)]
+        [MaxLength(700)]
         public string Bio { get; set; } = string.Empty;
         // public string Email { get; set; } = string.Empty;
         public string DisplayEmail { get; set; } = string.Empty;

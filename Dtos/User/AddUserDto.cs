@@ -1,9 +1,12 @@
-﻿namespace ParrotsAPI2.Dtos.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ParrotsAPI2.Dtos.User
 {
     public class AddUserDto
     {
         public string UserName { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
+        [MaxLength(700)]
         public string Bio { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Instagram { get; set; } = string.Empty;
