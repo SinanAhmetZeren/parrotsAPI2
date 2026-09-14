@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 // using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Hosting;
 using ParrotsAPI2.Data;
 using ParrotsAPI2.Dtos.AiDtos;
 using ParrotsAPI2.Models;
@@ -17,6 +18,7 @@ namespace ParrotsAPI2.Services.Ai
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly string _apiKey;
         private readonly string? _placesApiKey;
+        private readonly bool _isDevelopment;
 
 
         private static string GetSystemPrompt() =>
@@ -93,7 +95,7 @@ namespace ParrotsAPI2.Services.Ai
             File.AppendAllText(_abcdePath, message + Environment.NewLine);
         }
 
-        public AiService(HttpClient httpClient, IHttpClientFactory httpClientFactory, /*IMemoryCache cache,*/ IServiceScopeFactory scopeFactory, IConfiguration configuration)
+        public AiService(HttpClient httpClient, IHttpClientFactory httpClientFactory, /*IMemoryCache cache,*/ IServiceScopeFactory scopeFactory, IConfiguration configuration, IWebHostEnvironment environment)
         {
             _httpClient = httpClient;
             _httpClientFactory = httpClientFactory;
@@ -102,6 +104,7 @@ namespace ParrotsAPI2.Services.Ai
             _apiKey = configuration["Google_Gemini_Parrots_AI_Query_Key"]
                       ?? throw new ArgumentNullException("Gemini API key is missing.");
             _placesApiKey = configuration["Google_Places_API_Key"];
+            _isDevelopment = environment.IsDevelopment();
         }
 
         public async Task<string?> AskAsync(AskParrotsQueryDto dto, string userId)
@@ -309,13 +312,13 @@ namespace ParrotsAPI2.Services.Ai
             }
         }
 
-        private async Task<(bool Exists, string? PlaceId)[]> RunStaggeredAsync(List<PlannedSpot> spots, string vehicleType, bool isRetry)
+        private async Task<(bool Exists, string? PlaceId, string? RejectReason)[]> RunStaggeredAsync(List<PlannedSpot> spots, string vehicleType)
         {
-            var tasks = new List<Task<(bool Exists, string? PlaceId)>>();
+            var tasks = new List<Task<(bool Exists, string? PlaceId, string? RejectReason)>>();
             for (int i = 0; i < spots.Count; i++)
             {
-                if (i > 0) await Task.Delay(100);
-                tasks.Add(VerifySpotAsync(spots[i], vehicleType, CancellationToken.None, isRetry));
+                if (i > 0) await Task.Delay(30);
+                tasks.Add(VerifySpotAsync(spots[i], vehicleType, CancellationToken.None));
             }
             return await Task.WhenAll(tasks);
         }
@@ -325,18 +328,7 @@ namespace ParrotsAPI2.Services.Ai
             if (spots.Count == 0)
                 return (narrative, "[]");
 
-            var results = await RunStaggeredAsync(spots, vehicleType, isRetry: false);
-
-            // Retry failed spots once after a short delay, with wider Haversine tolerance
-            var failedIndices = Enumerable.Range(0, spots.Count).Where(i => !results[i].Exists).ToList();
-            if (failedIndices.Count > 0)
-            {
-                await Task.Delay(1000);
-                var failedSpots = failedIndices.Select(i => spots[i]).ToList();
-                var retryResults = await RunStaggeredAsync(failedSpots, vehicleType, isRetry: true);
-                for (int j = 0; j < failedIndices.Count; j++)
-                    results[failedIndices[j]] = retryResults[j];
-            }
+            var results = await RunStaggeredAsync(spots, vehicleType);
 
             for (int i = 0; i < spots.Count; i++)
             {
@@ -346,26 +338,25 @@ namespace ParrotsAPI2.Services.Ai
 
             narrative = Regex.Replace(narrative, @"\b(a|an|the)\s+(a|an)\b", "$2", RegexOptions.IgnoreCase);
 
-            var audit = spots.Select((s, i) => new { spotName = s.Name, placeId = results[i].PlaceId });
+            if (_isDevelopment)
+                narrative = Regex.Replace(narrative, @"(\[\[.+?\]\])", "$1 (localhost)", RegexOptions.None);
+
+            var audit = spots.Select((s, i) => new { spotName = s.Name, placeId = results[i].PlaceId, rejectReason = results[i].RejectReason });
             var auditJson = JsonSerializer.Serialize(audit);
 
             return (narrative, auditJson);
         }
 
-        private async Task<(bool Exists, string? PlaceId)> VerifySpotAsync(PlannedSpot spot, string vehicleType, CancellationToken cancellationToken, bool isRetry = false)
+        private async Task<(bool Exists, string? PlaceId, string? RejectReason)> VerifySpotAsync(PlannedSpot spot, string vehicleType, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(_placesApiKey))
-                return (true, null);
-
-            // var cacheKey = $"spot_exists_{spot.Name.Trim().ToLowerInvariant()}_{spot.Region.Trim().ToLowerInvariant()}";
-            // if (_cache.TryGetValue(cacheKey, out (bool Exists, string? PlaceId) cached))
-            //     return cached;
+                return (true, null, null);
 
             try
             {
                 var vt = vehicleType.Trim().ToLowerInvariant();
                 double radiusMeters = vt is "car" or "motorcycle" or "train" or "bus" or "caravan" or "airplane" or "tinyhouse" or "boat" ? 25000.0 : 3000.0;
-                double haversineThresholdKm = isRetry ? radiusMeters / 1000.0 * 3.0 : radiusMeters / 1000.0 * 1.1;
+                double haversineThresholdKm = radiusMeters / 1000.0 * 1.1;
 
                 var client = _httpClientFactory.CreateClient("places");
 
@@ -393,13 +384,15 @@ namespace ParrotsAPI2.Services.Ai
                 {
                     var errorJson = await response.Content.ReadAsStringAsync(cancellationToken);
                     LogABCDE($"[AskParrots] D. Places error: {errorJson}");
-                    return (false, null);
+                    return (false, null, "api_error");
                 }
 
                 var json = await response.Content.ReadAsStringAsync(cancellationToken);
                 using var doc = JsonDocument.Parse(json);
 
                 string? placeId = null;
+                string? rejectReason = null;
+
                 if (doc.RootElement.TryGetProperty("places", out var places) && places.GetArrayLength() > 0)
                 {
                     var first = places[0];
@@ -413,21 +406,24 @@ namespace ParrotsAPI2.Services.Ai
                         if (distanceKm > haversineThresholdKm)
                         {
                             LogABCDE($"[AskParrots] D. Places false positive rejected: \"{spot.Name}\" distance={distanceKm:F1}km");
+                            rejectReason = $"haversine:{distanceKm:F1}km";
                             placeId = null;
                         }
                     }
+                }
+                else
+                {
+                    rejectReason = "no_results";
                 }
 
                 var exists = placeId != null;
                 LogABCDE($"[AskParrots] D. Places check: \"{spot.Name}, {spot.Region}\" → {(exists ? "VERIFIED" : "NOT FOUND")}");
 
-                var result = (exists, placeId);
-                // _cache.Set(cacheKey, result, TimeSpan.FromHours(24));
-                return result;
+                return (exists, placeId, rejectReason);
             }
             catch
             {
-                return (true, null);
+                return (true, null, null);
             }
         }
 

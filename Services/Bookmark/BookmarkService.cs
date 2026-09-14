@@ -36,6 +36,8 @@ namespace ParrotsAPI2.Services.Bookmark
                     dto.ProfileImageUrl = user.ProfileImageUrl ?? string.Empty;
                     dto.ProfileImageThumbnailUrl = user.ProfileImageThumbnailUrl ?? string.Empty;
                     dto.PublicId = user.PublicId ?? string.Empty;
+                    dto.Title = user.Title ?? string.Empty;
+                    dto.Bio = user.Bio ?? string.Empty;
                 }
                 return dto;
             }).ToList();
@@ -96,6 +98,8 @@ namespace ParrotsAPI2.Services.Bookmark
             dto.ProfileImageUrl = bookmarkedUser.ProfileImageUrl ?? string.Empty;
             dto.ProfileImageThumbnailUrl = bookmarkedUser.ProfileImageThumbnailUrl ?? string.Empty;
             dto.PublicId = bookmarkedUser.PublicId ?? string.Empty;
+            dto.Title = bookmarkedUser.Title ?? string.Empty;
+            dto.Bio = bookmarkedUser.Bio ?? string.Empty;
 
             response.Data = dto;
             return response;

@@ -140,14 +140,13 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Data = null;
                 serviceResponse.Message = "Id is null or invalid";
                 stopwatch.Stop();
-                _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
 
             var user = await _context.Users
                 .AsNoTracking()
                 .Include(u => u.Vehicles)
-                .Include(u => u.Voyages)
+                .Include(u => u.Voyages).ThenInclude(v => v.Waypoints)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -156,7 +155,6 @@ namespace ParrotsAPI2.Services.User
             if (user == null)
             {
                 serviceResponse.Message = "User not found";
-                _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
 
@@ -188,6 +186,13 @@ namespace ParrotsAPI2.Services.User
                 UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
                 UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
+
+            foreach (var (dto, voyage) in userDto.UsersVoyages.Zip(confirmedVoyages))
+            {
+                var wp = voyage.Waypoints?.FirstOrDefault(w => w.Order == 1);
+                dto.Latitude = wp?.Latitude;
+                dto.Longitude = wp?.Longitude;
+            }
 
             serviceResponse.Data = userDto;
             _logger.LogInformation($"GetUserById request took {stopwatch.ElapsedMilliseconds} ms");
@@ -207,14 +212,13 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Data = null;
                 serviceResponse.Message = "username is null or invalid";
                 stopwatch.Stop();
-                _logger.LogInformation($"GetSingleUserByUsername request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
 
             var user = await _context.Users
                 .AsNoTracking()
                 .Include(u => u.Vehicles)
-                .Include(u => u.Voyages)
+                .Include(u => u.Voyages).ThenInclude(v => v.Waypoints)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.UserName.ToLower() == username.ToLower());
 
@@ -223,7 +227,6 @@ namespace ParrotsAPI2.Services.User
             if (user == null)
             {
                 serviceResponse.Message = "User not found";
-                _logger.LogInformation($"GetSingleUserByUsername request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
 
@@ -255,6 +258,13 @@ namespace ParrotsAPI2.Services.User
                 UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
                 UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
+
+            foreach (var (dto, voyage) in userDto.UsersVoyages.Zip(confirmedVoyages))
+            {
+                var wp = voyage.Waypoints?.FirstOrDefault(w => w.Order == 1);
+                dto.Latitude = wp?.Latitude;
+                dto.Longitude = wp?.Longitude;
+            }
 
             serviceResponse.Data = userDto;
             _logger.LogInformation($"GetSingleUserByUsername request took {stopwatch.ElapsedMilliseconds} ms");
@@ -316,14 +326,13 @@ namespace ParrotsAPI2.Services.User
                 serviceResponse.Data = null;
                 serviceResponse.Message = "PublicId is null or invalid";
                 stopwatch.Stop();
-                _logger.LogInformation($"GetUserByPublicId request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
 
             var user = await _context.Users
                 .AsNoTracking()
                 .Include(u => u.Vehicles)
-                .Include(u => u.Voyages)
+                .Include(u => u.Voyages).ThenInclude(v => v.Waypoints)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.PublicId == publicId);
 
@@ -332,7 +341,6 @@ namespace ParrotsAPI2.Services.User
             if (user == null)
             {
                 serviceResponse.Message = "User not found";
-                _logger.LogInformation($"GetUserByPublicId request took {stopwatch.ElapsedMilliseconds} ms");
                 return serviceResponse;
             }
 
@@ -364,6 +372,13 @@ namespace ParrotsAPI2.Services.User
                 UsersVehicles = _mapper.Map<List<GetUsersVehiclesDto>>(confirmedVehicles),
                 UsersVoyages = _mapper.Map<List<GetUsersVoyagesDto>>(confirmedVoyages),
             };
+
+            foreach (var (dto, voyage) in userDto.UsersVoyages.Zip(confirmedVoyages))
+            {
+                var wp = voyage.Waypoints?.FirstOrDefault(w => w.Order == 1);
+                dto.Latitude = wp?.Latitude;
+                dto.Longitude = wp?.Longitude;
+            }
 
             serviceResponse.Data = userDto;
             _logger.LogInformation($"GetUserByPublicId request took {stopwatch.ElapsedMilliseconds} ms");

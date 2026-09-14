@@ -8,6 +8,8 @@ namespace ParrotsAPI2.Dtos.BookmarkDtos
         public string ProfileImageUrl { get; set; } = string.Empty;
         public string ProfileImageThumbnailUrl { get; set; } = string.Empty;
         public string PublicId { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Bio { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
     }
 }
