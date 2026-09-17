@@ -7,5 +7,7 @@
         public string PublicId { get; set; } = string.Empty;
         public string? ProfileImageUrl { get; set; }
         public string? ProfileImageThumbnailUrl { get; set; }
+        public string? Title { get; set; }
+        public string? Bio { get; set; }
     }
 }
