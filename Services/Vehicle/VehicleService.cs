@@ -293,6 +293,7 @@ namespace ParrotsAPI2.Services.Vehicle
             var vehicle = await _context.Vehicles
                 .Include(v => v.User)
                 .Include(v => v.VehicleImages)
+                .Include(v => v.Voyages)
                 .FirstOrDefaultAsync(c => c.Id == id && c.Confirmed == true && c.IsDeleted == false);
 
             if (vehicle == null)
@@ -312,6 +313,7 @@ namespace ParrotsAPI2.Services.Vehicle
             var vehicleDto = _mapper.Map<GetVehicleDto>(vehicle);
             vehicleDto.User = _mapper.Map<UserDto>(vehicle.User);
             vehicleDto.VehicleImages = _mapper.Map<List<VehicleImageDto>>(vehicle.VehicleImages);
+            vehicleDto.Voyages = _mapper.Map<List<VoyageDto>>(vehicle.Voyages);
             serviceResponse.Data = vehicleDto;
             return serviceResponse;
 
