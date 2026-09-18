@@ -1,4 +1,5 @@
 ﻿using ParrotsAPI2.Dtos.VehicleImageDtos;
+using ParrotsAPI2.Dtos.VoyageDtos;
 
 namespace ParrotsAPI2.Dtos.VehicleDtos
 {
@@ -17,6 +18,7 @@ namespace ParrotsAPI2.Dtos.VehicleDtos
         public DateTime CreatedAt { get; set; }
         public UserDto? User { get; set; }
         public List<VehicleImageDto>? VehicleImages { get; set; }
+        public List<VoyageDto>? Voyages { get; set; }
 
     }
 }
