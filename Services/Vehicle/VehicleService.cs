@@ -477,14 +477,7 @@ namespace ParrotsAPI2.Services.Vehicle
                     .Where(v => v.UserId == userId && v.Confirmed && v.IsDeleted == false)
                     .ToListAsync();
 
-                if (vehicles == null || !vehicles.Any())
-                {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "No confirmed vehicles found for the specified user.";
-                    return serviceResponse;
-                }
-
-                serviceResponse.Data = _mapper.Map<List<GetVehicleDto>>(vehicles);
+                serviceResponse.Data = _mapper.Map<List<GetVehicleDto>>(vehicles ?? new());
             }
             catch (Exception ex)
             {

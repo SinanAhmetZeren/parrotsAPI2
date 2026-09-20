@@ -17,6 +17,8 @@
         public bool Auction { get; set; }
         public bool PublicOnMap { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
+        public string ProfileImageThumbnail { get; set; } = string.Empty;
+        public string PublicId { get; set; } = string.Empty;
         public VehicleType VehicleType { get; set; }
 
     }
