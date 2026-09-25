@@ -538,21 +538,21 @@ namespace ParrotsAPI2.Services.Ai
                 $"Do not add extra sections. Do not give generic advice about clothing, footwear, payment methods, or packing. " +
                 $"Reference the actual waypoints, dates, vessel type, and capacity where relevant.\n\n" +
                 $"Use ONLY the following custom formatting markers — do not use markdown (no **, no *, no #):\n" +
-                $"  #***#text#***# — section titles (e.g. the numbered headings)\n" +
-                $"  #**#text#**# — sub-labels (e.g. See, Do, Eat, tip label)\n" +
-                $"  #*#text#*# — item text (the actual content under each sub-label)\n" +
-                $"  #&#text#&# — highlights (food names, place names, drink names, vessel names)\n\n" +
-                $"#***#1. Things to Do, See, and Eat Nearby#***#\n" +
-                $"   #**#See:#**# #*#[specific sight or attraction at each waypoint]#*#\n" +
-                $"   #**#Do:#**# #*#[specific activity at each waypoint]#*#\n" +
-                $"   #**#Eat:#**# #*#[specific food or restaurant recommendation at each waypoint, highlight food/restaurant names with #&#]#*#\n\n" +
-                $"#***#2. Practical Crew Tips#***#\n" +
-                $"   #**#-#**# #*#[tip]#*#\n" +
-                $"   #**#-#**# #*#[tip]#*#\n\n" +
-                $"#***#3. Optimal Departure Timing#***#\n" +
-                $"   #**#-#**# #*#[timing advice per leg based on dates and weather]#*#\n\n" +
-                $"#***#4. Pricing Assessment#***#\n" +
-                $"   #**#-#**# #*#[assessment of whether the price range is realistic for this route, duration, vessel and vacancy]#*#";
+                $"  ## text ## — section titles (e.g. the numbered headings)\n" +
+                $"  %% text %% — sub-labels (e.g. See, Do, Eat, tip label)\n" +
+                $"  && text && — item text (the actual content under each sub-label)\n" +
+                $"  ^^ text ^^ — highlights (food names, place names, drink names, vessel names)\n\n" +
+                $"## 1. Things to Do, See, and Eat Nearby ##\n" +
+                $"   %% See: %% && [specific sight or attraction at each waypoint] &&\n" +
+                $"   %% Do: %% && [specific activity at each waypoint] &&\n" +
+                $"   %% Eat: %% && [specific food or restaurant recommendation at each waypoint, wrap food and restaurant names like ^^name^^] &&\n\n" +
+                $"## 2. Practical Crew Tips ##\n" +
+                $"   %% - %% && [tip] &&\n" +
+                $"   %% - %% && [tip] &&\n\n" +
+                $"## 3. Optimal Departure Timing ##\n" +
+                $"   %% - %% && [timing advice per leg based on dates and weather] &&\n\n" +
+                $"## 4. Pricing Assessment ##\n" +
+                $"   %% - %% && [assessment of whether the price range is realistic for this route, duration, vessel and vacancy] &&";
 
             var requestBody = new
             {
