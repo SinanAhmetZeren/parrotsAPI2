@@ -522,31 +522,32 @@ namespace ParrotsAPI2.Services.Ai
             return $"{vehiclePart} {vibePart}{spotPart}, {locationPart}. Coordinates: ({dto.Latitude}, {dto.Longitude}). Target length: {wordCountTarget}. What voyage would you suggest? [ref:{Guid.NewGuid():N}]";
         }
 
-        private static readonly Dictionary<string, string> _adviceSections = new()
-        {
-            ["thingsToDo"]  = "- For each existing waypoint, suggest 2-3 things to do, see, or eat nearby.",
-            ["crewTips"]    = "- Give practical crew tips for this vessel type and route (skills, gear, watch schedules).",
-            ["timing"]      = "- Advise on optimal departure timing for each leg based on typical weather patterns for the dates.",
-            ["bidGuidance"] = "- Assess whether the price range is realistic for this route, duration, vessel type and vacancy.",
-        };
-
         public async Task<string?> UserCreatedVoyageAdviceAsync(UserVoyageAdviceDto dto)
         {
-            var selected = dto.Categories
-                .Where(c => _adviceSections.ContainsKey(c))
-                .Select(c => _adviceSections[c]);
-
-            var requestedSections = string.Join("\n", selected);
-            if (string.IsNullOrWhiteSpace(requestedSections))
-                return null;
-
             var voyageJson = JsonSerializer.Serialize(dto, new JsonSerializerOptions { WriteIndented = true });
 
             var prompt =
-                $"You are a seasoned sailing and travel advisor. A voyage organizer has shared the following trip details and is asking for advice.\n\n" +
+                $"You are a travel and voyage advisor. A voyage organizer has shared the following trip details.\n\n" +
+                $"Pricing model notes: " +
+                $"isAuction=true means passengers place bids and the organizer selects the best offer; " +
+                $"isFixedPrice=true means the price is set and non-negotiable; " +
+                $"both false means the price is open/negotiable. " +
+                $"minPrice/maxPrice is the organizer's expected price range per passenger.\n\n" +
                 $"Voyage data:\n{voyageJson}\n\n" +
-                $"Please provide the following:\n{requestedSections}\n\n" +
-                $"Keep your response structured by category. Be specific and practical — reference the actual waypoints, dates, vessel type and capacity where relevant.";
+                $"Fill in the following template with specific, practical advice based on the voyage data above. " +
+                $"Do not add extra sections. Do not give generic advice about clothing, footwear, payment methods, or packing. " +
+                $"Reference the actual waypoints, dates, vessel type, and capacity where relevant.\n\n" +
+                $"1. Things to Do, See, and Eat Nearby\n" +
+                $"   • See: [specific sight or attraction at each waypoint]\n" +
+                $"   • Do: [specific activity at each waypoint]\n" +
+                $"   • Eat: [specific food or restaurant recommendation at each waypoint]\n\n" +
+                $"2. Practical Crew Tips\n" +
+                $"   - [tip]\n" +
+                $"   - [tip]\n\n" +
+                $"3. Optimal Departure Timing\n" +
+                $"   - [timing advice per leg based on dates and weather]\n\n" +
+                $"4. Pricing Assessment\n" +
+                $"   - [assessment of whether the price range is realistic for this route, duration, vessel and vacancy]";
 
             var requestBody = new
             {
