@@ -43,6 +43,19 @@ namespace ParrotsAPI2.Controllers
             return Ok(new { response = result, remainingBalance = deduct.Data });
         }
 
+        [HttpPost("voyage-advice")]
+        public async Task<IActionResult> VoyageAdvice([FromBody] UserVoyageAdviceDto dto)
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var result = await _aiService.UserCreatedVoyageAdviceAsync(dto);
+            if (string.IsNullOrEmpty(result))
+                return StatusCode(500, new { message = "Could not get advice right now. Please try again." });
+
+            return Ok(new { advice = result });
+        }
+
         private static bool CheckRateLimit(string userId)
         {
             lock (_lock)

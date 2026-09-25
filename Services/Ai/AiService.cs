@@ -521,6 +521,60 @@ namespace ParrotsAPI2.Services.Ai
 
             return $"{vehiclePart} {vibePart}{spotPart}, {locationPart}. Coordinates: ({dto.Latitude}, {dto.Longitude}). Target length: {wordCountTarget}. What voyage would you suggest? [ref:{Guid.NewGuid():N}]";
         }
+
+        private static readonly Dictionary<string, string> _adviceSections = new()
+        {
+            ["thingsToDo"]  = "- For each existing waypoint, suggest 2-3 things to do, see, or eat nearby.",
+            ["crewTips"]    = "- Give practical crew tips for this vessel type and route (skills, gear, watch schedules).",
+            ["timing"]      = "- Advise on optimal departure timing for each leg based on typical weather patterns for the dates.",
+            ["bidGuidance"] = "- Assess whether the price range is realistic for this route, duration, vessel type and vacancy.",
+        };
+
+        public async Task<string?> UserCreatedVoyageAdviceAsync(UserVoyageAdviceDto dto)
+        {
+            var selected = dto.Categories
+                .Where(c => _adviceSections.ContainsKey(c))
+                .Select(c => _adviceSections[c]);
+
+            var requestedSections = string.Join("\n", selected);
+            if (string.IsNullOrWhiteSpace(requestedSections))
+                return null;
+
+            var voyageJson = JsonSerializer.Serialize(dto, new JsonSerializerOptions { WriteIndented = true });
+
+            var prompt =
+                $"You are a seasoned sailing and travel advisor. A voyage organizer has shared the following trip details and is asking for advice.\n\n" +
+                $"Voyage data:\n{voyageJson}\n\n" +
+                $"Please provide the following:\n{requestedSections}\n\n" +
+                $"Keep your response structured by category. Be specific and practical — reference the actual waypoints, dates, vessel type and capacity where relevant.";
+
+            var requestBody = new
+            {
+                contents = new[] { new { parts = new[] { new { text = prompt } } } },
+                generationConfig = new { temperature = 0.7, topP = 0.95 }
+            };
+
+            var json = JsonSerializer.Serialize(requestBody);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={_apiKey}";
+
+            var response = await _httpClient.PostAsync(url, content);
+            if (!response.IsSuccessStatusCode) return null;
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(responseJson);
+
+            if (doc.RootElement.TryGetProperty("candidates", out var candidates) &&
+                candidates.GetArrayLength() > 0 &&
+                candidates[0].TryGetProperty("content", out var candidateContent) &&
+                candidateContent.TryGetProperty("parts", out var parts) &&
+                parts.GetArrayLength() > 0)
+            {
+                return parts[0].GetProperty("text").GetString();
+            }
+
+            return null;
+        }
     }
 
     internal record PlannedSpot(string Name, double Lat, double Lng, string Region, string FallbackLabel);

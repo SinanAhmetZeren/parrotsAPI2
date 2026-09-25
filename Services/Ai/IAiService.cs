@@ -5,5 +5,6 @@ namespace ParrotsAPI2.Services.Ai
     public interface IAiService
     {
         Task<string?> AskAsync(AskParrotsQueryDto dto, string userId);
+        Task<string?> UserCreatedVoyageAdviceAsync(UserVoyageAdviceDto dto);
     }
 }
