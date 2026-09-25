@@ -522,7 +522,7 @@ namespace ParrotsAPI2.Services.Ai
             return $"{vehiclePart} {vibePart}{spotPart}, {locationPart}. Coordinates: ({dto.Latitude}, {dto.Longitude}). Target length: {wordCountTarget}. What voyage would you suggest? [ref:{Guid.NewGuid():N}]";
         }
 
-        public async Task<string?> UserCreatedVoyageAdviceAsync(UserVoyageAdviceDto dto)
+        public async Task<string?> UserCreatedVoyageAdviceAsync(UserVoyageAdviceDto dto, string? userId = null)
         {
             var voyageJson = JsonSerializer.Serialize(dto, new JsonSerializerOptions { WriteIndented = true });
 
@@ -537,17 +537,22 @@ namespace ParrotsAPI2.Services.Ai
                 $"Fill in the following template with specific, practical advice based on the voyage data above. " +
                 $"Do not add extra sections. Do not give generic advice about clothing, footwear, payment methods, or packing. " +
                 $"Reference the actual waypoints, dates, vessel type, and capacity where relevant.\n\n" +
-                $"1. Things to Do, See, and Eat Nearby\n" +
-                $"   • See: [specific sight or attraction at each waypoint]\n" +
-                $"   • Do: [specific activity at each waypoint]\n" +
-                $"   • Eat: [specific food or restaurant recommendation at each waypoint]\n\n" +
-                $"2. Practical Crew Tips\n" +
-                $"   - [tip]\n" +
-                $"   - [tip]\n\n" +
-                $"3. Optimal Departure Timing\n" +
-                $"   - [timing advice per leg based on dates and weather]\n\n" +
-                $"4. Pricing Assessment\n" +
-                $"   - [assessment of whether the price range is realistic for this route, duration, vessel and vacancy]";
+                $"Use ONLY the following custom formatting markers — do not use markdown (no **, no *, no #):\n" +
+                $"  #***#text#***# — section titles (e.g. the numbered headings)\n" +
+                $"  #**#text#**# — sub-labels (e.g. See, Do, Eat, tip label)\n" +
+                $"  #*#text#*# — item text (the actual content under each sub-label)\n" +
+                $"  #&#text#&# — highlights (food names, place names, drink names, vessel names)\n\n" +
+                $"#***#1. Things to Do, See, and Eat Nearby#***#\n" +
+                $"   #**#See:#**# #*#[specific sight or attraction at each waypoint]#*#\n" +
+                $"   #**#Do:#**# #*#[specific activity at each waypoint]#*#\n" +
+                $"   #**#Eat:#**# #*#[specific food or restaurant recommendation at each waypoint, highlight food/restaurant names with #&#]#*#\n\n" +
+                $"#***#2. Practical Crew Tips#***#\n" +
+                $"   #**#-#**# #*#[tip]#*#\n" +
+                $"   #**#-#**# #*#[tip]#*#\n\n" +
+                $"#***#3. Optimal Departure Timing#***#\n" +
+                $"   #**#-#**# #*#[timing advice per leg based on dates and weather]#*#\n\n" +
+                $"#***#4. Pricing Assessment#***#\n" +
+                $"   #**#-#**# #*#[assessment of whether the price range is realistic for this route, duration, vessel and vacancy]#*#";
 
             var requestBody = new
             {
@@ -571,7 +576,25 @@ namespace ParrotsAPI2.Services.Ai
                 candidateContent.TryGetProperty("parts", out var parts) &&
                 parts.GetArrayLength() > 0)
             {
-                return parts[0].GetProperty("text").GetString();
+                var advice = parts[0].GetProperty("text").GetString();
+
+                try
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+                    db.AskParrotsQueries.Add(new AskParrotsQueryEntity
+                    {
+                        UserId = userId ?? string.Empty,
+                        QueryType = "voyage-advice",
+                        VoyageAdviceRequestJson = voyageJson,
+                        VoyageAdviceResponse = advice,
+                        IsSuccess = true,
+                    });
+                    await db.SaveChangesAsync();
+                }
+                catch { /* non-critical — don't fail the response if save fails */ }
+
+                return advice;
             }
 
             return null;

@@ -39,4 +39,9 @@ public class AskParrotsQueryEntity
     public string? FinalSanitizedNarrative { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    // Voyage Advice (nullable — only set for voyage-advice calls)
+    public string? QueryType { get; set; }
+    public string? VoyageAdviceRequestJson { get; set; }
+    public string? VoyageAdviceResponse { get; set; }
 }

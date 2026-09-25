@@ -49,7 +49,7 @@ namespace ParrotsAPI2.Controllers
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var result = await _aiService.UserCreatedVoyageAdviceAsync(dto);
+            var result = await _aiService.UserCreatedVoyageAdviceAsync(dto, userId);
             if (string.IsNullOrEmpty(result))
                 return StatusCode(500, new { message = "Could not get advice right now. Please try again." });
 
