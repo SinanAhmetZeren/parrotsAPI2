@@ -1,4 +1,5 @@
-﻿using ParrotsAPI2.Dtos.BidDtos;
+﻿using ParrotsAPI2.Models;
+using ParrotsAPI2.Dtos.BidDtos;
 using ParrotsAPI2.Dtos.VoyageImageDtos;
 using ParrotsAPI2.Dtos.WaypointDtos;
 
@@ -38,5 +39,6 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public bool IsOwnerDeleted { get; set; } = false;
         public List<VoyageUpdateDto> Updates { get; set; } = new();
         public string PublicId { get; set; } = string.Empty;
+        public VoyageState VoyageState { get; set; } = VoyageState.Active;
     }
 }

@@ -39,6 +39,7 @@ namespace ParrotsAPI2.Models
         public bool IsDeleted { get; set; } = false;
         public int PlaceType { get; set; } = 0;
         public string PublicId { get; set; } = string.Empty;
+        public VoyageState VoyageState { get; set; } = VoyageState.Active;
 
     }
 

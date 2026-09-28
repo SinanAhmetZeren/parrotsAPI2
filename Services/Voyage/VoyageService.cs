@@ -469,6 +469,7 @@ namespace ParrotsAPI2.Services.Voyage
             voyageDto.Updates = updates;
 
             voyageDto.IsOwnerDeleted = voyage.User.LockoutEnabled && voyage.User.LockoutEnd == DateTimeOffset.MaxValue;
+            voyageDto.VoyageState = voyage.VoyageState;
 
             serviceResponse.Data = voyageDto;
             return serviceResponse;

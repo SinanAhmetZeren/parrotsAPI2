@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ParrotsAPI2.Models;
 using System.Security.Claims;
 
 namespace ParrotsAPI2.Controllers
@@ -150,6 +151,26 @@ namespace ParrotsAPI2.Controllers
             return Ok(response);
         }
 
+
+        [HttpPatch("{voyageId}/state")]
+        public async Task<IActionResult> SetVoyageState(int voyageId, [FromBody] VoyageState state)
+        {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (requestUserId == null) return Unauthorized();
+
+            var isAdmin = User.IsInRole("Admin");
+            var voyage = await _context.Voyages.FindAsync(voyageId);
+            if (voyage == null) return NotFound();
+
+            if (!isAdmin && voyage.UserId != requestUserId) return Forbid();
+
+            // Owner can only set BidsClosed or Cancelled; only admin can reinstate to Active
+            if (!isAdmin && state == VoyageState.Active) return Forbid();
+
+            voyage.VoyageState = state;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
 
         [HttpDelete("DeleteVoyage/{id}")]
         public async Task<ActionResult<ServiceResponse<GetVoyageDto>>> DeleteVoyage(int id)
