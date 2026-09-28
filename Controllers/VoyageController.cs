@@ -153,10 +153,13 @@ namespace ParrotsAPI2.Controllers
 
 
         [HttpPatch("{voyageId}/state")]
-        public async Task<IActionResult> SetVoyageState(int voyageId, [FromBody] VoyageState state)
+        public async Task<IActionResult> SetVoyageState(int voyageId, [FromBody] string state)
         {
             var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (requestUserId == null) return Unauthorized();
+
+            var validStates = new[] { "Active", "BidsClosed", "Cancelled" };
+            if (!validStates.Contains(state)) return BadRequest("Invalid voyage state.");
 
             var isAdmin = User.IsInRole("Admin");
             var voyage = await _context.Voyages.FindAsync(voyageId);
@@ -165,7 +168,7 @@ namespace ParrotsAPI2.Controllers
             if (!isAdmin && voyage.UserId != requestUserId) return Forbid();
 
             // Owner can only set BidsClosed or Cancelled; only admin can reinstate to Active
-            if (!isAdmin && state == VoyageState.Active) return Forbid();
+            if (!isAdmin && state == "Active") return Forbid();
 
             voyage.VoyageState = state;
             await _context.SaveChangesAsync();

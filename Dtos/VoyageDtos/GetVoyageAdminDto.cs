@@ -32,5 +32,8 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public int? VehicleId { get; set; }
         public VehicleDto? Vehicle { get; set; }
         public List<VoyageBidDto> Bids { get; set; } = new List<VoyageBidDto>();
+        public string PublicId { get; set; } = string.Empty;
+        public string ProfileImageThumbnail { get; set; } = string.Empty;
+        public string VoyageState { get; set; } = "Active";
     }
 }
