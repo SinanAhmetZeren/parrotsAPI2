@@ -18,7 +18,7 @@
         public bool PublicOnMap { get; set; }
         public string ProfileImage { get; set; } = string.Empty;
         public int? VehicleId { get; set; }
-        public string? VehicleImage { get; set; }
+        public string? VehicleImageThumbnail { get; set; }
         public string? VehicleName { get; set; }
         public VehicleType VehicleType { get; set; }
         public double? Latitude { get; set; }

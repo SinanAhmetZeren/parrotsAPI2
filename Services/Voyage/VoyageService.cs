@@ -106,7 +106,7 @@ namespace ParrotsAPI2.Services.Voyage
                 var voyage = _mapper.Map<Models.Voyage>(newVoyage);
                 voyage.User = user;
                 voyage.Vehicle = vehicle;
-                voyage.VehicleImage = vehicle.ProfileImageUrl;
+                voyage.VehicleImageThumbnail = vehicle.ProfileImageThumbnailUrl ?? vehicle.ProfileImageUrl;
                 voyage.ProfileImage = voyageProfileImage;
                 voyage.ProfileImageThumbnail = voyageProfileImageThumb;
                 voyage.VehicleType = vehicle.Type;
@@ -188,7 +188,7 @@ namespace ParrotsAPI2.Services.Voyage
                     var voyage = _mapper.Map<Models.Voyage>(newVoyage);
                     voyage.User = user;
                     voyage.Vehicle = vehicle;
-                    voyage.VehicleImage = vehicle.ProfileImageUrl;
+                    voyage.VehicleImageThumbnail = vehicle.ProfileImageThumbnailUrl ?? vehicle.ProfileImageUrl;
                     voyage.ProfileImage = voyageProfileImage;
                     voyage.ProfileImageThumbnail = voyageProfileImageThumb;
                     voyage.VehicleType = vehicle.Type;

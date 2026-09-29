@@ -55,6 +55,7 @@ namespace ParrotsAPI2
             CreateMap<Voyage, GetVoyageDto>()
                 .ForMember(dest => dest.VoyageImages, opt => opt.MapFrom(src => src.VoyageImages));
 
+
             CreateMap<Bid, BidDto>();
             CreateMap<Bid, ChangeBidDto>();
             CreateMap<ChangeBidDto, Bid>();
