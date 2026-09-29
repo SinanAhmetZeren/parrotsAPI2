@@ -1015,7 +1015,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
                     // .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0 && v.VoyageState == "Active")
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
                     .Where(v => !v.User.LockoutEnabled || v.User.LockoutEnd == null || v.User.LockoutEnd < DateTimeOffset.UtcNow)
                     .AsQueryable();
 
@@ -1122,7 +1122,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0 && v.VoyageState == "Active")
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
                     .Where(v => !v.User.LockoutEnabled || v.User.LockoutEnd == null || v.User.LockoutEnd < DateTimeOffset.UtcNow)
                     .AsQueryable();
 
