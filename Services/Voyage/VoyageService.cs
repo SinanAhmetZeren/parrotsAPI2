@@ -468,7 +468,16 @@ namespace ParrotsAPI2.Services.Voyage
 
             voyageDto.Updates = updates;
 
-            voyageDto.IsOwnerDeleted = voyage.User.LockoutEnabled && voyage.User.LockoutEnd == DateTimeOffset.MaxValue;
+            var ownerAccountLocked = voyage.User.LockoutEnabled && voyage.User.LockoutEnd == DateTimeOffset.MaxValue;
+            var latestOwnerActionOnAccount = ownerAccountLocked
+                ? await _context.UserSuspensions
+                    .Where(s => s.UserId == voyage.UserId)
+                    .OrderByDescending(s => s.CreatedAt)
+                    .Select(s => s.Action)
+                    .FirstOrDefaultAsync()
+                : null;
+            voyageDto.IsOwnerSuspended = latestOwnerActionOnAccount == "suspended-by-admin";
+            voyageDto.IsOwnerDeleted = latestOwnerActionOnAccount == "self-suspended";
             voyageDto.VoyageState = voyage.VoyageState;
 
             serviceResponse.Data = voyageDto;
@@ -1006,7 +1015,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
                     // .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.LastBidDate >= DateTime.Today)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0 && v.VoyageState == "Active")
                     .Where(v => !v.User.LockoutEnabled || v.User.LockoutEnd == null || v.User.LockoutEnd < DateTimeOffset.UtcNow)
                     .AsQueryable();
 
@@ -1113,7 +1122,7 @@ namespace ParrotsAPI2.Services.Voyage
                     .Include(v => v.User)
                     .Include(v => v.VoyageImages)
                     .Include(v => v.Vehicle)
-                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0)
+                    .Where(v => v.Confirmed && !v.IsDeleted && v.PublicOnMap && v.EndDate.Date >= DateTime.UtcNow.Date && v.PlaceType == 0 && v.VoyageState == "Active")
                     .Where(v => !v.User.LockoutEnabled || v.User.LockoutEnd == null || v.User.LockoutEnd < DateTimeOffset.UtcNow)
                     .AsQueryable();
 

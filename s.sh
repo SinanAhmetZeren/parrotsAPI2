@@ -18,7 +18,7 @@ set menuBar to 25
 
 tell application "Terminal"
     -- SSH tunnel - left, 1/8
-    do script "ssh -N -L 5432:127.0.0.1:5432 deploy@168.119.119.25; pkill -f 'dotnet run'"
+    do script "(nc -z 127.0.0.1 5432 || ssh -N -L 5432:127.0.0.1:5432 deploy@168.119.119.25) & (nc -z 127.0.0.1 5433 || ssh -N -L 5433:127.0.0.1:5432 deploy@168.119.119.25) & wait"
     delay 0.5
     set bounds of front window to {0, menuBar, hw, menuBar + h1}
     delay 0.5

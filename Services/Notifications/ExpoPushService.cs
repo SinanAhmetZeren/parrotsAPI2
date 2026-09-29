@@ -23,8 +23,7 @@ public class ExpoPushService
         {
             to = expoPushToken,
             badge = badgeCount,
-            priority = "normal",
-            channelId = "default"
+            priority = "normal"
         };
 
         try

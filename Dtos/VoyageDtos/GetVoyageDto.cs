@@ -36,6 +36,7 @@ namespace ParrotsAPI2.Dtos.VoyageDtos
         public int PlaceType { get; set; } = 0;
         public bool IsBlockedByOrganizer { get; set; } = false;
         public bool IsOwnerDeleted { get; set; } = false;
+        public bool IsOwnerSuspended { get; set; } = false;
         public List<VoyageUpdateDto> Updates { get; set; } = new();
         public string PublicId { get; set; } = string.Empty;
         public string VoyageState { get; set; } = "Active";
