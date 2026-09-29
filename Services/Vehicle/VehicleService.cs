@@ -174,10 +174,10 @@ namespace ParrotsAPI2.Services.Vehicle
             // Extract voyage IDs
             var voyageIds = voyages.Select(v => v.Id).ToList();
 
-            // Soft delete voyages
+            // Cancel voyages instead of deleting them
             foreach (var voyage in voyages)
             {
-                voyage.IsDeleted = true;
+                voyage.VoyageState = "Cancelled";
             }
 
             // Delete favorites related to voyages (Type = "voyage" and itemId in voyageIds)
@@ -200,7 +200,7 @@ namespace ParrotsAPI2.Services.Vehicle
             try
             {
                 await _context.SaveChangesAsync();
-                serviceResponse.Data = "Vehicle and related voyages soft-deleted, favorites removed.";
+                serviceResponse.Data = "Vehicle soft-deleted, related voyages cancelled, favorites removed.";
             }
             catch (Exception ex)
             {
@@ -239,14 +239,14 @@ namespace ParrotsAPI2.Services.Vehicle
                 .Select(v => v.Id)
                 .ToListAsync();
 
-            // Soft delete voyages
+            // Cancel voyages instead of deleting them
             var voyages = await _context.Voyages
                 .Where(v => v.VehicleId == id)
                 .ToListAsync();
 
             foreach (var voyage in voyages)
             {
-                voyage.IsDeleted = true;
+                voyage.VoyageState = "Cancelled";
             }
 
             // Soft delete vehicle
@@ -267,7 +267,7 @@ namespace ParrotsAPI2.Services.Vehicle
             try
             {
                 await _context.SaveChangesAsync();
-                serviceResponse.Data = "Vehicle and its voyages soft deleted, related favorites hard deleted.";
+                serviceResponse.Data = "Vehicle soft-deleted, related voyages cancelled, favorites hard deleted.";
             }
             catch (Exception ex)
             {
@@ -294,7 +294,7 @@ namespace ParrotsAPI2.Services.Vehicle
                 .Include(v => v.User)
                 .Include(v => v.VehicleImages)
                 .Include(v => v.Voyages)
-                .FirstOrDefaultAsync(c => c.Id == id && c.Confirmed == true && c.IsDeleted == false);
+                .FirstOrDefaultAsync(c => c.Id == id && c.Confirmed == true);
 
             if (vehicle == null)
             {
