@@ -363,6 +363,9 @@ namespace ParrotsAPI2.Controllers
                     .Select(g => g.OrderByDescending(s => s.CreatedAt).First())
                     .ToList();
 
+                // Only show users whose current state is still suspended/deleted (not restored)
+                latestPerUser = latestPerUser.Where(s => s.Action != "unsuspended").ToList();
+
                 deletedTotal = latestPerUser.Count;
 
                 var suspUserIds = latestPerUser.Select(s => s.UserId).Distinct().ToList();
