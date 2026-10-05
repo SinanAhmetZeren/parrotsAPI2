@@ -7,6 +7,7 @@ using ParrotsAPI2.Services.Ai;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
 
 namespace parrotsAPI2.Tests;
 
@@ -24,12 +25,12 @@ public class AiServiceTests
 
         var client = new HttpClient(handler.Object);
         var factory = new Mock<IHttpClientFactory>();
-        var cache = new Mock<IMemoryCache>();
         var scopeFactory = new Mock<IServiceScopeFactory>();
         var config = new Mock<IConfiguration>();
+        var env = new Mock<IWebHostEnvironment>();
         config.Setup(c => c["Google_Gemini_Parrots_AI_Query_Key"]).Returns("test-key");
 
-        return new AiService(client, factory.Object, cache.Object, scopeFactory.Object, config.Object);
+        return new AiService(client, factory.Object, scopeFactory.Object, config.Object, env.Object);
     }
 
     // Wraps narrative in the JSON structure Gemini now returns inside parts[0].text
@@ -252,12 +253,12 @@ public class AiServiceTests
 
         var client = new HttpClient(handler.Object);
         var factory = new Mock<IHttpClientFactory>();
-        var cache = new Mock<IMemoryCache>();
         var scopeFactory = new Mock<IServiceScopeFactory>();
         var config = new Mock<IConfiguration>();
+        var env = new Mock<IWebHostEnvironment>();
         config.Setup(c => c["Google_Gemini_Parrots_AI_Query_Key"]).Returns("test-key");
 
-        var service = new AiService(client, factory.Object, cache.Object, scopeFactory.Object, config.Object);
+        var service = new AiService(client, factory.Object, scopeFactory.Object, config.Object, env.Object);
         await service.AskAsync(dto, "test-user");
         return captured;
     }

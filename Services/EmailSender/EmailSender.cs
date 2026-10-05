@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mail;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace ParrotsAPI2.Services.EmailSender;
@@ -8,17 +9,25 @@ public class EmailSender : IEmailSender
 {
     private readonly ILogger<EmailSender> _logger;
     private readonly IConfiguration _config;
+    private readonly IHostEnvironment _env;
 
     public EmailSender(
         ILogger<EmailSender> logger,
-        IConfiguration config)
+        IConfiguration config,
+        IHostEnvironment env)
     {
         _logger = logger;
         _config = config;
+        _env = env;
     }
 
     public async Task SendReportDigestEmail(string recipientEmail, List<ReportDigestItem> reports)
     {
+        if (_env.IsDevelopment())
+        {
+            _logger.LogInformation("[DEV] Report digest email suppressed. Recipient={Recipient}, ReportCount={Count}", recipientEmail, reports.Count);
+            return;
+        }
         try
         {
             var smtpClient = new SmtpClient("smtp.gmail.com")

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Nunito", sans-serif;
+      font-size: clamp(14px, 4vw, 16px);
+      color: #222;
+      background: #fff;
+      padding: clamp(12px, 4vw, 32px);
+      line-height: 1.6;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .title-main {
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-weight: 800;
+      color: #003580;
+    }
+
+    .version {
+      font-size: 0.8rem;
+      color: #888;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .index {
+      display: flex;
+      gap: 0.5rem;
+      background: #f6f6f6;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .index-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex: 1;
+    }
+
+    .index a {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.3rem;
+      color: #003580;
+      font-weight: 700;
+      font-size: clamp(11px, 3vw, 14px);
+      text-decoration: none;
+      padding: 3px 6px;
+      border-radius: 5px;
+      background: rgba(0, 53, 128, 0.07);
+    }
+
+    .index a:hover {
+      background: rgba(0, 53, 128, 0.15);
+    }
+
+    .index-num {
+      min-width: 1.4rem;
+      font-weight: 800;
+    }
+
+    .section-heading {
+      font-size: clamp(1.1rem, 4vw, 1.3rem);
+      font-weight: 800;
+      color: #003580;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-heading2 {
+      font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+      font-weight: 700;
+      color: #003580;
+      margin-top: 0.9rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .section-block {
+      background: rgba(200, 200, 200, 0.12);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #444;
+      margin-bottom: 0.5rem;
+      text-align: justify;
+    }
+
+    .highlight {
+      font-weight: 700;
+      background: rgba(0, 53, 128, 0.11);
+      padding: 1px 0;
+    }
+
+    .indent {
+      padding-left: 1.5rem;
+    }
+
+    .sub {
+      padding-left: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header" style="display:flex;justify-content:space-between;align-items:center;">
+    <div class="title-main">Parrots</div>
+    <div class="version">Terms of Use — v{VERSION}</div>
+  </div>
+
+  <div class="index">
+    <div class="index-col">
+      <a href="#about"><span class="index-num">1.</span> About Parrots</a>
+      <a href="#eligibility"><span class="index-num">2.</span> Eligibility</a>
+      <a href="#profile"><span class="index-num">3.</span> Profile and Content Responsibilities</a>
+      <a href="#neutrality"><span class="index-num">4.</span> Platform Neutrality and No Endorsement</a>
+      <a href="#voyages"><span class="index-num">5.</span> Voyages and Requests to Join Voyages (Bids)</a>
+      <a href="#communication"><span class="index-num">6.</span> Communication Between Users</a>
+      <a href="#prohibited"><span class="index-num">7.</span> Prohibited Activities</a>
+      <a href="#suspension"><span class="index-num">8.</span> Account Suspension and Termination</a>
+      <a href="#ip"><span class="index-num">9.</span> Intellectual Property</a>
+    </div>
+    <div class="index-col">
+      <a href="#liability"><span class="index-num">10.</span> Limitation of Liability</a>
+      <a href="#disclaimers"><span class="index-num">11.</span> Disclaimers</a>
+      <a href="#ai-content"><span class="index-num">12.</span> AI-Generated Content (Ask Parrots)</a>
+      <a href="#modifications"><span class="index-num">13.</span> Modifications</a>
+      <a href="#privacy"><span class="index-num">14.</span> Privacy Policy</a>
+      <a href="#dispute"><span class="index-num">15.</span> Dispute Resolution</a>
+      <a href="#law"><span class="index-num">16.</span> Governing Law</a>
+      <a href="#termination"><span class="index-num">17.</span> Service Termination and Discontinuation</a>
+      <a href="#refund"><span class="index-num">18.</span> Refund Policy</a>
+      <a href="#contact"><span class="index-num">19.</span> Contact &amp; Legal Entity</a>
+    </div>
+  </div>
+
+  <div style="font-size:clamp(1.2rem,4.5vw,1.7rem);font-weight:800;color:#003580;margin-bottom:1rem;">Terms of Use,
+    Privacy Policy &amp; Disclaimer</div>
+
+  <div class="section-block">
+    <div id="about" class="section-heading">1. About Parrots</div>
+    <p>Parrots is a community platform designed to connect users who are interested in sharing information about
+      vehicles, voyages, and related activities. Users can:</p>
+    <div class="sub">
+      <div class="section-heading2">a. Create profiles</div>
+      <p>Each user can make their own profile page, providing personal information they choose to share, such as a brief
+        bio, social media links, and contact details.</p>
+      <p>Profiles help other users identify who they are communicating with or interacting with on the platform.</p>
+      <div class="section-heading2">b. Upload images</div>
+      <p>Users can upload photos to their profile or their listings, such as pictures of themselves, their vehicles, or
+        other relevant content.</p>
+      <p>Parrots does not review or verify these images, so users are responsible for the content they upload.</p>
+      <div class="section-heading2">c. List vehicles and voyages</div>
+      <p>Users can add vehicles they own and propose voyages (trips, journeys, or rides) they intend to organize.</p>
+      <p>Listings may include descriptions, dates, destinations, or other details to inform other users.</p>
+      <p>Parrots does not verify whether these vehicles exist or whether voyages will actually take place.</p>
+      <div class="section-heading2">d. Propose to join others' voyages</div>
+      <p>Users can propose to join voyages listed by others, showing interest or proposing participation.</p>
+      <p>Bids on Parrots are proposals to join a voyage and do not create any financial obligation through the platform.
+        Placing a bid does not create any legal or financial obligation, and Parrots does not enforce or guarantee that
+        the voyage will occur.</p>
+      <div class="section-heading2">e. Communicate</div>
+      <p>Users can message or interact with each other within the platform to discuss voyages, or other topics.</p>
+      <p>All communication is the responsibility of the users themselves. Parrots does not monitor, endorse, or
+        guarantee the safety or truthfulness of these messages.</p>
+      <div class="section-heading2">f. Ask Parrots (AI Tool)</div>
+      <p>Users can interact with an AI-powered tool ("Ask Parrots") to generate travel suggestions, routes, and location
+        information. This feature is available both as a standalone tool and as an assistant during voyage creation to
+        help users draft listing content. This feature relies on automated technology and user-provided inputs, and
+        Parrots does not guarantee the accuracy, safety, or suitability of any AI-generated content. Users are solely
+        responsible for the final content of any listing they publish, regardless of whether AI assistance was used.</p>
+    </div>
+    <p>Users are responsible for the content they post. Account verification, where provided, does not constitute
+      verification of a user's identity, credentials, character, or reliability. Parrots does not guarantee voyage
+      completion or endorse any content.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="eligibility" class="section-heading">2. Eligibility</div>
+    <p><strong class="highlight">Users must be at least 18 years old.</strong> By using Parrots, you confirm that you
+      meet this age requirement and have the legal capacity to enter into this agreement under applicable law.</p>
+    <p>By creating an account or continuing to use the platform, you confirm that you have read, understood, and agree
+      to be bound by these Terms. If you do not agree, you must not use the platform.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="profile" class="section-heading">3. Profile and Content Responsibilities</div>
+    <p>Users are responsible for ensuring that all content they post is accurate and true to the best of their
+      knowledge, appropriate, and not misleading or deceptive. This includes, but is not limited to, images, contact
+      details, social media links, vehicles, voyages, and any information submitted through or generated via platform
+      features. Parrots is not responsible for false, misleading, inaccurate content or content as mentioned above.</p>
+    <p><strong class="highlight">All user-generated content on Parrots — including profiles, profile and background
+        images, contact details, vehicle listings, voyage listings, bids, and related content, etc. — is visible to all
+        registered users of the platform. Users should not include any information they are not comfortable sharing with
+        all platform members.</strong></p>
+  </div>
+
+  <div class="section-block">
+    <div id="neutrality" class="section-heading">4. Platform Neutrality and No Endorsement</div>
+    <p>Parrots is a technology platform that enables users to list, discover, and bid on voyages. Parrots does not
+      create, own, operate, or control any voyage, vehicle, or service listed on the platform, nor does it generate,
+      verify, or endorse any AI-powered suggestions provided through Ask Parrots.</p>
+    <p>We do not verify, approve, endorse, or guarantee:</p>
+    <p class="indent">• the accuracy or completeness of any listing</p>
+    <p class="indent">• the identity, credentials, or reliability of any user</p>
+    <p class="indent">• the quality, safety, or legality of any voyage offered</p>
+    <p class="indent">• that any voyage will depart, arrive, or be completed as described</p>
+    <p class="indent">• any transaction, payment, or agreement made between users</p>
+    <p class="indent">• the accuracy, safety, or reliability of any AI-generated content or route suggestions via Ask
+      Parrots</p>
+    <p>All arrangements are made solely between the users involved. Parrots is not a party to any agreement, booking, or
+      transaction between users and accepts no liability arising from them.</p>
+    <p>Any reliance on listings, user profiles, AI suggestions, or content posted by other users is at your own risk.
+    </p>
+  </div>
+
+  <div class="section-block">
+    <div id="voyages" class="section-heading">5. Voyages and Requests to Join Voyages (Bids)</div>
+    <p>Users may list vehicles and propose voyages. They can place bids (requests to join) for voyages listed by others.
+      Bids are proposals to join a voyage and do not create any financial obligation through the platform. Parrots does
+      not guarantee any voyage will occur, be safe, or as described. Some listings may be fake or incomplete. <strong
+        class="highlight">Participation is at users' own risk.</strong></p>
+    <div class="section-heading2">a. Accepted Bids and Voyage Owner Responsibility</div>
+    <p>When a voyage owner accepts a bid, this constitutes an expression of intent between users only. It does not
+      create a legally binding contract, and Parrots is not a party to any such arrangement.</p>
+    <p>Parrots does not guarantee that a voyage owner will follow through on an accepted bid, fulfil any stated
+      arrangements, or communicate further after acceptance. Users who have had a bid accepted proceed entirely at their
+      own risk.</p>
+    <p>Parrots strongly recommends that users:</p>
+    <p class="indent">• Confirm arrangements directly with the voyage owner before making any personal plans</p>
+    <p class="indent">• <strong class="highlight">Do not make non-refundable bookings or financial commitments based
+        solely on a bid acceptance within the app</strong></p>
+    <p class="indent">• Exercise caution when sharing personal contact details</p>
+    <p>Parrots shall not be held liable for any loss, inconvenience, or harm resulting from a voyage owner's failure to
+      proceed following bid acceptance.</p>
+    <div class="section-heading2">b. Voyage Cancellation and Bid Closure</div>
+    <p>Voyage owners may cancel a voyage or close bids at any time without prior notice to bidders. When a voyage is
+      cancelled or bids are closed, it is no longer open for new bids. Existing accepted bids are not guaranteed to be
+      honoured following cancellation.</p>
+    <p>Parrots platform administrators may also cancel any voyage, close bids on any voyage, or reinstate a previously
+      cancelled or closed voyage at their sole discretion, including where content violates these Terms or where safety
+      or fraud concerns arise.</p>
+    <p>Parrots shall not be held liable for any loss, inconvenience, or harm resulting from a voyage cancellation or bid
+      closure by either the voyage owner or platform administrators.</p>
+    <div class="section-heading2">c. AI-Assisted Voyage Creation</div>
+    <p>Users may use Ask Parrots to assist in drafting voyage listings, including suggested descriptions, routes, or
+      itineraries. Any content generated by Ask Parrots during voyage creation is a starting point only. <strong
+        class="highlight">Users are solely responsible for reviewing, editing, and verifying all listing content before
+        publishing. AI suggestions are not guaranteed to be accurate, legal, or feasible.</strong> Parrots does not
+      verify, guarantee, or endorse the feasibility, safety, or legality of any AI-assisted voyage listing.</p>
+    <div class="section-heading2">d. AI-Inspired Voyage Listings</div>
+    <p>If a user lists or proposes a voyage inspired by, generated through, or assisted by Ask Parrots, such listings
+      remain entirely subject to the rules, disclaimers, and liability waivers outlined in this Section 5 and Section
+      12. Parrots does not verify, guarantee, or endorse the feasibility, safety, or legality of any AI-inspired voyage.
+    </p>
+    <p><strong class="highlight">Note: Parrots does not facilitate payments.</strong> Any financial arrangements made
+      between users occur entirely outside the platform and are the sole responsibility of the parties involved.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="communication" class="section-heading">6. Communication Between Users</div>
+    <p>Parrots allows users to communicate with each other through in-app messaging features. Messages may be false,
+      misleading, or inappropriate, and Parrots does not monitor, control, or endorse user communications. Users are
+      solely responsible for the content of their messages. All messages must adhere to the same standards of truth,
+      accuracy, and moral conduct required by Section 3, and must not contain false, misleading, harmful, or deceptive
+      content.</p>
+    <div class="sub">
+      <div class="section-heading2">a. Message Notifications, Badge, and Read Status (mobile app)</div>
+      <p>Our app includes notification features designed to inform users about new messages. This includes an in-app
+        badge as well as device-level push notifications when the app is in the background or inactive. Push
+        notifications require permission to be granted on your device and can be managed through your device settings at
+        any time.</p>
+      <p>We process message status information (read/unread) to operate messaging features and notification badges.</p>
+      <p>In addition, a numeric badge may appear on the app icon on your device's home screen to indicate unread
+        messages. This badge aims to reflect unread message status in real time, though it may not always be exact. It
+        is cleared when you open the app.</p>
+      <p>The in-app notification badge may appear in the following situations:</p>
+      <p class="indent">• When the app is launched, if there are unread messages.</p>
+      <p class="indent">• When a new message is received while not actively viewing that conversation.</p>
+      <p class="indent">• When the app is reconnected or resumed after being inactive.</p>
+      <p>The badge is provided for informational purposes only and may not always reflect exact real-time status. Users
+        are solely responsible for monitoring and reviewing their messages. Parrots does not guarantee that the badge
+        will accurately reflect message status at all times and shall not be held responsible or liable for missed
+        messages, unread messages, delayed badge updates, or any consequences arising from a user's failure to review
+        their messages.</p>
+      <div class="section-heading2">b. Messages Sent After Bid Acceptance</div>
+      <p>When a user accepts a bid, a message will be sent through the platform's messaging system to the creator of the
+        bid on behalf of the accepting user.</p>
+      <p>This message is a direct result of the accepting user's action and is intended to allow users to communicate
+        regarding the relevant voyage or listing.</p>
+      <p>This is not a marketing message or notification, but a functional communication necessary for the operation of
+        the service.</p>
+      <p>By accepting or placing a bid, users acknowledge and agree that such messages are a core feature of the
+        platform and consent to receiving and sending these communications.</p>
+      <p>Parrots does not monitor, verify, or guarantee the content, accuracy, or outcome of these communications. Users
+        are solely responsible for their interactions and any arrangements made.</p>
+      <div class="section-heading2">c. Message Delivery and Refresh Limitations</div>
+      <p>While the App strives to provide real-time message updates, message delivery and automatic refresh may not
+        always occur immediately, particularly if the App has been idle, the device is in sleep mode, or network
+        conditions are poor. Users are responsible for ensuring that they have an active connection and that the App is
+        open to receive the latest messages.</p>
+      <div class="section-heading2">d. Message Encryption &amp; Data</div>
+      <p>Messages are encrypted when stored on our servers. However, message content is transmitted to and processed on
+        our servers as plain text before encryption, and is not end-to-end encrypted.</p>
+      <p><strong class="highlight">We recommend you do not share sensitive personal information through the messaging
+          feature</strong>, including passwords, financial details, passport information, or home addresses.</p>
+      <p>Message content may be accessed by Parrots staff where required by law or to enforce our policies. Messages may
+        be retained for as long as necessary to operate the service and may be deleted at Parrots' discretion or as
+        required by applicable law.</p>
+      <div class="section-heading2">e. Group Conversations</div>
+      <p>Parrots supports group conversations that allow multiple users to communicate within a shared chat. The
+        following terms apply to group conversations:</p>
+      <p class="indent">• Group conversations can be created by any registered user.</p>
+      <p class="indent">• The creator of a group conversation is designated as the group administrator and may add or
+        remove members at any time.</p>
+      <p class="indent">• All members of a group conversation, including those added after the conversation has begun,
+        have access to the full message history of that group from its creation.</p>
+      <p class="indent">• By accepting an invitation to join a group conversation, users acknowledge and consent to
+        viewing messages sent before their membership.</p>
+      <p class="indent">• Group administrators are responsible for managing membership and ensuring appropriate use of
+        the group conversation feature.</p>
+      <p class="indent">• Users who are removed from a group conversation will immediately lose access to that group and
+        its message history.</p>
+      <p class="indent">• Parrots does not monitor group conversations but reserves the right to remove content or
+        terminate group conversations that violate our policies.</p>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div id="prohibited" class="section-heading">7. Prohibited Activities</div>
+    <p><strong class="highlight">Users must not post illegal, harmful, or offensive content; harass or threaten others;
+        manipulate, mislead, or defraud other users; or violate intellectual property rights.</strong></p>
+    <p>Users must not:</p>
+    <p class="indent">• Impersonate any real person, business, or organisation</p>
+    <p class="indent">• Create multiple accounts to manipulate listings, bids, or platform visibility</p>
+    <p class="indent">• Post content containing external links for commercial or promotional purposes without Parrots'
+      consent</p>
+    <p class="indent">• Use the platform to collect personal information from other users for purposes unrelated to
+      genuine voyage participation</p>
+    <p class="indent">• Use automated scripts, bots, scrapers, or unauthorized tools to extract data, routes, or content
+      from the platform, including Ask Parrots</p>
+    <p class="indent">• Post content or behave in a manner that is unlawful, fraudulent, deceptive, threatening,
+      harassing, defamatory, obscene, discriminatory, or harmful to other users</p>
+    <div class="section-heading2">Content Moderation and Removal</div>
+    <p>Parrots reserves the right, but not the obligation, to review, restrict, or remove any voyage, vehicle listing,
+      or related content at its sole discretion.</p>
+    <p>Removal of content does not imply wrongdoing by the user, and Parrots is not required to provide prior notice,
+      explanation, or justification, except where required by applicable law.</p>
+    <div class="section-heading2">Reporting Users and Content</div>
+    <p>Users may report other users or voyage listings that they believe violate these Terms, including reports of spam,
+      scam activity, fraud, or safety hazards. Reports can be submitted through the platform's reporting feature
+      available on user profiles and voyage listings.</p>
+    <p>Parrots will review reports at its discretion and may take action including content removal, account restriction,
+      or account suspension. Parrots does not guarantee any specific outcome or response time following a report.
+      Submitting a false or malicious report may itself constitute a violation of these Terms.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="suspension" class="section-heading">8. Account Suspension and Termination</div>
+    <div class="section-heading2">a. Platform-Initiated Suspension and Termination</div>
+    <p><strong class="highlight">Parrots reserves the right to suspend, restrict, or permanently terminate any user
+        account at its sole discretion, at any time, without prior notice</strong>, for any reason including but not
+      limited to: breach of these Terms, suspicious activity, user reports, prolonged inactivity, or behaviour that
+      Parrots reasonably considers harmful to the platform or its users.</p>
+    <p>Suspended users will lose the ability to log in to the platform for the duration of the suspension. Voyage
+      listings created by a suspended user remain visible to other users on the platform; however, bidding on those
+      voyages is disabled and a notice is displayed to inform other users of the account's suspended status.</p>
+    <p>Users whose accounts are terminated for serious violations (including fraud, harassment, or illegal activity)
+      will not be eligible for re-registration. For other terminations, re-registration may be permitted at Parrots'
+      discretion.</p>
+    <p>Upon termination of an account, all rights granted to the user under these Terms will immediately cease. Parrots
+      reserves the right, but has no obligation, to delete user content, profiles, or associated data following
+      termination. Terminated accounts with unused ParrotCrackers are not entitled to a refund, except where required by
+      applicable consumer protection law.</p>
+    <div class="section-heading2">b. User-Requested Account Deletion</div>
+    <p>Users may request deletion of their account at any time through the platform settings. Upon submission of a
+      deletion request:</p>
+    <div class="indent">
+      <p>• The account is deactivated immediately and the user loses access to the platform.</p>
+      <p>• The registered email address is permanently blocked from re-registration on the platform.</p>
+      <p>• Active voyage listings remain visible to other users but are flagged with a notice indicating the owner's
+        account has been deleted, and bidding on those voyages is disabled.</p>
+      <p>• Parrots reserves the right to contact the user via their registered email address to facilitate urgent
+        coordination relating to active trips or ongoing commitments, and the user remains obligated to cooperate.</p>
+      <p>• Users with active voyages or accepted bids remain responsible for any obligations arising from those
+        commitments at the time of deletion.</p>
+      <p>• Personal data is retained in accordance with the Privacy Policy and applicable law.</p>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div id="ip" class="section-heading">9. Intellectual Property</div>
+    <p>Users retain ownership of content they post, but grant Parrots a worldwide, non-exclusive, royalty-free license
+      to host, store, reproduce, display, modify, and transmit such content solely for the purpose of operating the
+      Service. This includes transmitting user-provided inputs to third-party AI services such as Google Gemini solely
+      for the purposes described in these Terms. Users warrant that they own or have the necessary rights to share all
+      content uploaded.</p>
+    <p>All platform software, branding, UI designs, trademarks, and features associated with Parrots and Ask Parrots are
+      the exclusive property of A. Zeren and are protected under applicable intellectual property laws. Users must not
+      copy, modify, distribute, or reverse engineer any part of the platform without express written permission.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="liability" class="section-heading">10. Limitation of Liability</div>
+    <p>Users assume full liability, risk, and responsibility for their participation in any voyages, use of vehicles,
+      interactions with other users, and reliance on platform content, AI features (including Ask Parrots), or
+      AI-generated suggestions.</p>
+    <p><strong class="highlight">To the maximum extent permitted by applicable law, Parrots shall not be liable for any
+        indirect, incidental, consequential, special, or similar losses arising from use of the Service.</strong></p>
+    <p>Nothing in these Terms excludes or limits liability for death or personal injury caused by negligence, fraud, or
+      any other liability that cannot be excluded under applicable law.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="disclaimers" class="section-heading">11. Disclaimers</div>
+    <p>The platform is provided "as is" and "as available" without warranties of any kind, express or implied. Parrots
+      does not guarantee the accuracy, reliability, safety, or suitability of any content, listings, communications, or
+      AI-generated features.</p>
+    <div class="sub">
+      <div class="section-heading2">No payments</div>
+      <p>Parrots does not facilitate any payments, transactions, or financial obligations. Any financial arrangements
+        occur entirely outside the platform.</p>
+      <div class="section-heading2">No guarantees</div>
+      <p><strong class="highlight">Parrots does not guarantee that any voyage will happen, that users are truthful, or
+          that content is accurate. While Ask Parrots is engineered to provide helpful travel suggestions, Parrots does
+          not guarantee that AI-generated routes or tips will be correct, safe, or feasible in reality.</strong></p>
+      <div class="section-heading2">No endorsement</div>
+      <p>Users, vehicles, listings, and content are not endorsed, verified, or guaranteed by Parrots.</p>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div id="ai-content" class="section-heading">12. AI-Generated Content (Ask Parrots)</div>
+    <div class="section-heading2">1. Nature of AI Suggestions</div>
+    <p>"Ask Parrots" features AI-generated travel suggestions powered by third-party AI technology (currently Google
+      Gemini, which may be changed or updated without prior notice or approval). Ask Parrots is available both as a
+      standalone discovery tool and as an assistant during voyage listing creation. While Ask Parrots is engineered to
+      provide helpful travel suggestions, responses are generated programmatically and may contain inaccuracies,
+      outdated information, or incomplete routing. Parrots does not guarantee that AI-generated routes or tips will be
+      correct, safe, or feasible in reality. Suggestions do not constitute professional, safety, or travel planning
+      advice. <strong class="highlight">Users are solely responsible for the accuracy and completeness of any voyage
+        listing they publish, whether or not AI assistance was used in drafting it.</strong></p>
+    <div class="section-heading2">2. Location &amp; Query Data</div>
+    <p>By using Ask Parrots, your selected search location coordinates, chosen vehicle type, voyage duration, and vibe
+      preferences are transmitted to Parrots servers and forwarded to the AI provider solely to process and generate
+      your request, in accordance with these Terms. No personally identifying information is included in these
+      transmissions.</p>
+    <div class="section-heading2">3. Travel Safety, Legal Compliance &amp; Independent Verification</div>
+    <p>You assume full liability for your personal safety, compliance with local traffic and maritime laws, adherence to
+      physical road, water, or path conditions, and possession of all necessary legal documents (including valid
+      passports, visas, licenses, permits, vessel certifications, etc.). Always independently verify route feasibility,
+      venue operating hours, local regulations, and safety conditions before embarking on any suggested voyage.</p>
+    <div class="section-heading2">4. No Liability &amp; Disclaimer of Warranties</div>
+    <p>Ask Parrots is provided on an "AS IS" and "AS AVAILABLE" basis. To the maximum extent permitted by law, Parrots
+      accepts no liability for any loss arising from reliance on AI-generated suggestions.</p>
+    <div class="section-heading2">5. Usage Limits, Costs &amp; Service Availability</div>
+    <p>Usage of Ask Parrots may be subject to rate limits or temporary suspensions. Each Ask Parrots query consumes 1
+      ParrotCracker. Parrots reserves the right to adjust this rate or pricing structure at any time.</p>
+    <div class="section-heading2">6. AI Inputs &amp; Output Ownership</div>
+    <p>You retain ownership of the custom inputs (such as vibe preferences, vehicle choices, and location parameters)
+      that you provide to Ask Parrots. However, you acknowledge that AI-generated responses are produced
+      programmatically and may be similar to or identical with outputs provided to other users. You may use Ask Parrots
+      outputs for personal voyage planning. Redistribution or republication of AI-generated outputs outside the platform
+      is not permitted.</p>
+    <div class="section-heading2">7. Prohibited AI Usage</div>
+    <p>You must not attempt to reverse engineer, scrape, extract, or use automated scripts to harvest bulk data, routes,
+      or suggestions from Ask Parrots, nor use the AI tool to generate spam, malicious, unlawful, or deceptive content.
+    </p>
+  </div>
+
+  <div class="section-block">
+    <div id="modifications" class="section-heading">13. Modifications</div>
+    <p>Parrots may update or modify these Terms at any time. When we make material changes, we may notify users through
+      the platform or via email. Continued use of the platform after changes take effect constitutes your acceptance of
+      the updated Terms.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="privacy" class="section-heading">14. Privacy Policy</div>
+    <p>Parrots respects your privacy and is committed to protecting your personal data.</p>
+    <div class="section-heading2">a. Information We Collect</div>
+    <p>Parrots may collect information that users voluntarily provide, including profile details, images, vehicle and
+      voyage information, messages, and contact details.</p>
+    <div class="section-heading2">b. Automatically Collected Data</div>
+    <p>Limited technical data may be collected automatically, such as device type, app version, error logs, and IP
+      address, for security and service improvement purposes only.</p>
+    <div class="section-heading2">c. How We Use Data</div>
+    <p>We process personal data exclusively for core platform operations, security, and customer support. AI-powered
+      features, including Ask Parrots, operate on a strict per-request basis, transmitting only isolated query
+      parameters without linking your personal account identity. Parrots never sells personal data or uses personal data
+      for advertising or user profiling.</p>
+    <div class="section-heading2">d. Legal Basis</div>
+    <p>Data is processed based on user consent, contractual necessity, legitimate interests (such as platform security),
+      and applicable legal obligations.</p>
+    <div class="section-heading2">e. Data Sharing</div>
+    <p>Parrots does not share personal data with third parties for marketing purposes. The following query parameters
+      are transmitted to third-party AI service providers, currently Google Gemini, solely to process and fulfill user
+      requests through Ask Parrots: user-selected map coordinates (manually chosen by the user and not obtained from
+      device GPS), vehicle type, voyage duration, vibe preference, and discovery style. No account identifiers, names,
+      email addresses, contact details, or other direct account-identifying information are included in these
+      transmissions. <strong class="highlight">All user-generated content — including profiles, profile and background
+        images, contact details, vehicle listings, voyage listings, bids, and related content, etc. — is visible to all
+        registered users of the platform.</strong></p>
+    <div class="section-heading2">f. User Communications</div>
+    <p>Direct messages between users are private. Group conversations are accessible to all current and newly added
+      members, including message history from before they joined. Parrots does not actively monitor, verify, or endorse
+      user communications.</p>
+    <div class="section-heading2">g. Data Retention</div>
+    <p>Personal data is retained only as long as necessary to operate the service or comply with legal requirements.
+      Message content may be deleted after a retention period of up to 2 years.</p>
+    <div class="section-heading2">h. User Rights</div>
+    <p>Users have the right to access, correct, delete, or restrict processing of their personal data, and to withdraw
+      consent at any time, in accordance with applicable data protection laws (including KVKK and GDPR where
+      applicable). Note: Deletion requests may be deferred where data is necessary to fulfil ongoing platform
+      obligations, such as active voyages or pending bids, after which deletion will be processed promptly.</p>
+    <div class="section-heading2">i. Children's Privacy</div>
+    <p>Parrots is not intended for users under the age of 18 and does not knowingly collect data from minors.</p>
+    <div class="section-heading2">j. Changes to Privacy Policy</div>
+    <p>Parrots may update this Privacy Policy from time to time. Continued use of the platform constitutes acceptance of
+      the updated policy.</p>
+    <div class="section-heading2">k. Local Device Storage</div>
+    <p>Parrots may store certain information locally on your device, such as login credentials, preferences, and app
+      settings, to maintain your session and improve functionality. This data is not shared with third parties and can
+      be cleared by you at any time.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="dispute" class="section-heading">15. Dispute Resolution</div>
+    <p>In the event of a dispute, users are encouraged to contact Parrots at parrotsapp@gmail.com in the first instance
+      to seek an informal resolution.</p>
+    <p>Users retain the right to bring claims before a court of competent jurisdiction where the operator is
+      established.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="law" class="section-heading">16. Governing Law</div>
+    <p>These Terms are governed by the laws of the Republic of Türkiye, subject to any mandatory rights that cannot be
+      waived under the applicable law of your country of residence. Nothing in these Terms affects your right to bring
+      claims before courts with mandatory jurisdiction over consumer disputes.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="termination" class="section-heading">17. Service Termination and Discontinuation</div>
+    <p>Parrots reserves the right to modify, suspend, or permanently discontinue the Service at any time without prior
+      notice.</p>
+    <p>Purchased ParrotCracker credits are non-refundable under normal operating circumstances and cannot be exchanged
+      for cash. However, in the event of permanent platform discontinuation, any unused paid ParrotCracker credits — as
+      well as the prorated value of any active, paid features or future listings paid for in advance — will be eligible
+      for a proportional refund, and user accounts will remain accessible for a final 30-day wind-down period.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="refund" class="section-heading">18. Refund Policy</div>
+    <div class="section-heading2">a. ParrotCrackers and Paid Credits</div>
+    <p>Purchases of ParrotCrackers and digital credits are final and non-refundable, except where a technical error by
+      Parrots prevented credits from being applied, the Service is permanently discontinued (as outlined in Section 17),
+      or applicable consumer protection law mandates a statutory right to a refund. ParrotCrackers are typically
+      credited to your account shortly after payment confirmation. By completing a purchase, users acknowledge this and
+      consent to waive any applicable right of withdrawal for digital content.</p>
+    <div class="section-heading2">b. Third-Party Platform Purchases</div>
+    <p>Where purchases are made through third-party platforms (such as Apple App Store or Google Play), the refund
+      policies of those platforms apply and take precedence over this policy.</p>
+    <div class="section-heading2">c. How to Request a Refund</div>
+    <p>If you experience a verified technical error preventing credit delivery, contact parrotsapp@gmail.com within 14
+      days of purchase. Include your registered email address, the date of purchase, and a description of the issue.</p>
+  </div>
+
+  <div class="section-block">
+    <div id="contact" class="section-heading">19. Contact &amp; Legal Entity</div>
+    <p>For questions regarding these Terms or the service:</p>
+    <p>• <strong>Operator:</strong> A. Zeren (Sole Proprietorship)<br />• <strong>Tax ID:</strong> 9980412824<br />•
+      <strong>Email:</strong> parrotsapp@gmail.com</p>
+  </div>
+
+  <div style="height:40px;"></div>
+
+</body>
+
+</html>

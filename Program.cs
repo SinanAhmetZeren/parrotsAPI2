@@ -58,7 +58,7 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (!builder.Environment.IsEnvironment("Testing"))
+if (!builder.Environment.IsEnvironment("Testing") && !builder.Environment.IsDevelopment())
 {
     var alertSink = new AlertEmailSink(
         smtpUser: Environment.GetEnvironmentVariable("Email__SmtpUser") ?? "",
