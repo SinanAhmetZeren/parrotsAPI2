@@ -26,6 +26,9 @@
         public List<GetUsersVoyagesDto>? UsersVoyages { get; set; }
         public string PublicId { get; set; } = string.Empty;
         public int ParrotCrackerBalance { get; set; }
+        public double? AverageRating { get; set; }
+        public int RatingCount { get; set; }
+        public bool CanRate { get; set; }
 
     }
 }

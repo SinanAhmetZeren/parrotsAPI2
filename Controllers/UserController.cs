@@ -40,7 +40,8 @@ namespace ParrotsAPI2.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == publicId);
             if (user == null) return NotFound();
             if (user.LockoutEnabled && user.LockoutEnd > DateTimeOffset.UtcNow) return NotFound();
-            return Ok(await _userService.GetUserByPublicId(publicId));
+            var viewerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Ok(await _userService.GetUserByPublicId(publicId, viewerId));
         }
 
 

@@ -314,7 +314,7 @@ namespace ParrotsAPI2.Services.User
 
 
 
-        public async Task<ServiceResponse<GetUserDto>> GetUserByPublicId(string publicId)
+        public async Task<ServiceResponse<GetUserDto>> GetUserByPublicId(string publicId, string? viewerId = null)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
             var stopwatch = new Stopwatch();
@@ -378,6 +378,25 @@ namespace ParrotsAPI2.Services.User
                 var wp = voyage.Waypoints?.FirstOrDefault(w => w.Order == 1);
                 dto.Latitude = wp?.Latitude;
                 dto.Longitude = wp?.Longitude;
+            }
+
+            var ratings = await _context.UserRatings
+                .Where(r => r.SubjectId == user.Id)
+                .ToListAsync();
+
+            userDto.RatingCount = ratings.Count;
+            userDto.AverageRating = ratings.Count > 0 ? Math.Round(ratings.Average(r => r.Stars), 1) : null;
+
+            if (!string.IsNullOrEmpty(viewerId) && viewerId != user.Id)
+            {
+                var alreadyRated = await _context.UserRatings
+                    .AnyAsync(r => r.ReviewerId == viewerId && r.SubjectId == user.Id);
+
+                var hasCompletedVoyage = await _context.Bids
+                    .AnyAsync(b => b.UserId == viewerId && b.Accepted &&
+                        _context.Voyages.Any(v => v.Id == b.VoyageId && v.UserId == user.Id && v.EndDate < DateTime.UtcNow));
+
+                userDto.CanRate = !alreadyRated && hasCompletedVoyage;
             }
 
             serviceResponse.Data = userDto;

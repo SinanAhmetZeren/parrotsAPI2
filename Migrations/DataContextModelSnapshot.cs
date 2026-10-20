@@ -902,6 +902,36 @@ namespace ParrotsAPI2.Migrations
                     b.ToTable("UserBookmarks");
                 });
 
+            modelBuilder.Entity("ParrotsAPI2.Models.UserRating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ReviewerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewerId", "SubjectId")
+                        .IsUnique();
+
+                    b.ToTable("UserRatings");
+                });
+
             modelBuilder.Entity("ParrotsAPI2.Models.UserReport", b =>
                 {
                     b.Property<int>("Id")
@@ -1134,7 +1164,7 @@ namespace ParrotsAPI2.Migrations
                     b.Property<int?>("VehicleId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("VehicleImage")
+                    b.Property<string>("VehicleImageThumbnail")
                         .HasColumnType("text");
 
                     b.Property<string>("VehicleName")
