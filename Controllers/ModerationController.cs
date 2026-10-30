@@ -233,6 +233,26 @@ namespace ParrotsAPI2.Controllers
             return Ok(new { success = true });
         }
 
+        [HttpGet("admin/suspension-status/{userId}")]
+        public async Task<IActionResult> GetSuspensionStatus(string userId)
+        {
+            if (!await IsAdmin()) return Forbid();
+
+            var latest = await _context.UserSuspensions
+                .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.CreatedAt)
+                .FirstOrDefaultAsync();
+
+            var isSuspended = latest != null && latest.Action != "unsuspended";
+            return Ok(new
+            {
+                isSuspended,
+                latestAction = latest?.Action,
+                reason = latest?.Reason,
+                createdAt = latest?.CreatedAt,
+            });
+        }
+
         [HttpGet("admin/deleted-accounts")]
         public async Task<IActionResult> GetDeletedAccounts()
         {
