@@ -149,6 +149,11 @@ namespace API.Controllers
         [RateLimit(5, 60, true)]
         public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
         {
+            var currentTermsVersion = await _context.TermsVersions
+                .Where(t => t.IsCurrent)
+                .Select(t => t.Version)
+                .FirstOrDefaultAsync() ?? "2025-01";
+
             // 1️⃣ Basic validation
             if (string.IsNullOrWhiteSpace(registerDto.Email) ||
                 string.IsNullOrWhiteSpace(registerDto.UserName) ||
@@ -271,7 +276,7 @@ namespace API.Controllers
                 existingUser.EncryptionKey = GenerateBase64Key();
                 existingUser.PublicId = await GenerateUniquePublicId();
                 existingUser.TermsAcceptedAt = DateTime.UtcNow;
-                existingUser.TermsVersion = registerDto.TermsVersion;
+                existingUser.TermsVersion = currentTermsVersion;
 
                 var updateResult = await _userManager.UpdateAsync(existingUser);
                 if (!updateResult.Succeeded)
@@ -319,7 +324,7 @@ namespace API.Controllers
                 Bio = "Exploring new journeys.",
                 EmailVisible = false,
                 TermsAcceptedAt = DateTime.UtcNow,
-                TermsVersion = registerDto.TermsVersion
+                TermsVersion = currentTermsVersion
             };
 
             var createResult = await _userManager.CreateAsync(newUser, registerDto.Password);
