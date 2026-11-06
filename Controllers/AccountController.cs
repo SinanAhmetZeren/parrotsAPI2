@@ -277,6 +277,8 @@ namespace API.Controllers
                 existingUser.PublicId = await GenerateUniquePublicId();
                 existingUser.TermsAcceptedAt = DateTime.UtcNow;
                 existingUser.TermsVersion = currentTermsVersion;
+                existingUser.LockoutEnabled = false;
+                existingUser.LockoutEnd = null;
 
                 var updateResult = await _userManager.UpdateAsync(existingUser);
                 if (!updateResult.Succeeded)
@@ -324,7 +326,8 @@ namespace API.Controllers
                 Bio = "Exploring new journeys.",
                 EmailVisible = false,
                 TermsAcceptedAt = DateTime.UtcNow,
-                TermsVersion = currentTermsVersion
+                TermsVersion = currentTermsVersion,
+                LockoutEnabled = false,
             };
 
             var createResult = await _userManager.CreateAsync(newUser, registerDto.Password);
