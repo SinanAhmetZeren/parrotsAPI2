@@ -660,6 +660,10 @@ namespace API.Controllers
                         BackgroundImageUrl = $"{baseUrl}amazon.jpeg",
                         EmailVisible = false,
                         PublicId = await GenerateUniquePublicId(),
+                        EncryptionKey = GenerateBase64Key(),
+                        LockoutEnabled = false,
+                        Title = "Wanderer",
+                        Bio = "Exploring new journeys.",
                     };
 
                     var createResult = await _userManager.CreateAsync(user);
