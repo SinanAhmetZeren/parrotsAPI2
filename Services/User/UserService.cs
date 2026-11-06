@@ -334,7 +334,7 @@ namespace ParrotsAPI2.Services.User
                 .Include(u => u.Vehicles)
                 .Include(u => u.Voyages).ThenInclude(v => v.Waypoints)
                 .AsSplitQuery()
-                .FirstOrDefaultAsync(c => c.PublicId == publicId);
+                .FirstOrDefaultAsync(c => c.PublicId == publicId && c.Confirmed);
 
             stopwatch.Stop();
 
@@ -699,7 +699,8 @@ namespace ParrotsAPI2.Services.User
             var searchUsers = await _context.Users
                  .Where(u => u.UserName != null
                              && EF.Functions.ILike(u.UserName, $"%{username}%")
-                             && u.UserName.ToLower() != "admin") // exclude "admin"
+                             && u.UserName.ToLower() != "admin"
+                             && u.Confirmed)
                  .ToListAsync();
 
             if (searchUsers.Any())

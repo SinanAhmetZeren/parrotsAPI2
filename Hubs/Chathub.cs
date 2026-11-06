@@ -493,7 +493,7 @@ public class ChatHub : Hub
             return cached;
 
         var user = await dbContext.Users
-            .Where(u => u.Id == userId)
+            .Where(u => u.Id == userId && u.Confirmed)
             .Select(u => new { u.EncryptionKey, u.ProfileImageUrl, u.ProfileImageThumbnailUrl, u.UserName, u.PublicId })
             .FirstOrDefaultAsync();
 
