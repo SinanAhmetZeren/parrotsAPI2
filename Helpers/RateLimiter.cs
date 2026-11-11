@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace ParrotsAPI2.Helpers
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class RateLimitAttribute : ActionFilterAttribute
     {
         private readonly int _limit;
