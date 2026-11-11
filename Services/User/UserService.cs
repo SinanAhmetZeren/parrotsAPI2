@@ -955,6 +955,92 @@ namespace ParrotsAPI2.Services.User
             };
         }
 
+        public async Task DeleteUserImagesAsync(string userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.Voyages!)
+                    .ThenInclude(v => v.VoyageImages)
+                .Include(u => u.Voyages!)
+                    .ThenInclude(v => v.Waypoints)
+                .Include(u => u.Vehicles!)
+                    .ThenInclude(v => v.VehicleImages)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null) return;
+
+            var keysToDelete = new List<string>();
+
+            void ExtractKey(string? url)
+            {
+                if (string.IsNullOrEmpty(url)) return;
+                var prefixes = new[] { "user-images/", "voyage-images/", "vehicle-images/", "waypoint-images/" };
+                foreach (var prefix in prefixes)
+                {
+                    var idx = url.IndexOf(prefix);
+                    if (idx >= 0) { keysToDelete.Add(url[idx..]); return; }
+                }
+            }
+
+            ExtractKey(user.ProfileImageUrl);
+            ExtractKey(user.ProfileImageThumbnailUrl);
+            ExtractKey(user.BackgroundImageUrl);
+            user.ProfileImageUrl = null;
+            user.ProfileImageThumbnailUrl = null;
+            user.BackgroundImageUrl = null;
+            user.UserName = "deleted_user";
+            user.NormalizedUserName = "DELETED_USER";
+
+            if (user.Voyages != null)
+            {
+                foreach (var voyage in user.Voyages)
+                {
+                    ExtractKey(voyage.ProfileImage);
+                    ExtractKey(voyage.ProfileImageThumbnail);
+                    voyage.ProfileImage = string.Empty;
+                    voyage.ProfileImageThumbnail = string.Empty;
+
+                    if (voyage.VoyageImages != null)
+                        foreach (var img in voyage.VoyageImages)
+                        {
+                            ExtractKey(img.VoyageImagePath);
+                            img.VoyageImagePath = string.Empty;
+                        }
+
+                    if (voyage.Waypoints != null)
+                        foreach (var wp in voyage.Waypoints)
+                        {
+                            ExtractKey(wp.ProfileImage);
+                            wp.ProfileImage = string.Empty;
+                        }
+                }
+            }
+
+            if (user.Vehicles != null)
+            {
+                foreach (var vehicle in user.Vehicles)
+                {
+                    ExtractKey(vehicle.ProfileImageUrl);
+                    ExtractKey(vehicle.ProfileImageThumbnailUrl);
+                    vehicle.ProfileImageUrl = string.Empty;
+                    vehicle.ProfileImageThumbnailUrl = string.Empty;
+
+                    if (vehicle.VehicleImages != null)
+                        foreach (var img in vehicle.VehicleImages)
+                        {
+                            ExtractKey(img.VehicleImagePath);
+                            img.VehicleImagePath = string.Empty;
+                        }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            foreach (var key in keysToDelete)
+            {
+                try { await _blobService.DeleteAsync(key); } catch { }
+            }
+        }
+
 
     }
 }

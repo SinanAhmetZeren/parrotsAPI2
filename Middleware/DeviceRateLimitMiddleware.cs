@@ -7,12 +7,17 @@ public class DeviceRateLimitMiddleware
 
     private static readonly ConcurrentDictionary<string, RateLimitEntry> _deviceStore = new();
     private static readonly ConcurrentDictionary<string, RateLimitEntry> _ipStore = new();
+    private static readonly ConcurrentDictionary<string, RateLimitEntry> _deviceStoreShort = new();
+    private static readonly ConcurrentDictionary<string, RateLimitEntry> _ipStoreShort = new();
 
     private const int DEVICE_LIMIT = 100;
     private const int IP_LIMIT_DEFAULT = 300;
     private const int IP_LIMIT_LOADTEST = 10000;
+    private const int DEVICE_LIMIT_SHORT = 30;
+    private const int IP_LIMIT_SHORT = 30;
     private const string LOAD_TEST_KEY = "3a7676e3de328901f51c850e7bd53917";
     private static readonly TimeSpan WINDOW = TimeSpan.FromMinutes(1);
+    private static readonly TimeSpan WINDOW_SHORT = TimeSpan.FromSeconds(10);
     private static readonly TimeSpan IDLE_EXPIRY = TimeSpan.FromMinutes(30);
 
     private static readonly Timer _cleanupTimer = new Timer(
@@ -44,7 +49,9 @@ public class DeviceRateLimitMiddleware
             return;
         }
 
-        var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        var ip = context.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
+            ?? context.Connection.RemoteIpAddress?.ToString()
+            ?? "unknown";
         var deviceId = context.Request.Headers["X-Device-Id"].FirstOrDefault() ?? ip;
         var isLoadTest = context.Request.Headers["X-Load-Test-Key"].FirstOrDefault() == LOAD_TEST_KEY;
         var ipLimit = isLoadTest ? IP_LIMIT_LOADTEST : IP_LIMIT_DEFAULT;
@@ -54,10 +61,13 @@ public class DeviceRateLimitMiddleware
 
         var now = DateTime.UtcNow;
 
-        var deviceEntry = Track(_deviceStore, deviceId, now);
-        var ipEntry = Track(_ipStore, ip, now);
+        var deviceEntry = Track(_deviceStore, deviceId, now, WINDOW);
+        var ipEntry = Track(_ipStore, ip, now, WINDOW);
+        var deviceEntryShort = Track(_deviceStoreShort, deviceId, now, WINDOW_SHORT);
+        var ipEntryShort = Track(_ipStoreShort, ip, now, WINDOW_SHORT);
 
-        if (deviceEntry.Count > DEVICE_LIMIT || ipEntry.Count > ipLimit)
+        if (deviceEntry.Count > DEVICE_LIMIT || ipEntry.Count > ipLimit
+            || deviceEntryShort.Count > DEVICE_LIMIT_SHORT || ipEntryShort.Count > IP_LIMIT_SHORT)
         {
             context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
             context.Response.ContentType = "application/json";
@@ -70,7 +80,7 @@ public class DeviceRateLimitMiddleware
         await _next(context);
     }
 
-    private static RateLimitEntry Track(ConcurrentDictionary<string, RateLimitEntry> store, string key, DateTime now)
+    private static RateLimitEntry Track(ConcurrentDictionary<string, RateLimitEntry> store, string key, DateTime now, TimeSpan window)
     {
         return store.AddOrUpdate(
             key,
@@ -78,7 +88,7 @@ public class DeviceRateLimitMiddleware
             (_, existing) =>
             {
                 existing.LastSeen = now;
-                if (now - existing.WindowStart >= WINDOW)
+                if (now - existing.WindowStart >= window)
                 {
                     existing.Count = 1;
                     existing.WindowStart = now;
@@ -93,7 +103,7 @@ public class DeviceRateLimitMiddleware
     private static void Cleanup()
     {
         var cutoff = DateTime.UtcNow - IDLE_EXPIRY;
-        foreach (var store in new[] { _deviceStore, _ipStore })
+        foreach (var store in new[] { _deviceStore, _ipStore, _deviceStoreShort, _ipStoreShort })
         {
             foreach (var key in store.Keys)
             {

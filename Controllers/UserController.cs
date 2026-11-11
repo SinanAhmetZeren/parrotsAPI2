@@ -3,6 +3,7 @@ using ParrotsAPI2.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ParrotsAPI2.Services.Suspension;
 
 namespace ParrotsAPI2.Controllers
@@ -353,7 +354,14 @@ namespace ParrotsAPI2.Controllers
 
             user.LockoutEnabled = true;
             user.LockoutEnd = DateTimeOffset.MaxValue;
+            user.ExpoPushToken = null;
             await _userManager.UpdateAsync(user);
+
+            await _userService.DeleteUserImagesAsync(userId);
+
+            var userBids = await _context.Bids.Where(b => b.UserId == userId).ToListAsync();
+            _context.Bids.RemoveRange(userBids);
+            await _context.SaveChangesAsync();
 
             _context.UserSuspensions.Add(new UserSuspension
             {

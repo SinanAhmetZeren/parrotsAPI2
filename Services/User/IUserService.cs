@@ -24,6 +24,7 @@ namespace ParrotsAPI2.Services.User
         Task<ServiceResponse<ParrotCrackerSummaryDto>> GetParrotCrackerBalanceAndPurchases(string userId);
         Task<ServiceResponse<CrackerBalanceDto>> GetCrackerBalance(string userId);
         Task<ServiceResponse<int>> DeductCrackerForAsk(string userId);
+        Task DeleteUserImagesAsync(string userId);
 
 
 

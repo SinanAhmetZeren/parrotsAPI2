@@ -62,6 +62,7 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost("login")]
         [RateLimit(5, 60, true)]
+        [RateLimit(2, 10, true)]
         public async Task<ActionResult<UserResponseDto>> Login(LoginDto loginDto)
         {
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
@@ -147,6 +148,7 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost("register")]
         [RateLimit(5, 60, true)]
+        [RateLimit(2, 10, true)]
         public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
         {
             var currentTermsVersion = await _context.TermsVersions
@@ -365,6 +367,7 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost("sendCode/{email}")]
         [RateLimit(5, 60, true)]
+        [RateLimit(2, 10, true)]
         public async Task<IActionResult> SendCode(string email)
         {
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
@@ -447,6 +450,7 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost("resetPassword")]
         [RateLimit(5, 60, true)]
+        [RateLimit(2, 10, true)]
         public async Task<ActionResult<UserResponseDto>> ResetPassword(UpdatePasswordDto updatePasswordDto)
         {
             // Log the attempt
@@ -527,6 +531,7 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost("confirmCode")]
         [RateLimit(5, 60, true)]
+        [RateLimit(2, 10, true)]
         public async Task<ActionResult<UserResponseDto>> ConfirmCode(ConfirmDto confirmDto)
         {
             var normalizedEmail = _userManager.NormalizeEmail(confirmDto.Email?.Trim());
@@ -594,6 +599,7 @@ namespace API.Controllers
         // [AllowAnonymous]
         [HttpPost("google-login")]
         [RateLimit(5, 60, true)]
+        [RateLimit(2, 10, true)]
         public async Task<ActionResult<UserResponseDto>> GoogleLogin([FromBody] GoogleLoginDto googleLoginDto)
         {
             try
@@ -707,6 +713,7 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost("refresh-token")]
         [RateLimit(5, 60, true)]
+        [RateLimit(2, 10, true)]
         public async Task<ActionResult<UserResponseDto>> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
         {
             _logger.LogInformation(
@@ -972,6 +979,25 @@ namespace API.Controllers
             var terms = await _context.TermsVersions.FirstOrDefaultAsync(t => t.IsCurrent);
             if (terms == null) return NotFound();
             return Ok(new { terms.Version, terms.Content });
+        }
+
+        [HttpGet("privacy-page")]
+        public async Task<IActionResult> GetPrivacyPage()
+        {
+            var terms = await _context.TermsVersions.FirstOrDefaultAsync(t => t.IsCurrent);
+            if (terms == null) return NotFound();
+            var html = $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+<meta charset=""UTF-8"" />
+<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
+<title>Parrots – Terms of Use &amp; Privacy Policy</title>
+</head>
+<body>
+{terms.Content}
+</body>
+</html>";
+            return Content(html, "text/html");
         }
 
         [Authorize(Roles = "Admin")]
